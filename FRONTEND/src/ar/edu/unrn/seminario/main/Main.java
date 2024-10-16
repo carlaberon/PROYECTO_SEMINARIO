@@ -16,7 +16,7 @@ public class Main {
 
 					IApi api = new MemoryApi();
 					VentanaPrincipal frame = new VentanaPrincipal(api);
-
+//pruebaa
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

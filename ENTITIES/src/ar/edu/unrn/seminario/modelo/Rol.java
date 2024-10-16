@@ -1,10 +1,13 @@
 package ar.edu.unrn.seminario.modelo;
 
+import ar.edu.unrn.seminario.dto.RolDTO;
+
 public class Rol {
 	private Integer codigo;
 	private String nombre;
+	private String descripcion;
 	private boolean activo;
-
+	
 	public Rol() {
 
 	}
@@ -13,6 +16,13 @@ public class Rol {
 		super();
 		this.codigo = codigo;
 		this.nombre = nombre;
+	}
+	
+	public Rol(Integer codigo, String nombre, boolean activo) {
+		super();
+		this.codigo = codigo;
+		this.nombre = nombre;
+		this.activo = activo;
 	}
 
 	public Integer getCodigo() {
@@ -30,22 +40,16 @@ public class Rol {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-
-	public boolean isActivo() {
-		return activo;
-	}
-
-	public void setActivo(boolean activo) {
-		this.activo = activo;
-	}
-
-	public void activar() {
-		this.activo = true;
-	}
-
-	public void desactivar() {
-		this.activo = false;
-	}
+	
+	// Método de conversión de RolDTO a Rol
+    public static Rol fromDTO(RolDTO rolDTO) {
+        Rol rol = new Rol();
+        rol.setCodigo(rolDTO.getCodigo());
+        rol.setNombre(rolDTO.getNombre());
+        rol.setDescripcion(rolDTO.getDescripcion());
+        rol.setActivo(rolDTO.isActivo());
+        return rol;
+    }
 
 	@Override
 	public int hashCode() {
@@ -74,7 +78,23 @@ public class Rol {
 
 	@Override
 	public String toString() {
-		return "Rol [codigo=" + codigo + ", nombre=" + nombre + ", activo=" + activo + "]";
+		return "Rol [codigo=" + codigo + ", nombre=" + nombre + ", activo=" + "]";
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+	public boolean isActivo() {
+		return activo;
+	}
+
+	public void setActivo(boolean activo) {
+		this.activo = activo;
 	}
 
 }

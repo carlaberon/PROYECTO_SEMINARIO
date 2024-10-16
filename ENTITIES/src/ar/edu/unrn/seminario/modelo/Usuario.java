@@ -1,21 +1,35 @@
+
 package ar.edu.unrn.seminario.modelo;
 
-public class Usuario {
+import ar.edu.unrn.seminario.exception.StateChangeException;
+
+public class Usuario{
 	private String usuario;
 	private String contrasena;
 	private String nombre;
 	private String email;
 	private Rol rol;
-	private boolean activo;
+	private Boolean activo;
 
-	public Usuario(String usuario, String contrasena, String nombre, String email, Rol rol) {
+
+	public Usuario(String usuario, String contrasena, String nombre, String email, Rol rol, Boolean activo) {
 
 		this.usuario = usuario;
 		this.contrasena = contrasena;
 		this.nombre = nombre;
 		this.email = email;
 		this.rol = rol;
+		this.activo = activo;
 	}
+	
+	public Usuario(String username, String password, String nombre, String email, Rol rol) {
+        this.usuario = username;
+        this.contrasena = password;
+        this.nombre = nombre;
+        this.email = email;
+        this.rol = rol;
+        this.activo = true;  // Puedes ajustar este valor según sea necesario
+    }
 
 	public String getUsuario() {
 		return usuario;
@@ -65,15 +79,28 @@ public class Usuario {
 		return isActivo() ? "ACTIVO" : "INACTIVO";
 	}
 
-	public void activar() {
+	public void activar() throws RuntimeException{
+		if (isActivo()) {
+			
+			throw new StateChangeException("El usuario ya está activado");
+			
+		}
 		if (!isActivo())
 			this.activo = true;
+		
 	}
 
-	public void desactivar() {
+	public void desactivar() throws RuntimeException{
+		
+		if (!isActivo()) {
+			throw new StateChangeException("El usuario ya está desactivado");
+		}
+		
 		if (isActivo())
 			this.activo = false;
+	
 	}
+	
 
 	@Override
 	public int hashCode() {
@@ -101,3 +128,4 @@ public class Usuario {
 	}
 
 }
+

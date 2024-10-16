@@ -1,5 +1,7 @@
 package ar.edu.unrn.seminario.dto;
 
+import ar.edu.unrn.seminario.modelo.Rol;
+
 public class UsuarioDTO {
 	private String username;
 	private String password;
@@ -7,18 +9,18 @@ public class UsuarioDTO {
 	private String email;
 	private String rol;
 	private boolean activo;
-	private String estado;
 
-	public UsuarioDTO(String username, String password, String nombre, String email, String rol, boolean activo,
-			String estado) {
+
+	public UsuarioDTO(String username, String password, String nombre, String email, Rol rol1, boolean activo) {
 		super();
 		this.username = username;
 		this.password = password;
 		this.nombre = nombre;
 		this.email = email;
-		this.rol = rol;
+		
+		this.rol = rol1.getNombre();
 		this.activo = activo;
-		this.estado = estado;
+	
 	}
 
 	public String getUsername() {
@@ -69,12 +71,6 @@ public class UsuarioDTO {
 		this.activo = activo;
 	}
 
-	public String getEstado() {
-		return estado;
-	}
 
-	public void setEstado(String estado) {
-		this.estado = estado;
-	}
 
 }

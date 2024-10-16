@@ -19,8 +19,9 @@ import javax.swing.table.DefaultTableModel;
 
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
+import ar.edu.unrn.seminario.exception.StateChangeException;
 
-public class ListadoUsuario extends JFrame {
+public class ListadoUsuario extends JFrame  {
 
 	private JPanel contentPane;
 	private JTable table;
@@ -32,9 +33,10 @@ public class ListadoUsuario extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ListadoUsuario(IApi api) {
+	public ListadoUsuario(IApi api) throws RuntimeException{
 		this.api = api;
 
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -62,46 +64,70 @@ public class ListadoUsuario extends JFrame {
 		List<UsuarioDTO> usuarios = api.obtenerUsuarios();
 		// Agrega los usuarios en el model
 		for (UsuarioDTO u : usuarios) {
-			modelo.addRow(new Object[] { u.getUsername(), u.getNombre(), u.getEmail(), u.getEstado(), u.getRol() });
+			modelo.addRow(new Object[] { u.getUsername(), u.getNombre(), u.getEmail(), u.isActivo(), u.getRol() });
 		}
 
 		table.setModel(modelo);
 
 		scrollPane.setViewportView(table);
-
+		
+			
 		activarButton = new JButton("Activar");
+			
 		activarButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int opcionSeleccionada = JOptionPane.showConfirmDialog(null,
-						"Estas seguro que queres cambiar el estado del Usuario?", "Confirmar cambio de estado.",
-						JOptionPane.YES_NO_OPTION);
-				if (opcionSeleccionada == JOptionPane.YES_OPTION) {
-					String username = (String) table.getModel().getValueAt(table.getSelectedRow(), 0);
+				
+		public void actionPerformed(ActionEvent e) {
+					
+					int opcionSeleccionada = JOptionPane.showConfirmDialog(null,
+							"Estas seguro que queres cambiar el estado del Usuario?", "Confirmar cambio de estado.",
+							JOptionPane.YES_NO_OPTION);
+					
+					if (opcionSeleccionada == JOptionPane.YES_OPTION) {
+						
+						try {
+							String username = (String) table.getModel().getValueAt(table.getSelectedRow(), 0);
 
-					api.activarUsuario(username);
-					actualizarTabla();
+							api.activarUsuario(username);
+							actualizarTabla();
+							
+						}
+						catch (StateChangeException activarException) {
+							
+							JOptionPane.showMessageDialog(null, activarException.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+						}
 
-				}
 
-			}
-
-		});
-
-		desactivarButton = new JButton("Desactivar");
-		desactivarButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int reply = JOptionPane.showConfirmDialog(null,
-						"Estas seguro que queres cambiar el estado del Usuario?", "Confirmar cambio de estado.",
-						JOptionPane.YES_NO_OPTION);
-				if (reply == JOptionPane.YES_OPTION) {
-					String username = (String) table.getModel().getValueAt(table.getSelectedRow(), 0);
-
-					api.desactivarUsuario(username);
-					actualizarTabla();
+					}
 
 				}
-			}
-		});
+
+			});
+
+			desactivarButton = new JButton("Desactivar");
+			desactivarButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+			
+					int reply = JOptionPane.showConfirmDialog(null,
+							"Estas seguro que queres cambiar el estado del Usuario?", "Confirmar cambio de estado.",
+							JOptionPane.YES_NO_OPTION);
+					if (reply == JOptionPane.YES_OPTION) {
+						
+						try {
+							String username = (String) table.getModel().getValueAt(table.getSelectedRow(), 0);
+							api.desactivarUsuario(username);
+							actualizarTabla();
+						}
+						catch (StateChangeException excepcion) {
+							 JOptionPane.showMessageDialog(null, excepcion.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);						}
+					}
+			
+
+
+					}
+				});
+
+
+
 
 		JButton cerrarButton = new JButton("Cerrar");
 		cerrarButton.addActionListener(new ActionListener() {
@@ -139,7 +165,7 @@ public class ListadoUsuario extends JFrame {
 
 		// Agrega los usuarios en el model
 		for (UsuarioDTO u : usuarios) {
-			modelo.addRow(new Object[] { u.getUsername(), u.getNombre(), u.getEmail(), u.getEstado(), u.getRol() });
+			modelo.addRow(new Object[] { u.getUsername(), u.getNombre(), u.getEmail(), u.isActivo(), u.getRol() });
 		}
 
 	}

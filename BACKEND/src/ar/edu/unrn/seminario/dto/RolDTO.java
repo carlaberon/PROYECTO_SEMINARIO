@@ -4,8 +4,9 @@ public class RolDTO {
 
 	private Integer codigo;
 	private String nombre;
+	private String descripcion;
 	private boolean activo;
-
+	
 	public RolDTO(Integer codigo, String nombre) {
 		super();
 		this.codigo = codigo;
@@ -16,7 +17,6 @@ public class RolDTO {
 		super();
 		this.codigo = codigo;
 		this.nombre = nombre;
-		this.activo = activo;
 	}
 
 	public Integer getCodigo() {
@@ -33,6 +33,14 @@ public class RolDTO {
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 
 	public boolean isActivo() {
