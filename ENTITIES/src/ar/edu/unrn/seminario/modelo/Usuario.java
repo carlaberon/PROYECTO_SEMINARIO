@@ -4,7 +4,7 @@ package ar.edu.unrn.seminario.modelo;
 import ar.edu.unrn.seminario.exception.StateChangeException;
 
 public class Usuario{
-	private String usuario;
+	private String username;
 	private String contrasena;
 	private String nombre;
 	private String email;
@@ -14,7 +14,7 @@ public class Usuario{
 
 	public Usuario(String usuario, String contrasena, String nombre, String email, Rol rol, Boolean activo) {
 
-		this.usuario = usuario;
+		this.username = usuario;
 		this.contrasena = contrasena;
 		this.nombre = nombre;
 		this.email = email;
@@ -23,7 +23,7 @@ public class Usuario{
 	}
 	
 	public Usuario(String username, String password, String nombre, String email, Rol rol) {
-        this.usuario = username;
+        this.username = username;
         this.contrasena = password;
         this.nombre = nombre;
         this.email = email;
@@ -31,12 +31,12 @@ public class Usuario{
         this.activo = true;  // Puedes ajustar este valor según sea necesario
     }
 
-	public String getUsuario() {
-		return usuario;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setUsuario(String usuario) {
-		this.usuario = usuario;
+	public void setUsername(String usuario) {
+		this.username = usuario;
 	}
 
 	public String getContrasena() {
@@ -106,7 +106,7 @@ public class Usuario{
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((usuario == null) ? 0 : usuario.hashCode());
+		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		return result;
 	}
 
@@ -119,10 +119,10 @@ public class Usuario{
 		if (getClass() != obj.getClass())
 			return false;
 		Usuario other = (Usuario) obj;
-		if (usuario == null) {
-			if (other.usuario != null)
+		if (username == null) {
+			if (other.username != null)
 				return false;
-		} else if (!usuario.equals(other.usuario))
+		} else if (!username.equals(other.username))
 			return false;
 		return true;
 	}
