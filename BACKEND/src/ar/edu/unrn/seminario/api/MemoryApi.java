@@ -59,7 +59,9 @@ public class MemoryApi implements IApi {
 	    Usuario user1 = new Usuario("HernanPro", "12", "Hernan", "eze@gmail.com", this.buscarRol(2)); // Observador
 	    Usuario user2 = new Usuario("bjgorosito", "1234", "Bruno", "bjgorosito@unrn.edu.ar", this.buscarRol(3)); // Colaborador
 	    Usuario user3 = new Usuario("Tomas", "12345", "Pepe", "admin@unrn.edu.ar", this.buscarRol(1)); // Propietario
-
+	    usuarios.add(user1);
+	    usuarios.add(user2);
+	    usuarios.add(user3);
 	    crearProyecto("Sistema de Gestión de Tareas", user1.getNombre(), true,"Sistema para gestionar tareas en equipo.", "media");
 
 	    LocalDateTime inicio = LocalDateTime.now();
