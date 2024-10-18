@@ -53,32 +53,36 @@ public class MemoryApi implements IApi {
 	
 
 	private void inicializarProyecto() throws NotNullException, DataEmptyException{
+			
+		
 	    // Crear algunos usuarios para asignar a los proyectos
 	    Usuario user1 = new Usuario("HernanPro", "12", "Hernan", "eze@gmail.com", this.buscarRol(2)); // Observador
 	    Usuario user2 = new Usuario("bjgorosito", "1234", "Bruno", "bjgorosito@unrn.edu.ar", this.buscarRol(3)); // Colaborador
 	    Usuario user3 = new Usuario("Tomas", "12345", "Pepe", "admin@unrn.edu.ar", this.buscarRol(1)); // Propietario
 
-	    crearProyecto("Sistema de Gestión de Tareas", user1, true,"Sistema para gestionar tareas en equipo.", "media");
+	    crearProyecto("Sistema de Gestión de Tareas", user1.getNombre(), true,"Sistema para gestionar tareas en equipo.", "media");
 
 	    LocalDateTime inicio = LocalDateTime.now();
-	    Tarea unaTarea = new Tarea("Ordenar tareas","Sistema de Gestión de Tareas","alta", user1.getNombre(), false, "descripcion", inicio, inicio); 
+	    LocalDateTime fin = LocalDateTime.now();
+	    Tarea unaTarea = new Tarea("Ordenar tareas","Sistema de Gestión de Tareas","alta", user1.getNombre(), false, "descripcion", inicio, fin); 
 	    añadirTareaAProyecto("Sistema de Gestión de Tareas", unaTarea);
 	    
-	    crearProyecto("Aplicación de votos", user2, false, "Aplicación para contar los votos de la municipalidad","alta");
+	    crearProyecto("Aplicación de votos", user2.getNombre(), false, "Aplicación para contar los votos de la municipalidad","alta");
 	    LocalDateTime inicio2 = LocalDateTime.now();
 	    Tarea otraTarea = new Tarea("Contar votos","Aplicación de votos","alta", user1.getNombre(), false, "Contar los votos disponibles", inicio2, inicio2);
 	    añadirTareaAProyecto("Aplicación de votos", otraTarea);
 	    
-	    crearProyecto("Gestion de eventos", user3, true, "Proyecto para desarrollar gestion de los eventos de ","baja");
+	    crearProyecto("Gestion de eventos", user3.getNombre(), true, "Proyecto para desarrollar gestion de los eventos de ","baja");
 	    LocalDateTime inicio3 = LocalDateTime.now();
 	    Tarea tarea_ = new Tarea("Ordenar eventos","Gestion de eventos","alta", user1.getNombre(), false, "Ordenar eventos por prioridad", inicio2, inicio3);
 	    añadirTareaAProyecto("Gestion de eventos", tarea_);
 	    
 	    
-	    crearProyecto("Parciales", user1, false, "Informacion sobre como completar la informacion de los parciales de la carrera","media");
+	    crearProyecto("Parciales", user1.getNombre(), false, "Informacion sobre como completar la informacion de los parciales de la carrera","media");
 	    LocalDateTime inicio4 = LocalDateTime.now();
 	    Tarea tarea_1 = new Tarea("Denifir plan de estudio","Parciales","alta", user1.getNombre(), false, "Definir plan de estudio", inicio2, inicio4);
 	    añadirTareaAProyecto("Parciales", tarea_1);
+		 
 
 
 	}
@@ -300,7 +304,7 @@ public class MemoryApi implements IApi {
 
 	@Override
 	
-	public void crearProyecto(String nombre, Usuario usuarioPropietario, boolean estado, String descripcion, String prioridad) throws NotNullException, DataEmptyException {
+	public void crearProyecto(String nombre, String usuarioPropietario , boolean estado, String descripcion, String prioridad) throws NotNullException, DataEmptyException {
 	    // Validar que los campos no sean nulos
 	    if (esDatoNulo(nombre)) {
 	        throw new NotNullException("nombre");
@@ -322,9 +326,11 @@ public class MemoryApi implements IApi {
 	    if (esDatoVacio(prioridad)) {
 	        throw new DataEmptyException("prioridad");
 	    }
+	    //PENDIENTE: CHEQUEAR QUE NO SEAN NULL, EXCEPTION
+	    Usuario propietario = buscarUsuario(usuarioPropietario);
+	    
 		// Crear un nuevo proyecto con los parámetros recibidos
-	    Proyecto nuevoProyecto = new Proyecto(nombre, usuarioPropietario, estado, descripcion, prioridad);
-
+	    Proyecto nuevoProyecto = new Proyecto(nombre, propietario, estado, descripcion, prioridad);
 	    
 	    // Agregar el proyecto a la colección de proyectos
 	    this.proyectos.add(nuevoProyecto);
@@ -375,12 +381,6 @@ public class MemoryApi implements IApi {
 		return dato == null;
 	}
 
-
-	@Override
-	public void crearProyecto(String nombreProyecto, Usuario usuarioPropietario, boolean b, String string) {
-		// TODO Auto-generated method stub
-		
-	}
 	public int obtenerValorPrioridad(String prioridad) {
 	    switch (prioridad) {
 	        case "alta":

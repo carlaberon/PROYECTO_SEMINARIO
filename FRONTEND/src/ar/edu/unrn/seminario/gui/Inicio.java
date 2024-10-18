@@ -22,11 +22,11 @@ public class Inicio extends JFrame {
 
     private JFrame frame;
     private IApi api;
-    private Usuario usuarioActual;
     private JPanel proyectosListPanel;
-    public Inicio(IApi api, Usuario usuarioActual) {
+    
+    public Inicio(IApi api) {
     	this.api = api;
-    	this.usuarioActual = usuarioActual;
+    
         frame = new JFrame("LabProject");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 600);
@@ -42,7 +42,7 @@ public class Inicio extends JFrame {
         menuBar.add(projectName);
         menuBar.add(Box.createHorizontalGlue());
 
-        JMenu accountMenu = new JMenu(usuarioActual.getNombre());
+        JMenu accountMenu = new JMenu("OBTENER NOMBRE DEL USUARIO ACTUAL"); //pendiente
         accountMenu.setForeground(Color.WHITE);
         accountMenu.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 
@@ -137,7 +137,7 @@ public class Inicio extends JFrame {
         JButton btnNuevoProyecto = new JButton("Proyecto +");
         btnNuevoProyecto.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		CrearProyecto crearProyecto = new CrearProyecto(api, usuarioActual, Inicio.this);
+        		CrearProyecto crearProyecto = new CrearProyecto(api, Inicio.this);
         		crearProyecto.setVisible(true);
         	}
         });
@@ -179,14 +179,11 @@ public class Inicio extends JFrame {
         ventanaResumen.setVisible(true); // Hacer visible la ventana de resumen
     }
 
-    public static void main(String[] args) throws NotNullException, DataEmptyException {
+    public static void main(String[] args){
     	IApi api = new MemoryApi();
-    	
-    	RolDTO rolDTO = new RolDTO(1, "PROPIETARIO", true);
-    	Rol rol = new Rol(rolDTO.getCodigo(), rolDTO.getNombre(), rolDTO.isActivo());
-    	
-        Usuario usuario = new Usuario("admin", "1234", "Admin", "admin@unrn.edu.ar", rol, true); // Crear el usuario
-        new Inicio(api, usuario);
+    
+    
+        new Inicio(api);
     }
     
     public void actualizarProyectos() {
