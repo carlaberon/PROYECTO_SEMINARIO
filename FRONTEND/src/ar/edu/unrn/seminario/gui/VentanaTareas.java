@@ -38,8 +38,7 @@ import ar.edu.unrn.seminario.dto.TareaDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.NotNullException;
-import ar.edu.unrn.seminario.modelo.Tarea;
-import ar.edu.unrn.seminario.modelo.Usuario;
+
 
 public class VentanaTareas extends JFrame {
 
@@ -49,14 +48,14 @@ public class VentanaTareas extends JFrame {
 	private IApi api;
 	JButton botonModificar;
 	JButton botonEliminar;
-	private Usuario usuarioActual;
+
 	
 
-    public VentanaTareas(IApi api,String nombreProyecto, Usuario usuarioActual) throws RuntimeException{
+    public VentanaTareas(IApi api) throws RuntimeException{
 
     	this.api = api; 
-    	this.usuarioActual = usuarioActual;
-    	setTitle(nombreProyecto);
+   
+    	setTitle("obtener nombre del proyecto");
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         setBounds(100, 100, 900, 600);
         
@@ -69,7 +68,7 @@ public class VentanaTareas extends JFrame {
         menuBar.setBackground(new Color(138, 102, 204));
         menuBar.setPreferredSize(new Dimension(100, 50));
 
-        JMenu menuProyecto = new JMenu(nombreProyecto);
+        JMenu menuProyecto = new JMenu("nombre del proyecto");
         menuProyecto.setForeground(Color.WHITE);
         menuProyecto.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 
@@ -91,7 +90,7 @@ public class VentanaTareas extends JFrame {
         centerPanel.add(appName);
         menuBar.add(centerPanel);
 
-        JMenu accountMenu = new JMenu(usuarioActual.getNombre());
+        JMenu accountMenu = new JMenu("nombre del usuario");
         accountMenu.setForeground(Color.WHITE);
         accountMenu.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 
@@ -186,7 +185,8 @@ public class VentanaTareas extends JFrame {
 		
 		try {
 			
-		List<TareaDTO> tareas = api.obtenerTareasPorProyecto(nombreProyecto); // Filtra las tareas por proyecto
+		//falta obtener el nombre del proyecto
+		List<TareaDTO> tareas = api.obtenerTareasPorProyecto("aca va el nombre del proyecto"); // Filtra las tareas por proyecto
 			
 		modelo.setRowCount(0); // Limpiar el modelo antes de agregar nuevas filas
 		
@@ -227,7 +227,7 @@ public class VentanaTareas extends JFrame {
         JButton btnTarea = createButton("Tarea +", new Color(138, 102, 204));
         btnTarea.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				CrearTarea crearTarea = new CrearTarea(api, VentanaTareas.this);
+				CrearTarea crearTarea = new CrearTarea(api);
 				crearTarea.setLocationRelativeTo(null);
 				crearTarea.setVisible(true);
 				actualizarTabla();
