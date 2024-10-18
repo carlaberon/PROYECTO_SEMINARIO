@@ -6,8 +6,6 @@ import javax.swing.border.EmptyBorder;
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
-
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,11 +14,14 @@ import ar.edu.unrn.seminario.api.MemoryApi;
 public class VentanaResumen extends JFrame {
 
     private JPanel contentPane;
+
     private UsuarioDTO usuarioActual; //obtener usuario actual por medio de la api
     
     private ProyectoDTO unproyecto; //obtener proyecto por medio de la api
     private IApi api;
+
     public VentanaResumen(IApi api) {
+
 
     	
     	this.api = api;

@@ -29,7 +29,7 @@ public class ListaProyectos extends JFrame {
 	private Inicio ventanaInicio;
 	private JButton eliminarProyecto;
 	
-    public ListaProyectos(IApi api, Inicio inicio) {
+    public ListaProyectos(IApi api) {
     	this.api = api;
     	this.ventanaInicio = inicio;
         // Configuración básica de la ventana

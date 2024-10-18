@@ -51,7 +51,9 @@ public class VentanaTareas extends JFrame {
 
 	
 
+
     public VentanaTareas(IApi api) throws RuntimeException{
+
 
     	this.api = api; 
    
