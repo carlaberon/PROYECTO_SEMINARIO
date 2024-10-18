@@ -37,6 +37,7 @@ import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.TareaDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
+import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
 
 
@@ -148,7 +149,7 @@ public class VentanaTareas extends JFrame {
         table = new JTable() {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false; // Hace que las celdas no sean editables
+                return false; // las celdas no son editables
             }
         };
 
@@ -338,6 +339,12 @@ public class VentanaTareas extends JFrame {
 		        t.getFin()
 		    });
 		}
+	}
+	
+	public static void main (String [] args) throws NotNullException, DataEmptyException, InvalidDateException {
+		IApi api = new MemoryApi();
+		VentanaTareas nuevaVentana = new VentanaTareas(api);
+		nuevaVentana.setVisible(true);
 	}
 		
 	

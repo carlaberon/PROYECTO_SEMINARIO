@@ -131,12 +131,12 @@ public class CrearTarea extends JFrame {
         
         JDateChooser dateChooserInicio = new JDateChooser();
         dateChooserInicio.setBounds(190, 183, 160, 19);
-        dateChooserInicio.setMinSelectableDate(new Date());
+       
         contentPane.add(dateChooserInicio);
         
         JDateChooser dateChooserFin = new JDateChooser();
         dateChooserFin.setBounds(190, 232, 160, 19);
-        dateChooserFin.setMinSelectableDate(new Date());
+        
         contentPane.add(dateChooserFin);
 
 
@@ -166,7 +166,7 @@ public class CrearTarea extends JFrame {
                         
                    api.registrarTarea(nombreTarea, proyectoSeleccionado, prioridadTarea, usuario.getUsername(), false, descripcionTarea, fechaInicioLocalDateTime, fechaFinLocalDateTime);
                 		
-                   ((VentanaTareas) ventanaTareas).actualizarTabla();
+                  //((VentanaTareas) ventanaTareas).actualizarTabla(); NULLPOINTER//ACTUALIZAR LOS DATOS EN LA TABLA 
                         
                    JOptionPane.showMessageDialog(null, "Tarea creada con éxito!", "Info", JOptionPane.INFORMATION_MESSAGE);
                    setVisible(false);
