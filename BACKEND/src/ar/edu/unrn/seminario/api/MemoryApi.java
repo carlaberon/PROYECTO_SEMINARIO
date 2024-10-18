@@ -45,7 +45,7 @@ public class MemoryApi implements IApi {
 		this.roles.add(new Rol(1, "PROPIETARIO"));
 		this.roles.add(new Rol(2, "OBSERVADOR"));
 		this.roles.add(new Rol(3, "COLABORADOR"));
-		inicializarUsuarios();
+//		inicializarUsuarios();
 		inicializarProyecto();
 
 		
@@ -59,26 +59,29 @@ public class MemoryApi implements IApi {
 	    Usuario user1 = new Usuario("HernanPro", "12", "Hernan", "eze@gmail.com", this.buscarRol(2)); // Observador
 	    Usuario user2 = new Usuario("bjgorosito", "1234", "Bruno", "bjgorosito@unrn.edu.ar", this.buscarRol(3)); // Colaborador
 	    Usuario user3 = new Usuario("Tomas", "12345", "Pepe", "admin@unrn.edu.ar", this.buscarRol(1)); // Propietario
+	    usuarios.add(user1);
+	    usuarios.add(user2);
+	    usuarios.add(user3);
 
-	    crearProyecto("Sistema de Gestión de Tareas", user1.getNombre(), true,"Sistema para gestionar tareas en equipo.", "media");
+	    crearProyecto("Sistema de Gestión de Tareas", user1.getUsername(), true,"Sistema para gestionar tareas en equipo.", "media");
 
 	    LocalDateTime inicio = LocalDateTime.now();
 	    LocalDateTime fin = LocalDateTime.now();
 	    Tarea unaTarea = new Tarea("Ordenar tareas","Sistema de Gestión de Tareas","alta", user1.getNombre(), false, "descripcion", inicio, fin); 
 	    añadirTareaAProyecto("Sistema de Gestión de Tareas", unaTarea);
 	    
-	    crearProyecto("Aplicación de votos", user2.getNombre(), false, "Aplicación para contar los votos de la municipalidad","alta");
+	    crearProyecto("Aplicación de votos", user2.getUsername(), false, "Aplicación para contar los votos de la municipalidad","alta");
 	    LocalDateTime inicio2 = LocalDateTime.now();
 	    Tarea otraTarea = new Tarea("Contar votos","Aplicación de votos","alta", user1.getNombre(), false, "Contar los votos disponibles", inicio2, inicio2);
 	    añadirTareaAProyecto("Aplicación de votos", otraTarea);
 	    
-	    crearProyecto("Gestion de eventos", user3.getNombre(), true, "Proyecto para desarrollar gestion de los eventos de ","baja");
+	    crearProyecto("Gestion de eventos", user3.getUsername(), true, "Proyecto para desarrollar gestion de los eventos de ","baja");
 	    LocalDateTime inicio3 = LocalDateTime.now();
 	    Tarea tarea_ = new Tarea("Ordenar eventos","Gestion de eventos","alta", user1.getNombre(), false, "Ordenar eventos por prioridad", inicio2, inicio3);
 	    añadirTareaAProyecto("Gestion de eventos", tarea_);
 	    
 	    
-	    crearProyecto("Parciales", user1.getNombre(), false, "Informacion sobre como completar la informacion de los parciales de la carrera","media");
+	    crearProyecto("Parciales", user1.getUsername(), false, "Informacion sobre como completar la informacion de los parciales de la carrera","media");
 	    LocalDateTime inicio4 = LocalDateTime.now();
 	    Tarea tarea_1 = new Tarea("Denifir plan de estudio","Parciales","alta", user1.getNombre(), false, "Definir plan de estudio", inicio2, inicio4);
 	    añadirTareaAProyecto("Parciales", tarea_1);
@@ -88,12 +91,12 @@ public class MemoryApi implements IApi {
 	}
 
 
-	private void inicializarUsuarios() {
-		registrarUsuario("admin", "1234", "admin@unrn.edu.ar", "Admin", 1);
-		registrarUsuario("ldifabio", "4", "ldifabio@unrn.edu.ar", "Lucas", 2);
-		registrarUsuario("bjgorosito", "1234", "bjgorosito@unrn.edu.ar", "Bruno", 3);
-
-	}
+//	private void inicializarUsuarios() {
+//		registrarUsuario("admin", "1234", "admin@unrn.edu.ar", "Admin", 1);
+//		registrarUsuario("ldifabio", "4", "ldifabio@unrn.edu.ar", "Lucas", 2);
+//		registrarUsuario("bjgorosito", "1234", "bjgorosito@unrn.edu.ar", "Bruno", 3);
+//
+//	}
 
 	@Override
 	public void registrarUsuario(String username, String password, String email, String nombre, Integer rol) {
@@ -110,7 +113,7 @@ public class MemoryApi implements IApi {
 	public List<UsuarioDTO> obtenerUsuarios() {
 		List<UsuarioDTO> dtos = new ArrayList<>();
 		for (Usuario u : this.usuarios) {
-			dtos.add(new UsuarioDTO(u.getUsuario(),u.getContrasena(), u.getNombre(), u.getEmail(), u.getRol(), u.isActivo()));
+			dtos.add(new UsuarioDTO(u.getUsername(),u.getContrasena(), u.getNombre(), u.getEmail(), convertirEnRolDTO(u.getRol()), u.isActivo()));
 		}
 		return dtos;
 	}
@@ -118,9 +121,9 @@ public class MemoryApi implements IApi {
 	@Override
 	public UsuarioDTO obtenerUsuario(String username) {
 		for(Usuario u: this.usuarios) {
-			if (u.getUsuario().equals(username)) {
+			if (u.getUsername().equals(username)) {
 				
-				UsuarioDTO user = new UsuarioDTO(u.getUsuario(), u.getContrasena(), u.getNombre(), u.getEmail(), u.getRol(), u.isActivo());
+				UsuarioDTO user = new UsuarioDTO(u.getUsername(), u.getContrasena(), u.getNombre(), u.getEmail(), convertirEnRolDTO(u.getRol()), u.isActivo());
 				return user;
 			}
 		}
@@ -201,7 +204,7 @@ public class MemoryApi implements IApi {
 
 	private Usuario buscarUsuario(String usuario) {
 		for (Usuario user : usuarios) {
-			if (user.getUsuario().equals(usuario))
+			if (user.getUsername().equals(usuario))
 				return user;
 		}
 		return null;
@@ -272,7 +275,7 @@ public class MemoryApi implements IApi {
     public List<ProyectoDTO> obtenerProyectos() {
         List<ProyectoDTO> dtos = new ArrayList<>();
         for (Proyecto p : this.proyectos) {
-            dtos.add(new ProyectoDTO(p.getNombre(), new UsuarioDTO(p.getUsuarioPropietario().getUsuario(), p.getUsuarioPropietario().getContrasena(), p.getUsuarioPropietario().getNombre(), p.getUsuarioPropietario().getEmail(), p.getUsuarioPropietario().getRol(), p.getUsuarioPropietario().isActivo()), p.getEstado(), p.getPrioridad1(), p.getDescripcion()));
+            dtos.add(new ProyectoDTO(p.getNombre(), convertirEnUsuarioDTO(p.getUsuarioPropietario()), p.getEstado(), p.getPrioridad1(), p.getDescripcion()));
         }
         return dtos;
     }
@@ -395,6 +398,16 @@ public class MemoryApi implements IApi {
 	    }
 	}
 
+	
+	private RolDTO convertirEnRolDTO(Rol rol) {
+		RolDTO rolDto = new RolDTO(rol.getCodigo(), rol.getNombre(), rol.isActivo());
+		return null;
+	}
+	
+	private UsuarioDTO convertirEnUsuarioDTO(Usuario usuario) {
+		UsuarioDTO usuarioDto = new UsuarioDTO(usuario.getUsername(), usuario.getContrasena(), usuario.getNombre(), usuario.getEmail(), convertirEnRolDTO(usuario.getRol()), usuario.isActivo());
+		return usuarioDto;
+	}
 
 }
 
