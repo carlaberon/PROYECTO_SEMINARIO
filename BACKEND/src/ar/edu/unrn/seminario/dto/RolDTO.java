@@ -1,5 +1,6 @@
 package ar.edu.unrn.seminario.dto;
 
+
 public class RolDTO {
 
 	private Integer codigo;

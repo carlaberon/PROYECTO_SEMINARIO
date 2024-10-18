@@ -31,7 +31,7 @@ public class Proyecto {
     }
 
 
-    public Proyecto(String nombre, Usuario usuarioPropietario, boolean estado, String descripcion, String prioridad) throws NotNullException, DataEmptyException{
+    public Proyecto(String nombre, Usuario usuarioPropietario, boolean estado, String descripcion, String prioridad){
         this.nombre = nombre; 
         this.usuarioPropietario = usuarioPropietario;
         this.estado = estado;
@@ -56,6 +56,7 @@ public class Proyecto {
     }
     
     public Usuario getUsuarioPropietario() {
+    	
         return usuarioPropietario;
     }
     

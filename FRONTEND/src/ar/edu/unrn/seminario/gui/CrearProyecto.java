@@ -19,7 +19,7 @@ import javax.swing.border.EmptyBorder;
 
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.ProyectoDTO;
-import ar.edu.unrn.seminario.modelo.Usuario;
+import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 
@@ -38,16 +38,15 @@ public class CrearProyecto extends JFrame {
 	private JComboBox<String> proyectoComboBox;
 	private IApi api;
 	private List<ProyectoDTO> proyectos; //crear el proyectoDTO, crear el proyecto
-	private Usuario usuarioPropietario;
+	private UsuarioDTO usuarioPropietario;
 	private JTextField descripcionTextField;
 	private Inicio ventanaInicio;
 	
 	/**
 	 * Create the frame.
 	 */
-	public CrearProyecto(IApi api, Usuario usuarioPropietario, Inicio ventanaInicio) {
+	public CrearProyecto(IApi api, Inicio ventanaInicio) {
 		this.api = api;
-		this.usuarioPropietario = usuarioPropietario;
 		this.proyectos = api.obtenerProyectos(); // Se obtienen los proyectos existentes
 		this.ventanaInicio = ventanaInicio;
 		
