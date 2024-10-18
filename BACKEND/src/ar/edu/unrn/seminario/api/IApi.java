@@ -1,6 +1,5 @@
 package ar.edu.unrn.seminario.api;
 
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -42,7 +41,7 @@ public interface IApi {
 
 	void desactivarUsuario(String username); // recuperar el objeto Usuario, implementar el comportamiento de estado.
 	
-	void registrarTarea(String name, String project, String priority, String user, boolean estado, String descripcion, LocalDateTime inicio, LocalDateTime fin)throws DataEmptyException, NotNullException;
+	void registrarTarea(String name, String project, String priority, Usuario user, boolean estado, String descripcion, LocalDateTime inicio, LocalDateTime fin)throws DataEmptyException, NotNullException;
 	
 	List<TareaDTO> obtenerTareas();
 	
@@ -73,7 +72,5 @@ public interface IApi {
 	void crearProyecto(String nombre, String usuarioPropietario, boolean estado, String descripcion, String prioridad)
 			throws NotNullException, DataEmptyException;
 	
-	
-
 	
 }

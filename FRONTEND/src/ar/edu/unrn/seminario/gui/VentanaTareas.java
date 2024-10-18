@@ -52,7 +52,7 @@ public class VentanaTareas extends JFrame {
 	private Usuario usuarioActual;
 	
 
-    public VentanaTareas(IApi api,String nombreProyecto, Usuario usuarioActual) throws RuntimeException{
+    public VentanaTareas(IApi api,String nombreProyecto, UsuarioDTO usuarioActual) throws RuntimeException{
 
     	this.api = api; 
     	this.usuarioActual = usuarioActual;
