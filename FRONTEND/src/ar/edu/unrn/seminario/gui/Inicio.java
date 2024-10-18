@@ -22,10 +22,12 @@ public class Inicio extends JFrame {
     private JFrame frame;
     private IApi api;
     private JPanel proyectosListPanel;
+    private UsuarioDTO usuarioActual; //obtener el usuario solicitando a la api
     
     public Inicio(IApi api) {
     	this.api = api;
     
+    	
         frame = new JFrame("LabProject");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 600);
@@ -178,6 +180,7 @@ public class Inicio extends JFrame {
         ventanaResumen.setVisible(true); // Hacer visible la ventana de resumen
     }
 
+
     public static void main(String[] args) throws NotNullException, DataEmptyException {
     	
     	IApi api = new MemoryApi();
@@ -185,6 +188,7 @@ public class Inicio extends JFrame {
     
         new Inicio(api);
     }
+
     
     public void actualizarProyectos() {
         proyectosListPanel.removeAll(); // Limpiar el panel actual
@@ -214,7 +218,6 @@ public class Inicio extends JFrame {
         proyectosListPanel.revalidate(); // Actualizar el panel
         proyectosListPanel.repaint();    // Repintar el panel
     }
-
 
 
 }
