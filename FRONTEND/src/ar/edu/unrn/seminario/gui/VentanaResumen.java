@@ -19,7 +19,7 @@ public class VentanaResumen extends JFrame {
     
     private ProyectoDTO unproyecto;
     private IApi api;
-    public VentanaResumen(IApi api, ProyectoDTO proyecto, Usuario usuarioActual) {
+    public VentanaResumen(IApi api) {
 
     	this.unproyecto = proyecto; 
     	this.api = api;

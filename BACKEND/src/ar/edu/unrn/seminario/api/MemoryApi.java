@@ -207,9 +207,10 @@ public class MemoryApi implements IApi {
 		return null;
 	}
 
-	public void registrarTarea(String name, String project, String priority, Usuario user, boolean estado, String descripcion, LocalDateTime inicio, LocalDateTime fin) throws DataEmptyException, NotNullException {
-	    Tarea tarea = new Tarea(name, project, priority, user.getNombre(), estado, descripcion, inicio, fin);
+	public void registrarTarea(String name, String project, String priority, String user, boolean estado, String descripcion, LocalDateTime inicio, LocalDateTime fin) throws DataEmptyException, NotNullException  {
+	    Tarea tarea = new Tarea(name, project, priority, user, estado, descripcion, inicio, fin);
 	    this.tareas.add(tarea); // Agrega la tarea a la lista de tareas
+	    añadirTareaAProyecto(project, tarea);
 	}
 	
 	public List<TareaDTO> obtenerTareas() {
@@ -393,5 +394,7 @@ public class MemoryApi implements IApi {
 	            return 0; // En caso de prioridad desconocida
 	    }
 	}
+
+
 }
 

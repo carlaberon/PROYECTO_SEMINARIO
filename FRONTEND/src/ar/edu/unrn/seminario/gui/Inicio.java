@@ -8,8 +8,7 @@ import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.NotNullException;
-import ar.edu.unrn.seminario.modelo.Rol;
-import ar.edu.unrn.seminario.modelo.Usuario;
+
 import ar.edu.unrn.seminario.dto.RolDTO;
 
 import java.awt.*;
@@ -175,11 +174,12 @@ public class Inicio extends JFrame {
     }
 
     private void abrirVentanaResumen(ProyectoDTO proyecto) {
-        VentanaResumen ventanaResumen = new VentanaResumen(api, proyecto, usuarioActual); // Crear una instancia de VentanaResumen
+        VentanaResumen ventanaResumen = new VentanaResumen(api); // Crear una instancia de VentanaResumen
         ventanaResumen.setVisible(true); // Hacer visible la ventana de resumen
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws NotNullException, DataEmptyException {
+    	
     	IApi api = new MemoryApi();
     
     

@@ -56,6 +56,7 @@ public class Proyecto {
     }
     
     public Usuario getUsuarioPropietario() {
+    	
         return usuarioPropietario;
     }
     
