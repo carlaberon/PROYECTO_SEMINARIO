@@ -8,7 +8,7 @@ import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.NotNullException;
-import ar.edu.unrn.seminario.modelo.Usuario;
+
 import ar.edu.unrn.seminario.dto.RolDTO;
 
 import java.awt.*;
@@ -22,12 +22,10 @@ public class Inicio extends JFrame {
     private JFrame frame;
     private IApi api;
     private JPanel proyectosListPanel;
-    private UsuarioDTO usuarioActual;
     
-    public Inicio(IApi api, UsuarioDTO usuarioActual) {
+    public Inicio(IApi api) {
     	this.api = api;
-    	this.usuarioActual = usuarioActual;
-    	
+    
         frame = new JFrame("LabProject");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 600);
@@ -176,10 +174,17 @@ public class Inicio extends JFrame {
     }
 
     private void abrirVentanaResumen(ProyectoDTO proyecto) {
-        VentanaResumen ventanaResumen = new VentanaResumen(api, proyecto, usuarioActual); // Crear una instancia de VentanaResumen
+        VentanaResumen ventanaResumen = new VentanaResumen(api); // Crear una instancia de VentanaResumen
         ventanaResumen.setVisible(true); // Hacer visible la ventana de resumen
     }
 
+    public static void main(String[] args) throws NotNullException, DataEmptyException {
+    	
+    	IApi api = new MemoryApi();
+    
+    
+        new Inicio(api);
+    }
     
     public void actualizarProyectos() {
         proyectosListPanel.removeAll(); // Limpiar el panel actual
@@ -212,11 +217,4 @@ public class Inicio extends JFrame {
 
 
 
-    public static void main(String[] args) throws NotNullException, DataEmptyException{
-    	IApi api = new MemoryApi();
-    	RolDTO rol = new RolDTO(1, "Propietario", true);
-    	UsuarioDTO usuario = new UsuarioDTO("admin", "1234", "Admin", "admin@unrn.edu.ar", rol, true);
-    	
-    	new Inicio(api,usuario);
-    }
 }

@@ -5,7 +5,6 @@ import javax.swing.border.EmptyBorder;
 
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.ProyectoDTO;
-import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.modelo.Usuario;
 
 import java.awt.*;
@@ -16,11 +15,11 @@ import ar.edu.unrn.seminario.api.MemoryApi;
 public class VentanaResumen extends JFrame {
 
     private JPanel contentPane;
-    private UsuarioDTO usuarioActual;
+    private Usuario usuarioActual;
     
     private ProyectoDTO unproyecto;
     private IApi api;
-    public VentanaResumen(IApi api, ProyectoDTO proyecto, UsuarioDTO usuarioActual) {
+    public VentanaResumen(IApi api) {
 
     	this.unproyecto = proyecto; 
     	this.api = api;

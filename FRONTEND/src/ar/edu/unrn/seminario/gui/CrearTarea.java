@@ -17,14 +17,12 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import ar.edu.unrn.seminario.api.IApi;
+import ar.edu.unrn.seminario.api.MemoryApi;
 import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.TareaDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.NotNullException;
-import ar.edu.unrn.seminario.modelo.Rol;
-import ar.edu.unrn.seminario.modelo.Tarea;
-import ar.edu.unrn.seminario.modelo.Usuario;
 
 import javax.swing.JTextArea;
 import javax.swing.JSpinner;
@@ -45,9 +43,10 @@ public class CrearTarea extends JFrame {
 
     private VentanaTareas ventanaTareas;
 
-    public CrearTarea(IApi api, JFrame ventanaTareas) {
+    public CrearTarea(IApi api) {
 
         this.ventanaTareas = (VentanaTareas) ventanaTareas;
+        
         this.usuarios = api.obtenerUsuarios();
 
         this.proyectos = api.obtenerProyectos();// con esto le envio directamente los proyectos creados
@@ -164,18 +163,8 @@ public class CrearTarea extends JFrame {
                                 .toLocalDateTime();
                         
                      // Crear una nueva tarea
-                        Tarea tarea = new Tarea(
-                                nombreTarea, 
-                                proyectoSeleccionado, 
-                                prioridadTarea, 
-                                usuario.getNombre(),  
-                                false,   
-                                descripcionTarea, 
-                                fechaInicioLocalDateTime, 
-                                fechaFinLocalDateTime
-                            );
-                		
-                        api.añadirTareaAProyecto(proyectoSeleccionado, tarea);
+                        
+                       api.registrarTarea(nombreTarea, proyectoSeleccionado, prioridadTarea, usuario.getUsername(), false, descripcionTarea, fechaInicioLocalDateTime, fechaFinLocalDateTime);
                 		
                         ((VentanaTareas) ventanaTareas).actualizarTabla();
                         
@@ -207,6 +196,16 @@ public class CrearTarea extends JFrame {
                 dispose();
             }
         });
+    }
+    
+    public static void main (String []args) throws NotNullException, DataEmptyException {
+    	
+    	IApi api= new MemoryApi();
+    	
+    	CrearTarea crearTarea = new CrearTarea(api);
+    	
+    	crearTarea.setVisible(true);
+    	
     }
 
 
