@@ -3,6 +3,7 @@ package ar.edu.unrn.seminario.modelo;
 import java.time.LocalDateTime;
 
 import ar.edu.unrn.seminario.exception.DataEmptyException;
+import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
 
 public class Tarea {
@@ -13,10 +14,11 @@ public class Tarea {
     private String usuario;
     private boolean estado; // FINALIZADO: TRUE, NOFINALIZADO: FALSE
     private String descripcion;
-    private LocalDateTime inicio; 
-    private LocalDateTime fin;
-
-    public Tarea(String nombretarea, String proyecto, String prioridad, String user1, boolean estado, String descripcion, LocalDateTime inicio, LocalDateTime fin) throws DataEmptyException, NotNullException {
+    private LocalDateTime fechaInicio; 
+    private LocalDateTime fechaFin;
+    private LocalDateTime fechaCreacion;
+    
+    public Tarea(String nombretarea, String proyecto, String prioridad, String user1, boolean estado, String descripcion, LocalDateTime inicio, LocalDateTime fin) throws DataEmptyException, NotNullException, InvalidDateException {
         
     	if (esDatoNulo(nombretarea))
 			throw new NotNullException("nombre");
@@ -39,16 +41,21 @@ public class Tarea {
 			throw new DataEmptyException("usuario asignado");
 		if (esDatoVacio(descripcion))
 			throw new DataEmptyException("descripcion");
+		
+		
+		if (fin.isBefore(inicio)) {
+			throw new InvalidDateException("La fecha de inicio debe ser anterior a la fecha de finalizacion");
+		}
+	
 
-    	
     	this.nombre = nombretarea;
         this.proyecto = proyecto;
         this.prioridad = prioridad;
         this.usuario = user1;
         this.estado = estado;
         this.descripcion = descripcion; 
-        this.inicio = inicio;
-        this.fin = fin; 
+        this.fechaInicio = inicio;
+        this.fechaFin = fin; 
     }
 
     // Getters
@@ -87,11 +94,11 @@ public class Tarea {
     }
 
     public LocalDateTime getInicio() {
-        return inicio;
+        return fechaInicio;
     }
 
     public LocalDateTime getFin() {
-        return fin;
+        return fechaInicio;
     }
     
     public String getPrioridad() {
@@ -124,11 +131,11 @@ public class Tarea {
     }
 
     public void setInicio(LocalDateTime inicio) {
-        this.inicio = inicio;
+        this.fechaInicio = inicio;
     }
 
     public void setFin(LocalDateTime fin) {
-        this.fin = fin;
+        this.fechaFin = fin;
     }
 
     @Override
