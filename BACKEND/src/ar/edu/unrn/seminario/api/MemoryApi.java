@@ -31,7 +31,7 @@ public class MemoryApi implements IApi {
 	private Set<Rol> roles = new HashSet<>();
 	private Set<Usuario> usuarios = new HashSet<>();
 	private List<Tarea> tareas = new ArrayList<>();
-	private Set<Proyecto> proyectos = new HashSet<>();
+	private Set<ProyectoDTO> proyectos = new HashSet<>();
 	private Set<Evento> eventos = new HashSet<>();
 	//private Set<Plan> planeSet = new HashSet<>();
 	private List<TareaDTO> tareasDTO;
@@ -266,8 +266,8 @@ public class MemoryApi implements IApi {
     @Override
     public List<ProyectoDTO> obtenerProyectos() {
         List<ProyectoDTO> dtos = new ArrayList<>();
-        for (Proyecto p : this.proyectos) {
-            dtos.add(new ProyectoDTO(p.getNombre(), new UsuarioDTO(p.getUsuarioPropietario().getUsuario(), p.getUsuarioPropietario().getContrasena(), p.getUsuarioPropietario().getNombre(), p.getUsuarioPropietario().getEmail(), p.getUsuarioPropietario().getRol(), p.getUsuarioPropietario().isActivo()), p.getEstado(), p.getPrioridad1(), p.getDescripcion()));
+        for (ProyectoDTO p : this.proyectos) {
+            dtos.add(new ProyectoDTO(p.getNombre(), new UsuarioDTO(p.getUsuarioPropietario().getUsername(), p.getUsuarioPropietario().getPassword(), p.getUsuarioPropietario().getNombre(), p.getUsuarioPropietario().getEmail(), p.getUsuarioPropietario().getRol(), p.getUsuarioPropietario().isActivo()), p.isEstado(), p.getPrioridad(), p.getDescripcion()));
         }
         return dtos;
     }
@@ -300,28 +300,7 @@ public class MemoryApi implements IApi {
 
 	@Override
 	
-	public void crearProyecto(String nombre, Usuario usuarioPropietario, boolean estado, String descripcion, String prioridad) throws NotNullException, DataEmptyException {
-	    // Validar que los campos no sean nulos
-	    if (esDatoNulo(nombre)) {
-	        throw new NotNullException("nombre");
-	    }
-	    if (esDatoNulo(descripcion)) {
-	        throw new NotNullException("descripcion");
-	    }
-	    if (esDatoNulo(prioridad)) {
-	        throw new NotNullException("prioridad");
-	    }
-
-	    // Validar que los campos no estén vacíos
-	    if (esDatoVacio(nombre)) {
-	        throw new DataEmptyException("nombre");
-	    }
-	    if (esDatoVacio(descripcion)) {
-	        throw new DataEmptyException("descripcion");
-	    }
-	    if (esDatoVacio(prioridad)) {
-	        throw new DataEmptyException("prioridad");
-	    }
+	public void crearProyecto(String nombre, Usuario usuarioPropietario, boolean estado, String descripcion, String prioridad) {
 		// Crear un nuevo proyecto con los parámetros recibidos
 	    Proyecto nuevoProyecto = new Proyecto(nombre, usuarioPropietario, estado, descripcion, prioridad);
 
@@ -367,15 +346,6 @@ public class MemoryApi implements IApi {
 		}
 	}
 		
-	private boolean esDatoVacio(String dato) {
-		return dato.equals("");
-	}
-
-	private boolean esDatoNulo(String dato) {
-		return dato == null;
-	}
-
-
 	@Override
 	public void crearProyecto(String nombreProyecto, Usuario usuarioPropietario, boolean b, String string) {
 		// TODO Auto-generated method stub
