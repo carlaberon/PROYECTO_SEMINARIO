@@ -25,9 +25,9 @@ public class Inicio extends JFrame {
     private JPanel proyectosListPanel;
     private UsuarioDTO usuarioActual; //obtener el usuario solicitando a la api
     
-    public Inicio(IApi api) {
+    public Inicio(IApi api, UsuarioDTO usuario) {
     	this.api = api;
-    
+    	this.usuarioActual = usuario;
     	
         frame = new JFrame("LabProject");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -44,7 +44,7 @@ public class Inicio extends JFrame {
         menuBar.add(projectName);
         menuBar.add(Box.createHorizontalGlue());
 
-        JMenu accountMenu = new JMenu("OBTENER NOMBRE DEL USUARIO ACTUAL"); //pendiente
+        JMenu accountMenu = new JMenu(usuarioActual.getUsername()); //pendiente
         accountMenu.setForeground(Color.WHITE);
         accountMenu.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 
@@ -110,27 +110,27 @@ public class Inicio extends JFrame {
         proyectosListPanel.setBackground(new Color(30, 30, 30));
 
         //BACK -> DTO -> FRONT
-        List<ProyectoDTO> proyectos = api.obtenerProyectos();
+        List<ProyectoDTO> proyectos = api.obtenerProyectos(usuarioActual.getUsername());
         
-        
-        for (ProyectoDTO proyecto : proyectos) {
-            JButton proyectoButton = new JButton(proyecto.getNombre());
-            proyectoButton.setForeground(Color.GRAY);
-            proyectoButton.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-            
-            proyectoButton.addActionListener( new ActionListener () {
+        if(!proyectos.isEmpty()) {
+        	for (ProyectoDTO proyecto : proyectos) {
+        		JButton proyectoButton = new JButton(proyecto.getNombre());
+        		proyectoButton.setForeground(Color.GRAY);
+        		proyectoButton.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        		
+        		proyectoButton.addActionListener( new ActionListener () {
 
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					// TODO Auto-generated method stub
-					abrirVentanaResumen();
-				}
+        			@Override
+        			public void actionPerformed(ActionEvent e) {
+        				// TODO Auto-generated method stub
+        				api.setProyectoActual(proyecto.getNombre());
+        				abrirVentanaResumen();
+        			}
             	
-            });
+        		});
             
-            proyectosListPanel.add(proyectoButton);
-           
-            
+        		proyectosListPanel.add(proyectoButton);
+           }
         }
 
         JPanel proyectosButtonsPanel = new JPanel();
@@ -177,26 +177,19 @@ public class Inicio extends JFrame {
     }
 
     private void abrirVentanaResumen() {
-        VentanaResumen ventanaResumen = new VentanaResumen(api); // Crear una instancia de VentanaResumen
+        VentanaResumen ventanaResumen = new VentanaResumen(api,usuarioActual); // Crear una instancia de VentanaResumen
         ventanaResumen.setVisible(true); // Hacer visible la ventana de resumen
     }
 
 
-    public static void main(String[] args) throws NotNullException, DataEmptyException, InvalidDateException {
-    	
-    	IApi api = new MemoryApi();
-    
-    
-        new Inicio(api);
-    }
 
     
     public void actualizarProyectos() {
         proyectosListPanel.removeAll(); // Limpiar el panel actual
         
-        List<ProyectoDTO> proyectos = api.obtenerProyectos(); // Obtener los proyectos actualizados
+        List<ProyectoDTO> proyectos = api.obtenerProyectos(usuarioActual.getUsername()); // Obtener los proyectos actualizados
         
-        proyectos.sort((p1, p2) -> Integer.compare(api.obtenerValorPrioridad(p1.getPrioridad()), api.obtenerValorPrioridad(p2.getPrioridad())));
+        
 
         for (ProyectoDTO proyecto : proyectos) {
             JButton proyectoButton = new JButton(proyecto.getNombre());
@@ -208,7 +201,7 @@ public class Inicio extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
-					abrirVentanaResumen(proyecto);
+					abrirVentanaResumen();
 				}
             	
             });
@@ -220,5 +213,11 @@ public class Inicio extends JFrame {
         proyectosListPanel.repaint();    // Repintar el panel
     }
 
-
+    //MAIN
+    public static void main(String[] args) throws NotNullException, DataEmptyException, InvalidDateException {
+    	
+    	IApi api = new MemoryApi();
+    	UsuarioDTO usuario = api.obtenerUsuario("HernanPro");
+    	new Inicio(api,usuario);
+    }
 }

@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -38,6 +39,9 @@ public class MemoryApi implements IApi {
 	//private Set<Plan> planeSet = new HashSet<>();
 	private List<TareaDTO> tareasDTO;
 	private Map<String, List<TareaDTO>> tareasPorProyecto = new HashMap<>();
+	private Proyecto proyectoActual;
+
+
 
 
 
@@ -292,12 +296,17 @@ public class MemoryApi implements IApi {
 	
 	// Implementación del método para obtener la lista de proyectos como DTO
     @Override
-    public List<ProyectoDTO> obtenerProyectos() {
+    public List<ProyectoDTO> obtenerProyectos(String username) {
         List<ProyectoDTO> dtos = new ArrayList<>();
-        for (Proyecto p : this.proyectos) {
-            dtos.add(new ProyectoDTO(p.getNombre(), convertirEnUsuarioDTO(p.getUsuarioPropietario()), p.getEstado(), p.getPrioridad1(), p.getDescripcion()));
+        
+        if(!proyectos.isEmpty()) {
+        	for (Proyecto p : this.proyectos) {
+        		if(p.existeMiembro(obtenerUsuarioDominio(username)))
+        			dtos.add(convertirEnProyectoDTO(p));
+        	}
         }
-        dtos.sort((p1, p2) -> Integer.compare(obtenerValorPrioridad(p1.getPrioridad()), obtenerValorPrioridad(p2.getPrioridad())));
+        if(!dtos.isEmpty())
+        	dtos.sort((p1, p2) -> Integer.compare(obtenerValorPrioridad(p1.getPrioridad()), obtenerValorPrioridad(p2.getPrioridad())));
         return dtos;
     }
 	
@@ -356,7 +365,7 @@ public class MemoryApi implements IApi {
 	    
 		// Crear un nuevo proyecto con los parámetros recibidos
 	    Proyecto nuevoProyecto = new Proyecto(nombre, propietario, estado, descripcion, prioridad);
-	    
+	    nuevoProyecto.agregarMiembro(propietario);
 	    // Agregar el proyecto a la colección de proyectos
 	    this.proyectos.add(nuevoProyecto);
 	}
@@ -428,6 +437,35 @@ public class MemoryApi implements IApi {
 		UsuarioDTO usuarioDto = new UsuarioDTO(usuario.getUsername(), usuario.getContrasena(), usuario.getNombre(), usuario.getEmail(), convertirEnRolDTO(usuario.getRol()), usuario.isActivo());
 		return usuarioDto;
 	}
-
+	
+	private ProyectoDTO convertirEnProyectoDTO(Proyecto proyecto) {
+		ProyectoDTO proyectoDto = new ProyectoDTO(proyecto.getNombre(), convertirEnUsuarioDTO(proyecto.getUsuarioPropietario()), proyecto.getEstado(), proyecto.getPrioridad1(), proyecto.getDescripcion());
+		return proyectoDto;
+	}
+	
+	private Usuario obtenerUsuarioDominio(String username) {
+		for (Usuario usuario : usuarios) {
+			if(username == usuario.getUsername())
+				return usuario;
+		}
+		return null;
+	}
+	
+	private Proyecto obtenerUnProyecto(String nombreProyecto) {
+		for (Proyecto proyecto : proyectos) {
+			if(proyecto.getNombre() == nombreProyecto)
+				return proyecto;
+		}
+		return null;
+	}
+	
+	public ProyectoDTO getProyectoActual() {
+		return convertirEnProyectoDTO(proyectoActual);
+	}
+	
+	
+	public void setProyectoActual(String nombreProyecto) {
+		this.proyectoActual = obtenerUnProyecto(nombreProyecto);
+	}
 }
 

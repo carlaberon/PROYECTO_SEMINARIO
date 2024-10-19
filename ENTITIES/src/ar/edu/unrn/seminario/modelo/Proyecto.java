@@ -13,7 +13,7 @@ public class Proyecto {
     private String nombre;
     private Usuario usuarioPropietario;
     private boolean estado; // ACTIVO = false, FINALIZADO = true
-    private Set<Miembro> miembros = new HashSet<>();
+    private Set<Usuario> miembros = new HashSet<>();
     private String descripcion;
     private String prioridad;//Alta, Media, Baja
     private Set<Proyecto> proyectos = new HashSet<>();
@@ -64,12 +64,24 @@ public class Proyecto {
         this.usuarioPropietario = usuarioPropietario;
     }
 
-    public Set<Miembro> getMiembros() {
+    public Set<Usuario> getMiembros() {
         return miembros;
     }
 
-    public void setMiembros(Set<Miembro> miembros) {
+    public void setMiembros(Set<Usuario> miembros) {
         this.miembros = miembros; 
+    }
+    
+    public void agregarMiembro(Usuario usuario) {
+    	miembros.add(usuario);
+    }
+    
+    public boolean existeMiembro(Usuario usuario) {
+    	if(miembros.contains(usuario))
+    		return true;
+    	
+    	
+    	return false;
     }
     
     public String getDescripcion() {

@@ -14,16 +14,14 @@ import ar.edu.unrn.seminario.api.MemoryApi;
 public class VentanaResumen extends JFrame {
 
     private JPanel contentPane;
-
     private UsuarioDTO usuarioActual; //obtener usuario actual por medio de la api
-    
     private ProyectoDTO unproyecto; //obtener proyecto por medio de la api
     private IApi api;
 
-    public VentanaResumen(IApi api) {
-    	
+    public VentanaResumen(IApi api, UsuarioDTO usuario) {
     	this.api = api;
-    
+    	this.usuarioActual = usuario;
+    	this.unproyecto = api.getProyectoActual();
         
         setTitle("");
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
@@ -60,7 +58,7 @@ public class VentanaResumen extends JFrame {
         centerPanel.add(appName);
         menuBar.add(centerPanel);
 
-        JMenu accountMenu = new JMenu(usuarioActual.getNombre());
+        JMenu accountMenu = new JMenu(usuarioActual.getUsername());
         accountMenu.setForeground(Color.WHITE);
         accountMenu.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 
@@ -127,11 +125,11 @@ public class VentanaResumen extends JFrame {
         centerPanel1.setBorder(new EmptyBorder(20, 20, 20, 20)); // Margen alrededor del contenido
 
         // Descripción del proyecto
-        JPanel descPanel = createPanel("Descripción del proyecto", "obtener descripción del proyecto");
+        JPanel descPanel = createPanel("Descripción del proyecto", unproyecto.getDescripcion());
         centerPanel1.add(descPanel);
 
         // Estado del proyecto
-        JPanel estadoPanel = createPanel("Estado del proyecto", "No definido");
+        JPanel estadoPanel = createPanel("Estado del proyecto",unproyecto.isEstado() ? "FINALIZADO" : "EN CURSO");
         centerPanel1.add(estadoPanel);
 
         // Detalles del plan
@@ -212,6 +210,7 @@ public class VentanaResumen extends JFrame {
             JLabel subLabel = new JLabel(subtitle);
             subLabel.setForeground(Color.GRAY);
             subLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+            subLabel.setPreferredSize(new Dimension(200, 40));
             panel.add(subLabel);
         }
 

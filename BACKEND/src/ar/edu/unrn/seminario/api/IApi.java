@@ -51,7 +51,7 @@ public interface IApi {
 	
 	void añadirTareaAProyecto(String proyecto, Tarea tarea);
 	
-	public List<ProyectoDTO> obtenerProyectos();
+	public List<ProyectoDTO> obtenerProyectos(String username); //recupera proyectos depende del usuario
 
 	public List<TareaDTO> obtenerTareasPorProyecto(String nombreProyecto);
 	
@@ -74,5 +74,8 @@ public interface IApi {
 	void crearProyecto(String nombre, String usuarioPropietario, boolean estado, String descripcion, String prioridad)
 			throws NotNullException, DataEmptyException;
 	
+	public ProyectoDTO getProyectoActual();//Recuperar proyecto actual	PRUEBAS
+
+	public void setProyectoActual(String nombreProyecto);	//Setear proyecto actual PRUEBAS
 
 }
