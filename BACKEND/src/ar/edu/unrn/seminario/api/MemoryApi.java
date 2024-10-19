@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -231,6 +232,18 @@ public class MemoryApi implements IApi {
 	    return tareasDTO;
 	}
 	
+	public void eliminarTarea(String nombreTarea) {
+		boolean encontrado = false;
+	    Iterator<Tarea> iterator = this.tareas.iterator(); 
+
+	    while (iterator.hasNext() || encontrado == false) {
+	        Tarea tarea = iterator.next(); 
+	        if (tarea.getNombre().equals(nombreTarea)) { 
+	            iterator.remove();
+	            encontrado = true;
+	        }
+	    }
+	}
 	public void añadirTareaAProyecto(String proyecto, Tarea unaTarea) {
 
 		TareaDTO tarea = new TareaDTO(

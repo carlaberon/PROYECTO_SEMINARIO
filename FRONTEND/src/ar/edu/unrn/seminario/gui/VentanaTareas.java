@@ -273,11 +273,18 @@ public class VentanaTareas extends JFrame {
 			
 			if (filaSeleccionada != -1) {
 				
-				int confirmacion = JOptionPane.showConfirmDialog(botonEliminar, "¿Desea eliminar la tarea?","Confirmar Eliminacion", JOptionPane.YES_NO_OPTION);
+				Object nombreTarea = table.getValueAt(filaSeleccionada, 0);
+				
+				int confirmacion = JOptionPane.showConfirmDialog(botonEliminar, "¿Desea eliminar la tarea: " + nombreTarea,"Confirmar Eliminacion", JOptionPane.YES_NO_OPTION);
 				
 				if (confirmacion == JOptionPane.YES_OPTION) {
 					
+					String nameTarea = nombreTarea.toString();
+					
+					api.eliminarTarea(nameTarea);
+					
 					((DefaultTableModel) table.getModel()).removeRow(filaSeleccionada);
+			
 					
 				}
 				
