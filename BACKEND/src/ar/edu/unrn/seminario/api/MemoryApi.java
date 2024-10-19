@@ -282,6 +282,7 @@ public class MemoryApi implements IApi {
         for (Proyecto p : this.proyectos) {
             dtos.add(new ProyectoDTO(p.getNombre(), convertirEnUsuarioDTO(p.getUsuarioPropietario()), p.getEstado(), p.getPrioridad1(), p.getDescripcion()));
         }
+        dtos.sort((p1, p2) -> Integer.compare(obtenerValorPrioridad(p1.getPrioridad()), obtenerValorPrioridad(p2.getPrioridad())));
         return dtos;
     }
 	

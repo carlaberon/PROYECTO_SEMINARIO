@@ -7,6 +7,7 @@ import ar.edu.unrn.seminario.api.MemoryApi;
 import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
+import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
 
 import ar.edu.unrn.seminario.dto.RolDTO;
@@ -110,7 +111,7 @@ public class Inicio extends JFrame {
 
         //BACK -> DTO -> FRONT
         List<ProyectoDTO> proyectos = api.obtenerProyectos();
-        proyectos.sort((p1, p2) -> Integer.compare(api.obtenerValorPrioridad(p1.getPrioridad()), api.obtenerValorPrioridad(p2.getPrioridad())));
+        
         
         for (ProyectoDTO proyecto : proyectos) {
             JButton proyectoButton = new JButton(proyecto.getNombre());
@@ -122,7 +123,7 @@ public class Inicio extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
-					abrirVentanaResumen(proyecto);
+					abrirVentanaResumen();
 				}
             	
             });
@@ -138,7 +139,7 @@ public class Inicio extends JFrame {
         JButton btnNuevoProyecto = new JButton("Proyecto +");
         btnNuevoProyecto.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		CrearProyecto crearProyecto = new CrearProyecto(api, Inicio.this);
+        		CrearProyecto crearProyecto = new CrearProyecto(api);
         		crearProyecto.setVisible(true);
         	}
         });
@@ -170,18 +171,18 @@ public class Inicio extends JFrame {
     }
 
     private void abrirListaProyectos(Inicio inicio) {
-        ListaProyectos listaProyectos = new ListaProyectos(api,inicio); // Crear una instancia de ListaProyectos
+        ListaProyectos listaProyectos = new ListaProyectos(api); // Crear una instancia de ListaProyectos
         listaProyectos.setVisible(true); // Hacer visible la ventana de proyectos
         
     }
 
-    private void abrirVentanaResumen(ProyectoDTO proyecto) {
+    private void abrirVentanaResumen() {
         VentanaResumen ventanaResumen = new VentanaResumen(api); // Crear una instancia de VentanaResumen
         ventanaResumen.setVisible(true); // Hacer visible la ventana de resumen
     }
 
 
-    public static void main(String[] args) throws NotNullException, DataEmptyException {
+    public static void main(String[] args) throws NotNullException, DataEmptyException, InvalidDateException {
     	
     	IApi api = new MemoryApi();
     

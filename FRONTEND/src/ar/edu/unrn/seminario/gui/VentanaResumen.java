@@ -21,8 +21,6 @@ public class VentanaResumen extends JFrame {
     private IApi api;
 
     public VentanaResumen(IApi api) {
-
-
     	
     	this.api = api;
     
@@ -194,7 +192,7 @@ public class VentanaResumen extends JFrame {
     private void abrirPanelConfiguracion() {
         // Lógica para mostrar el panel de configuración
         // Puedes implementar esto como desees
-        VentanaConfigurarProyecto ventanaConfig = new VentanaConfigurarProyecto(api,unproyecto);
+        VentanaConfigurarProyecto ventanaConfig = new VentanaConfigurarProyecto(api);
         ventanaConfig.setVisible(true);
     }
 
