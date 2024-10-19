@@ -77,5 +77,9 @@ public interface IApi {
 	public ProyectoDTO getProyectoActual();//Recuperar proyecto actual	PRUEBAS
 
 	public void setProyectoActual(String nombreProyecto);	//Setear proyecto actual PRUEBAS
+	
+	public UsuarioDTO getUsuarioActual(); //Recuperar usuario actual PRUEBAS
+
+	public void setUsuarioActual(String nombreUsuario);	//Setear usuario actual PRUEBAS
 
 }

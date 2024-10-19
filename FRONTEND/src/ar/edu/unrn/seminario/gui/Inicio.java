@@ -25,9 +25,9 @@ public class Inicio extends JFrame {
     private JPanel proyectosListPanel;
     private UsuarioDTO usuarioActual; //obtener el usuario solicitando a la api
     
-    public Inicio(IApi api, UsuarioDTO usuario) {
+    public Inicio(IApi api) {
     	this.api = api;
-    	this.usuarioActual = usuario;
+    	this.usuarioActual = api.getUsuarioActual();
     	
         frame = new JFrame("LabProject");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -175,9 +175,9 @@ public class Inicio extends JFrame {
         listaProyectos.setVisible(true); // Hacer visible la ventana de proyectos
         
     }
-
+    
     private void abrirVentanaResumen() {
-        VentanaResumen ventanaResumen = new VentanaResumen(api,usuarioActual); // Crear una instancia de VentanaResumen
+        VentanaResumen ventanaResumen = new VentanaResumen(api); // Crear una instancia de VentanaResumen
         ventanaResumen.setVisible(true); // Hacer visible la ventana de resumen
     }
 
@@ -218,6 +218,7 @@ public class Inicio extends JFrame {
     	
     	IApi api = new MemoryApi();
     	UsuarioDTO usuario = api.obtenerUsuario("HernanPro");
-    	new Inicio(api,usuario);
+    	api.setUsuarioActual(usuario.getUsername());
+    	new Inicio(api);
     }
 }

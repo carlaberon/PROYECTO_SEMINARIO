@@ -39,7 +39,8 @@ public class MemoryApi implements IApi {
 	//private Set<Plan> planeSet = new HashSet<>();
 	private List<TareaDTO> tareasDTO;
 	private Map<String, List<TareaDTO>> tareasPorProyecto = new HashMap<>();
-	private Proyecto proyectoActual;
+	private Proyecto proyectoActual; // PARA VER
+	private Usuario  usuarioActual; // PARA VER
 
 
 
@@ -466,6 +467,14 @@ public class MemoryApi implements IApi {
 	
 	public void setProyectoActual(String nombreProyecto) {
 		this.proyectoActual = obtenerUnProyecto(nombreProyecto);
+	}
+	
+	public UsuarioDTO getUsuarioActual() {
+		return convertirEnUsuarioDTO(usuarioActual);
+	}; 
+
+	public void setUsuarioActual(String nombreUsuario) {
+		this.usuarioActual = obtenerUsuarioDominio(nombreUsuario);
 	}
 }
 
