@@ -176,20 +176,17 @@ public class VentanaTareas extends JFrame {
 		String[] titulos = { "NOMBRE", "PROYECTO", "ESTADO","DESCRIPCION", "ASIGNADO", "PRIORIDAD", "FECHA INICIO", "FECHA FIN" };
 		modelo = new DefaultTableModel(new Object[][] {}, titulos);
 		
-		/*// Obtiene la lista de tareas a mostrar
-		List<TareaDTO> tareas = (List<TareaDTO>) api.obtenerTareas();
-		// Agrega las tareas en el model
-		for (TareaDTO t : tareas) {
-			modelo.addRow(new Object[] { t.getName(), t.getProject(),t.isEstado(), t.getUser(), t.getPriority() });
-		}
-		*/
 		
+		List<TareaDTO> tareas = (List<TareaDTO>) api.obtenerTareas();
+		
+	
 		//BACK -> DTO -> FRONTEND
 		
 		try {
-			
+		//**************************************************************************************************************************/	
 		//falta obtener el nombre del proyecto
-		List<TareaDTO> tareas = api.obtenerTareasPorProyecto("aca va el nombre del proyecto"); // Filtra las tareas por proyecto
+		//List<TareaDTO> tareas = api.obtenerTareasPorProyecto("aca va el nombre del proyecto"); // Filtra las tareas por proyecto
+		//**************************************************************************************************************************
 			
 		modelo.setRowCount(0); // Limpiar el modelo antes de agregar nuevas filas
 		
@@ -224,22 +221,35 @@ public class VentanaTareas extends JFrame {
 		});
 		
 		// Configuración del botón "Tarea +" en la esquina superior derecha
+		
+		
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.setOpaque(false);
-
+        
+        
         JButton btnTarea = createButton("Tarea +", new Color(138, 102, 204));
         btnTarea.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				CrearTarea crearTarea = new CrearTarea(api);
 				crearTarea.setLocationRelativeTo(null);
 				crearTarea.setVisible(true);
-				actualizarTabla();
+	
 			}
 		});
 
         buttonPanel.add(btnTarea);
         descPanel.add(buttonPanel, BorderLayout.NORTH); // Coloca el botón en el norte (arriba)
         centerPanel1.add(descPanel);
+        
+      //Configuración del botón "Actualizar Tabla" en la esquina superior izquierda
+        
+        JButton btnActualizarTabla = createButton("Actualizar", new Color(138, 102, 204));
+        buttonPanel.add(btnActualizarTabla);
+        btnActualizarTabla.addActionListener(new ActionListener() {
+    			public void actionPerformed(ActionEvent arg0) {
+    				actualizarTabla();
+    			}
+    		});
         
        //Configuración de los botones "Modificar" y "Eliminar" tarea
       JPanel botones = new JPanel(new FlowLayout());
@@ -321,8 +331,13 @@ public class VentanaTareas extends JFrame {
 	
 	    // Obtiene el model del table
 	    DefaultTableModel modelo = (DefaultTableModel) table.getModel();
-	    // Obtiene la lista de tareas filtradas por proyecto
-	    List<TareaDTO> tareas = api.obtenerTareasPorProyecto(this.getTitle()); // this.getTitle() retorna el nombre del proyecto
+	    
+	    //***********************************************************************************************************************//
+	    // Obtiene la lista de tareas filtradas por proyecto: PENDIENTE
+	    //List<TareaDTO> tareas = api.obtenerTareasPorProyecto(this.getTitle()); // this.getTitle() retorna el nombre del proyecto
+	    //***********************************************************************************************************************//
+	    
+	    List<TareaDTO> tareas = api.obtenerTareas();
 	    // Resetea el modelo
 	    modelo.setRowCount(0);
 

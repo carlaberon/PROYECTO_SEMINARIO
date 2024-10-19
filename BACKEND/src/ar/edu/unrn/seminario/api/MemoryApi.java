@@ -69,24 +69,26 @@ public class MemoryApi implements IApi {
 	    LocalDateTime inicio = LocalDateTime.now();
 	    LocalDateTime fin = LocalDateTime.now();
 	    Tarea unaTarea = new Tarea("Ordenar tareas","Sistema de Gestión de Tareas","alta", user1.getNombre(), false, "descripcion", inicio, fin); 
+	    this.tareas.add(unaTarea);
 	    añadirTareaAProyecto("Sistema de Gestión de Tareas", unaTarea);
 	    
 	    crearProyecto("Aplicación de votos", user2.getUsername(), false, "Aplicación para contar los votos de la municipalidad","alta");
 	    LocalDateTime inicio2 = LocalDateTime.now();
 	    Tarea otraTarea = new Tarea("Contar votos","Aplicación de votos","alta", user1.getNombre(), false, "Contar los votos disponibles", inicio2, inicio2);
 	    añadirTareaAProyecto("Aplicación de votos", otraTarea);
+	    this.tareas.add(otraTarea);
 	    
 	    crearProyecto("Gestion de eventos", user3.getUsername(), true, "Proyecto para desarrollar gestion de los eventos de ","baja");
 	    LocalDateTime inicio3 = LocalDateTime.now();
 	    Tarea tarea_ = new Tarea("Ordenar eventos","Gestion de eventos","alta", user1.getNombre(), false, "Ordenar eventos por prioridad", inicio2, inicio3);
 	    añadirTareaAProyecto("Gestion de eventos", tarea_);
-	    
+	    this.tareas.add(tarea_);
 	    
 	    crearProyecto("Parciales", user1.getUsername(), false, "Informacion sobre como completar la informacion de los parciales de la carrera","media");
 	    LocalDateTime inicio4 = LocalDateTime.now();
 	    Tarea tarea_1 = new Tarea("Denifir plan de estudio","Parciales","alta", user1.getNombre(), false, "Definir plan de estudio", inicio2, inicio4);
 	    añadirTareaAProyecto("Parciales", tarea_1);
-		 
+		 this.tareas.add(tarea_1);
 
 
 	}
@@ -222,7 +224,7 @@ public class MemoryApi implements IApi {
 	    
 	    if (! this.tareas.isEmpty()) {
 	    	for (Tarea t : this.tareas) {  
-		        tareasDTO.add(new TareaDTO(t.getNombre(), t.getProyecto(), t.getPrioridad(), t.getUsuario(), t.isEstado(), t.getDescripcion(), null, null));
+		        tareasDTO.add(new TareaDTO(t.getNombre(), t.getProyecto(), t.getPrioridad(), t.getUsuario(), t.isEstado(), t.getDescripcion(),t.getInicio(), t.getFin()));
 		    }
 	    }
 	    

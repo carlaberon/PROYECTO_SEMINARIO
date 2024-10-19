@@ -166,7 +166,6 @@ public class CrearTarea extends JFrame {
                         
                    api.registrarTarea(nombreTarea, proyectoSeleccionado, prioridadTarea, usuario.getUsername(), false, descripcionTarea, fechaInicioLocalDateTime, fechaFinLocalDateTime);
                 		
-                  //((VentanaTareas) ventanaTareas).actualizarTabla(); NULLPOINTER//ACTUALIZAR LOS DATOS EN LA TABLA 
                         
                    JOptionPane.showMessageDialog(null, "Tarea creada con éxito!", "Info", JOptionPane.INFORMATION_MESSAGE);
                    setVisible(false);
