@@ -47,12 +47,17 @@ public interface IApi {
 	
 	List<TareaDTO> obtenerTareas();
 	
-	List<ProyectoDTO> obtenerProyectos();
+	public void eliminarTarea(String nombreTarea);
+	
+	void añadirTareaAProyecto(String proyecto, Tarea tarea);
+	
+	public List<ProyectoDTO> obtenerProyectos();
 
+	public List<TareaDTO> obtenerTareasPorProyecto(String nombreProyecto);
 	
 	void crearEvento(LocalDateTime fecha, LocalDateTime inicio, LocalDateTime fin, String descripcion);
 	
-	List<EventoDTO> obtenerEventos();
+	public List<EventoDTO> obtenerEventos();
 	
 	void asignarPrioridad(String nombreProyecto, String prioridad);
 	
@@ -64,13 +69,8 @@ public interface IApi {
 	
 	void modificarProyecto(String nombreProyecto, String nuevoNombre, String nuevaPrioridad, String nuevaDescripcion);
 
-	List<TareaDTO> obtenerTareasPorProyecto(String nombreProyecto);
-	
 	public int obtenerValorPrioridad(String prioridad);
 	
-	void añadirTareaAProyecto(String proyecto, Tarea tarea);
-
-
 	void crearProyecto(String nombre, String usuarioPropietario, boolean estado, String descripcion, String prioridad)
 			throws NotNullException, DataEmptyException;
 	
