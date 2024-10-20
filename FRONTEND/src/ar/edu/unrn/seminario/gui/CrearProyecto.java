@@ -97,13 +97,11 @@ public class CrearProyecto extends JFrame {
 		contentPane.add(aceptarButton);
 		aceptarButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String nombreProyecto = nombreProyectoTextField.getText();
-				String descripcion = descripcionTextField.getText();
-                String prioridadSeleccionada = (String) prioridadComboBox.getSelectedItem();
-                
-
-
+				
 				try {
+					String nombreProyecto = nombreProyectoTextField.getText();
+					String descripcion = descripcionTextField.getText();
+	                String prioridadSeleccionada = (String) prioridadComboBox.getSelectedItem();
 					// Verificar si no se seleccionó una prioridad
 		            if (prioridadSeleccionada == null || prioridadSeleccionada.isEmpty()) {
 		                throw new DataEmptyException("prioridad");

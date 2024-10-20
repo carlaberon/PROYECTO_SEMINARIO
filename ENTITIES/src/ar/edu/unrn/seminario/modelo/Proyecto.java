@@ -13,7 +13,7 @@ public class Proyecto {
     private String nombre;
     private Usuario usuarioPropietario;
     private boolean estado; // ACTIVO = false, FINALIZADO = true
-    private Set<Usuario> miembros = new HashSet<>();
+    private Set<Miembro> miembros = new HashSet<>();
     private String descripcion;
     private String prioridad;//Alta, Media, Baja
     private Set<Proyecto> proyectos = new HashSet<>();
@@ -31,8 +31,30 @@ public class Proyecto {
     }
 
 
-    public Proyecto(String nombre, Usuario usuarioPropietario, boolean estado, String descripcion, String prioridad){
-        this.nombre = nombre; 
+    public Proyecto(String nombre, Usuario usuarioPropietario, boolean estado, String descripcion, String prioridad) throws NotNullException, DataEmptyException{
+    	    // Validar que los campos no sean nulos
+    	    if (esDatoNulo(nombre)) {
+    	        throw new NotNullException("nombre");
+    	    }
+    	    if (esDatoNulo(descripcion)) {
+    	        throw new NotNullException("descripcion");
+    	    }
+    	    if (esDatoNulo(prioridad)) {
+    	        throw new NotNullException("prioridad");
+    	    }
+
+    	    // Validar que los campos no estén vacíos
+    	    if (esDatoVacio(nombre)) {
+    	        throw new DataEmptyException("nombre");
+    	    }
+    	    if (esDatoVacio(descripcion)) {
+    	        throw new DataEmptyException("descripcion");
+    	    }
+    	    if (esDatoVacio(prioridad)) {
+    	        throw new DataEmptyException("prioridad");
+    	    }
+    	
+    	this.nombre = nombre; 
         this.usuarioPropietario = usuarioPropietario;
         this.estado = estado;
         this.descripcion = descripcion;
@@ -56,7 +78,6 @@ public class Proyecto {
     }
     
     public Usuario getUsuarioPropietario() {
-    	
         return usuarioPropietario;
     }
     
@@ -64,24 +85,12 @@ public class Proyecto {
         this.usuarioPropietario = usuarioPropietario;
     }
 
-    public Set<Usuario> getMiembros() {
+    public Set<Miembro> getMiembros() {
         return miembros;
     }
 
-    public void setMiembros(Set<Usuario> miembros) {
+    public void setMiembros(Set<Miembro> miembros) {
         this.miembros = miembros; 
-    }
-    
-    public void agregarMiembro(Usuario usuario) {
-    	miembros.add(usuario);
-    }
-    
-    public boolean existeMiembro(Usuario usuario) {
-    	if(miembros.contains(usuario))
-    		return true;
-    	
-    	
-    	return false;
     }
     
     public String getDescripcion() {
@@ -141,6 +150,14 @@ public class Proyecto {
     public void setPlan(Plan plan) {
         this.plan = plan;
     }
+    
+	private boolean esDatoVacio(String dato) {
+		return dato.equals("");
+	}
+
+	private boolean esDatoNulo(String dato) {
+		return dato == null;
+	}
 
 	@Override
     public boolean equals(Object obj) {
