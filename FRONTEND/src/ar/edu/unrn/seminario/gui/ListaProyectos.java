@@ -28,7 +28,6 @@ public class ListaProyectos extends JFrame {
 	private JTable tabla;
 	private Inicio ventanaInicio;
 	private JButton eliminarProyecto;
-	private  
 	
     public ListaProyectos(IApi api) {
     	this.api = api;
@@ -53,8 +52,8 @@ public class ListaProyectos extends JFrame {
         DefaultTableModel modelo = new DefaultTableModel(new Object[][] {}, proyectosTabla);
         tabla.setModel(modelo);
         
-        List<ProyectoDTO> proyectos = api.obtenerProyectos();
-        Collections.sort(proyectos);
+        List<ProyectoDTO> proyectos = api.obtenerProyectos(api.getUsuarioActual().getUsername());
+        
         
         for (ProyectoDTO p : proyectos) {
 			modelo.addRow(new Object[] {
@@ -129,7 +128,7 @@ public class ListaProyectos extends JFrame {
 
 					api.eliminarProyecto(projectName);
 					actualizarTabla();
-					ventanaInicio.actualizarProyectos();
+					
 				}
 				
 			}
@@ -218,11 +217,11 @@ public class ListaProyectos extends JFrame {
     	// Obtiene el model del table
     			DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
     			// Obtiene la lista de usuarios a mostrar
-    			List<ProyectoDTO> proyectos = api.obtenerProyectos();
-    			Collections.sort(proyectos);
+    			List<ProyectoDTO> proyectos = api.obtenerProyectos(api.getUsuarioActual().getUsername());
+    			
     			// Resetea el model
     			modelo.setRowCount(0);
-    			proyectos.sort((p1, p2) -> p1.getPrioridad().compareTo(p2.getPrioridad()));
+    			
     	        for (ProyectoDTO p : proyectos) {
     				modelo.addRow(new Object[] {
     						p.getNombre(), 
