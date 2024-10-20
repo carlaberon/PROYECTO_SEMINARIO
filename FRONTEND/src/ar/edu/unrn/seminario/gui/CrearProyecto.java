@@ -38,6 +38,7 @@ public class CrearProyecto extends JFrame {
 	private JComboBox<String> proyectoComboBox;
 	private IApi api;
 	private JTextField descripcionTextField;
+	private List<ProyectoModificadoListener> listeners = new ArrayList<>(); //En esta lista estan los oyentes de ProyectoEliminadoListener
 	
 	/**
 	 * Create the frame.
@@ -111,6 +112,7 @@ public class CrearProyecto extends JFrame {
 					// Crear un nuevo proyecto
 	                api.crearProyecto(nombreProyecto, api.getUsuarioActual().getUsername(), false, descripcion, prioridadSeleccionada);
 	                JOptionPane.showMessageDialog(null, "Proyecto registrado con éxito!", "Info", JOptionPane.INFORMATION_MESSAGE);
+	                notificarProyectoCreado(); //Notifico a los oyentes que se creo un proyecto.
 	                setVisible(false);
 	                dispose();
 				} catch (NotNullException ex) {
@@ -175,4 +177,15 @@ public class CrearProyecto extends JFrame {
 		lblPrioridad.setBounds(88, 191, 227, 39);
 		contentPane.add(lblPrioridad);		
 	}
+	
+	public void addProyectoModificadoListener(ProyectoModificadoListener listener) { //Añadir un oyente a la lista tipo ProyectoEliminadoListener
+        listeners.add(listener);
+    }
+
+    // Método para notificar a los listeners
+    private void notificarProyectoCreado() { //Notificar a los oyentes de el/los proyecto eliminados
+        for (ProyectoModificadoListener listener : listeners) {
+            listener.proyectoEliminado();
+        }
+    }
 }
