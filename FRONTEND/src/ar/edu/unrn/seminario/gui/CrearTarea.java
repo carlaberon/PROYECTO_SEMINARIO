@@ -49,7 +49,7 @@ public class CrearTarea extends JFrame {
         
         this.usuarios = api.obtenerUsuarios();
         //OBTENER NOMBRE DEL USUARIO ACTUAL
-        this.proyectos = api.obtenerProyectos("NOMBRE_DEL_USUARIO_ACTUAL");
+        this.proyectos = api.obtenerProyectos(api.getUsuarioActual().getUsername());
 
         setTitle("Crear Tarea");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
