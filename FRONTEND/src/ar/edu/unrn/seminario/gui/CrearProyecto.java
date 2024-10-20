@@ -37,18 +37,13 @@ public class CrearProyecto extends JFrame {
 	private JTextField nombreProyectoTextField;
 	private JComboBox<String> proyectoComboBox;
 	private IApi api;
-	private List<ProyectoDTO> proyectos; //crear el proyectoDTO, crear el proyecto
-	private UsuarioDTO usuarioPropietario;
 	private JTextField descripcionTextField;
-	private Inicio ventanaInicio;
 	
 	/**
 	 * Create the frame.
 	 */
 	public CrearProyecto(IApi api) {
 		this.api = api;
-		this.proyectos = api.obtenerProyectos(); // Se obtienen los proyectos existentes
-		this.ventanaInicio = ventanaInicio;
 		
 		setTitle("Crear proyecto");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -114,9 +109,8 @@ public class CrearProyecto extends JFrame {
 			
 					
 					// Crear un nuevo proyecto
-	                api.crearProyecto(nombreProyecto, usuarioPropietario, false, descripcion, prioridadSeleccionada);
+	                api.crearProyecto(nombreProyecto, api.getUsuarioActual().getUsername(), false, descripcion, prioridadSeleccionada);
 	                JOptionPane.showMessageDialog(null, "Proyecto registrado con éxito!", "Info", JOptionPane.INFORMATION_MESSAGE);
-	                ventanaInicio.actualizarProyectos();
 	                setVisible(false);
 	                dispose();
 				} catch (NotNullException ex) {
@@ -158,6 +152,7 @@ public class CrearProyecto extends JFrame {
         
 		proyectoComboBox.addItem("");
 		// Llenar el ComboBox con los proyectos existentes
+		List<ProyectoDTO> proyectos = api.obtenerProyectos(api.getUsuarioActual().getUsername());
         for (ProyectoDTO proyecto : proyectos) {
             proyectoComboBox.addItem(proyecto.getNombre());
         }

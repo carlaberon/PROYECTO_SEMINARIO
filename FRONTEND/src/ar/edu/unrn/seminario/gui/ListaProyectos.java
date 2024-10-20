@@ -26,7 +26,6 @@ import java.util.Set;
 public class ListaProyectos extends JFrame {
 	private IApi api;
 	private JTable tabla;
-	private Inicio ventanaInicio;
 	private JButton eliminarProyecto;
 	
     public ListaProyectos(IApi api) {
