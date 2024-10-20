@@ -51,7 +51,7 @@ public class VentanaConfigurarProyecto extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public VentanaConfigurarProyecto(IApi api, ProyectoDTO proyecto) {
+	public VentanaConfigurarProyecto(IApi api) {
 		setTitle("Modificar Proyecto");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 800, 650);

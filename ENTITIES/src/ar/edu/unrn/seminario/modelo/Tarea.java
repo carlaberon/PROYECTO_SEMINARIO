@@ -2,8 +2,8 @@ package ar.edu.unrn.seminario.modelo;
 
 import java.time.LocalDateTime;
 
-import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
+import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
 
 public class Tarea {
@@ -14,42 +14,48 @@ public class Tarea {
     private String usuario;
     private boolean estado; // FINALIZADO: TRUE, NOFINALIZADO: FALSE
     private String descripcion;
-    private LocalDateTime inicio; 
-    private LocalDateTime fin;
-
-    public Tarea(Usuario name1, String proyecto, Usuario name12, String user1, boolean estado, String descripcion, LocalDateTime inicio, LocalDateTime fin) throws DataEmptyException, NotNullException {
+    private LocalDateTime fechaInicio; 
+    private LocalDateTime fechaFin;
+    private LocalDateTime fechaCreacion;
+    
+    public Tarea(String nombretarea, String proyecto, String prioridad, String user1, boolean estado, String descripcion, LocalDateTime inicio, LocalDateTime fin) throws DataEmptyException, NotNullException, InvalidDateException {
         
-    	if (esDatoNulo(name1))
+    	if (esDatoNulo(nombretarea))
 			throw new NotNullException("nombre");
     	if (esDatoNulo(proyecto))
 			throw new NotNullException("nombre de proyecto");
-    	if (esDatoNulo(name12))
+    	if (esDatoNulo(prioridad))
 			throw new NotNullException("prioridad");
     	if (esDatoNulo(user1))
 			throw new NotNullException("usuario asignado");
     	if (esDatoNulo(descripcion))
 			throw new NotNullException("descripcion");
     	
-		if (esDatoVacio(name1))
+		if (esDatoVacio(nombretarea))
 			throw new DataEmptyException("nombre");
 		if (esDatoVacio(proyecto))
 			throw new DataEmptyException("nombre de proyecto");
-		if (esDatoVacio(name12))
+		if (esDatoVacio(prioridad))
 			throw new DataEmptyException("prioridad");
 		if (esDatoVacio(user1))
 			throw new DataEmptyException("usuario asignado");
 		if (esDatoVacio(descripcion))
 			throw new DataEmptyException("descripcion");
+		
+		
+		if (fin.isBefore(inicio)) {
+			throw new InvalidDateException("La fecha de inicio debe ser anterior a la fecha de finalizacion");
+		}
+	
 
-    	
-    	this.nombre = name1;
+    	this.nombre = nombretarea;
         this.proyecto = proyecto;
-        this.prioridad = name12;
+        this.prioridad = prioridad;
         this.usuario = user1;
         this.estado = estado;
         this.descripcion = descripcion; 
-        this.inicio = inicio;
-        this.fin = fin; 
+        this.fechaInicio = inicio;
+        this.fechaFin = fin; 
     }
 
     // Getters
@@ -88,11 +94,11 @@ public class Tarea {
     }
 
     public LocalDateTime getInicio() {
-        return inicio;
+        return fechaInicio;
     }
 
     public LocalDateTime getFin() {
-        return fin;
+        return fechaInicio;
     }
     
     public String getPrioridad() {
@@ -125,11 +131,11 @@ public class Tarea {
     }
 
     public void setInicio(LocalDateTime inicio) {
-        this.inicio = inicio;
+        this.fechaInicio = inicio;
     }
 
     public void setFin(LocalDateTime fin) {
-        this.fin = fin;
+        this.fechaFin = fin;
     }
 
     @Override
