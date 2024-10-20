@@ -100,13 +100,6 @@ public class MemoryApi implements IApi {
 	}
 
 
-//	private void inicializarUsuarios() {
-//		registrarUsuario("admin", "1234", "admin@unrn.edu.ar", "Admin", 1);
-//		registrarUsuario("ldifabio", "4", "ldifabio@unrn.edu.ar", "Lucas", 2);
-//		registrarUsuario("bjgorosito", "1234", "bjgorosito@unrn.edu.ar", "Bruno", 3);
-//
-//	}
-
 	@Override
 	public void registrarUsuario(String username, String password, String email, String nombre, Integer rol) {
 

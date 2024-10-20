@@ -47,7 +47,7 @@ public class CrearProyecto extends JFrame {
 		this.api = api;
 		this.proyectos = api.obtenerProyectos(name); // Se obtienen los proyectos existentes
 		this.ventanaInicio = ventanaInicio;
-		
+		this.usuarioPropietario = api.getUsuarioActual();
 		setTitle("Crear proyecto");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 800, 650);
@@ -115,7 +115,7 @@ public class CrearProyecto extends JFrame {
 					// Crear un nuevo proyecto
 	                api.crearProyecto(nombreProyecto, usuarioPropietario.getNombre(), false, descripcion, prioridadSeleccionada);
 	                JOptionPane.showMessageDialog(null, "Proyecto registrado con éxito!", "Info", JOptionPane.INFORMATION_MESSAGE);
-	                ventanaInicio.actualizarProyectos();
+
 	                setVisible(false);
 	                dispose();
 				} catch (NotNullException ex) {
