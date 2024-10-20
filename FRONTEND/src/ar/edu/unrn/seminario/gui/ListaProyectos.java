@@ -31,7 +31,7 @@ public class ListaProyectos extends JFrame {
 	
     public ListaProyectos(IApi api) {
     	this.api = api;
- 
+
         // Configuración básica de la ventana
         setTitle("Proyectos Activos");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

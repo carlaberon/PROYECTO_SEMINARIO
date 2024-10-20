@@ -14,11 +14,12 @@ import ar.edu.unrn.seminario.api.MemoryApi;
 public class VentanaResumen extends JFrame {
 
     private JPanel contentPane;
+    private IApi api;
     private UsuarioDTO usuarioActual; //obtener usuario actual por medio de la api
     private ProyectoDTO unproyecto; //obtener proyecto por medio de la api
-    private IApi api;
-
+    
     public VentanaResumen(IApi api) {
+
     	this.api = api;
     	this.usuarioActual = api.getUsuarioActual();
     	this.unproyecto = api.getProyectoActual();
@@ -125,7 +126,7 @@ public class VentanaResumen extends JFrame {
         centerPanel1.setBorder(new EmptyBorder(20, 20, 20, 20)); // Margen alrededor del contenido
 
         // Descripción del proyecto
-        JPanel descPanel = createPanel("Descripción del proyecto", unproyecto.getDescripcion());
+        JPanel descPanel = createPanel("Descripción del proyecto",unproyecto.getDescripcion());
         centerPanel1.add(descPanel);
 
         // Estado del proyecto
@@ -210,7 +211,6 @@ public class VentanaResumen extends JFrame {
             JLabel subLabel = new JLabel(subtitle);
             subLabel.setForeground(Color.GRAY);
             subLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-            subLabel.setPreferredSize(new Dimension(200, 40));
             panel.add(subLabel);
         }
 
@@ -225,7 +225,7 @@ public class VentanaResumen extends JFrame {
         button.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         button.setBorderPainted(false);
         button.setFocusPainted(false);
-        button.setPreferredSize(new Dimension(120, 40));
+        button.setPreferredSize(new Dimension(200, 40));
         return button;
     }
 

@@ -103,6 +103,7 @@ public class Usuario{
 	
 	}
 	
+
 	// Sobrescrir equals() para comparar usuarios por el username
 	// Sobrescribimos equals() para comparar usuarios por el username
     @Override

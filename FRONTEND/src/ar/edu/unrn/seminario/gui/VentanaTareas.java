@@ -33,11 +33,11 @@ import javax.swing.table.DefaultTableModel;
 
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.api.MemoryApi;
+import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.TareaDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
-import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
 
 
@@ -49,16 +49,17 @@ public class VentanaTareas extends JFrame {
 	private IApi api;
 	JButton botonModificar;
 	JButton botonEliminar;
-
+	private UsuarioDTO usuarioActual; //obtener usuario actual por medio de la api
+    private ProyectoDTO unproyecto; //obtener proyecto por medio de la api
 	
-
 
     public VentanaTareas(IApi api) throws RuntimeException{
 
-
     	this.api = api; 
-   
-    	setTitle("obtener nombre del proyecto");
+    	this.usuarioActual = api.getUsuarioActual();
+    	this.unproyecto = api.getProyectoActual();
+    	
+    	setTitle("TAREAS");
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         setBounds(100, 100, 900, 600);
         
@@ -71,7 +72,7 @@ public class VentanaTareas extends JFrame {
         menuBar.setBackground(new Color(138, 102, 204));
         menuBar.setPreferredSize(new Dimension(100, 50));
 
-        JMenu menuProyecto = new JMenu("nombre del proyecto");
+        JMenu menuProyecto = new JMenu("nombreProyecto"); //null pointer unproyecto = api.getProyectoActual();
         menuProyecto.setForeground(Color.WHITE);
         menuProyecto.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 
@@ -93,7 +94,7 @@ public class VentanaTareas extends JFrame {
         centerPanel.add(appName);
         menuBar.add(centerPanel);
 
-        JMenu accountMenu = new JMenu("nombre del usuario");
+        JMenu accountMenu = new JMenu(usuarioActual.getNombre());
         accountMenu.setForeground(Color.WHITE);
         accountMenu.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 
@@ -149,7 +150,7 @@ public class VentanaTareas extends JFrame {
         table = new JTable() {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false; // las celdas no son editables
+                return false; // Hace que las celdas no sean editables
             }
         };
 
@@ -176,17 +177,19 @@ public class VentanaTareas extends JFrame {
 		String[] titulos = { "NOMBRE", "PROYECTO", "ESTADO","DESCRIPCION", "ASIGNADO", "PRIORIDAD", "FECHA INICIO", "FECHA FIN" };
 		modelo = new DefaultTableModel(new Object[][] {}, titulos);
 		
-		
+		/*// Obtiene la lista de tareas a mostrar
 		List<TareaDTO> tareas = (List<TareaDTO>) api.obtenerTareas();
+		// Agrega las tareas en el model
+		for (TareaDTO t : tareas) {
+			modelo.addRow(new Object[] { t.getName(), t.getProject(),t.isEstado(), t.getUser(), t.getPriority() });
+		}
+		*/
 		
-	
 		//BACK -> DTO -> FRONTEND
 		
 		try {
-		//**************************************************************************************************************************/	
-		//falta obtener el nombre del proyecto
-		//List<TareaDTO> tareas = api.obtenerTareasPorProyecto("aca va el nombre del proyecto"); // Filtra las tareas por proyecto
-		//**************************************************************************************************************************
+			
+		List<TareaDTO> tareas = api.obtenerTareasPorProyecto(unproyecto.getNombre()); //Que pasa si el proyecto está vacio -EL PROYECTO ESTA VACIO
 			
 		modelo.setRowCount(0); // Limpiar el modelo antes de agregar nuevas filas
 		
@@ -221,12 +224,9 @@ public class VentanaTareas extends JFrame {
 		});
 		
 		// Configuración del botón "Tarea +" en la esquina superior derecha
-		
-		
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.setOpaque(false);
-        
-        
+
         JButton btnTarea = createButton("Tarea +", new Color(138, 102, 204));
         btnTarea.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -268,7 +268,7 @@ public class VentanaTareas extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
+			
 			int filaSeleccionada = table.getSelectedRow(); 
 			
 			if (filaSeleccionada != -1) {
@@ -284,7 +284,6 @@ public class VentanaTareas extends JFrame {
 					api.eliminarTarea(nameTarea);
 					
 					((DefaultTableModel) table.getModel()).removeRow(filaSeleccionada);
-			
 					
 				}
 				
@@ -338,14 +337,15 @@ public class VentanaTareas extends JFrame {
 	
 	    // Obtiene el model del table
 	    DefaultTableModel modelo = (DefaultTableModel) table.getModel();
-	    
+
 	    //***********************************************************************************************************************//
 	    // Obtiene la lista de tareas filtradas por proyecto: PENDIENTE
 	    //List<TareaDTO> tareas = api.obtenerTareasPorProyecto(this.getTitle()); // this.getTitle() retorna el nombre del proyecto
 	    //***********************************************************************************************************************//
 	    
 	    List<TareaDTO> tareas = api.obtenerTareas();
-	    // Resetea el modelo
+	    
+	    
 	    modelo.setRowCount(0);
 
 	    // Agrega las tareas en el modelo
@@ -361,12 +361,6 @@ public class VentanaTareas extends JFrame {
 		        t.getFin()
 		    });
 		}
-	}
-	
-	public static void main (String [] args) throws NotNullException, DataEmptyException, InvalidDateException {
-		IApi api = new MemoryApi();
-		VentanaTareas nuevaVentana = new VentanaTareas(api);
-		nuevaVentana.setVisible(true);
 	}
 		
 	
