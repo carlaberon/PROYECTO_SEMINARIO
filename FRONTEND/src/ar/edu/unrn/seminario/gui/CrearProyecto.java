@@ -2,8 +2,11 @@ package ar.edu.unrn.seminario.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -34,25 +37,20 @@ public class CrearProyecto extends JFrame {
 	private JTextField nombreProyectoTextField;
 	private JComboBox<String> proyectoComboBox;
 	private IApi api;
-	private List<ProyectoDTO> proyectos; //crear el proyectoDTO, crear el proyecto
-	private UsuarioDTO usuarioPropietario;
 	private JTextField descripcionTextField;
-	private Inicio ventanaInicio;
 	
 	/**
 	 * Create the frame.
 	 */
 	public CrearProyecto(IApi api) {
-		String name = null;
 		this.api = api;
-		this.proyectos = api.obtenerProyectos(name); // Se obtienen los proyectos existentes
-		this.ventanaInicio = ventanaInicio;
-		this.usuarioPropietario = api.getUsuarioActual();
+		
 		setTitle("Crear proyecto");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 800, 650);
 		setSize(900,600);
 		getContentPane().setLayout(null);
+		
 		contentPane = new JPanel();
 		contentPane.setFont(new Font("Segoe UI", Font.PLAIN, 10));
 		contentPane.setBackground(new Color(81, 79, 89));
@@ -109,13 +107,10 @@ public class CrearProyecto extends JFrame {
 		                throw new DataEmptyException("prioridad");
 		            }
 			
-		            if (usuarioPropietario == null) {
-		                throw new NullPointerException("El usuario propietario no está asignado.");
-		            }
+					
 					// Crear un nuevo proyecto
-	                api.crearProyecto(nombreProyecto, usuarioPropietario.getNombre(), false, descripcion, prioridadSeleccionada);
+	                api.crearProyecto(nombreProyecto, api.getUsuarioActual().getUsername(), false, descripcion, prioridadSeleccionada);
 	                JOptionPane.showMessageDialog(null, "Proyecto registrado con éxito!", "Info", JOptionPane.INFORMATION_MESSAGE);
-
 	                setVisible(false);
 	                dispose();
 				} catch (NotNullException ex) {
@@ -157,6 +152,7 @@ public class CrearProyecto extends JFrame {
         
 		proyectoComboBox.addItem("");
 		// Llenar el ComboBox con los proyectos existentes
+		List<ProyectoDTO> proyectos = api.obtenerProyectos(api.getUsuarioActual().getUsername());
         for (ProyectoDTO proyecto : proyectos) {
             proyectoComboBox.addItem(proyecto.getNombre());
         }

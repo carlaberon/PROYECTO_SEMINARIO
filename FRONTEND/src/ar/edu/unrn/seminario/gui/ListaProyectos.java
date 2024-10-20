@@ -26,12 +26,11 @@ import java.util.Set;
 public class ListaProyectos extends JFrame {
 	private IApi api;
 	private JTable tabla;
-	private Inicio ventanaInicio;
 	private JButton eliminarProyecto;
 	
     public ListaProyectos(IApi api) {
     	this.api = api;
- 
+
         // Configuración básica de la ventana
         setTitle("Proyectos Activos");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

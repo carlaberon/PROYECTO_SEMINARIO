@@ -7,23 +7,22 @@ import ar.edu.unrn.seminario.api.MemoryApi;
 import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
-import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
-
+import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.dto.RolDTO;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
 
 public class Inicio extends JFrame {
 
     private JFrame frame;
     private IApi api;
     private JPanel proyectosListPanel;
-    private UsuarioDTO usuarioActual; //obtener el usuario solicitando a la api
+    private UsuarioDTO usuarioActual;
     
     public Inicio(IApi api) {
     	this.api = api;
@@ -44,7 +43,7 @@ public class Inicio extends JFrame {
         menuBar.add(projectName);
         menuBar.add(Box.createHorizontalGlue());
 
-        JMenu accountMenu = new JMenu(usuarioActual.getUsername()); //pendiente
+        JMenu accountMenu = new JMenu(usuarioActual.getUsername()); 
         accountMenu.setForeground(Color.WHITE);
         accountMenu.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 
@@ -127,10 +126,11 @@ public class Inicio extends JFrame {
         				abrirVentanaResumen();
         			}
             	
-        		});
+            });
             
-        		proyectosListPanel.add(proyectoButton);
-           }
+            proyectosListPanel.add(proyectoButton);
+           
+            
         }
 
         JPanel proyectosButtonsPanel = new JPanel();
@@ -161,7 +161,7 @@ public class Inicio extends JFrame {
         frame.getContentPane().add(mainPanel);
 
         frame.setVisible(true);
-    }
+    }}
 
     private void formatButton(JButton button) {
         button.setForeground(Color.WHITE);
@@ -175,20 +175,17 @@ public class Inicio extends JFrame {
         listaProyectos.setVisible(true); // Hacer visible la ventana de proyectos
         actualizarProyectos();
     }
-    
+
     private void abrirVentanaResumen() {
         VentanaResumen ventanaResumen = new VentanaResumen(api); // Crear una instancia de VentanaResumen
         ventanaResumen.setVisible(true); // Hacer visible la ventana de resumen
     }
-
-
 
     
     public void actualizarProyectos() {
         proyectosListPanel.removeAll(); // Limpiar el panel actual
         
         List<ProyectoDTO> proyectos = api.obtenerProyectos(usuarioActual.getUsername()); // Obtener los proyectos actualizados
-        
         
 
         for (ProyectoDTO proyecto : proyectos) {
@@ -213,9 +210,10 @@ public class Inicio extends JFrame {
         proyectosListPanel.repaint();    // Repintar el panel
     }
 
-    //MAIN
-    public static void main(String[] args) throws NotNullException, DataEmptyException, InvalidDateException {
-    	
+
+
+    public static void main(String[] args) throws NotNullException, DataEmptyException, InvalidDateException{
+
     	IApi api = new MemoryApi();
     	UsuarioDTO usuario = api.obtenerUsuario("HernanPro");
     	api.setUsuarioActual(usuario.getUsername());
