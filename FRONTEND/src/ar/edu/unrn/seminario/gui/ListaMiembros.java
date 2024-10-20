@@ -120,10 +120,4 @@ public class ListaMiembros extends JFrame {
         setLocationRelativeTo(null); // Centrar en pantalla
         setVisible(true);
     }
-
-    public static void main(String[] args) throws NotNullException, DataEmptyException {
-    	IApi api = new MemoryApi();
-        ListaMiembros listamiembros = new ListaMiembros(api);
-        listamiembros.setVisible(true);
-    }
 }

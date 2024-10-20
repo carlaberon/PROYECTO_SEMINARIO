@@ -53,7 +53,6 @@ public class CrearProyecto extends JFrame {
 		setBounds(100, 100, 800, 650);
 		setSize(900,600);
 		getContentPane().setLayout(null);
-		
 		contentPane = new JPanel();
 		contentPane.setFont(new Font("Segoe UI", Font.PLAIN, 10));
 		contentPane.setBackground(new Color(81, 79, 89));

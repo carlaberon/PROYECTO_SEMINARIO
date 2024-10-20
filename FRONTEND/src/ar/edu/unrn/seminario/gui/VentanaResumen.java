@@ -199,12 +199,12 @@ public class VentanaResumen extends JFrame {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBackground(new Color(53, 52, 60));
-        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Margen interno
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); 
 
         JLabel label = new JLabel(title);
         label.setForeground(Color.WHITE);
         label.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        label.setAlignmentX(Component.LEFT_ALIGNMENT); // Alinear el título a la izquierda
+        label.setAlignmentX(Component.LEFT_ALIGNMENT); // ESTO ES PARA QUE HAGA EL MARGEN A LA IZQUIERDA
         panel.add(label);
 
         if (subtitle != null) {
@@ -215,9 +215,9 @@ public class VentanaResumen extends JFrame {
             subLabel.setLineWrap(true);
             subLabel.setWrapStyleWord(true);
             subLabel.setEditable(false);
-            subLabel.setFocusable(false);  // Evita que se enfoque al hacer clic
-            subLabel.setBorder(null); // Elimina bordes para que se vea más natural
-            subLabel.setAlignmentX(Component.LEFT_ALIGNMENT); // Alinear el subtítulo a la izquierda también
+            subLabel.setFocusable(false);  
+            subLabel.setBorder(null); 
+            subLabel.setAlignmentX(Component.LEFT_ALIGNMENT); // ESTO ES PARA QUE HAGA EL MARGEN A LA IZQUIERDA
             panel.add(subLabel);
         }
 
