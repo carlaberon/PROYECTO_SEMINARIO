@@ -43,8 +43,9 @@ public class CrearProyecto extends JFrame {
 	 * Create the frame.
 	 */
 	public CrearProyecto(IApi api) {
+		String name = null;
 		this.api = api;
-		this.proyectos = api.obtenerProyectos(); // Se obtienen los proyectos existentes
+		this.proyectos = api.obtenerProyectos(name); // Se obtienen los proyectos existentes
 		this.ventanaInicio = ventanaInicio;
 		
 		setTitle("Crear proyecto");

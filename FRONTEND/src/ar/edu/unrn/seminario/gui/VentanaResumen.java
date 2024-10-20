@@ -194,7 +194,7 @@ public class VentanaResumen extends JFrame {
         ventanaConfig.setVisible(true);
     }
 
-    // Método auxiliar para crear paneles con título y diseño consistente
+    // Método auxiliar para crear paneles con título y diseño consistente SOLO MODIFIQUE ESTE MODULO
     private JPanel createPanel(String title, String subtitle) {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -204,18 +204,26 @@ public class VentanaResumen extends JFrame {
         JLabel label = new JLabel(title);
         label.setForeground(Color.WHITE);
         label.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        label.setAlignmentX(Component.LEFT_ALIGNMENT); // Alinear el título a la izquierda
         panel.add(label);
 
         if (subtitle != null) {
-            JLabel subLabel = new JLabel(subtitle);
+            JTextArea subLabel = new JTextArea(subtitle);
             subLabel.setForeground(Color.GRAY);
             subLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-            subLabel.setPreferredSize(new Dimension(200, 40));
+            subLabel.setBackground(new Color(53, 52, 60));
+            subLabel.setLineWrap(true);
+            subLabel.setWrapStyleWord(true);
+            subLabel.setEditable(false);
+            subLabel.setFocusable(false);  // Evita que se enfoque al hacer clic
+            subLabel.setBorder(null); // Elimina bordes para que se vea más natural
+            subLabel.setAlignmentX(Component.LEFT_ALIGNMENT); // Alinear el subtítulo a la izquierda también
             panel.add(subLabel);
         }
 
         return panel;
     }
+
 
     // Método para crear botones con estilo
     private JButton createButton(String text, Color backgroundColor) {
