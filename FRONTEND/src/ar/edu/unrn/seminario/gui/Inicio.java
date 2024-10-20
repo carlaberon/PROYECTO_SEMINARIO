@@ -226,5 +226,7 @@ public class Inicio extends JFrame implements ProyectoModificadoListener{
 		api.setUsuarioActual(usuario.getUsername());
 		new Inicio(api);
 	}
+
+	
 }
 
