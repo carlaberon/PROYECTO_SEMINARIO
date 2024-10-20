@@ -1,31 +1,33 @@
 package ar.edu.unrn.seminario.gui;
 
 import javax.swing.*;
+
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.api.MemoryApi;
 import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
-import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
+import ar.edu.unrn.seminario.exception.InvalidDateException;
+import ar.edu.unrn.seminario.dto.RolDTO;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
 
-public class Inicio extends JFrame implements ProyectoModificadoListener {
+public class Inicio extends JFrame implements ProyectoModificadoListener{
 
     private JFrame frame;
     private IApi api;
     private JPanel proyectosListPanel;
-    private UsuarioDTO usuarioActual; //obtener el usuario solicitando a la api
-    private List<ProyectoModificadoListener> listeners = new ArrayList<>();
-
+    private UsuarioDTO usuarioActual;
+    
     public Inicio(IApi api) {
-        this.api = api;
-        this.usuarioActual = api.getUsuarioActual();
-
+    	this.api = api;
+    	this.usuarioActual = api.getUsuarioActual();
+    	
         frame = new JFrame("LabProject");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 600);
@@ -41,7 +43,7 @@ public class Inicio extends JFrame implements ProyectoModificadoListener {
         menuBar.add(projectName);
         menuBar.add(Box.createHorizontalGlue());
 
-        JMenu accountMenu = new JMenu(usuarioActual.getUsername());
+        JMenu accountMenu = new JMenu(usuarioActual.getUsername()); 
         accountMenu.setForeground(Color.WHITE);
         accountMenu.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 
@@ -56,7 +58,12 @@ public class Inicio extends JFrame implements ProyectoModificadoListener {
 
         logoutItem.addActionListener(e -> System.exit(0));
 
-        verTodosProyectosMenuItem.addActionListener(e -> abrirListaProyectos());
+        verTodosProyectosMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                abrirListaProyectos(); // Abrir la ventana de proyectos desde el menú
+            }
+        });
 
         frame.setJMenuBar(menuBar);
 
@@ -100,24 +107,45 @@ public class Inicio extends JFrame implements ProyectoModificadoListener {
         proyectosListPanel.setLayout(new BoxLayout(proyectosListPanel, BoxLayout.Y_AXIS));
         proyectosListPanel.setBackground(new Color(30, 30, 30));
 
-        // Obtener y mostrar proyectos
-        actualizarProyectos();
+        //BACK -> DTO -> FRONT
+        List<ProyectoDTO> proyectos = api.obtenerProyectos(usuarioActual.getUsername());
+        
+        if(!proyectos.isEmpty()) {
+        	for (ProyectoDTO proyecto : proyectos) {
+        		JButton proyectoButton = new JButton(proyecto.getNombre());
+        		proyectoButton.setForeground(Color.GRAY);
+        		proyectoButton.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        		
+        		proyectoButton.addActionListener( new ActionListener () {
+
+        			@Override
+        			public void actionPerformed(ActionEvent e) {
+        				// TODO Auto-generated method stub
+        				api.setProyectoActual(proyecto.getNombre());
+        				abrirVentanaResumen();
+        			}
+            	
+            });
+            
+            proyectosListPanel.add(proyectoButton);
+           
+            
+        }
 
         JPanel proyectosButtonsPanel = new JPanel();
         proyectosButtonsPanel.setBackground(new Color(30, 30, 30));
 
         JButton btnNuevoProyecto = new JButton("Proyecto +");
-        btnNuevoProyecto.addActionListener(e -> {
-            CrearProyecto crearProyecto = new CrearProyecto(api);
-            crearProyecto.addProyectoModificadoListener(this); // Registrar listener para actualización de proyectos
-            crearProyecto.setVisible(true);
+        btnNuevoProyecto.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		abrirCrearProyecto();
+        	}
         });
-
         JButton btnVerProyectos = new JButton("Ver todos los proyectos");
         formatButton(btnNuevoProyecto);
         formatButton(btnVerProyectos);
 
-        btnVerProyectos.addActionListener(e -> abrirListaProyectos());
+        btnVerProyectos.addActionListener(e -> abrirListaProyectos()); // Acción para el botón
         proyectosButtonsPanel.add(btnNuevoProyecto);
         proyectosButtonsPanel.add(btnVerProyectos);
 
@@ -129,8 +157,9 @@ public class Inicio extends JFrame implements ProyectoModificadoListener {
         mainPanel.add(rightPanel, BorderLayout.EAST);
 
         frame.getContentPane().add(mainPanel);
+
         frame.setVisible(true);
-    }
+    }}
 
     private void formatButton(JButton button) {
         button.setForeground(Color.WHITE);
@@ -139,68 +168,63 @@ public class Inicio extends JFrame implements ProyectoModificadoListener {
         button.setFont(new Font("Segoe UI", Font.PLAIN, 14));
     }
 
+    private void abrirCrearProyecto() {
+    	CrearProyecto crearProyecto = new CrearProyecto(api); // Crear una instancia de ListaProyectos
+        crearProyecto.addProyectoModificadoListener(Inicio.this);  // Registrar Inicio como listener de ProyectoEliminadoListener
+        crearProyecto.setVisible(true); // Hacer visible la ventana de proyectos
+    }
+    
     private void abrirListaProyectos() {
-        ListaProyectos listaProyectos = new ListaProyectos(api);
-        listaProyectos.addProyectoEliminadoListener(this);  // Registrar Inicio como listener de ProyectoEliminadoListener
-        listaProyectos.setVisible(true);
+        ListaProyectos listaProyectos = new ListaProyectos(api); // Crear una instancia de ListaProyectos
+        listaProyectos.addProyectoModificadoListener(this);  // Registrar Inicio como listener de ProyectoEliminadoListener
+        listaProyectos.setVisible(true); // Hacer visible la ventana de proyectos
     }
 
     private void abrirVentanaResumen() {
-        VentanaResumen ventanaResumen = new VentanaResumen(api);
-        ventanaResumen.setVisible(true);
+        VentanaResumen ventanaResumen = new VentanaResumen(api); // Crear una instancia de VentanaResumen
+        ventanaResumen.setVisible(true); // Hacer visible la ventana de resumen
     }
 
     public void actualizarProyectos() {
-        proyectosListPanel.removeAll(); // Limpiar el panel de proyectos
-
-        List<ProyectoDTO> proyectos = api.obtenerProyectos(usuarioActual.getUsername()); // Obtener proyectos
+        proyectosListPanel.removeAll(); // Limpiar el panel actual
+        
+        List<ProyectoDTO> proyectos = api.obtenerProyectos(usuarioActual.getUsername()); // Obtener los proyectos actualizados
+        
 
         for (ProyectoDTO proyecto : proyectos) {
             JButton proyectoButton = new JButton(proyecto.getNombre());
             proyectoButton.setForeground(Color.GRAY);
             proyectoButton.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+            
+            proyectoButton.addActionListener( new ActionListener () {
 
-            proyectoButton.addActionListener(e -> {
-                api.setProyectoActual(proyecto.getNombre());
-                abrirVentanaResumen();
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					api.setProyectoActual(proyecto.getNombre());
+					abrirVentanaResumen();
+				}
+            	
             });
-
+            
             proyectosListPanel.add(proyectoButton);
         }
-
-        proyectosListPanel.revalidate();
-        proyectosListPanel.repaint();
+        
+        proyectosListPanel.revalidate(); // Actualizar el panel
+        proyectosListPanel.repaint();    // Repintar el panel
     }
 
-    // Método que será llamado cuando un proyecto sea eliminado
-    @Override
-    public void proyectoEliminado() {
-        actualizarProyectos();
-    }
-
-    // Método para agregar un listener de proyecto modificado
-    public void addProyectoModificadoListener(ProyectoModificadoListener listener) {
-        listeners.add(listener);
-    }
-
-    // Notificar a todos los listeners que un proyecto ha sido modificado
-    private void notificarProyectoModificado() {
-        for (ProyectoModificadoListener listener : listeners) {
-            listener.proyectoModificado(); // Notifica que un proyecto fue modificado
-        }
-    }
-
-    // Método que se llama cuando un proyecto es creado o modificado
-    @Override
-    public void proyectoModificado() {
-        actualizarProyectos();
-    }
-
-    // MAIN
-    public static void main(String[] args) throws NotNullException, DataEmptyException, InvalidDateException {
-        IApi api = new MemoryApi();
-        UsuarioDTO usuario = api.obtenerUsuario("HernanPro");
-        api.setUsuarioActual(usuario.getUsername());
-        new Inicio(api);
-    }
+	@Override
+	public void proyectoEliminado() {
+		actualizarProyectos(); //Cuando se elimina un proyecto activa el metodo actualizarProyectos para actualizar Inicio
+	}
+    
+	public static void main(String[] args) throws NotNullException, DataEmptyException, InvalidDateException{
+		
+		IApi api = new MemoryApi();
+		UsuarioDTO usuario = api.obtenerUsuario("HernanPro");
+		api.setUsuarioActual(usuario.getUsername());
+		new Inicio(api);
+	}
 }
+
