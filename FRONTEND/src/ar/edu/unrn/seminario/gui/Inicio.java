@@ -17,7 +17,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.ArrayList;
 
-public class Inicio extends JFrame {
+public class Inicio extends JFrame implements ProyectoModificadoListener{
 
     private JFrame frame;
     private IApi api;
@@ -61,8 +61,7 @@ public class Inicio extends JFrame {
         verTodosProyectosMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                abrirListaProyectos(Inicio.this); // Abrir la ventana de proyectos desde el menú
-                
+                abrirListaProyectos(); // Abrir la ventana de proyectos desde el menú
             }
         });
 
@@ -147,7 +146,7 @@ public class Inicio extends JFrame {
         formatButton(btnNuevoProyecto);
         formatButton(btnVerProyectos);
 
-        btnVerProyectos.addActionListener(e -> abrirListaProyectos(Inicio.this)); // Acción para el botón
+        btnVerProyectos.addActionListener(e -> abrirListaProyectos()); // Acción para el botón
         proyectosButtonsPanel.add(btnNuevoProyecto);
         proyectosButtonsPanel.add(btnVerProyectos);
 
@@ -170,10 +169,10 @@ public class Inicio extends JFrame {
         button.setFont(new Font("Segoe UI", Font.PLAIN, 14));
     }
 
-    private void abrirListaProyectos(Inicio inicio) {
+    private void abrirListaProyectos() {
         ListaProyectos listaProyectos = new ListaProyectos(api); // Crear una instancia de ListaProyectos
+        listaProyectos.addProyectoEliminadoListener(this);  // Registrar Inicio como oyente de ProyectoEliminadoListener
         listaProyectos.setVisible(true); // Hacer visible la ventana de proyectos
-        actualizarProyectos();
     }
 
     private void abrirVentanaResumen() {
@@ -181,7 +180,6 @@ public class Inicio extends JFrame {
         ventanaResumen.setVisible(true); // Hacer visible la ventana de resumen
     }
 
-    
     public void actualizarProyectos() {
         proyectosListPanel.removeAll(); // Limpiar el panel actual
         
@@ -198,6 +196,7 @@ public class Inicio extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
+					api.setProyectoActual(proyecto.getNombre());
 					abrirVentanaResumen();
 				}
             	
@@ -219,4 +218,11 @@ public class Inicio extends JFrame {
     	api.setUsuarioActual(usuario.getUsername());
     	new Inicio(api);
     }
+
+	@Override
+	public void proyectoEliminado() {
+		actualizarProyectos(); //Cuando se elimina un proyecto activa el metodo actualizarProyectos para actualizar Inicio
+	}
+    
 }
+
