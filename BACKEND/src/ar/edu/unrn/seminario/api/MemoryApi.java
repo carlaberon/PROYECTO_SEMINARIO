@@ -17,6 +17,7 @@ import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.TareaDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
+import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.modelo.Evento;
 import ar.edu.unrn.seminario.modelo.Miembro;
@@ -39,7 +40,7 @@ public class MemoryApi implements IApi {
 
 
 
-	public MemoryApi() throws NotNullException, DataEmptyException {
+	public MemoryApi() throws NotNullException, DataEmptyException, InvalidDateException {
 		//Set<Proyecto> proyectos
 		// datos iniciales
 		this.roles.add(new Rol(1, "PROPIETARIO"));
@@ -52,7 +53,7 @@ public class MemoryApi implements IApi {
 	}
 	
 
-	private void inicializarProyecto() throws NotNullException, DataEmptyException{
+	private void inicializarProyecto() throws NotNullException, DataEmptyException, InvalidDateException{
 	    // Crear algunos usuarios para asignar a los proyectos
 	    Usuario user1 = new Usuario("HernanPro", "12", "Hernan", "eze@gmail.com", this.buscarRol(2)); // Observador
 	    Usuario user2 = new Usuario("bjgorosito", "1234", "Bruno", "bjgorosito@unrn.edu.ar", this.buscarRol(3)); // Colaborador
