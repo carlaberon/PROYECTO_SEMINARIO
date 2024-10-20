@@ -27,6 +27,7 @@ public class ListaProyectos extends JFrame {
 	private IApi api;
 	private JTable tabla;
 	private JButton eliminarProyecto;
+	private List<ProyectoModificadoListener> listeners = new ArrayList<>(); //En esta lista estan los oyentes de ProyectoEliminadoListener(Inicio)
 	
     public ListaProyectos(IApi api) {
     	this.api = api;
@@ -53,16 +54,17 @@ public class ListaProyectos extends JFrame {
         
         List<ProyectoDTO> proyectos = api.obtenerProyectos(api.getUsuarioActual().getUsername());
         
+        if(!proyectos.isEmpty()) {
+        	for (ProyectoDTO p : proyectos) {
+        		modelo.addRow(new Object[] {
+        				p.getNombre(), 
+        				p.getDescripcion(), 
+        				p.isEstado() ? "FINALIZADO" : "EN CURSO",
+        						p.getPrioridad(), 
+        						p.getUsuarioPropietario().getUsername()});
+        	}
+        }
         
-        for (ProyectoDTO p : proyectos) {
-			modelo.addRow(new Object[] {
-					p.getNombre(), 
-					p.getDescripcion(), 
-					p.isEstado() ? "FINALIZADO" : "EN CURSO",
-					p.getPrioridad(), 
-					p.getUsuarioPropietario().getUsername()});
-		}
-
      // Configurar render de la tabla
         tabla.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Override
@@ -124,10 +126,10 @@ public class ListaProyectos extends JFrame {
 						JOptionPane.YES_NO_OPTION);
 				if (opcionSeleccionada == JOptionPane.YES_OPTION) {
 					String projectName = (String) tabla.getModel().getValueAt(tabla.getSelectedRow(), 0);
-
 					api.eliminarProyecto(projectName);
 					actualizarTabla();
-					
+					notificarProyectoEliminado(); //Notifico a los oyentes una ves acepte el OptionPane de confirmar eliminacion.
+					habilitarBotones(false);
 				}
 				
 			}
@@ -220,14 +222,15 @@ public class ListaProyectos extends JFrame {
     			
     			// Resetea el model
     			modelo.setRowCount(0);
-    			
-    	        for (ProyectoDTO p : proyectos) {
-    				modelo.addRow(new Object[] {
-    						p.getNombre(), 
-    						p.getDescripcion(), 
-    						p.isEstado() ? "FINALIZADO" : "EN CURSO",
-    						p.getPrioridad(), 
-    						p.getUsuarioPropietario().getUsername()});
+    			if(!proyectos.isEmpty()) {
+    				for (ProyectoDTO p : proyectos) {
+    					modelo.addRow(new Object[] {
+    							p.getNombre(), 
+    							p.getDescripcion(), 
+    							p.isEstado() ? "FINALIZADO" : "EN CURSO",
+    							p.getPrioridad(), 
+    							p.getUsuarioPropietario().getUsername()});
+    				}
     			}
 
     }
@@ -246,4 +249,16 @@ public class ListaProyectos extends JFrame {
 	private void habilitarBotones(boolean b) {
 		eliminarProyecto.setEnabled(b);
 	}
+	
+	public void addProyectoEliminadoListener(ProyectoModificadoListener listener) { //Añadir un oyente a la lista tipo ProyectoEliminadoListener
+        listeners.add(listener);
+    }
+
+    // Método para notificar a los listeners
+    private void notificarProyectoEliminado() { //Notificar a los oyentes de el/los proyecto eliminados
+        for (ProyectoModificadoListener listener : listeners) {
+            listener.proyectoEliminado();
+        }
+    }
+	
 }

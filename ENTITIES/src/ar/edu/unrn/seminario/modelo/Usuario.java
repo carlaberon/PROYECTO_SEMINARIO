@@ -13,7 +13,7 @@ public class Usuario{
 	private Rol rol;
 	private Boolean activo;
 
-
+	
 	public Usuario(String usuario, String contrasena, String nombre, String email, Rol rol, Boolean activo) {
 
 		this.username = usuario;

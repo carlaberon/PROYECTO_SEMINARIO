@@ -122,7 +122,7 @@ public class MemoryApi implements IApi {
 	public List<UsuarioDTO> obtenerUsuarios() {
 		List<UsuarioDTO> dtos = new ArrayList<>();
 		for (Usuario u : this.usuarios) {
-			dtos.add(new UsuarioDTO(u.getUsername(),u.getContrasena(), u.getNombre(), u.getEmail(), convertirEnRolDTO(u.getRol()), u.isActivo()));
+			dtos.add(convertirEnUsuarioDTO(u));
 		}
 		return dtos;
 	}
@@ -132,7 +132,7 @@ public class MemoryApi implements IApi {
 		for(Usuario u: this.usuarios) {
 			if (u.getUsername().equals(username)) {
 				
-				UsuarioDTO user = new UsuarioDTO(u.getUsername(), u.getContrasena(), u.getNombre(), u.getEmail(), convertirEnRolDTO(u.getRol()), u.isActivo());
+				UsuarioDTO user = convertirEnUsuarioDTO(u);
 				return user;
 			}
 		}
@@ -385,8 +385,8 @@ public class MemoryApi implements IApi {
 
 	    // Si se encuentra el proyecto, eliminarlo
 	    if (proyectoAEliminar != null) {
+	    	System.out.println("El proyecto '" + proyectoAEliminar.getNombre() + "' ha sido eliminado.");
 	        this.proyectos.remove(proyectoAEliminar);
-	        System.out.println("El proyecto '" + nombreProyecto + "' ha sido eliminado.");
 	    }	 
 	}
 
@@ -440,7 +440,9 @@ public class MemoryApi implements IApi {
 	}
 	
 	private ProyectoDTO convertirEnProyectoDTO(Proyecto proyecto) {
-		ProyectoDTO proyectoDto = new ProyectoDTO(proyecto.getNombre(), convertirEnUsuarioDTO(proyecto.getUsuarioPropietario()), proyecto.getEstado(), proyecto.getPrioridad1(), proyecto.getDescripcion());
+		ProyectoDTO proyectoDto = null;
+		if(proyecto != null)
+			proyectoDto = new ProyectoDTO(proyecto.getNombre(), convertirEnUsuarioDTO(proyecto.getUsuarioPropietario()), proyecto.getEstado(), proyecto.getPrioridad1(), proyecto.getDescripcion());
 		return proyectoDto;
 	}
 	
