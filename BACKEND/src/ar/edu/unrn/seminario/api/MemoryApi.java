@@ -17,7 +17,6 @@ import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.TareaDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
-import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.modelo.Evento;
 import ar.edu.unrn.seminario.modelo.Miembro;
@@ -37,10 +36,13 @@ public class MemoryApi implements IApi {
 	//private Set<Plan> planeSet = new HashSet<>();
 	private List<TareaDTO> tareasDTO;
 	private Map<String, List<TareaDTO>> tareasPorProyecto = new HashMap<>();
+<<<<<<< HEAD
+=======
 
 
+>>>>>>> parent of b15bc66 (Merge branch 'Tomas' into Gabriel)
 
-	public MemoryApi() throws NotNullException, DataEmptyException, InvalidDateException {
+	public MemoryApi() throws NotNullException, DataEmptyException {
 		//Set<Proyecto> proyectos
 		// datos iniciales
 		this.roles.add(new Rol(1, "PROPIETARIO"));
@@ -53,16 +55,34 @@ public class MemoryApi implements IApi {
 	}
 	
 
+<<<<<<< HEAD
 	private void inicializarProyecto() throws NotNullException, DataEmptyException, InvalidDateException{
+=======
+	private void inicializarProyecto() throws NotNullException, DataEmptyException{
+			
+		
+>>>>>>> parent of b15bc66 (Merge branch 'Tomas' into Gabriel)
 	    // Crear algunos usuarios para asignar a los proyectos
 	    Usuario user1 = new Usuario("HernanPro", "12", "Hernan", "eze@gmail.com", this.buscarRol(2)); // Observador
 	    Usuario user2 = new Usuario("bjgorosito", "1234", "Bruno", "bjgorosito@unrn.edu.ar", this.buscarRol(3)); // Colaborador
 	    Usuario user3 = new Usuario("Tomas", "12345", "Pepe", "admin@unrn.edu.ar", this.buscarRol(1)); // Propietario
+<<<<<<< HEAD
 
 	    crearProyecto("Sistema de Gestión de Tareas", user1, true,"Sistema para gestionar tareas en equipo.", "media");
 
 	    LocalDateTime inicio = LocalDateTime.now();
 	    Tarea unaTarea = new Tarea("Ordenar tareas","Sistema de Gestión de Tareas","alta", user1.getNombre(), false, "descripcion", inicio, inicio); 
+=======
+	    usuarios.add(user1);
+	    usuarios.add(user2);
+	    usuarios.add(user3);
+	    //convertirEnUsuarioDTO(user1);
+	    crearProyecto("Sistema de Gestión de Tareas", user1.getUsername(), true,"Sistema para gestionar tareas en equipo.", "media");
+
+	    LocalDateTime inicio = LocalDateTime.now();
+	    LocalDateTime fin = LocalDateTime.now();
+	    Tarea unaTarea = new Tarea("Ordenar tareas","Sistema de Gestión de Tareas","alta", user1.getNombre(), false, "descripcion", inicio, fin); 
+>>>>>>> parent of b15bc66 (Merge branch 'Tomas' into Gabriel)
 	    añadirTareaAProyecto("Sistema de Gestión de Tareas", unaTarea);
 	    
 	    crearProyecto("Aplicación de votos", user2, false, "Aplicación para contar los votos de la municipalidad","alta");
@@ -74,12 +94,20 @@ public class MemoryApi implements IApi {
 	    LocalDateTime inicio3 = LocalDateTime.now();
 	    Tarea tarea_ = new Tarea("Ordenar eventos","Gestion de eventos","alta", user1.getNombre(), false, "Ordenar eventos por prioridad", inicio2, inicio3);
 	    añadirTareaAProyecto("Gestion de eventos", tarea_);
+<<<<<<< HEAD
+=======
+	    
+>>>>>>> parent of b15bc66 (Merge branch 'Tomas' into Gabriel)
 	    
 	    
 	    crearProyecto("Parciales", user1, false, "Informacion sobre como completar la informacion de los parciales de la carrera","media");
 	    LocalDateTime inicio4 = LocalDateTime.now();
 	    Tarea tarea_1 = new Tarea("Denifir plan de estudio","Parciales","alta", user1.getNombre(), false, "Definir plan de estudio", inicio2, inicio4);
 	    añadirTareaAProyecto("Parciales", tarea_1);
+<<<<<<< HEAD
+=======
+		 
+>>>>>>> parent of b15bc66 (Merge branch 'Tomas' into Gabriel)
 
 
 	}
@@ -267,8 +295,13 @@ public class MemoryApi implements IApi {
     @Override
     public List<ProyectoDTO> obtenerProyectos() {
         List<ProyectoDTO> dtos = new ArrayList<>();
+<<<<<<< HEAD
         for (ProyectoDTO p : this.proyectos) {
             dtos.add(new ProyectoDTO(p.getNombre(), new UsuarioDTO(p.getUsuarioPropietario().getUsername(), p.getUsuarioPropietario().getPassword(), p.getUsuarioPropietario().getNombre(), p.getUsuarioPropietario().getEmail(), p.getUsuarioPropietario().getRol(), p.getUsuarioPropietario().isActivo()), p.isEstado(), p.getPrioridad(), p.getDescripcion()));
+=======
+        for (Proyecto p : this.proyectos) {
+            dtos.add(new ProyectoDTO(p.getNombre(), convertirEnUsuarioDTO(p.getUsuarioPropietario()), p.getEstado(), p.getPrioridad1(), p.getDescripcion()));
+>>>>>>> parent of b15bc66 (Merge branch 'Tomas' into Gabriel)
         }
         return dtos;
     }
@@ -301,10 +334,40 @@ public class MemoryApi implements IApi {
 
 	@Override
 	
+<<<<<<< HEAD
 	public void crearProyecto(String nombre, Usuario usuarioPropietario, boolean estado, String descripcion, String prioridad) {
 		// Crear un nuevo proyecto con los parámetros recibidos
 	    Proyecto nuevoProyecto = new Proyecto(nombre, usuarioPropietario, estado, descripcion, prioridad);
 
+=======
+	public void crearProyecto(String nombre, UsuarioDTO usuario , boolean estado, String descripcion, String prioridad) throws NotNullException, DataEmptyException {
+	    // Validar que los campos no sean nulos
+	    if (esDatoNulo(nombre)) {
+	        throw new NotNullException("nombre");
+	    }
+	    if (esDatoNulo(descripcion)) {
+	        throw new NotNullException("descripcion");
+	    }
+	    if (esDatoNulo(prioridad)) {
+	        throw new NotNullException("prioridad");
+	    }
+
+	    // Validar que los campos no estén vacíos
+	    if (esDatoVacio(nombre)) {
+	        throw new DataEmptyException("nombre");
+	    }
+	    if (esDatoVacio(descripcion)) {
+	        throw new DataEmptyException("descripcion");
+	    }
+	    if (esDatoVacio(prioridad)) {
+	        throw new DataEmptyException("prioridad");
+	    }
+	    //PENDIENTE: CHEQUEAR QUE NO SEAN NULL, EXCEPTION
+	    Usuario propietario = buscarUsuario(usuario);
+	    
+		// Crear un nuevo proyecto con los parámetros recibidos
+	    Proyecto nuevoProyecto = new Proyecto(nombre, propietario, estado, descripcion, prioridad);
+>>>>>>> parent of b15bc66 (Merge branch 'Tomas' into Gabriel)
 	    
 	    // Agregar el proyecto a la colección de proyectos
 	    this.proyectos.add(nuevoProyecto);
@@ -364,5 +427,18 @@ public class MemoryApi implements IApi {
 	            return 0; // En caso de prioridad desconocida
 	    }
 	}
+<<<<<<< HEAD
+=======
+	
+	private RolDTO convertirEnRolDTO(Rol rol) {
+		RolDTO rolDto = new RolDTO(rol.getCodigo(), rol.getNombre(), rol.isActivo());
+		return null;
+	}
+	
+	private UsuarioDTO convertirEnUsuarioDTO(Usuario usuario) {
+		UsuarioDTO usuarioDto = new UsuarioDTO(usuario.getUsername(), usuario.getContrasena(), usuario.getNombre(), usuario.getEmail(), convertirEnRolDTO(usuario.getRol()), usuario.isActivo());
+		return usuarioDto;
+	}
+>>>>>>> parent of b15bc66 (Merge branch 'Tomas' into Gabriel)
 }
 

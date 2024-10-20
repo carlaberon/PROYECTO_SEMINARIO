@@ -42,7 +42,7 @@ public class CrearProyecto extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public CrearProyecto(IApi api) {
+	public CrearProyecto(IApi api, Inicio ventanaInicio) {
 		this.api = api;
 		this.proyectos = api.obtenerProyectos(); // Se obtienen los proyectos existentes
 		this.ventanaInicio = ventanaInicio;

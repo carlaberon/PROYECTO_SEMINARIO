@@ -29,9 +29,9 @@ public class ListaProyectos extends JFrame {
 	private Inicio ventanaInicio;
 	private JButton eliminarProyecto;
 	
-    public ListaProyectos(IApi api) {
+    public ListaProyectos(IApi api, Inicio inicio) {
     	this.api = api;
- 
+    	this.ventanaInicio = inicio;
         // Configuración básica de la ventana
         setTitle("Proyectos Activos");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
