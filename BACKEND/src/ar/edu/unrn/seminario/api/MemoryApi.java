@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -17,8 +19,8 @@ import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.TareaDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
-import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
+import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.modelo.Evento;
 import ar.edu.unrn.seminario.modelo.Miembro;
 import ar.edu.unrn.seminario.modelo.Plan;
@@ -27,40 +29,30 @@ import ar.edu.unrn.seminario.modelo.Rol;
 import ar.edu.unrn.seminario.modelo.Tarea;
 import ar.edu.unrn.seminario.modelo.Usuario;
 
-import java.util.Iterator;
-import java.util.Objects;
-
 public class MemoryApi implements IApi {
 
 	private Set<Rol> roles = new HashSet<>();
-	
 	private Set<Usuario> usuarios = new HashSet<>();
-	
 	private List<Tarea> tareas = new ArrayList<>();
-	
-	private Set<ProyectoDTO> proyectosDTO = new HashSet<>();
-	
-	private Set<Evento> eventos = new HashSet<>();
-	
-	//private Set<Plan> planeSet = new HashSet<>();
-	
-	private List<TareaDTO> tareasDTO;
-	
-	private Map<String, List<TareaDTO>> tareasPorProyecto = new HashMap<>();
-	
 	private Set<Proyecto> proyectos = new HashSet<>();
+	private Set<Evento> eventos = new HashSet<>();
+	//private Set<Plan> planeSet = new HashSet<>();
+	private List<TareaDTO> tareasDTO;
+	private Map<String, List<TareaDTO>> tareasPorProyecto = new HashMap<>();
+	private Proyecto proyectoActual; // PARA VER
+	private Usuario  usuarioActual; // PARA VER
 
-	private Proyecto proyectoActual;
-	
-	private Usuario usuarioActual; 
-	
-	public MemoryApi() throws NotNullException, DataEmptyException, InvalidDateException{
+
+
+
+
+	public MemoryApi() throws NotNullException, DataEmptyException, InvalidDateException {
 		//Set<Proyecto> proyectos
 		// datos iniciales
 		this.roles.add(new Rol(1, "PROPIETARIO"));
 		this.roles.add(new Rol(2, "OBSERVADOR"));
 		this.roles.add(new Rol(3, "COLABORADOR"));
-		
+//		inicializarUsuarios();
 		inicializarProyecto();
 
 		
@@ -68,25 +60,23 @@ public class MemoryApi implements IApi {
 	
 
 	private void inicializarProyecto() throws NotNullException, DataEmptyException, InvalidDateException{
-
 			
+		
 	    // Crear algunos usuarios para asignar a los proyectos
 	    Usuario user1 = new Usuario("HernanPro", "12", "Hernan", "eze@gmail.com", this.buscarRol(2)); // Observador
 	    Usuario user2 = new Usuario("bjgorosito", "1234", "Bruno", "bjgorosito@unrn.edu.ar", this.buscarRol(3)); // Colaborador
 	    Usuario user3 = new Usuario("Tomas", "12345", "Pepe", "admin@unrn.edu.ar", this.buscarRol(1)); // Propietario
-
-	    
 	    usuarios.add(user1);
 	    usuarios.add(user2);
 	    usuarios.add(user3);
-	    //convertirEnUsuarioDTO(user1);
+
 	    crearProyecto("Sistema de Gestión de Tareas", user1.getUsername(), true,"Sistema para gestionar tareas en equipo.", "media");
 
 	    LocalDateTime inicio = LocalDateTime.now();
 	    LocalDateTime fin = LocalDateTime.now();
 	    Tarea unaTarea = new Tarea("Ordenar tareas","Sistema de Gestión de Tareas","alta", user1.getNombre(), false, "descripcion", inicio, fin); 
-	    añadirTareaAProyecto("Sistema de Gestión de Tareas", unaTarea);
 	    this.tareas.add(unaTarea);
+	    añadirTareaAProyecto("Sistema de Gestión de Tareas", unaTarea);
 	    
 	    crearProyecto("Aplicación de votos", user2.getUsername(), false, "Aplicación para contar los votos de la municipalidad","alta");
 	    LocalDateTime inicio2 = LocalDateTime.now();
@@ -96,19 +86,26 @@ public class MemoryApi implements IApi {
 	    
 	    crearProyecto("Gestion de eventos", user3.getUsername(), true, "Proyecto para desarrollar gestion de los eventos de ","baja");
 	    LocalDateTime inicio3 = LocalDateTime.now();
-	    Tarea tarea1= new Tarea("Ordenar eventos","Gestion de eventos","alta", user1.getNombre(), false, "Ordenar eventos por prioridad", inicio2, inicio3);
-	    añadirTareaAProyecto("Gestion de eventos", tarea1); 
-	    this.tareas.add(tarea1);
+	    Tarea tarea_ = new Tarea("Ordenar eventos","Gestion de eventos","alta", user1.getNombre(), false, "Ordenar eventos por prioridad", inicio2, inicio3);
+	    añadirTareaAProyecto("Gestion de eventos", tarea_);
+	    this.tareas.add(tarea_);
 	    
 	    crearProyecto("Parciales", user1.getUsername(), false, "Informacion sobre como completar la informacion de los parciales de la carrera","media");
 	    LocalDateTime inicio4 = LocalDateTime.now();
 	    Tarea tarea_1 = new Tarea("Denifir plan de estudio","Parciales","alta", user1.getNombre(), false, "Definir plan de estudio", inicio2, inicio4);
 	    añadirTareaAProyecto("Parciales", tarea_1);
-	    this.tareas.add(tarea_1);
+		 this.tareas.add(tarea_1);
 
 
 	}
 
+
+//	private void inicializarUsuarios() {
+//		registrarUsuario("admin", "1234", "admin@unrn.edu.ar", "Admin", 1);
+//		registrarUsuario("ldifabio", "4", "ldifabio@unrn.edu.ar", "Lucas", 2);
+//		registrarUsuario("bjgorosito", "1234", "bjgorosito@unrn.edu.ar", "Bruno", 3);
+//
+//	}
 
 	@Override
 	public void registrarUsuario(String username, String password, String email, String nombre, Integer rol) {
@@ -124,29 +121,20 @@ public class MemoryApi implements IApi {
 	@Override
 	public List<UsuarioDTO> obtenerUsuarios() {
 		List<UsuarioDTO> dtos = new ArrayList<>();
-		
-		if (! this.usuarios.isEmpty()) {
-		
-			for (Usuario u : this.usuarios) {
-			
-				dtos.add(new UsuarioDTO(u.getUsername(),u.getContrasena(), u.getNombre(), u.getEmail(), convertirEnRolDTO(u.getRol()), u.isActivo()));
-			}
+		for (Usuario u : this.usuarios) {
+			dtos.add(convertirEnUsuarioDTO(u));
 		}
-		
 		return dtos;
 	}
 
 	@Override
 	public UsuarioDTO obtenerUsuario(String username) {
-		if (! this.usuarios.isEmpty() ) {
-			for(Usuario u: this.usuarios) {
-				if (u.getUsername().equals(username)) {
-					
-					UsuarioDTO user = new UsuarioDTO(u.getUsername(), u.getContrasena(), u.getNombre(), u.getEmail(), convertirEnRolDTO(u.getRol()), u.isActivo());
-					return user;
-				}
-		}
-
+		for(Usuario u: this.usuarios) {
+			if (u.getUsername().equals(username)) {
+				
+				UsuarioDTO user = convertirEnUsuarioDTO(u);
+				return user;
+			}
 		}
 		
 		return null;
@@ -161,25 +149,19 @@ public class MemoryApi implements IApi {
 	@Override
 	public List<RolDTO> obtenerRoles() {
 		List<RolDTO> dtos = new ArrayList<>();
-		if (!roles.isEmpty()) {
-			for (Rol r : this.roles) {
-				dtos.add(new RolDTO(r.getCodigo(), r.getNombre()));
-			}
+		for (Rol r : this.roles) {
+			dtos.add(new RolDTO(r.getCodigo(), r.getNombre()));
 		}
-		
 		return dtos;
 	}
 
 	@Override
 	public List<RolDTO> obtenerRolesActivos() {
 		List<RolDTO> dtos = new ArrayList<>();
-		if (! roles.isEmpty()) {
-			for (Rol r : this.roles) {
-				if (r.isActivo())
-					dtos.add(new RolDTO(r.getCodigo(), r.getNombre()));
-			}
+		for (Rol r : this.roles) {
+			if (r.isActivo())
+				dtos.add(new RolDTO(r.getCodigo(), r.getNombre()));
 		}
-		
 		return dtos;
 	}
 
@@ -230,16 +212,12 @@ public class MemoryApi implements IApi {
 	}
 
 	private Usuario buscarUsuario(String usuario) {
-		if (! usuarios.isEmpty()) { 
-			for (Usuario user : usuarios) {
-				if (user.getUsername().equals(usuario))
-					return user;
-			}
+		for (Usuario user : usuarios) {
+			if (user.getUsername().equals(usuario))
+				return user;
 		}
-
 		return null;
 	}
-	
 
 	public void registrarTarea(String name, String project, String priority, String user, boolean estado, String descripcion, LocalDateTime inicio, LocalDateTime fin) throws DataEmptyException, NotNullException, InvalidDateException {
 	    Tarea tarea = new Tarea(name, project, priority, user, estado, descripcion, inicio, fin);
@@ -249,12 +227,13 @@ public class MemoryApi implements IApi {
 	
 	public List<TareaDTO> obtenerTareas() {
 	    List<TareaDTO> tareasDTO = new ArrayList<>();
+	    
 	    if (! this.tareas.isEmpty()) {
-		    for (Tarea t : this.tareas) {  
-		        tareasDTO.add(new TareaDTO(t.getNombre(), t.getProyecto(), t.getPrioridad(), t.getUsuario(), t.isEstado(), t.getDescripcion(), null, null));
+	    	for (Tarea t : this.tareas) {  
+		        tareasDTO.add(new TareaDTO(t.getNombre(), t.getProyecto(), t.getPrioridad(), t.getUsuario(), t.isEstado(), t.getDescripcion(),t.getInicio(), t.getFin()));
 		    }
 	    }
-
+	    
 	    return tareasDTO;
 	}
 	
@@ -270,7 +249,6 @@ public class MemoryApi implements IApi {
 	        }
 	    }
 	}
-	
 	public void añadirTareaAProyecto(String proyecto, Tarea unaTarea) {
 
 		TareaDTO tarea = new TareaDTO(
@@ -321,6 +299,7 @@ public class MemoryApi implements IApi {
     @Override
     public List<ProyectoDTO> obtenerProyectos(String username) {
         List<ProyectoDTO> dtos = new ArrayList<>();
+        
         if(!proyectos.isEmpty()) {
         	for (Proyecto p : this.proyectos) {
         		if(p.existeMiembro(obtenerUsuarioDominio(username)))
@@ -360,7 +339,7 @@ public class MemoryApi implements IApi {
 
 	@Override
 	
-public void crearProyecto(String nombre, String usuarioPropietario , boolean estado, String descripcion, String prioridad) throws NotNullException, DataEmptyException {
+	public void crearProyecto(String nombre, String usuarioPropietario , boolean estado, String descripcion, String prioridad) throws NotNullException, DataEmptyException {
 	    // Validar que los campos no sean nulos
 	    if (esDatoNulo(nombre)) {
 	        throw new NotNullException("nombre");
@@ -382,14 +361,12 @@ public void crearProyecto(String nombre, String usuarioPropietario , boolean est
 	    if (esDatoVacio(prioridad)) {
 	        throw new DataEmptyException("prioridad");
 	    }
-	   
+	    //PENDIENTE: CHEQUEAR QUE NO SEAN NULL, EXCEPTION
 	    Usuario propietario = buscarUsuario(usuarioPropietario);
 	    
 		// Crear un nuevo proyecto con los parámetros recibidos
 	    Proyecto nuevoProyecto = new Proyecto(nombre, propietario, estado, descripcion, prioridad);
-
 	    nuevoProyecto.agregarMiembro(propietario);
-	    
 	    // Agregar el proyecto a la colección de proyectos
 	    this.proyectos.add(nuevoProyecto);
 	}
@@ -408,8 +385,8 @@ public void crearProyecto(String nombre, String usuarioPropietario , boolean est
 
 	    // Si se encuentra el proyecto, eliminarlo
 	    if (proyectoAEliminar != null) {
+	    	System.out.println("El proyecto '" + proyectoAEliminar.getNombre() + "' ha sido eliminado.");
 	        this.proyectos.remove(proyectoAEliminar);
-	        System.out.println("El proyecto '" + nombreProyecto + "' ha sido eliminado.");
 	    }	 
 	}
 
@@ -430,7 +407,7 @@ public void crearProyecto(String nombre, String usuarioPropietario , boolean est
 			}
 		}
 	}
-	
+		
 	private boolean esDatoVacio(String dato) {
 		return dato.equals("");
 	}
@@ -438,7 +415,6 @@ public void crearProyecto(String nombre, String usuarioPropietario , boolean est
 	private boolean esDatoNulo(String dato) {
 		return dato == null;
 	}
-		
 
 	public int obtenerValorPrioridad(String prioridad) {
 	    switch (prioridad) {
@@ -463,9 +439,10 @@ public void crearProyecto(String nombre, String usuarioPropietario , boolean est
 		return usuarioDto;
 	}
 	
-	
 	private ProyectoDTO convertirEnProyectoDTO(Proyecto proyecto) {
-		ProyectoDTO proyectoDto = new ProyectoDTO(proyecto.getNombre(), convertirEnUsuarioDTO(proyecto.getUsuarioPropietario()), proyecto.getEstado(), proyecto.getPrioridad1(), proyecto.getDescripcion());
+		ProyectoDTO proyectoDto = null;
+		if(proyecto != null)
+			proyectoDto = new ProyectoDTO(proyecto.getNombre(), convertirEnUsuarioDTO(proyecto.getUsuarioPropietario()), proyecto.getEstado(), proyecto.getPrioridad1(), proyecto.getDescripcion());
 		return proyectoDto;
 	}
 	
@@ -501,6 +478,5 @@ public void crearProyecto(String nombre, String usuarioPropietario , boolean est
 	public void setUsuarioActual(String nombreUsuario) {
 		this.usuarioActual = obtenerUsuarioDominio(nombreUsuario);
 	}
-	
 }
 
