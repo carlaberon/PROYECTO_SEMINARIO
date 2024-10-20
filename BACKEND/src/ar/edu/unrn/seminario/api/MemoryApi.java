@@ -408,15 +408,6 @@ public void crearProyecto(String nombre, String usuarioPropietario , boolean est
 			}
 		}
 	}
-	
-	private boolean esDatoVacio(String dato) {
-		return dato.equals("");
-	}
-
-	private boolean esDatoNulo(String dato) {
-		return dato == null;
-	}
-		
 
 	public int obtenerValorPrioridad(String prioridad) {
 	    switch (prioridad) {
