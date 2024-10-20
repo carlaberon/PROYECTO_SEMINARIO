@@ -38,14 +38,18 @@ public class CrearProyecto extends JFrame {
 	private UsuarioDTO usuarioPropietario;
 	private JTextField descripcionTextField;
 	private Inicio ventanaInicio;
-	
+	private UsuarioDTO usuarioActual;
 	/**
 	 * Create the frame.
 	 */
-	public CrearProyecto(IApi api, Inicio ventanaInicio) {
+	//ESTA VENTANA ESTA INCOMPLETA
+	
+	public CrearProyecto(IApi api) {
 		this.api = api;
-		this.proyectos = api.obtenerProyectos(); // Se obtienen los proyectos existentes
-		this.ventanaInicio = ventanaInicio;
+	
+		this.usuarioActual = api.getUsuarioActual();
+		
+		this.proyectos = api.obtenerProyectos(usuarioActual.getUsername());
 		
 		setTitle("Crear proyecto");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

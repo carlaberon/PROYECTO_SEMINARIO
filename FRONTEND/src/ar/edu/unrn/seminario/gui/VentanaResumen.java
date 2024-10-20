@@ -14,15 +14,15 @@ import ar.edu.unrn.seminario.api.MemoryApi;
 public class VentanaResumen extends JFrame {
 
     private JPanel contentPane;
-    private UsuarioDTO usuarioActual;
-    
-    private ProyectoDTO unproyecto;
     private IApi api;
-    public VentanaResumen(IApi api, ProyectoDTO proyecto, UsuarioDTO usuarioActual) {
+    private UsuarioDTO usuarioActual; //obtener usuario actual por medio de la api
+    private ProyectoDTO unproyecto; //obtener proyecto por medio de la api
+    
+    public VentanaResumen(IApi api) {
 
-    	this.unproyecto = proyecto; 
     	this.api = api;
-    	this.usuarioActual = usuarioActual;
+    	this.usuarioActual = api.getUsuarioActual();
+    	this.unproyecto = api.getProyectoActual();
         
         setTitle("");
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
@@ -59,7 +59,7 @@ public class VentanaResumen extends JFrame {
         centerPanel.add(appName);
         menuBar.add(centerPanel);
 
-        JMenu accountMenu = new JMenu(usuarioActual.getNombre());
+        JMenu accountMenu = new JMenu(usuarioActual.getUsername());
         accountMenu.setForeground(Color.WHITE);
         accountMenu.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 
@@ -126,11 +126,11 @@ public class VentanaResumen extends JFrame {
         centerPanel1.setBorder(new EmptyBorder(20, 20, 20, 20)); // Margen alrededor del contenido
 
         // Descripción del proyecto
-        JPanel descPanel = createPanel("Descripción del proyecto", proyecto.getDescripcion());
+        JPanel descPanel = createPanel("Descripción del proyecto",unproyecto.getDescripcion());
         centerPanel1.add(descPanel);
 
         // Estado del proyecto
-        JPanel estadoPanel = createPanel("Estado del proyecto", "No definido");
+        JPanel estadoPanel = createPanel("Estado del proyecto",unproyecto.isEstado() ? "FINALIZADO" : "EN CURSO");
         centerPanel1.add(estadoPanel);
 
         // Detalles del plan
@@ -179,7 +179,7 @@ public class VentanaResumen extends JFrame {
         btnVerTareas.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
             String nombreProyecto = unproyecto.getNombre(); // Este método obtiene el nombre del proyecto seleccionado
-            VentanaTareas ventanaTareas = new VentanaTareas(api, nombreProyecto, usuarioActual);
+            VentanaTareas ventanaTareas = new VentanaTareas(api);
             ventanaTareas.setVisible(true);
         }
     });
@@ -191,7 +191,7 @@ public class VentanaResumen extends JFrame {
     private void abrirPanelConfiguracion() {
         // Lógica para mostrar el panel de configuración
         // Puedes implementar esto como desees
-        VentanaConfigurarProyecto ventanaConfig = new VentanaConfigurarProyecto(api,unproyecto);
+        VentanaConfigurarProyecto ventanaConfig = new VentanaConfigurarProyecto(api);
         ventanaConfig.setVisible(true);
     }
 
@@ -225,7 +225,7 @@ public class VentanaResumen extends JFrame {
         button.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         button.setBorderPainted(false);
         button.setFocusPainted(false);
-        button.setPreferredSize(new Dimension(120, 40));
+        button.setPreferredSize(new Dimension(200, 40));
         return button;
     }
 

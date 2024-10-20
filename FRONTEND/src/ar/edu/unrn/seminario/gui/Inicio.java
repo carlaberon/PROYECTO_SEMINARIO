@@ -8,12 +8,14 @@ import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.NotNullException;
+import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.dto.RolDTO;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.ArrayList;
 
 public class Inicio extends JFrame {
 
@@ -22,9 +24,9 @@ public class Inicio extends JFrame {
     private JPanel proyectosListPanel;
     private UsuarioDTO usuarioActual;
     
-    public Inicio(IApi api, UsuarioDTO usuarioActual) {
+    public Inicio(IApi api) {
     	this.api = api;
-    	this.usuarioActual = usuarioActual;
+    	this.usuarioActual = api.getUsuarioActual();
     	
         frame = new JFrame("LabProject");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -41,7 +43,7 @@ public class Inicio extends JFrame {
         menuBar.add(projectName);
         menuBar.add(Box.createHorizontalGlue());
 
-        JMenu accountMenu = new JMenu("OBTENER NOMBRE DEL USUARIO ACTUAL"); //pendiente
+        JMenu accountMenu = new JMenu(usuarioActual.getUsername()); 
         accountMenu.setForeground(Color.WHITE);
         accountMenu.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 
@@ -107,21 +109,22 @@ public class Inicio extends JFrame {
         proyectosListPanel.setBackground(new Color(30, 30, 30));
 
         //BACK -> DTO -> FRONT
-        List<ProyectoDTO> proyectos = api.obtenerProyectos();
-        proyectos.sort((p1, p2) -> Integer.compare(api.obtenerValorPrioridad(p1.getPrioridad()), api.obtenerValorPrioridad(p2.getPrioridad())));
+        List<ProyectoDTO> proyectos = api.obtenerProyectos(usuarioActual.getUsername());
         
-        for (ProyectoDTO proyecto : proyectos) {
-            JButton proyectoButton = new JButton(proyecto.getNombre());
-            proyectoButton.setForeground(Color.GRAY);
-            proyectoButton.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-            
-            proyectoButton.addActionListener( new ActionListener () {
+        if(!proyectos.isEmpty()) {
+        	for (ProyectoDTO proyecto : proyectos) {
+        		JButton proyectoButton = new JButton(proyecto.getNombre());
+        		proyectoButton.setForeground(Color.GRAY);
+        		proyectoButton.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        		
+        		proyectoButton.addActionListener( new ActionListener () {
 
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					// TODO Auto-generated method stub
-					abrirVentanaResumen(proyecto);
-				}
+        			@Override
+        			public void actionPerformed(ActionEvent e) {
+        				// TODO Auto-generated method stub
+        				api.setProyectoActual(proyecto.getNombre());
+        				abrirVentanaResumen();
+        			}
             	
             });
             
@@ -136,7 +139,7 @@ public class Inicio extends JFrame {
         JButton btnNuevoProyecto = new JButton("Proyecto +");
         btnNuevoProyecto.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		CrearProyecto crearProyecto = new CrearProyecto(api, Inicio.this);
+        		CrearProyecto crearProyecto = new CrearProyecto(api);
         		crearProyecto.setVisible(true);
         	}
         });
@@ -158,7 +161,7 @@ public class Inicio extends JFrame {
         frame.getContentPane().add(mainPanel);
 
         frame.setVisible(true);
-    }
+    }}
 
     private void formatButton(JButton button) {
         button.setForeground(Color.WHITE);
@@ -168,13 +171,13 @@ public class Inicio extends JFrame {
     }
 
     private void abrirListaProyectos(Inicio inicio) {
-        ListaProyectos listaProyectos = new ListaProyectos(api,inicio); // Crear una instancia de ListaProyectos
+        ListaProyectos listaProyectos = new ListaProyectos(api); // Crear una instancia de ListaProyectos
         listaProyectos.setVisible(true); // Hacer visible la ventana de proyectos
         actualizarProyectos();
     }
 
-    private void abrirVentanaResumen(ProyectoDTO proyecto) {
-        VentanaResumen ventanaResumen = new VentanaResumen(api, proyecto, usuarioActual); // Crear una instancia de VentanaResumen
+    private void abrirVentanaResumen() {
+        VentanaResumen ventanaResumen = new VentanaResumen(api); // Crear una instancia de VentanaResumen
         ventanaResumen.setVisible(true); // Hacer visible la ventana de resumen
     }
 
@@ -182,9 +185,8 @@ public class Inicio extends JFrame {
     public void actualizarProyectos() {
         proyectosListPanel.removeAll(); // Limpiar el panel actual
         
-        List<ProyectoDTO> proyectos = api.obtenerProyectos(); // Obtener los proyectos actualizados
+        List<ProyectoDTO> proyectos = api.obtenerProyectos(usuarioActual.getUsername()); // Obtener los proyectos actualizados
         
-        proyectos.sort((p1, p2) -> Integer.compare(api.obtenerValorPrioridad(p1.getPrioridad()), api.obtenerValorPrioridad(p2.getPrioridad())));
 
         for (ProyectoDTO proyecto : proyectos) {
             JButton proyectoButton = new JButton(proyecto.getNombre());
@@ -196,7 +198,7 @@ public class Inicio extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
-					abrirVentanaResumen(proyecto);
+					abrirVentanaResumen();
 				}
             	
             });
@@ -210,11 +212,11 @@ public class Inicio extends JFrame {
 
 
 
-    public static void main(String[] args) throws NotNullException, DataEmptyException{
+    public static void main(String[] args) throws NotNullException, DataEmptyException, InvalidDateException{
+
     	IApi api = new MemoryApi();
-    	RolDTO rol = new RolDTO(1, "Propietario", true);
-    	UsuarioDTO usuario = new UsuarioDTO("admin", "1234", "Admin", "admin@unrn.edu.ar", rol, true);
-    	
-    	new Inicio(api,usuario);
+    	UsuarioDTO usuario = api.obtenerUsuario("HernanPro");
+    	api.setUsuarioActual(usuario.getUsername());
+    	new Inicio(api);
     }
 }

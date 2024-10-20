@@ -21,6 +21,7 @@ import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.TareaDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
+import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
 
 import javax.swing.JTextArea;
@@ -40,15 +41,15 @@ public class CrearTarea extends JFrame {
     private List<ProyectoDTO> proyectos = new ArrayList<>();
     private List<UsuarioDTO> usuarios = new ArrayList<>();
 
-    private VentanaTareas ventanaTareas;
+    private IApi api;
+    
+    public CrearTarea(IApi api) {
 
-    public CrearTarea(IApi api,VentanaTareas ventanaTareas) {
-
-        this.ventanaTareas = (VentanaTareas) ventanaTareas;
+        this.api = api; 
         
         this.usuarios = api.obtenerUsuarios();
-
-        this.proyectos = api.obtenerProyectos();// con esto le envio directamente los proyectos creados
+        //OBTENER NOMBRE DEL USUARIO ACTUAL
+        this.proyectos = api.obtenerProyectos("NOMBRE_DEL_USUARIO_ACTUAL");
 
         setTitle("Crear Tarea");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -162,12 +163,9 @@ public class CrearTarea extends JFrame {
                                 .atZone(ZoneId.systemDefault())
                                 .toLocalDateTime();
                         
-                     // Crear una nueva tarea
-                        
-                       //api.registrarTarea(nombreTarea, proyectoSeleccionado, prioridadTarea, usuario.getUsername(), false, descripcionTarea, fechaInicioLocalDateTime, fechaFinLocalDateTime);
-                        api.registrarTarea(nombreTarea, proyectoSeleccionado, nombres, usuario, false, descripcionTarea, fechaInicioLocalDateTime, fechaFinLocalDateTime);
-                        ((VentanaTareas) ventanaTareas).actualizarTabla();
-                        
+                       
+                      api.registrarTarea(nombreTarea,proyectoSeleccionado,prioridadTarea,usuario.getUsername(), false, descripcionTarea,fechaInicioLocalDateTime, fechaFinLocalDateTime);
+                       
                         JOptionPane.showMessageDialog(null, "Tarea creada con éxito!", "Info", JOptionPane.INFORMATION_MESSAGE);
                         setVisible(false);
                         dispose();
@@ -177,11 +175,15 @@ public class CrearTarea extends JFrame {
                 		
                 		JOptionPane.showMessageDialog(null,"Completar los campos de fecha", "Error", JOptionPane.ERROR_MESSAGE);
                 	} catch (DataEmptyException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+                		JOptionPane.showMessageDialog(null,"La tarea debe tener" +" " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                		
 					} catch (NotNullException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						
+						JOptionPane.showMessageDialog(null,"La tarea debe tener" +" " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+						
+					} catch (InvalidDateException e) {
+
+						JOptionPane.showMessageDialog(null,"Ingrese fechas válidas: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 					}
                 	
      
@@ -198,7 +200,7 @@ public class CrearTarea extends JFrame {
         });
     }
     
-    public static void main (String []args) throws NotNullException, DataEmptyException {
+    public static void main (String []args) throws NotNullException, DataEmptyException, InvalidDateException {
     	
     	IApi api= new MemoryApi();
     	

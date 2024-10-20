@@ -1,6 +1,8 @@
 
 package ar.edu.unrn.seminario.modelo;
 
+import java.util.Objects;
+
 import ar.edu.unrn.seminario.exception.StateChangeException;
 
 public class Usuario{
@@ -102,30 +104,21 @@ public class Usuario{
 	}
 	
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((username == null) ? 0 : username.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Usuario other = (Usuario) obj;
-		if (username == null) {
-			if (other.username != null)
-				return false;
-		} else if (!username.equals(other.username))
-			return false;
-		return true;
-	}
+	// Sobrescrir equals() para comparar usuarios por el username
+	// Sobrescribimos equals() para comparar usuarios por el username
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;  // Si es el mismo objeto, son iguales
+        if (obj == null || getClass() != obj.getClass()) return false;  // Verificamos que sean de la misma clase
+        Usuario usuario = (Usuario) obj;  // Hacer cast seguro
+        return Objects.equals(username, usuario.username);  // Comparar por username
+    }
+    
+    // Sobrescrir hashCode() usando el username
+    @Override
+    public int hashCode() {
+        return Objects.hash(username);  // Generar un hash basado solo en el username
+    }
 
 }
 
