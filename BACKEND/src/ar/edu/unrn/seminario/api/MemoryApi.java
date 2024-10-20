@@ -62,7 +62,7 @@ public class MemoryApi implements IApi {
 	    usuarios.add(user1);
 	    usuarios.add(user2);
 	    usuarios.add(user3);
-
+	    //convertirEnUsuarioDTO(user1);
 	    crearProyecto("Sistema de Gestión de Tareas", user1.getUsername(), true,"Sistema para gestionar tareas en equipo.", "media");
 
 	    LocalDateTime inicio = LocalDateTime.now();
@@ -307,7 +307,7 @@ public class MemoryApi implements IApi {
 
 	@Override
 	
-	public void crearProyecto(String nombre, String usuarioPropietario , boolean estado, String descripcion, String prioridad) throws NotNullException, DataEmptyException {
+	public void crearProyecto(String nombre, UsuarioDTO usuario , boolean estado, String descripcion, String prioridad) throws NotNullException, DataEmptyException {
 	    // Validar que los campos no sean nulos
 	    if (esDatoNulo(nombre)) {
 	        throw new NotNullException("nombre");
@@ -330,7 +330,7 @@ public class MemoryApi implements IApi {
 	        throw new DataEmptyException("prioridad");
 	    }
 	    //PENDIENTE: CHEQUEAR QUE NO SEAN NULL, EXCEPTION
-	    Usuario propietario = buscarUsuario(usuarioPropietario);
+	    Usuario propietario = buscarUsuario(usuario);
 	    
 		// Crear un nuevo proyecto con los parámetros recibidos
 	    Proyecto nuevoProyecto = new Proyecto(nombre, propietario, estado, descripcion, prioridad);

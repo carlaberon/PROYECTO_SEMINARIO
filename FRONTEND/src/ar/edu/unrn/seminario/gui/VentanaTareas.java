@@ -38,8 +38,7 @@ import ar.edu.unrn.seminario.dto.TareaDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.NotNullException;
-import ar.edu.unrn.seminario.modelo.Tarea;
-import ar.edu.unrn.seminario.modelo.Usuario;
+
 
 public class VentanaTareas extends JFrame {
 
@@ -49,7 +48,7 @@ public class VentanaTareas extends JFrame {
 	private IApi api;
 	JButton botonModificar;
 	JButton botonEliminar;
-	private Usuario usuarioActual;
+	private UsuarioDTO usuarioActual;
 	
 
     public VentanaTareas(IApi api,String nombreProyecto, UsuarioDTO usuarioActual) throws RuntimeException{

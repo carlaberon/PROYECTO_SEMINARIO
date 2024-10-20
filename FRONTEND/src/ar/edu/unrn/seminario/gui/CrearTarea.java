@@ -15,7 +15,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.api.MemoryApi;
 import ar.edu.unrn.seminario.dto.ProyectoDTO;
@@ -43,7 +42,7 @@ public class CrearTarea extends JFrame {
 
     private VentanaTareas ventanaTareas;
 
-    public CrearTarea(IApi api) {
+    public CrearTarea(IApi api,VentanaTareas ventanaTareas) {
 
         this.ventanaTareas = (VentanaTareas) ventanaTareas;
         
@@ -151,6 +150,7 @@ public class CrearTarea extends JFrame {
                     UsuarioDTO usuario = usuarios.get(selectedUserIndex);
                     String descripcionTarea = textAreaDescription.getText();
                     Date fechaInicioDate = dateChooserInicio.getDate();
+                    UsuarioDTO nombres = null;
                     Date fechaFinDate = dateChooserFin.getDate();
                     
                 		//Convertir Date a Localdatetime, si no cargo una fecha lanza un nullpointer
@@ -164,8 +164,8 @@ public class CrearTarea extends JFrame {
                         
                      // Crear una nueva tarea
                         
-                       api.registrarTarea(nombreTarea, proyectoSeleccionado, prioridadTarea, usuario.getUsername(), false, descripcionTarea, fechaInicioLocalDateTime, fechaFinLocalDateTime);
-                		
+                       //api.registrarTarea(nombreTarea, proyectoSeleccionado, prioridadTarea, usuario.getUsername(), false, descripcionTarea, fechaInicioLocalDateTime, fechaFinLocalDateTime);
+                        api.registrarTarea(nombreTarea, proyectoSeleccionado, nombres, usuario, false, descripcionTarea, fechaInicioLocalDateTime, fechaFinLocalDateTime);
                         ((VentanaTareas) ventanaTareas).actualizarTabla();
                         
                         JOptionPane.showMessageDialog(null, "Tarea creada con éxito!", "Info", JOptionPane.INFORMATION_MESSAGE);

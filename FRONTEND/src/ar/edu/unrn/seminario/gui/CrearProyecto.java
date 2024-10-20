@@ -2,11 +2,8 @@ package ar.edu.unrn.seminario.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -112,9 +109,11 @@ public class CrearProyecto extends JFrame {
 		                throw new DataEmptyException("prioridad");
 		            }
 			
-					
+		            if (usuarioPropietario == null) {
+		                throw new NullPointerException("El usuario propietario no está asignado.");
+		            }
 					// Crear un nuevo proyecto
-	                api.crearProyecto(nombreProyecto, usuarioPropietario, false, descripcion, prioridadSeleccionada);
+	                api.crearProyecto(nombreProyecto, usuarioPropietario.getNombre(), false, descripcion, prioridadSeleccionada);
 	                JOptionPane.showMessageDialog(null, "Proyecto registrado con éxito!", "Info", JOptionPane.INFORMATION_MESSAGE);
 	                ventanaInicio.actualizarProyectos();
 	                setVisible(false);

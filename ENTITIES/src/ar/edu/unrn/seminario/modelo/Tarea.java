@@ -2,6 +2,7 @@ package ar.edu.unrn.seminario.modelo;
 
 import java.time.LocalDateTime;
 
+import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.NotNullException;
 
@@ -16,24 +17,24 @@ public class Tarea {
     private LocalDateTime inicio; 
     private LocalDateTime fin;
 
-    public Tarea(String nombretarea, String proyecto, String prioridad, String user1, boolean estado, String descripcion, LocalDateTime inicio, LocalDateTime fin) throws DataEmptyException, NotNullException {
+    public Tarea(Usuario name1, String proyecto, Usuario name12, String user1, boolean estado, String descripcion, LocalDateTime inicio, LocalDateTime fin) throws DataEmptyException, NotNullException {
         
-    	if (esDatoNulo(nombretarea))
+    	if (esDatoNulo(name1))
 			throw new NotNullException("nombre");
     	if (esDatoNulo(proyecto))
 			throw new NotNullException("nombre de proyecto");
-    	if (esDatoNulo(prioridad))
+    	if (esDatoNulo(name12))
 			throw new NotNullException("prioridad");
     	if (esDatoNulo(user1))
 			throw new NotNullException("usuario asignado");
     	if (esDatoNulo(descripcion))
 			throw new NotNullException("descripcion");
     	
-		if (esDatoVacio(nombretarea))
+		if (esDatoVacio(name1))
 			throw new DataEmptyException("nombre");
 		if (esDatoVacio(proyecto))
 			throw new DataEmptyException("nombre de proyecto");
-		if (esDatoVacio(prioridad))
+		if (esDatoVacio(name12))
 			throw new DataEmptyException("prioridad");
 		if (esDatoVacio(user1))
 			throw new DataEmptyException("usuario asignado");
@@ -41,9 +42,9 @@ public class Tarea {
 			throw new DataEmptyException("descripcion");
 
     	
-    	this.nombre = nombretarea;
+    	this.nombre = name1;
         this.proyecto = proyecto;
-        this.prioridad = prioridad;
+        this.prioridad = name12;
         this.usuario = user1;
         this.estado = estado;
         this.descripcion = descripcion; 
