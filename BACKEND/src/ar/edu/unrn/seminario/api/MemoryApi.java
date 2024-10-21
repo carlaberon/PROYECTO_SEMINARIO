@@ -124,7 +124,6 @@ public class MemoryApi implements IApi {
 	@Override
 	public List<UsuarioDTO> obtenerUsuarios() {
 		List<UsuarioDTO> dtos = new ArrayList<>();
-
 		
 		if (! this.usuarios.isEmpty()) {
 			for (Usuario u : this.usuarios) {
@@ -386,7 +385,6 @@ public void crearProyecto(String nombre, String usuarioPropietario , boolean est
 
 	    // Si se encuentra el proyecto, eliminarlo
 	    if (proyectoAEliminar != null) {
-	    	System.out.println("El proyecto '" + proyectoAEliminar.getNombre() + "' ha sido eliminado.");
 	        this.proyectos.remove(proyectoAEliminar);
 	    }	 
 	}

@@ -138,8 +138,7 @@ public class Inicio extends JFrame implements ProyectoModificadoListener{
         JButton btnNuevoProyecto = new JButton("Proyecto +");
         btnNuevoProyecto.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		CrearProyecto crearProyecto = new CrearProyecto(api);
-        		crearProyecto.setVisible(true);
+        		abrirCrearProyecto();
         	}
         });
         JButton btnVerProyectos = new JButton("Ver todos los proyectos");
@@ -169,9 +168,15 @@ public class Inicio extends JFrame implements ProyectoModificadoListener{
         button.setFont(new Font("Segoe UI", Font.PLAIN, 14));
     }
 
+    private void abrirCrearProyecto() {
+    	CrearProyecto crearProyecto = new CrearProyecto(api); // Crear una instancia de ListaProyectos
+        crearProyecto.addProyectoModificadoListener(Inicio.this);  // Registrar Inicio como listener de ProyectoEliminadoListener
+        crearProyecto.setVisible(true); // Hacer visible la ventana de proyectos
+    }
+    
     private void abrirListaProyectos() {
         ListaProyectos listaProyectos = new ListaProyectos(api); // Crear una instancia de ListaProyectos
-        listaProyectos.addProyectoEliminadoListener(this);  // Registrar Inicio como oyente de ProyectoEliminadoListener
+        listaProyectos.addProyectoModificadoListener(this);  // Registrar Inicio como listener de ProyectoEliminadoListener
         listaProyectos.setVisible(true); // Hacer visible la ventana de proyectos
     }
 
@@ -209,20 +214,17 @@ public class Inicio extends JFrame implements ProyectoModificadoListener{
         proyectosListPanel.repaint();    // Repintar el panel
     }
 
-
-
-    public static void main(String[] args) throws NotNullException, DataEmptyException, InvalidDateException{
-
-    	IApi api = new MemoryApi();
-    	UsuarioDTO usuario = api.obtenerUsuario("HernanPro");
-    	api.setUsuarioActual(usuario.getUsername());
-    	new Inicio(api);
-    }
-
 	@Override
 	public void proyectoEliminado() {
 		actualizarProyectos(); //Cuando se elimina un proyecto activa el metodo actualizarProyectos para actualizar Inicio
 	}
     
+	public static void main(String[] args) throws NotNullException, DataEmptyException, InvalidDateException{
+		
+		IApi api = new MemoryApi();
+		UsuarioDTO usuario = api.obtenerUsuario("HernanPro");
+		api.setUsuarioActual(usuario.getUsername());
+		new Inicio(api);
+	}
 }
 
