@@ -27,7 +27,7 @@ public class ListaProyectos extends JFrame {
 	private IApi api;
 	private JTable tabla;
 	private JButton eliminarProyecto;
-	private List<ProyectoModificadoListener> listeners = new ArrayList<>(); //En esta lista estan los oyentes de ProyectoEliminadoListener(Inicio)
+	private List<ProyectoModificadoListener> listeners = new ArrayList<>(); //En esta lista estan los oyentes de ProyectoEliminadoListener
 	
     public ListaProyectos(IApi api) {
     	this.api = api;
@@ -250,7 +250,7 @@ public class ListaProyectos extends JFrame {
 		eliminarProyecto.setEnabled(b);
 	}
 	
-	public void addProyectoEliminadoListener(ProyectoModificadoListener listener) { //Añadir un oyente a la lista tipo ProyectoEliminadoListener
+	public void addProyectoModificadoListener(ProyectoModificadoListener listener) { //Añadir un oyente a la lista tipo ProyectoEliminadoListener
         listeners.add(listener);
     }
 

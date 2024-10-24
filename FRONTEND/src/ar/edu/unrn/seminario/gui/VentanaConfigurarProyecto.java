@@ -110,7 +110,7 @@ public class VentanaConfigurarProyecto extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				api.modificarProyecto(proyecto.getNombre(), textField_Nombre.getText(), textField_Prioridad.getText(), textField_Descripcion.getText());
+				api.modificarProyecto(api.getProyectoActual().getNombre(), textField_Nombre.getText(), textField_Prioridad.getText(), textField_Descripcion.getText());
 				
 				int opcionSeleccionada = JOptionPane.showConfirmDialog(null,
 						"Estas seguro que queres modificar el proyecto?", "Confirmar cambio de estado.",
