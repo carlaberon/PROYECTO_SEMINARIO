@@ -122,7 +122,6 @@ public class CrearProyecto extends JFrame {
 		        }
 			}
 		});
-
 		JButton cancelarButton = new JButton("Cancelar");
 		cancelarButton.setForeground(new Color(29, 17, 40));
 		cancelarButton.setBackground(new Color(229, 212, 237));
