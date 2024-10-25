@@ -94,7 +94,7 @@ public class VentanaTareas extends JFrame {
         centerPanel.add(appName);
         menuBar.add(centerPanel);
 
-        JMenu accountMenu = new JMenu(usuarioActual.getNombre());
+        JMenu accountMenu = new JMenu(usuarioActual.getUsername());
         accountMenu.setForeground(Color.WHITE);
         accountMenu.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 
