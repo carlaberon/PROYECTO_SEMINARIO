@@ -100,7 +100,7 @@ public class CrearProyecto extends JFrame {
 				String descripcion = descripcionTextField.getText();
                 String prioridadSeleccionada = (String) prioridadComboBox.getSelectedItem();
                 
-
+                
 
 				try {
 					// Verificar si no se seleccionó una prioridad

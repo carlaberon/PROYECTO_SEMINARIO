@@ -17,6 +17,8 @@ import javax.swing.border.EmptyBorder;
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.api.MemoryApi;
 import ar.edu.unrn.seminario.dto.ProyectoDTO;
+import ar.edu.unrn.seminario.exception.DataEmptyException;
+import ar.edu.unrn.seminario.exception.NotNullException;
 
 public class VentanaConfigurarProyecto extends JFrame {
 
@@ -65,40 +67,40 @@ public class VentanaConfigurarProyecto extends JFrame {
 		lblNewLabel.setBackground(new Color(240, 240, 240));
 		lblNewLabel.setForeground(new Color(29, 17, 40));
 		lblNewLabel.setFont(new Font("Segoe UI", Font.PLAIN, 35));
-		lblNewLabel.setBounds(58, 47, 293, 39);
+		lblNewLabel.setBounds(58, 47, 374, 39);
 		contentPane.add(lblNewLabel);
 		
 		JLabel lblNewLabel_1 = new JLabel("Nombre:");
 		lblNewLabel_1.setForeground(new Color(255, 255, 255));
 		lblNewLabel_1.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-		lblNewLabel_1.setBounds(83, 119, 93, 44);
+		lblNewLabel_1.setBounds(83, 183, 93, 44);
 		contentPane.add(lblNewLabel_1);
 		
 		textField_Nombre = new JTextField();
-		textField_Nombre.setBounds(216, 134, 451, 26);
+		textField_Nombre.setBounds(216, 198, 451, 26);
 		contentPane.add(textField_Nombre);
 		textField_Nombre.setColumns(10);
 		
 		JLabel lblNewLabel_1_1_1 = new JLabel("Prioridad:");
 		lblNewLabel_1_1_1.setForeground(Color.WHITE);
 		lblNewLabel_1_1_1.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-		lblNewLabel_1_1_1.setBounds(83, 174, 93, 44);
+		lblNewLabel_1_1_1.setBounds(83, 237, 93, 44);
 		contentPane.add(lblNewLabel_1_1_1);
 		
 		textField_Prioridad = new JTextField();
 		textField_Prioridad.setColumns(10);
-		textField_Prioridad.setBounds(216, 188, 451, 26);
+		textField_Prioridad.setBounds(216, 252, 451, 26);
 		contentPane.add(textField_Prioridad);
 		
 		lblNewLabel_1_2 = new JLabel("Descripcion:");
 		lblNewLabel_1_2.setForeground(Color.WHITE);
 		lblNewLabel_1_2.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-		lblNewLabel_1_2.setBounds(83, 229, 106, 44);
+		lblNewLabel_1_2.setBounds(83, 291, 109, 44);
 		contentPane.add(lblNewLabel_1_2);
 		
 		textField_Descripcion = new JTextField();
 		textField_Descripcion.setColumns(10);
-		textField_Descripcion.setBounds(216, 243, 451, 26);
+		textField_Descripcion.setBounds(216, 306, 451, 26);
 		contentPane.add(textField_Descripcion);
 		
 		aceptar = new JButton("Aceptar");
@@ -110,18 +112,25 @@ public class VentanaConfigurarProyecto extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				api.modificarProyecto(api.getProyectoActual().getNombre(), textField_Nombre.getText(), textField_Prioridad.getText(), textField_Descripcion.getText());
-				
-				int opcionSeleccionada = JOptionPane.showConfirmDialog(null,
-						"Estas seguro que queres modificar el proyecto?", "Confirmar cambio de estado.",
-						JOptionPane.YES_NO_OPTION);
-				if (opcionSeleccionada == JOptionPane.YES_OPTION) {
-					JOptionPane.showMessageDialog(null, "Modificacion realizada con exito!", "Info", JOptionPane.INFORMATION_MESSAGE);
+				try {
+					api.modificarProyecto(api.getProyectoActual().getNombre(), textField_Nombre.getText(), textField_Prioridad.getText(), textField_Descripcion.getText());
 					
+					int opcionSeleccionada = JOptionPane.showConfirmDialog(null,
+							"Estas seguro que queres modificar el proyecto?", "Confirmar cambio de estado.",
+							JOptionPane.YES_NO_OPTION);
+					if (opcionSeleccionada == JOptionPane.YES_OPTION) {
+						JOptionPane.showMessageDialog(null, "Modificacion realizada con exito!", "Info", JOptionPane.INFORMATION_MESSAGE);
+						
+					}
+					
+					setVisible(false);
+					dispose();
+					
+				} catch (NotNullException ex) {
+		            JOptionPane.showMessageDialog(null, "El campo " + ex.getMessage() + " no puede ser nulo.", "Error", JOptionPane.ERROR_MESSAGE);
+		        } catch (DataEmptyException ex) {
+		            JOptionPane.showMessageDialog(null, "El campo " + ex.getMessage() + " no puede estar vacío.", "Error", JOptionPane.ERROR_MESSAGE);
 				}
-				
-				setVisible(false);
-				dispose();
 			}
 		});
 		contentPane.add(aceptar);
