@@ -5,8 +5,11 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -19,7 +22,7 @@ import ar.edu.unrn.seminario.api.MemoryApi;
 import ar.edu.unrn.seminario.dto.ProyectoDTO;
 
 public class VentanaConfigurarProyecto extends JFrame {
-
+	List<String> prioridades = Arrays.asList("alta", "media", "baja");
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField textField_Nombre;
@@ -85,10 +88,16 @@ public class VentanaConfigurarProyecto extends JFrame {
 		lblNewLabel_1_1_1.setBounds(83, 174, 93, 44);
 		contentPane.add(lblNewLabel_1_1_1);
 		
-		textField_Prioridad = new JTextField();
-		textField_Prioridad.setColumns(10);
-		textField_Prioridad.setBounds(216, 188, 451, 26);
-		contentPane.add(textField_Prioridad);
+		JComboBox<String> prioridadComboBox = new JComboBox<>();
+		prioridadComboBox.setForeground(new Color(29, 17, 40));
+		prioridadComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 10));
+		prioridadComboBox.setBounds(216, 189, 451, 25);
+		contentPane.add(prioridadComboBox);
+		
+		prioridadComboBox.addItem("");
+		for (String prioridad : prioridades) {
+			prioridadComboBox.addItem(prioridad);
+		}
 		
 		lblNewLabel_1_2 = new JLabel("Descripcion:");
 		lblNewLabel_1_2.setForeground(Color.WHITE);
@@ -110,7 +119,7 @@ public class VentanaConfigurarProyecto extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				api.modificarProyecto(api.getProyectoActual().getNombre(), textField_Nombre.getText(), textField_Prioridad.getText(), textField_Descripcion.getText());
+				api.modificarProyecto(api.getProyectoActual().getNombre(), textField_Nombre.getText(), (String) prioridadComboBox.getSelectedItem(), textField_Descripcion.getText());
 				
 				int opcionSeleccionada = JOptionPane.showConfirmDialog(null,
 						"Estas seguro que queres modificar el proyecto?", "Confirmar cambio de estado.",
