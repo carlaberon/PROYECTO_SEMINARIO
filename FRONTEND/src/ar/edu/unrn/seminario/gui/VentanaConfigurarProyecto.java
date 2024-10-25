@@ -1,58 +1,35 @@
 package ar.edu.unrn.seminario.gui;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-
 import ar.edu.unrn.seminario.api.IApi;
-import ar.edu.unrn.seminario.api.MemoryApi;
-import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.NotNullException;
 
 public class VentanaConfigurarProyecto extends JFrame {
 
 	private static final long serialVersionUID = 1L;
+	List<String> prioridades = Arrays.asList("alta", "media", "baja");
 	private JPanel contentPane;
 	private JTextField textField_Nombre;
-	private JTextField textField_Prioridad;
-	private JLabel lblNewLabel_1_2;
+	private JComboBox<String> prioridadComboBox;
+	private JLabel descripcion;
 	private JTextField textField_Descripcion;
 	private JButton aceptar;
 	private JButton cancelar;
-	private JLabel lblNewLabel_1_5;
-
-	/**
-	 * Launch the application.
-	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-////					IApi api = new MemoryApi(); //polimorfismo
-//					VentanaConfigurarProyecto frame = new VentanaConfigurarProyecto(api);
-//					frame.setLocationRelativeTo(null);
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
-
-	/**
-	 * Create the frame.
-	 */
 	public VentanaConfigurarProyecto(IApi api) {
 		setTitle("Modificar Proyecto");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -87,16 +64,23 @@ public class VentanaConfigurarProyecto extends JFrame {
 		lblNewLabel_1_1_1.setBounds(83, 237, 93, 44);
 		contentPane.add(lblNewLabel_1_1_1);
 		
-		textField_Prioridad = new JTextField();
-		textField_Prioridad.setColumns(10);
-		textField_Prioridad.setBounds(216, 252, 451, 26);
-		contentPane.add(textField_Prioridad);
+		prioridadComboBox = new JComboBox<>();
+		prioridadComboBox.setForeground(new Color(29, 17, 40));
+		prioridadComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 10));
+		prioridadComboBox.setBounds(216, 251, 451, 26);
+		contentPane.add(prioridadComboBox);
+
+		// Añadir elementos al JComboBox
+		prioridadComboBox.addItem("");
+		for (String prioridad : prioridades) {
+			prioridadComboBox.addItem(prioridad);
+		}
 		
-		lblNewLabel_1_2 = new JLabel("Descripcion:");
-		lblNewLabel_1_2.setForeground(Color.WHITE);
-		lblNewLabel_1_2.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-		lblNewLabel_1_2.setBounds(83, 291, 109, 44);
-		contentPane.add(lblNewLabel_1_2);
+		descripcion = new JLabel("Descripcion:");
+		descripcion.setForeground(Color.WHITE);
+		descripcion.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+		descripcion.setBounds(83, 291, 109, 44);
+		contentPane.add(descripcion);
 		
 		textField_Descripcion = new JTextField();
 		textField_Descripcion.setColumns(10);
@@ -112,8 +96,12 @@ public class VentanaConfigurarProyecto extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				String prioridadSeleccionada = (String) prioridadComboBox.getSelectedItem();
 				try {
-					api.modificarProyecto(api.getProyectoActual().getNombre(), textField_Nombre.getText(), textField_Prioridad.getText(), textField_Descripcion.getText());
+					if (prioridadSeleccionada == null || prioridadSeleccionada.isEmpty()) {
+		                throw new DataEmptyException("prioridad");
+		            }
+					api.modificarProyecto(api.getProyectoActual().getNombre(), textField_Nombre.getText(), prioridadSeleccionada, textField_Descripcion.getText());
 					
 					int opcionSeleccionada = JOptionPane.showConfirmDialog(null,
 							"Estas seguro que queres modificar el proyecto?", "Confirmar cambio de estado.",
@@ -154,3 +142,4 @@ public class VentanaConfigurarProyecto extends JFrame {
 	}
 
 }
+
