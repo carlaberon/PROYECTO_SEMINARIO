@@ -252,6 +252,18 @@ public class VentanaTareas extends JFrame {
       
       
       habilitarBotones(false);
+      botonModificar.addActionListener(new ActionListener() {
+    	    public void actionPerformed(ActionEvent e) {
+    	        int filaSeleccionada = table.getSelectedRow(); 
+
+    	        if (filaSeleccionada != -1) {
+    	            Object nombreTarea = table.getValueAt(filaSeleccionada, 0);
+    	            modificarTarea(nombreTarea.toString());
+    	        } else {
+    	            JOptionPane.showMessageDialog(null, "Seleccione una tarea para modificar", "Error", JOptionPane.ERROR_MESSAGE);
+    	        }
+    	    }
+    	});
       
       botonEliminar.addActionListener(new ActionListener() {
 
@@ -351,7 +363,12 @@ public class VentanaTareas extends JFrame {
 		    });
 		}
 	}
-		
-	
+	void modificarTarea(String nombreTarea) {
+	 ModificarTarea modificatarea = new ModificarTarea(api,nombreTarea);
+	 modificatarea.setVisible(true);
+    }	
 
 }
+
+
+	

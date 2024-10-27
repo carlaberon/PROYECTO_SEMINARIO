@@ -81,7 +81,6 @@ public interface IApi {
 
 	public void setUsuarioActual(String nombreUsuario);	//Setear usuario actual PRUEBAS
 
-
-	
+	void modificarTarea(String nomb,String nombreProyecto, String nuevoNombre, String nuevaPrioridad,String nombre,Boolean estado, String nuevaDescripcion,LocalDateTime inicio, LocalDateTime fin)throws NotNullException, DataEmptyException;
 	
 }

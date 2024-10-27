@@ -52,6 +52,8 @@ public class MemoryApi implements IApi {
 
 	private Proyecto proyectoActual;
 	
+	private Tarea tareaActual;
+	
 	private Usuario usuarioActual; 
 	
 	public MemoryApi() throws NotNullException, DataEmptyException, InvalidDateException{
@@ -406,7 +408,50 @@ public void crearProyecto(String nombre, String usuarioPropietario , boolean est
 			}
 		}
 	}
-	
+	@Override
+	public void modificarTarea(String nombreActual, String nombreNuevo, String nuevoNombre, String nuevaPrioridad,String nombre,Boolean estado, String nuevaDescripcion,LocalDateTime inicio, LocalDateTime fin) throws NotNullException, DataEmptyException{
+		 Tarea tareaExistente=null;
+		    for (Tarea t : tareas) {
+		        if (nombreActual.equals(t.getNombre())) { // Comparación con equals() para String
+		            tareaExistente = t;
+		            if (nombreNuevo != null && !nombreNuevo.isEmpty()) {
+		                tareaExistente.setNombre(nombreNuevo);
+		            }
+		            if (nuevoNombre != null && !nuevoNombre.isEmpty()) {
+		                tareaExistente.setProyecto(nuevoNombre);
+		            }
+		            // Validar y actualizar la prioridad
+		            if (nuevaPrioridad != null && !nuevaPrioridad.isEmpty()) {
+		                tareaExistente.setPrioridad(nuevaPrioridad);
+		            }
+		            if (nombre != null && !nombre.isEmpty()) {
+		                tareaExistente.setUsuario(nombre);
+		            }
+
+		            // Validar y actualizar la descripción
+		            if (nuevaDescripcion != null && !nuevaDescripcion.isEmpty()) {
+		                tareaExistente.setDescripcion(nuevaDescripcion);
+		            }
+
+		            // Validar y actualizar la fecha de inicio
+		            if (inicio != null) {
+		                tareaExistente.setInicio(inicio);
+		            }
+
+		            // Validar y actualizar la fecha de fin
+		            if (fin != null) {
+		                tareaExistente.setFin(fin);
+		            }
+
+		            break; // Salir del bucle después de encontrar y modificar la tarea
+		        }
+		    }
+
+		    // Lanzar excepción si la tarea no se encontró
+		    if (tareaExistente == null) {
+		        throw new DataEmptyException("No se encontró la tarea con el nombre especificado.");
+		    }
+		}
 
 	public int obtenerValorPrioridad(String prioridad) {
 	    switch (prioridad) {

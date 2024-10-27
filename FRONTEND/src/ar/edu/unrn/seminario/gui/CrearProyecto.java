@@ -39,10 +39,6 @@ public class CrearProyecto extends JFrame {
 	private IApi api;
 	private JTextField descripcionTextField;
 	private List<ProyectoModificadoListener> listeners = new ArrayList<>(); //En esta lista estan los oyentes de ProyectoEliminadoListener
-	
-	/**
-	 * Create the frame.
-	 */
 	public CrearProyecto(IApi api) {
 		this.api = api;
 		

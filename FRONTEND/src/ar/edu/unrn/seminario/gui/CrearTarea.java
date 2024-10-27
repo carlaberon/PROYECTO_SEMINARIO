@@ -1,11 +1,14 @@
 package ar.edu.unrn.seminario.gui;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -37,7 +40,7 @@ public class CrearTarea extends JFrame {
     private JComboBox<String> proyectoTareaComboBox; // ComboBox para seleccionar proyecto
     private JComboBox<String> asignarUsuarioComboBox; // ComboBox para seleccionar usuario
     private JTextField prioridadTareaTextField;
-
+    List<String> prioridades = Arrays.asList("alta", "media", "baja");
     private List<ProyectoDTO> proyectos = new ArrayList<>();
     private List<UsuarioDTO> usuarios = new ArrayList<>();
 
@@ -100,11 +103,18 @@ public class CrearTarea extends JFrame {
         JLabel prioridadTareaLabel = new JLabel("Prioridad:");
         prioridadTareaLabel.setBounds(43, 140, 150, 16);
         contentPane.add(prioridadTareaLabel);
+        JComboBox<String> prioridadComboBox = new JComboBox<>();
+		prioridadComboBox.setForeground(new Color(29, 17, 40));
+		prioridadComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 10));
+		prioridadComboBox.setBounds(190, 133, 160, 25);
+		contentPane.add(prioridadComboBox);
+		
+		prioridadComboBox.addItem("");
 
-        prioridadTareaTextField = new JTextField();
-        prioridadTareaTextField.setBounds(190, 138, 160, 22);
-        contentPane.add(prioridadTareaTextField);
-        prioridadTareaTextField.setColumns(10);
+		// Llenar el JComboBox con las claves del mapa de prioridad
+        for (String prioridad : prioridades) {
+            prioridadComboBox.addItem(prioridad);
+        }
 
         JLabel lblDescripcin = new JLabel("Descripción:");
         lblDescripcin.setBounds(43, 291, 150, 16);
@@ -147,7 +157,7 @@ public class CrearTarea extends JFrame {
                     int selectedUserIndex = asignarUsuarioComboBox.getSelectedIndex();
                     String nombreTarea = nombreTareaTextField.getText();
                     String proyectoSeleccionado = (String) proyectoTareaComboBox.getSelectedItem();
-                    String prioridadTarea = prioridadTareaTextField.getText();
+                    String prioridadTarea = (String) prioridadComboBox.getSelectedItem();
                     UsuarioDTO usuario = usuarios.get(selectedUserIndex);
                     String descripcionTarea = textAreaDescription.getText();
                     Date fechaInicioDate = dateChooserInicio.getDate();
@@ -199,18 +209,5 @@ public class CrearTarea extends JFrame {
             }
         });
     }
-    
-    public static void main (String []args) throws NotNullException, DataEmptyException, InvalidDateException {
-    	
-    	IApi api= new MemoryApi();
-    	
-    	CrearTarea crearTarea = new CrearTarea(api);
-    	
-    	crearTarea.setVisible(true);
-    	
-    }
-
-
 }
-
 
