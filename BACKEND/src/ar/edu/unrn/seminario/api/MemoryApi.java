@@ -332,7 +332,7 @@ public class MemoryApi implements IApi {
 	
     // Implementación del método para asignar prioridad a un proyecto
     @Override
-    public void asignarPrioridad(String nombreProyecto, String prioridad) {
+    public void asignarPrioridad(String nombreProyecto, String prioridad) throws NotNullException, DataEmptyException {
         for (Proyecto p : this.proyectos) {
             if (p.getNombre().equals(nombreProyecto)) {
                 p.setPrioridad1(prioridad);
@@ -359,27 +359,6 @@ public class MemoryApi implements IApi {
 	@Override
 	
 public void crearProyecto(String nombre, String usuarioPropietario , boolean estado, String descripcion, String prioridad) throws NotNullException, DataEmptyException {
-	    // Validar que los campos no sean nulos
-	    if (esDatoNulo(nombre)) {
-	        throw new NotNullException("nombre");
-	    }
-	    if (esDatoNulo(descripcion)) {
-	        throw new NotNullException("descripcion");
-	    }
-	    if (esDatoNulo(prioridad)) {
-	        throw new NotNullException("prioridad");
-	    }
-
-	    // Validar que los campos no estén vacíos
-	    if (esDatoVacio(nombre)) {
-	        throw new DataEmptyException("nombre");
-	    }
-	    if (esDatoVacio(descripcion)) {
-	        throw new DataEmptyException("descripcion");
-	    }
-	    if (esDatoVacio(prioridad)) {
-	        throw new DataEmptyException("prioridad");
-	    }
 	   
 	    Usuario propietario = buscarUsuario(usuarioPropietario);
 	    
@@ -411,7 +390,7 @@ public void crearProyecto(String nombre, String usuarioPropietario , boolean est
 	}
 
 	@Override
-	public void modificarProyecto(String nombreProyecto, String nuevoNombre, String nuevaPrioridad, String nuevaDescripcion) {
+	public void modificarProyecto(String nombreProyecto, String nuevoNombre, String nuevaPrioridad, String nuevaDescripcion) throws NotNullException, DataEmptyException {
 	    Proyecto proyectoExistente;
 	    
 	    for (Proyecto p : proyectos) {
@@ -428,14 +407,6 @@ public void crearProyecto(String nombre, String usuarioPropietario , boolean est
 		}
 	}
 	
-	private boolean esDatoVacio(String dato) {
-		return dato.equals("");
-	}
-
-	private boolean esDatoNulo(String dato) {
-		return dato == null;
-	}
-		
 
 	public int obtenerValorPrioridad(String prioridad) {
 	    switch (prioridad) {

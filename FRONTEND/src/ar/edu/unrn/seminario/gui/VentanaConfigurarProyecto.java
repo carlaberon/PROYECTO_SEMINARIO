@@ -40,29 +40,29 @@ public class VentanaConfigurarProyecto extends JFrame {
 		contentPane.setBackground(new Color(81, 79, 89));
 		setContentPane(contentPane);
 		
-		JLabel lblNewLabel = new JLabel("Modificar Proyecto");
-		lblNewLabel.setBackground(new Color(240, 240, 240));
-		lblNewLabel.setForeground(new Color(29, 17, 40));
-		lblNewLabel.setFont(new Font("Segoe UI", Font.PLAIN, 35));
-		lblNewLabel.setBounds(58, 47, 374, 39);
-		contentPane.add(lblNewLabel);
+		JLabel lblModificarProyecto = new JLabel("Modificar Proyecto");
+		lblModificarProyecto.setBackground(new Color(240, 240, 240));
+		lblModificarProyecto.setForeground(new Color(29, 17, 40));
+		lblModificarProyecto.setFont(new Font("Segoe UI", Font.PLAIN, 35));
+		lblModificarProyecto.setBounds(58, 47, 374, 39);
+		contentPane.add(lblModificarProyecto);
 		
-		JLabel lblNewLabel_1 = new JLabel("Nombre:");
-		lblNewLabel_1.setForeground(new Color(255, 255, 255));
-		lblNewLabel_1.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-		lblNewLabel_1.setBounds(83, 183, 93, 44);
-		contentPane.add(lblNewLabel_1);
+		JLabel lblNombre = new JLabel("Nombre:");
+		lblNombre.setForeground(new Color(255, 255, 255));
+		lblNombre.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+		lblNombre.setBounds(83, 183, 93, 44);
+		contentPane.add(lblNombre);
 		
 		textField_Nombre = new JTextField();
 		textField_Nombre.setBounds(216, 198, 451, 26);
 		contentPane.add(textField_Nombre);
 		textField_Nombre.setColumns(10);
 		
-		JLabel lblNewLabel_1_1_1 = new JLabel("Prioridad:");
-		lblNewLabel_1_1_1.setForeground(Color.WHITE);
-		lblNewLabel_1_1_1.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-		lblNewLabel_1_1_1.setBounds(83, 237, 93, 44);
-		contentPane.add(lblNewLabel_1_1_1);
+		JLabel lblPrioridad = new JLabel("Prioridad:");
+		lblPrioridad.setForeground(Color.WHITE);
+		lblPrioridad.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+		lblPrioridad.setBounds(83, 237, 93, 44);
+		contentPane.add(lblPrioridad);
 		
 		prioridadComboBox = new JComboBox<>();
 		prioridadComboBox.setForeground(new Color(29, 17, 40));

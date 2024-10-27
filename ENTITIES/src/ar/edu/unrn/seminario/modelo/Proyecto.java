@@ -101,7 +101,13 @@ public class Proyecto {
         return nombre;
     }
     
-    public void setNombre(String nombre) {
+    public void setNombre(String nombre) throws NotNullException, DataEmptyException {
+    	if (esDatoNulo(nombre)) {
+            throw new NotNullException("nombre");
+        }
+        if (esDatoVacio(nombre)) {
+            throw new DataEmptyException("nombre");
+        }
         this.nombre = nombre;
     }
     
@@ -136,14 +142,26 @@ public class Proyecto {
         return descripcion;
     }
 
-    public void setDescripcion(String descripcion) {
+    public void setDescripcion(String descripcion) throws NotNullException, DataEmptyException {
+    	if (esDatoNulo(descripcion)) {
+            throw new NotNullException("descripcion");
+        }
+        if (esDatoVacio(descripcion)) {
+            throw new DataEmptyException("descripcion");
+        }
         this.descripcion = descripcion;
     }
     public String getPrioridad1() {
         return prioridad;
     }
 
-    public void setPrioridad1(String prioridad) {
+    public void setPrioridad1(String prioridad) throws NotNullException, DataEmptyException {
+    	if (esDatoNulo(prioridad)) {
+            throw new NotNullException("prioridad");
+        }
+        if (esDatoVacio(prioridad)) {
+            throw new DataEmptyException("prioridad");
+        }
         this.prioridad = prioridad;
     }
     public Set<Proyecto> getProyectos() {
