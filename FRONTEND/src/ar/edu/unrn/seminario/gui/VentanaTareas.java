@@ -176,17 +176,6 @@ public class VentanaTareas extends JFrame {
         // Modelo de la tabla
 		String[] titulos = { "NOMBRE", "PROYECTO", "ESTADO","DESCRIPCION", "ASIGNADO", "PRIORIDAD", "FECHA INICIO", "FECHA FIN" };
 		modelo = new DefaultTableModel(new Object[][] {}, titulos);
-		
-		/*// Obtiene la lista de tareas a mostrar
-		List<TareaDTO> tareas = (List<TareaDTO>) api.obtenerTareas();
-		// Agrega las tareas en el model
-		for (TareaDTO t : tareas) {
-			modelo.addRow(new Object[] { t.getName(), t.getProject(),t.isEstado(), t.getUser(), t.getPriority() });
-		}
-		*/
-		
-		//BACK -> DTO -> FRONTEND
-		
 		try {
 			
 		List<TareaDTO> tareas = api.obtenerTareasPorProyecto(unproyecto.getNombre()); //Que pasa si el proyecto está vacio -EL PROYECTO ESTA VACIO

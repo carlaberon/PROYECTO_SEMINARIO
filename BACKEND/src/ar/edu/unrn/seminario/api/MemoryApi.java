@@ -246,9 +246,10 @@ public class MemoryApi implements IApi {
 	
 	public List<TareaDTO> obtenerTareas() {
 	    List<TareaDTO> tareasDTO = new ArrayList<>();
+	    
 	    if (! this.tareas.isEmpty()) {
 		    for (Tarea t : this.tareas) {  
-		        tareasDTO.add(new TareaDTO(t.getNombre(), t.getProyecto(), t.getPrioridad(), t.getUsuario(), t.isEstado(), t.getDescripcion(), null, null));
+		        tareasDTO.add(new TareaDTO(t.getNombre(), t.getProyecto(), t.getPrioridad(), t.getUsuario(), t.isEstado(), t.getDescripcion(), t.getInicio(), t.getFin()));
 		    }
 	    }
 
