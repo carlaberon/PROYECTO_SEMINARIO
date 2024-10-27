@@ -56,7 +56,7 @@ public interface IApi {
 	
 	List<EventoDTO> obtenerEventos();
 	
-	void asignarPrioridad(String nombreProyecto, String prioridad);
+	void asignarPrioridad(String nombreProyecto, String prioridad) throws NotNullException, DataEmptyException;
 	
     public int compare(Proyecto p1, Proyecto p2);
     

@@ -331,7 +331,7 @@ public class MemoryApi implements IApi {
 	
     // Implementación del método para asignar prioridad a un proyecto
     @Override
-    public void asignarPrioridad(String nombreProyecto, String prioridad) {
+    public void asignarPrioridad(String nombreProyecto, String prioridad) throws NotNullException, DataEmptyException {
         for (Proyecto p : this.proyectos) {
             if (p.getNombre().equals(nombreProyecto)) {
                 p.setPrioridad1(prioridad);
@@ -389,7 +389,7 @@ public void crearProyecto(String nombre, String usuarioPropietario , boolean est
 	}
 
 	@Override
-	public void modificarProyecto(String nombreProyecto, String nuevoNombre, String nuevaPrioridad, String nuevaDescripcion) {
+	public void modificarProyecto(String nombreProyecto, String nuevoNombre, String nuevaPrioridad, String nuevaDescripcion) throws NotNullException, DataEmptyException {
 	    Proyecto proyectoExistente;
 	    
 	    for (Proyecto p : proyectos) {
@@ -406,6 +406,7 @@ public void crearProyecto(String nombre, String usuarioPropietario , boolean est
 		}
 	}
 	
+
 	public int obtenerValorPrioridad(String prioridad) {
 	    switch (prioridad) {
 	        case "alta":
