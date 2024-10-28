@@ -51,17 +51,11 @@ public interface IApi {
 	public void eliminarTarea(String nombreTarea);
 	
 	List<ProyectoDTO> obtenerProyectos(String username);
-	
-	void crearEvento(LocalDateTime fecha, LocalDateTime inicio, LocalDateTime fin, String descripcion);
-	
-	List<EventoDTO> obtenerEventos();
-	
+		
 	void asignarPrioridad(String nombreProyecto, String prioridad) throws NotNullException, DataEmptyException;
 	
     public int compare(Proyecto p1, Proyecto p2);
     
-    void crearPlan(String nombre, Proyecto pertenece);
-
 	void eliminarProyecto(String nombreProyecto);
 	
 	void modificarProyecto(String nombreProyecto, String nuevoNombre, String nuevaPrioridad, String nuevaDescripcion)throws NotNullException, DataEmptyException;
@@ -83,4 +77,7 @@ public interface IApi {
 
 	void modificarTarea(String nomb,String nombreProyecto, String nuevoNombre, String nuevaPrioridad,String nombre,Boolean estado, String nuevaDescripcion,LocalDateTime inicio, LocalDateTime fin)throws NotNullException, DataEmptyException;
 	
+	//void crearPlan(String nombre, Proyecto pertenece);
+	//void crearEvento(LocalDateTime fecha, LocalDateTime inicio, LocalDateTime fin, String descripcion);
+	//List<EventoDTO> obtenerEventos();
 }

@@ -291,32 +291,7 @@ public class MemoryApi implements IApi {
 
 		return tareasPorProyecto.getOrDefault(nombreProyecto, new ArrayList<>());
     }
-    
-	@Override
-	public void crearEvento(LocalDateTime fecha, LocalDateTime inicio, LocalDateTime fin, String descripcion) {
-		// TODO Auto-generated method stub
-		Evento evento = new Evento(fecha, inicio, fin, descripcion);
-		this.eventos.add(evento);
-	}
-
-
-	@Override
-	public List<EventoDTO> obtenerEventos() {
-		List<EventoDTO> eventosDTO = new ArrayList<>();
-		for (Evento evento : this.eventos) {
-	        // Convertir cada Evento en EventoDTO
-	        EventoDTO eventoDTO = new EventoDTO(
-	            evento.getFecha(),
-	            evento.getInicio(),
-	            evento.getFin(),
-	            evento.getDescripcion()
-	        );
-	        
-	        eventosDTO.add(eventoDTO); // Agregar a la lista de DTOs
-	    }
-		return eventosDTO;
-	}
-	
+    	
 	// Implementación del método para obtener la lista de proyectos como DTO
     @Override
     public List<ProyectoDTO> obtenerProyectos(String username) {
@@ -348,15 +323,6 @@ public class MemoryApi implements IApi {
         List<String> prioridades = Arrays.asList("alta", "media", "baja");
         return Integer.compare(prioridades.indexOf(p1.getPrioridad1()), prioridades.indexOf(p2.getPrioridad1()));
     }
-
-	@Override
-	public void crearPlan(String nombre, Proyecto pertenece) {
-		// Verificar si el proyecto ya tiene un plan asignado
-		
-		// Crear una nueva instancia de Plan con el nombre y el proyecto
-	    Plan nuevoPlan = new Plan(nombre, pertenece);
-	    pertenece.setPlan(nuevoPlan);
-	}
 
 	@Override
 	
@@ -517,5 +483,38 @@ public void crearProyecto(String nombre, String usuarioPropietario , boolean est
 		this.usuarioActual = obtenerUsuarioDominio(nombreUsuario);
 	}
 	
+	/*@Override
+	public void crearEvento(LocalDateTime fecha, LocalDateTime inicio, LocalDateTime fin, String descripcion) {
+		// TODO Auto-generated method stub
+		Evento evento = new Evento(fecha, inicio, fin, descripcion);
+		this.eventos.add(evento);
+	}*/
+
+
+	/*@Override
+	public List<EventoDTO> obtenerEventos() {
+		List<EventoDTO> eventosDTO = new ArrayList<>();
+		for (Evento evento : this.eventos) {
+	        // Convertir cada Evento en EventoDTO
+	        EventoDTO eventoDTO = new EventoDTO(
+	            evento.getFecha(),
+	            evento.getInicio(),
+	            evento.getFin(),
+	            evento.getDescripcion()
+	        );
+	        
+	        eventosDTO.add(eventoDTO); // Agregar a la lista de DTOs
+	    }
+		return eventosDTO;
+	}*/
+	
+	/*@Override
+	public void crearPlan(String nombre, Proyecto pertenece) {
+		// Verificar si el proyecto ya tiene un plan asignado
+		
+		// Crear una nueva instancia de Plan con el nombre y el proyecto
+	    Plan nuevoPlan = new Plan(nombre, pertenece);
+	    pertenece.setPlan(nuevoPlan);
+	}*/
 }
 

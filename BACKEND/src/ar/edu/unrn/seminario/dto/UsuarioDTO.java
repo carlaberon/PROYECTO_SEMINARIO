@@ -16,11 +16,10 @@ public class UsuarioDTO {
 		this.password = password;
 		this.nombre = nombre;
 		this.email = email;
-		
 		this.rol = rol2;
 		this.activo = activo;
 	
-	}
+	}	
 
 	public String getUsername() {
 		return username;
