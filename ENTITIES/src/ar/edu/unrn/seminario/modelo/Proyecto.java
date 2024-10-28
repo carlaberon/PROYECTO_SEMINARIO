@@ -17,7 +17,7 @@ public class Proyecto {
     private String descripcion;
     private String prioridad;//Alta, Media, Baja
     private Set<Proyecto> proyectos = new HashSet<>();
-    private Plan plan;
+
 
     public Proyecto(String nombre, Usuario usuarioPropietario) {
         this.nombre = nombre; 
@@ -30,33 +30,7 @@ public class Proyecto {
         this.estado = estado;
     }
     
-    public Proyecto(String nombre, String prioridad, String descripcion) throws NotNullException, DataEmptyException{
-    	// Validar que los campos no sean nulos
-	    if (esDatoNulo(nombre)) {
-	        throw new NotNullException("nombre");
-	    }
-	    if (esDatoNulo(descripcion)) {
-	        throw new NotNullException("descripcion");
-	    }
-	    if (esDatoNulo(prioridad)) {
-	        throw new NotNullException("prioridad");
-	    }
-
-	    // Validar que los campos no estén vacíos
-	    if (esDatoVacio(nombre)) {
-	        throw new DataEmptyException("nombre");
-	    }
-	    if (esDatoVacio(descripcion)) {
-	        throw new DataEmptyException("descripcion");
-	    }
-	    if (esDatoVacio(prioridad)) {
-	        throw new DataEmptyException("prioridad");
-	    }
-	    this.nombre = nombre; 
-        this.descripcion = descripcion;
-        this.prioridad = prioridad;
-	    
-    }
+ 
 
 
     public Proyecto(String nombre, Usuario usuarioPropietario, boolean estado, String descripcion, String prioridad) throws NotNullException, DataEmptyException{
@@ -200,13 +174,7 @@ public class Proyecto {
     }
     
 	
-	public Plan getPlan() {
-        return plan;
-    }
 
-    public void setPlan(Plan plan) {
-        this.plan = plan;
-    }
     
 	private boolean esDatoVacio(String dato) {
 		return dato.equals("");
