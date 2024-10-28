@@ -17,7 +17,6 @@ public class Proyecto {
     private String descripcion;
     private String prioridad;//Alta, Media, Baja
     private Set<Proyecto> proyectos = new HashSet<>();
-    private Plan plan;
 
     public Proyecto(String nombre, Usuario usuarioPropietario) {
         this.nombre = nombre; 
@@ -168,15 +167,6 @@ public class Proyecto {
     public void activarProyecto() {
         if (isFinished())
             this.estado = false;
-    }
-    
-	
-	public Plan getPlan() {
-        return plan;
-    }
-
-    public void setPlan(Plan plan) {
-        this.plan = plan;
     }
     
 	private boolean esDatoVacio(String dato) {

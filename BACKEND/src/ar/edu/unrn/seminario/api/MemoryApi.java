@@ -431,7 +431,7 @@ public void crearProyecto(String nombre, String usuarioPropietario , boolean est
 	            return 0; // En caso de prioridad desconocida
 	    }
 	}
-
+	
 	private RolDTO convertirEnRolDTO(Rol rol) {
 		RolDTO rolDto = new RolDTO(rol.getCodigo(), rol.getNombre(), rol.isActivo());
 		return null;
