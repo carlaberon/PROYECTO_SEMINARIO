@@ -6,6 +6,7 @@ import java.util.List;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
+import ar.edu.unrn.seminario.modelo.Proyecto;
 import ar.edu.unrn.seminario.modelo.Rol;
 import ar.edu.unrn.seminario.modelo.Tarea;
 import ar.edu.unrn.seminario.modelo.Usuario;
@@ -28,17 +29,27 @@ public class TestAcceso {
 		
 		tareaDao.create(tarea);
 		
+		Usuario usuario = new Usuario("ldifabio", "1234", "Lucas", "ldifabio@unrn.edu.ar", new Rol(1, ""));
 		
-		//Usuario usuario = new Usuario("ldifabio", "1234", "Lucas", "ldifabio@unrn.edu.ar", new Rol(1, ""));
+		usuarioDao.create(usuario);
 		
-		//usuarioDao.create(usuario);
-		
-//		List<Usuario> usuarios = usuarioDao.findAll();
-//			for (Usuario u: usuarios) {
-//			System.out.println(u);
-//	}
+		List<Usuario> usuarios = usuarioDao.findAll();
+			for (Usuario u: usuarios) {
+			System.out.println(u);
+			}	
 	
-//			System.out.println(usuarioDao.find("ldifabio"));
+		System.out.println(usuarioDao.find("ldifabio"));
+		
+		ProyectoDao proyectoDao = new ProyectoDAOJDBC();
+		Proyecto subProyecto = new Proyecto("SubProyecto", usuario, false, "Descripción del subproyecto", "media");
+		Proyecto proyecto = new Proyecto("Proyecto Principal", usuario, true, "esto es una prueba", "alta");
+		proyecto.getProyectos().add(subProyecto); // Añadir el subproyecto al conjunto de proyectos
+		proyectoDao.create(proyecto);
+		
+		// Imprimir el subproyecto
+		System.out.println("Subproyecto creado: " + subProyecto);
 	}
+	
+	
 
 }

@@ -10,35 +10,51 @@ import ar.edu.unrn.seminario.modelo.Proyecto;
 public class ProyectoDAOJDBC implements ProyectoDao{
 
 	@Override
-	public void create(Proyecto Usuario) {
+	public void create(Proyecto proyecto) {
 		PreparedStatement statement;
 		Connection conn;
 		try {
 			conn = ConnectionManager.getConnection();
 			
 			statement = conn
-					.prepareStatement("INSERT INTO tareas(nombre, proyecto, prioridad, usuario, estado, descripcion, fecha_inicio, fecha_fin)" + "VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
+					.prepareStatement("INSERT INTO `proyectos` (`nombre`,`usuario_propietario`,`estado`,`descripcion`, `prioridad`,`proyecto`) " + "VALUES(?, ?, ?, ?, ?, ?)");
 		
-			statement.setString(1, tarea.getNombre());
-			statement.setString(2, tarea.getProyecto());
-			statement.setString(3, tarea.getPrioridad());
-			statement.setString(4, tarea.getUsuario());
-			statement.setBoolean(5, tarea.isEstado());
-			statement.setString(6, tarea.getDescripcion());
-			statement.setDate(7, java.sql.Date.valueOf(tarea.getInicio().toLocalDate()));
-			statement.setDate(8, java.sql.Date.valueOf(tarea.getFin().toLocalDate()));
+			statement.setString(1, proyecto.getNombre());
+			statement.setObject(2, proyecto.getUsuarioPropietario().getUsername());
+			statement.setBoolean(3, proyecto.getEstado());
+			statement.setString(4, proyecto.getDescripcion());
+			statement.setString(5, proyecto.getPrioridad1());
+			statement.setNull(6, java.sql.Types.VARCHAR);
+			
 			
 			int cant = statement.executeUpdate();
 		
 			if ( cant > 0) {
 			
-			System.out.println("Modificando " + cant + " registros");
+				System.out.println("Proyecto principal insertado.");
 			
 			// TODO: disparar Exception propia
+			} else {
+				System.out.println("Error al actualizar");
 			}
-		else {
-			System.out.println("Error al actualizar");
-		}
+			
+			//Se inserta cada proyecto
+			for(Proyecto subProyecto : proyecto.getProyectos()) {
+				statement = conn.
+						prepareStatement("INSERT INTO `proyectos` (`nombre`, `usuario_propietario`, `estado`, `descripcion`, `prioridad`, `proyecto`) " + "VALUES (?, ?, ?, ?, ?, ?)");
+				
+				statement.setString(1, subProyecto.getNombre());
+				statement.setString(2, subProyecto.getUsuarioPropietario().getUsername());
+				statement.setBoolean(3, subProyecto.getEstado());
+				statement.setString(4, subProyecto.getDescripcion());
+				statement.setString(5, subProyecto.getPrioridad1());
+				statement.setString(6, proyecto.getNombre()); //se vincula al proyecto principal
+				
+				int subCant = statement.executeUpdate();
+				if (subCant > 0) {
+					System.out.println("Subproyecto insertado: " + subProyecto.getNombre());
+				}
+			}
 			
 		}
 		catch (SQLException e) {
