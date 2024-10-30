@@ -13,11 +13,11 @@ public interface TareaDao {
 
 	void update(Tarea tarea);
 
-	void remove(Long id);
+	void remove(String nombre, String proyecto, String usuario_propietario);
 
-	void remove(Tarea rol);
+	void remove(Tarea tarea);
 
-	Tarea find(Integer codigo);
+	Tarea find(String nombreTarea, String proyecto, String usuario_propietario) throws DataEmptyException, NotNullException, InvalidDateException;
 
 	List<Tarea> findAll() throws DataEmptyException, NotNullException, InvalidDateException;
 }
