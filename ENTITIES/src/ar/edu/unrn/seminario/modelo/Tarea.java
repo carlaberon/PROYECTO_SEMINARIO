@@ -10,19 +10,22 @@ public class Tarea {
     private String nombre;
     private String proyecto;  
     private String prioridad;
+    private String usuarioP;
     private String usuario;
     private boolean estado; // FINALIZADO: TRUE, NOFINALIZADO: FALSE
     private String descripcion;
     private LocalDateTime fechaInicio; 
     private LocalDateTime fechaFin;
 
-    public Tarea(String nombre, String proyecto, String prioridad, String username, boolean estado, String descripcion, LocalDateTime inicio, LocalDateTime fin) throws DataEmptyException, NotNullException, InvalidDateException {
+    public Tarea(String nombre, String proyecto,String usuarioPropietario, String prioridad, String username, boolean estado, String descripcion, LocalDateTime inicio, LocalDateTime fin) throws DataEmptyException, NotNullException, InvalidDateException {
     
  
     	if (esDatoNulo(nombre))
 			throw new NotNullException("nombre");
     	if (esDatoNulo(proyecto))
 			throw new NotNullException("nombre de proyecto");
+    	if (esDatoNulo(usuarioPropietario))
+			throw new NotNullException("usuario propietario");
     	if (esDatoNulo(prioridad))
 			throw new NotNullException("prioridad");
     	if (esDatoNulo(username))
@@ -34,6 +37,8 @@ public class Tarea {
 			throw new DataEmptyException("nombre");
 		if (esDatoVacio(proyecto))
 			throw new DataEmptyException("nombre de proyecto");
+		if (esDatoVacio(usuarioPropietario))
+			throw new DataEmptyException("usuario propietario");
 		if (esDatoVacio(prioridad))
 			throw new DataEmptyException("prioridad");
 		if (esDatoVacio(username))
@@ -47,6 +52,7 @@ public class Tarea {
 		
     	this.nombre = nombre;
         this.proyecto = proyecto;
+        this.usuarioP= usuarioPropietario;
         this.prioridad = prioridad;
         this.usuario = username;
         this.estado = estado;
@@ -91,7 +97,9 @@ public class Tarea {
     public String getDescripcion() {
         return descripcion;
     }
-
+    public String getUsuarioPropietario() {
+        return usuarioP;
+    }
     public LocalDateTime getInicio() {
         return fechaInicio;
     }
@@ -108,7 +116,9 @@ public class Tarea {
     public void setPrioridad(String prioridad) {
         this.prioridad = prioridad; 
     }
-    
+    public void setUsuarioPropietario(String usuarioPropietario) {
+    	this.usuarioP=usuarioPropietario;
+    }
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }

@@ -24,18 +24,14 @@ public class TestAcceso {
 		
 		TareaDao tareaDao = new TareaDAOJDBC();
 		
-		Tarea tarea = new Tarea("plan de estudio", "sistemas","alta","carlaberon", false, "plan de estudios para cerrar el cuatrimestre", LocalDateTime.now(), LocalDateTime.now().plusDays(20));
+		Tarea tarea = new Tarea("plan de estudio", "Aplicacion de votos","ldifabio","alta","ldifabio", false, "plan de estudios para cerrar el cuatrimestre", LocalDateTime.now(), LocalDateTime.now().plusDays(20));
 		
 		tareaDao.create(tarea);
 		
-		List<Tarea> tareas = tareaDao.findAll();
-		for (Tarea u: tareas) {
-			System.out.println(u.getNombre());
-		}
 		
-		Usuario usuario = new Usuario("ldifabio", "1234", "Lucas", "ldifabio@unrn.edu.ar", new Rol(1, ""));
+		//Usuario usuario = new Usuario("ldifabio", "1234", "Lucas", "ldifabio@unrn.edu.ar", new Rol(1, ""));
 		
-		usuarioDao.create(usuario);
+		//usuarioDao.create(usuario);
 		
 //		List<Usuario> usuarios = usuarioDao.findAll();
 //			for (Usuario u: usuarios) {
