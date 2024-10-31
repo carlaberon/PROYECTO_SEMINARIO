@@ -1,5 +1,6 @@
 package ar.edu.unrn.seminario.dto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import ar.edu.unrn.seminario.modelo.Proyecto;
@@ -13,10 +14,10 @@ public class TareaDTO {
     private String user;
     private boolean estado; // FINALIZADO: TRUE, NOFINALIZADO: FALSE
     private String description;
-    private LocalDateTime inicio; 
-    private LocalDateTime fin;
+    private LocalDate inicio; 
+    private LocalDate fin;
     
-    public TareaDTO(String name, String nameProject, String priority, String user, boolean estado, String descripcion, LocalDateTime inicio, LocalDateTime fin) {
+    public TareaDTO(String name, String nameProject, String priority, String user, boolean estado, String descripcion, LocalDate localDate, LocalDate localDate2) {
         super();
         this.name = name;
         this.project_name = nameProject;
@@ -24,8 +25,8 @@ public class TareaDTO {
         this.user = user;
         this.estado = estado;
         this.description = descripcion;
-        this.inicio = inicio;
-        this.fin = fin;
+        this.inicio = localDate;
+        this.fin = localDate2;
     }
 
 

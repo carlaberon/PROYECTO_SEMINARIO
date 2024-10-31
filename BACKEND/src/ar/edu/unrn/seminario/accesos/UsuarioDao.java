@@ -9,7 +9,7 @@ public interface UsuarioDao {
 
 	void update(Usuario Usuario);
 
-	void remove(Long id);
+	void remove(String userNombre);
 
 	void remove(Usuario Usuario);
 
