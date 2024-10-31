@@ -1,7 +1,6 @@
 package ar.edu.unrn.seminario.accesos;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import ar.edu.unrn.seminario.exception.DataEmptyException;
@@ -77,8 +76,8 @@ public class TestAcceso {
 		Proyecto proyecto3 = new Proyecto("Proyecto terciario", usuario2, false, "esto es una prueba de nuevo", "alta");
 		proyectoDao.create(proyecto3);
 		
-		// Imprimir el subproyecto
-		//System.out.println("Subproyecto creado: " + subProyecto);
+		//Imprimir el subproyecto
+		System.out.println("Subproyecto creado: " + subProyecto);
 		
 		List<Proyecto> proyectos = proyectoDao.findAll();
 		for (Proyecto proyectoR : proyectos) {
@@ -88,6 +87,12 @@ public class TestAcceso {
 		//Recuperacion de un proyecto especifico
 		proyecto = proyectoDao.find("Aplicacion de votos", "ldifabio");
 		System.out.println(proyecto);
+		
+		//Eliminar proyecto en concreto
+		//proyectoDao.remove("SubProyecto", "ldifabio");
+		//proyectoDao.remove("Proyecto Principal", "ldifabio"); //remueve por nombre y usuario
+		//proyectoDao.remove(proyecto3); //remueve el proyecto 
+		
 		
 	}
 

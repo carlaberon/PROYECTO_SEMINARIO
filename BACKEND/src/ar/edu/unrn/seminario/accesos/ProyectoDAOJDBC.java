@@ -1,7 +1,6 @@
 package ar.edu.unrn.seminario.accesos;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,7 +11,6 @@ import java.util.List;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.modelo.Proyecto;
-import ar.edu.unrn.seminario.modelo.Tarea;
 import ar.edu.unrn.seminario.modelo.Usuario;
 
 public class ProyectoDAOJDBC implements ProyectoDao{
@@ -112,14 +110,47 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 	}
 
 	@Override
-	public void remove(Long id) {
-		// TODO Auto-generated method stub
+	public void remove(String nombre, String usuario_propietario) {
+		try {
+			Connection conn = ConnectionManager.getConnection();
+			PreparedStatement statement = conn.prepareStatement("DELETE FROM proyectos WHERE nombre = ? AND usuario_propietario = ?");
+			statement.setString(1, nombre);
+			statement.setString(2, usuario_propietario);
+			
+			int verificacion = statement.executeUpdate();		
+			if(verificacion == 1) {
+				System.out.println("Se elimino el proyecto.");
+			} else {
+				System.out.println("No se encontro el proyecto para eliminar.");
+			}
+		} catch (SQLException e) {
+			System.out.println("No se pudo eliminar el proyecto. " + e.toString());
+		} finally {
+			ConnectionManager.disconnect();
+		}
 		
 	}
 
 	@Override
-	public void remove(Proyecto Usuario) {
-		// TODO Auto-generated method stub
+	public void remove(Proyecto proyecto) {
+		try {
+			Connection conn = ConnectionManager.getConnection();
+			PreparedStatement statement = conn.prepareStatement("DELETE FROM proyectos WHERE nombre = ? AND usuario_propietario = ?");
+			statement.setString(1, proyecto.getNombre());
+			statement.setString(2, proyecto.getUsuarioPropietario().getUsername());
+			
+			int verificacion = statement.executeUpdate();		
+			if(verificacion == 1) {
+				System.out.println("Se elimino el proyecto.");
+			} else {
+				System.out.println("No se encontro el proyecto a eliminar");
+			}
+			
+		} catch (SQLException e) {
+			System.out.println("No se pudo eliminar el proyecto " + e.toString());
+		} finally {
+			ConnectionManager.disconnect();
+		}
 		
 	}
 
@@ -179,7 +210,6 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 		} finally {
 			ConnectionManager.disconnect();
 		}
-
 		return proyectos;
 	}
 

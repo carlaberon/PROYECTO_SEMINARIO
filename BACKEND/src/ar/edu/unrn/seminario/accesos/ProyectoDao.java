@@ -11,7 +11,7 @@ public interface ProyectoDao {
 
 	void update(Proyecto proyecto);
 
-	void remove(Long id);
+	void remove(String nombre, String usuario_propietario);
 
 	void remove(Proyecto proyecto);
 
