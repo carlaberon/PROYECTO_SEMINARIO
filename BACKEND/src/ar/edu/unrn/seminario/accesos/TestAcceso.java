@@ -1,5 +1,6 @@
 package ar.edu.unrn.seminario.accesos;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -31,7 +32,25 @@ public class TestAcceso {
 		Tarea tarea = new Tarea("plan de estudio", "Aplicacion de votos","ldifabio","alta","ldifabio", false, "plan de estudios para cerrar el cuatrimestre", LocalDateTime.now(), LocalDateTime.now().plusDays(20));
 		tareaDao.create(tarea);
 		
+		//Recuperacion de todas las tareas
+				List<Tarea> tareas = tareaDao.findAll();
+				for (Tarea tarea2 : tareas) {
+					System.out.println(tarea2);
+				}
+				//Recuperacion de una tarea en especifico
+				tarea = tareaDao.find("Definir plan de estudio", "Aplicacion de votos", "ldifabio");
+				System.out.println(tarea);
 		
+				//Eliminar una tarea en particular atraves del objeto Tarea
+				tareaDao.remove(tarea);
+				tareas = tareaDao.findAll();
+				for (Tarea tarea2 : tareas) {
+					System.out.println(tarea2);
+				}
+				
+				//Modificar tarea
+				
+				//--------------------------------------------------------------------------------------------------------------------------------------
 		
 		/*List<Usuario> usuarios = usuarioDao.findAll();
 			for (Usuario u: usuarios) {
@@ -54,7 +73,5 @@ public class TestAcceso {
 			System.out.println(proyecto2.toString());
 		}
 	}
-	
-	
 
 }
