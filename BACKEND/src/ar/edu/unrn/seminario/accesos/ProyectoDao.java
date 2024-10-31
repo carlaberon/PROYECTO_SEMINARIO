@@ -2,6 +2,8 @@ package ar.edu.unrn.seminario.accesos;
 
 import java.util.List;
 
+import ar.edu.unrn.seminario.exception.DataEmptyException;
+import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.modelo.Proyecto;
 
 public interface ProyectoDao {
@@ -15,5 +17,5 @@ public interface ProyectoDao {
 
 	Proyecto find(String username);
 
-	List<Proyecto> findAll();
+	List<Proyecto> findAll() throws NotNullException, DataEmptyException;
 }
