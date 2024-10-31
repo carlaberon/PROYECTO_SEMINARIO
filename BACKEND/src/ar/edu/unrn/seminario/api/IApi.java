@@ -43,6 +43,8 @@ public interface IApi {
 	
 	public void registrarTarea(String name, String project, String priority, String user, boolean estado, String descripcion, LocalDateTime inicio, LocalDateTime fin) throws DataEmptyException, NotNullException, InvalidDateException;
 	
+	public int obtenerPrioridad(String prioridad);
+	
 	List<TareaDTO> obtenerTareas();
 	
 	void añadirTareaAProyecto(String proyecto, Tarea tarea);

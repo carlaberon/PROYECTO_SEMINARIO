@@ -8,6 +8,8 @@ import ar.edu.unrn.seminario.accesos.RolDAOJDBC;
 import ar.edu.unrn.seminario.accesos.RolDao;
 import ar.edu.unrn.seminario.accesos.UsuarioDAOJDBC;
 import ar.edu.unrn.seminario.accesos.UsuarioDao;
+import ar.edu.unrn.seminario.accesos.ProyectoDAOJDBC;
+import ar.edu.unrn.seminario.accesos.ProyectoDao;
 import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.TareaDTO;
@@ -24,10 +26,12 @@ public class PersistenceApi implements IApi {
 
 	private RolDao rolDao;
 	private UsuarioDao usuarioDao;
-
+	private ProyectoDao proyectoDao;
+	private Usuario usuarioActual;
 	public PersistenceApi() {
 		rolDao = new RolDAOJDBC();
 		usuarioDao = new UsuarioDAOJDBC();
+		proyectoDao = new ProyectoDAOJDBC();
 	}
 
 	@Override
@@ -46,18 +50,6 @@ public class PersistenceApi implements IApi {
 					convertirEnRolDTO(u.getRol()), u.isActivo()));
 		}
 		return dtos;
-	}
-
-	@Override
-	public UsuarioDTO obtenerUsuario(String username) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void eliminarUsuario(String username) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -88,31 +80,17 @@ public class PersistenceApi implements IApi {
 		RolDTO rolDTO = new RolDTO(rol.getCodigo(), rol.getNombre(), rol.isActivo());
 		return rolDTO;
 	}
-
 	@Override
-	public void activarRol(Integer codigo) {
-		// TODO Auto-generated method stub
+	public void crearProyecto(String nombre, String string, boolean estado, String descripcion, String prioridad)
+			throws NotNullException, DataEmptyException {
+		
+		Usuario propietario = usuarioDao.find(string);
 
-	}
-
-	@Override
-	public void desactivarRol(Integer codigo) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void activarUsuario(String username) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void desactivarUsuario(String username) {
-		// TODO Auto-generated method stub
-
+	    Proyecto nuevoProyecto = new Proyecto(nombre, propietario, estado, descripcion, prioridad);
+	    proyectoDao.create(nuevoProyecto);
 	}
 	
+
 	private RolDTO convertirEnRolDTO(Rol rol) {
 		RolDTO rolDto = new RolDTO(rol.getCodigo(), rol.getNombre(), rol.isActivo());
 		return null;
@@ -187,12 +165,7 @@ public class PersistenceApi implements IApi {
 		return 0;
 	}
 
-	@Override
-	public void crearProyecto(String nombre, String string, boolean estado, String descripcion, String prioridad)
-			throws NotNullException, DataEmptyException {
-		// TODO Auto-generated method stub
-		
-	}
+	
 
 	@Override
 	public ProyectoDTO getProyectoActual() {
@@ -205,17 +178,21 @@ public class PersistenceApi implements IApi {
 		// TODO Auto-generated method stub
 		
 	}
-
+   /*
 	@Override
 	public UsuarioDTO getUsuarioActual() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		Usuario aux = usuarioDao.find(string);
+		return convertirEnUsuarioDTO(aux);
+	};*/
 
 	@Override
 	public void setUsuarioActual(String nombreUsuario) {
-		// TODO Auto-generated method stub
-		
+	    Usuario usuario = usuarioDao.find(nombreUsuario);
+	    if (usuario != null) {
+	        this.usuarioActual = usuario; // Asigna el usuario encontrado
+	    } else {
+	        throw new IllegalArgumentException("Usuario no encontrado: " + nombreUsuario);
+	    }
 	}
 
 	@Override
@@ -225,5 +202,86 @@ public class PersistenceApi implements IApi {
 		// TODO Auto-generated method stub
 		
 	}
+	// cosas que creo que funcionan
+	
+	
+	@Override
+	public int obtenerPrioridad(String prioridad) {
+	    switch (prioridad) {
+	        case "alta":
+	            return 1;
+	        case "media":
+	            return 2;
+	        case "baja":
+	            return 3;
+	        default:
+	            return 0; // En caso de prioridad desconocida
+	    }
+	}
+	
+	
+	//ACA PONDRE LOS MODULOS QUE CONSIDERO QUE NO SON NECESARIOS:
+	
 
+	@Override
+	public UsuarioDTO obtenerUsuario(String username) {
+		Usuario usuario = usuarioDao.find(username);
+		if (usuario != null){
+			 UsuarioDTO userDTO = new UsuarioDTO(
+			            usuario.getUsername(),
+			            usuario.getContrasena(),
+			            usuario.getNombre(),
+			            usuario.getEmail(),
+			            convertirEnRolDTO(usuario.getRol()), // Asegúrate de que este método existe y convierte el Rol a RolDTO
+			            usuario.isActivo()
+			        );
+			        return userDTO; // Retorna el UsuarioDTO
+			    }
+			    
+			    return null; // Retorna null si no se encuentra el usuario
+			}
+
+	@Override
+	public void eliminarUsuario(String username) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void activarRol(Integer codigo) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void desactivarRol(Integer codigo) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void activarUsuario(String username) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void desactivarUsuario(String username) {
+		// TODO Auto-generated method stub
+
+	}
+
+
+	private UsuarioDTO convertirEnUsuarioDTO(Usuario usuario) {
+		UsuarioDTO usuarioDto = new UsuarioDTO(usuario.getUsername(), usuario.getContrasena(), usuario.getNombre(), usuario.getEmail(), convertirEnRolDTO(usuario.getRol()), usuario.isActivo());
+		return usuarioDto;
+	}
+	public UsuarioDTO getUsuarioActual() {
+	    if (usuarioActual == null) {
+	        throw new IllegalStateException("El usuario actual no ha sido establecido.");
+	    }
+	    return convertirEnUsuarioDTO(usuarioActual);
+
+
+}
 }

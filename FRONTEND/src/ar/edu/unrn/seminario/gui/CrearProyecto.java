@@ -18,10 +18,13 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import ar.edu.unrn.seminario.api.IApi;
+import ar.edu.unrn.seminario.api.MemoryApi;
+import ar.edu.unrn.seminario.api.PersistenceApi;
 import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
+import ar.edu.unrn.seminario.exception.InvalidDateException;
 
 import javax.swing.JTextPane;
 import javax.swing.JTree;
@@ -148,12 +151,7 @@ public class CrearProyecto extends JFrame {
         contentPane.add(proyectoComboBox);
         
 		proyectoComboBox.addItem("");
-		// Llenar el ComboBox con los proyectos existentes
-		List<ProyectoDTO> proyectos = api.obtenerProyectos(api.getUsuarioActual().getUsername());
-        for (ProyectoDTO proyecto : proyectos) {
-            proyectoComboBox.addItem(proyecto.getNombre());
-        }
-		
+	
 		JLabel lblNewLabel = new JLabel("Nuevo Proyecto");
 		lblNewLabel.setForeground(new Color(29, 17, 40));
 		lblNewLabel.setFont(new Font("Segoe UI", Font.PLAIN, 35));
@@ -183,4 +181,12 @@ public class CrearProyecto extends JFrame {
             listener.proyectoEliminado();
         }
     }
+public static void main(String[] args) throws NotNullException, DataEmptyException, InvalidDateException{
+		
+		IApi api = new PersistenceApi();
+		UsuarioDTO usuario = api.obtenerUsuario("ldifabio");
+		api.setUsuarioActual(usuario.getUsername());
+		CrearProyecto crearProyectoFrame = new CrearProyecto(api);
+		crearProyectoFrame.setVisible(true);
+	}
 }

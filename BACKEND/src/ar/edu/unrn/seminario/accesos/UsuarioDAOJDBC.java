@@ -48,28 +48,73 @@ public class UsuarioDAOJDBC implements UsuarioDao {
 
 	}
 
-	@Override
 	public void update(Usuario usuario) {
-		// TODO Auto-generated method stub
-
-//		if (e instanceof SQLIntegrityConstraintViolationException) {
-//	        // Duplicate entry
-//	    } else {
-//	        // Other SQL Exception
-//	    }
-
+	    try {
+	        Connection conn = ConnectionManager.getConnection();
+	        PreparedStatement statement = conn.prepareStatement(
+	            "UPDATE usuarios SET contrasena=?, nombre=?, email=?, activo=?, rol=? WHERE usuario=?");
+	        
+	        statement.setString(1, usuario.getContrasena());
+	        statement.setString(2, usuario.getNombre());
+	        statement.setString(3, usuario.getEmail());
+	        statement.setBoolean(4, usuario.isActivo());
+	        statement.setInt(5, usuario.getRol().getCodigo());
+	        statement.setString(6, usuario.getUsername());
+	        
+	        int rowsUpdated = statement.executeUpdate();
+	        if (rowsUpdated > 0) {
+	            System.out.println("Usuario actualizado exitosamente.");
+	        } else {
+	            System.out.println("No se encontró el usuario para actualizar.");
+	        }
+	    } catch (SQLException e) {
+	        System.out.println("Error al actualizar usuario. " + e.toString());
+	        // TODO: disparar Exception propia
+	    } finally {
+	        ConnectionManager.disconnect();
+	    }
+	}
+	public void remove(String username) {
+	    try {
+	        Connection conn = ConnectionManager.getConnection();
+	        PreparedStatement statement = conn.prepareStatement("DELETE FROM usuarios WHERE usuario = ?");
+	        
+	        statement.setString(1, username);
+	        
+	        int rowsDeleted = statement.executeUpdate();
+	        if (rowsDeleted > 0) {
+	            System.out.println("Usuario eliminado exitosamente.");
+	        } else {
+	            System.out.println("No se encontró el usuario para eliminar.");
+	        }
+	    } catch (SQLException e) {
+	        System.out.println("Error al eliminar usuario. " + e.toString());
+	        // TODO: disparar Exception propia
+	    } finally {
+	        ConnectionManager.disconnect();
+	    }
 	}
 
 	@Override
-	public void remove(Long id) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void remove(Usuario rol) {
-		// TODO Auto-generated method stub
-
+	public void remove(Usuario usuario) {
+	    try {
+	        Connection conn = ConnectionManager.getConnection();
+	        PreparedStatement statement = conn.prepareStatement("DELETE FROM usuarios WHERE usuario = ?");
+	        
+	        statement.setString(1, usuario.getUsername());
+	        
+	        int rowsDeleted = statement.executeUpdate();
+	        if (rowsDeleted > 0) {
+	            System.out.println("Usuario eliminado exitosamente.");
+	        } else {
+	            System.out.println("No se encontró el usuario para eliminar.");
+	        }
+	    } catch (SQLException e) {
+	        System.out.println("Error al eliminar usuario. " + e.toString());
+	        // TODO: disparar Exception propia
+	    } finally {
+	        ConnectionManager.disconnect();
+	    }
 	}
 
 	@Override

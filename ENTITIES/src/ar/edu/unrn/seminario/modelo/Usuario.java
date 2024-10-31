@@ -119,6 +119,16 @@ public class Usuario{
     public int hashCode() {
         return Objects.hash(username);  // Generar un hash basado solo en el username
     }
-
+    @Override
+    public String toString() {
+        return "Usuario{" +
+               "username='" + username + '\'' +
+               ", contrasena='" + contrasena + '\'' +
+               ", nombre='" + nombre + '\'' +
+               ", email='" + email + '\'' +
+               ", rol=" + rol +
+               ", activo=" + activo +
+               '}';
+    }
 }
 
