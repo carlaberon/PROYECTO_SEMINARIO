@@ -6,6 +6,7 @@ import java.util.List;
 
 import ar.edu.unrn.seminario.accesos.RolDAOJDBC;
 import ar.edu.unrn.seminario.accesos.RolDao;
+import ar.edu.unrn.seminario.accesos.TareaDao;
 import ar.edu.unrn.seminario.accesos.UsuarioDAOJDBC;
 import ar.edu.unrn.seminario.accesos.UsuarioDao;
 import ar.edu.unrn.seminario.accesos.ProyectoDAOJDBC;
@@ -28,6 +29,7 @@ public class PersistenceApi implements IApi {
 	private UsuarioDao usuarioDao;
 	private ProyectoDao proyectoDao;
 	private Usuario usuarioActual;
+	private TareaDao tareaDao;
 	public PersistenceApi() {
 		rolDao = new RolDAOJDBC();
 		usuarioDao = new UsuarioDAOJDBC();
@@ -40,6 +42,29 @@ public class PersistenceApi implements IApi {
 		Usuario usuario = new Usuario(username, password, nombre, email, rol);
 		this.usuarioDao.create(usuario);
 	}
+	@Override
+	public List<TareaDTO> obtenerTareas() {
+		List<TareaDTO> tareasDTO = new ArrayList<>();
+		List<Tarea> tareas = null;
+		try {
+			tareas = tareaDao.findAll();
+		} catch (DataEmptyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NotNullException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvalidDateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		    for (Tarea t : tareas) {  
+		        tareasDTO.add(new TareaDTO(t.getNombre(), t.getProyecto(), t.getPrioridad(), t.getUsuario(), t.isEstado(), t.getDescripcion(), t.getInicio(), t.getFin()));
+	    }
+
+	    return tareasDTO;
+	}
+	
 
 	@Override
 	public List<UsuarioDTO> obtenerUsuarios() {
@@ -102,12 +127,6 @@ public class PersistenceApi implements IApi {
 			throws DataEmptyException, NotNullException, InvalidDateException {
 		// TODO Auto-generated method stub
 		
-	}
-
-	@Override
-	public List<TareaDTO> obtenerTareas() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
