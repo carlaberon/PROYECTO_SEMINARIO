@@ -1,23 +1,22 @@
 package ar.edu.unrn.seminario.modelo;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
 
 public class Tarea {
-
     private String nombre;
     private String proyecto;  
     private String prioridad;
-    private String usuarioP;
+	private String usuarioP;
     private String usuario;
     private boolean estado; // FINALIZADO: TRUE, NOFINALIZADO: FALSE
     private String descripcion;
-    private LocalDateTime fechaInicio; 
-    private LocalDateTime fechaFin;
+    private LocalDate fechaInicio; 
+    private LocalDate fechaFin;
 
-    public Tarea(String nombre, String proyecto,String usuarioPropietario, String prioridad, String username, boolean estado, String descripcion, LocalDateTime inicio, LocalDateTime fin) throws DataEmptyException, NotNullException, InvalidDateException {
+    public Tarea(String nombre, String proyecto, String usuarioPropietario, String prioridad, String username, boolean estado, String descripcion, LocalDate inicio, LocalDate fin) throws DataEmptyException, NotNullException, InvalidDateException {
     
  
     	if (esDatoNulo(nombre))
@@ -100,11 +99,11 @@ public class Tarea {
     public String getUsuarioPropietario() {
         return usuarioP;
     }
-    public LocalDateTime getInicio() {
+    public LocalDate getInicio() {
         return fechaInicio;
     }
 
-    public LocalDateTime getFin() {
+    public LocalDate getFin() {
         return fechaFin;
     }
     
@@ -139,11 +138,11 @@ public class Tarea {
         this.descripcion = descripcion;
     }
 
-    public void setInicio(LocalDateTime inicio) {
+    public void setInicio(LocalDate inicio) {
         this.fechaInicio = inicio;
     }
 
-    public void setFin(LocalDateTime fin) {
+    public void setFin(LocalDate fin) {
         this.fechaFin = fin;
     }
 
@@ -176,6 +175,11 @@ public class Tarea {
 		return dato == null;
 	}
 
-
+	@Override
+	public String toString() {
+		return "Tarea [nombre=" + nombre + ", proyecto=" + proyecto + ", prioridad=" + prioridad + ", usuarioP="
+				+ usuarioP + ", usuario=" + usuario + ", estado=" + estado + ", descripcion=" + descripcion
+				+ ", fechaInicio=" + fechaInicio + ", fechaFin=" + fechaFin + "]";
+	}
 }
 
