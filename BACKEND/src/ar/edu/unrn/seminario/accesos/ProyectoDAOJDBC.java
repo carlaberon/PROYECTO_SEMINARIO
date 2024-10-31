@@ -112,7 +112,7 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 	}
 
 	@Override
-	public void remove(Long id) {
+	public void remove(String nombreProyecto, String usuario_propietario) {
 		// TODO Auto-generated method stub
 		
 	}

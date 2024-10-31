@@ -1,5 +1,6 @@
 package ar.edu.unrn.seminario.api;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -41,7 +42,7 @@ public interface IApi {
 
 	void desactivarUsuario(String username); // recuperar el objeto Usuario, implementar el comportamiento de estado.
 	
-	public void registrarTarea(String name, String project, String priority, String user, boolean estado, String descripcion, LocalDateTime inicio, LocalDateTime fin) throws DataEmptyException, NotNullException, InvalidDateException;
+	public void registrarTarea(String name, String project, String usuarioPropietario, String priority, String user, boolean estado, String descripcion, LocalDate inicio, LocalDate fin) throws DataEmptyException, NotNullException, InvalidDateException;
 	
 	public int obtenerPrioridad(String prioridad);
 	
@@ -49,7 +50,7 @@ public interface IApi {
 	
 	void añadirTareaAProyecto(String proyecto, Tarea tarea);
 	
-	public void eliminarTarea(String nombreTarea);
+	public void eliminarTarea(String nombreTarea, String proyecto, String usuarioPropietario);
 	
 	List<ProyectoDTO> obtenerProyectos(String username);
 		
@@ -57,11 +58,11 @@ public interface IApi {
 	
     public int compare(Proyecto p1, Proyecto p2);
     
-	void eliminarProyecto(String nombreProyecto);
+	void eliminarProyecto(String nombreProyecto, String usuarioPropietario);
 	
 	void modificarProyecto(String nombreProyecto, String nuevoNombre, String nuevaPrioridad, String nuevaDescripcion)throws NotNullException, DataEmptyException;
 
-	List<TareaDTO> obtenerTareasPorProyecto(String nombreProyecto);
+	List<TareaDTO> obtenerTareasPorProyecto(String nombreProyecto,String usuarioPropietario);
 	
 	public int obtenerValorPrioridad(String prioridad);
 	

@@ -65,7 +65,7 @@ public class TestAcceso {
         Usuario usuario = null;
         Rol rol = new Rol(2, "Admin");
         // Alta de usuario
-        usuario = new Usuario("Gabriel", "bocalose", "gabito", "riverwin@mail.com",rol, true);
+        usuario = new Usuario("Deyverson", "tresyparacasa", "gabito", "riverwin@mail.com",rol, true);
         usuarioDao.create(usuario);
         List<Usuario> usuarios = usuarioDao.findAll();
 		for (Usuario aux : usuarios) {
