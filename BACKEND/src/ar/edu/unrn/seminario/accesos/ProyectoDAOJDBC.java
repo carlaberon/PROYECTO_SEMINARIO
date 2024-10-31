@@ -68,7 +68,7 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 			// TODO: disparar Exception propia
 			}
 		catch (Exception e) {
-			System.out.println("Error al insertar un usuario");
+			System.out.println("Error al insertar el proyecto");
 			// TODO: disparar Exception propia
 		} finally {
 			ConnectionManager.disconnect();
