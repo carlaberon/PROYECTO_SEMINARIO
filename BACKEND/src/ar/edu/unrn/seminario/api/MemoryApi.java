@@ -220,92 +220,7 @@ public class MemoryApi implements IApi {
 		user.desactivar();
 	}
 
-	private Rol buscarRol(Integer codigo) {
-		for (Rol rol : roles) {
-			if (rol.getCodigo().equals(codigo))
-				return rol;
-		}
-		return null;
-	}
-
-	private Usuario buscarUsuario(String usuario) {
-		if (! usuarios.isEmpty()) { 
-			for (Usuario user : usuarios) {
-				if (user.getUsername().equals(usuario))
-					return user;
-			}
-		}
-
-		return null;
-	}
 	
-
-	public void registrarTarea(String name, String project, String priority, String user, boolean estado, String descripcion, LocalDateTime inicio, LocalDateTime fin) throws DataEmptyException, NotNullException, InvalidDateException {
-	    Tarea tarea = new Tarea(name, project, priority, user, estado, descripcion, inicio, fin);
-	    this.tareas.add(tarea); 
-	    añadirTareaAProyecto(project, tarea);
-	}
-	
-	public List<TareaDTO> obtenerTareas() {
-	    List<TareaDTO> tareasDTO = new ArrayList<>();
-	    
-	    if (! this.tareas.isEmpty()) {
-		    for (Tarea t : this.tareas) {  
-		        tareasDTO.add(new TareaDTO(t.getNombre(), t.getProyecto(), t.getPrioridad(), t.getUsuario(), t.isEstado(), t.getDescripcion(), t.getInicio(), t.getFin()));
-		    }
-	    }
-
-	    return tareasDTO;
-	}
-	
-	public void eliminarTarea(String nombreTarea) {
-		boolean encontrado = false;
-	    Iterator<Tarea> iterator = this.tareas.iterator(); 
-
-	    while (iterator.hasNext() || encontrado == false) {
-	        Tarea tarea = iterator.next(); 
-	        if (tarea.getNombre().equals(nombreTarea)) { 
-	            iterator.remove();
-	            encontrado = true;
-	        }
-	    }
-	}
-	
-	public void añadirTareaAProyecto(String proyecto, Tarea unaTarea) {
-
-		TareaDTO tarea = new TareaDTO(
-				unaTarea.getNombre(), 
-				unaTarea.getProyecto(), 
-				unaTarea.getPrioridad(), 
-				unaTarea.getUsuario(), 
-				unaTarea.isEstado(), 
-				unaTarea.getDescripcion(), 
-				unaTarea.getInicio(), 
-				unaTarea.getFin());
-
-		tareasPorProyecto.putIfAbsent(proyecto, new ArrayList<>());
-		tareasPorProyecto.get(proyecto).add(tarea);
-	}
-	
-	public List<TareaDTO> obtenerTareasPorProyecto(String nombreProyecto) throws RuntimeException {
-
-		return tareasPorProyecto.getOrDefault(nombreProyecto, new ArrayList<>());
-    }
-    	
-	// Implementación del método para obtener la lista de proyectos como DTO
-    @Override
-    public List<ProyectoDTO> obtenerProyectos(String username) {
-        List<ProyectoDTO> dtos = new ArrayList<>();
-        if(!proyectos.isEmpty()) {
-        	for (Proyecto p : this.proyectos) {
-        		if(p.existeMiembro(obtenerUsuarioDominio(username)))
-        			dtos.add(convertirEnProyectoDTO(p));
-        	}
-        }
-        if(!dtos.isEmpty())
-        	dtos.sort((p1, p2) -> Integer.compare(obtenerValorPrioridad(p1.getPrioridad()), obtenerValorPrioridad(p2.getPrioridad())));
-        return dtos;
-    }
 	
     // Implementación del método para asignar prioridad a un proyecto
     @Override
@@ -356,7 +271,21 @@ public void crearProyecto(String nombre, String usuarioPropietario , boolean est
 	        this.proyectos.remove(proyectoAEliminar);
 	    }	 
 	}
-
+   	
+	// Implementación del método para obtener la lista de proyectos como DTO
+    @Override
+    public List<ProyectoDTO> obtenerProyectos(String username) {
+        List<ProyectoDTO> dtos = new ArrayList<>();
+        if(!proyectos.isEmpty()) {
+        	for (Proyecto p : this.proyectos) {
+        		if(p.existeMiembro(obtenerUsuarioDominio(username)))
+        			dtos.add(convertirEnProyectoDTO(p));
+        	}
+        }
+        if(!dtos.isEmpty())
+        	dtos.sort((p1, p2) -> Integer.compare(obtenerValorPrioridad(p1.getPrioridad()), obtenerValorPrioridad(p2.getPrioridad())));
+        return dtos;
+    }
 	@Override
 	public void modificarProyecto(String nombreProyecto, String nuevoNombre, String nuevaPrioridad, String nuevaDescripcion) throws NotNullException, DataEmptyException {
 	    Proyecto proyectoExistente;
@@ -431,7 +360,7 @@ public void crearProyecto(String nombre, String usuarioPropietario , boolean est
 	            return 0; // En caso de prioridad desconocida
 	    }
 	}
-
+	
 	private RolDTO convertirEnRolDTO(Rol rol) {
 		RolDTO rolDto = new RolDTO(rol.getCodigo(), rol.getNombre(), rol.isActivo());
 		return null;
@@ -482,7 +411,78 @@ public void crearProyecto(String nombre, String usuarioPropietario , boolean est
 	public void setUsuarioActual(String nombreUsuario) {
 		this.usuarioActual = obtenerUsuarioDominio(nombreUsuario);
 	}
+	private Rol buscarRol(Integer codigo) {
+		for (Rol rol : roles) {
+			if (rol.getCodigo().equals(codigo))
+				return rol;
+		}
+		return null;
+	}
+
+	private Usuario buscarUsuario(String usuario) {
+		if (! usuarios.isEmpty()) { 
+			for (Usuario user : usuarios) {
+				if (user.getUsername().equals(usuario))
+					return user;
+			}
+		}
+
+		return null;
+	}
 	
+
+	public void registrarTarea(String name, String project, String priority, String user, boolean estado, String descripcion, LocalDateTime inicio, LocalDateTime fin) throws DataEmptyException, NotNullException, InvalidDateException {
+	    Tarea tarea = new Tarea(name, project, priority, user, estado, descripcion, inicio, fin);
+	    this.tareas.add(tarea); 
+	    añadirTareaAProyecto(project, tarea);
+	}
+	
+	public List<TareaDTO> obtenerTareas() {
+	    List<TareaDTO> tareasDTO = new ArrayList<>();
+	    
+	    if (! this.tareas.isEmpty()) {
+		    for (Tarea t : this.tareas) {  
+		        tareasDTO.add(new TareaDTO(t.getNombre(), t.getProyecto(), t.getPrioridad(), t.getUsuario(), t.isEstado(), t.getDescripcion(), t.getInicio(), t.getFin()));
+		    }
+	    }
+
+	    return tareasDTO;
+	}
+	
+	public void eliminarTarea(String nombreTarea) {
+		boolean encontrado = false;
+	    Iterator<Tarea> iterator = this.tareas.iterator(); 
+
+	    while (iterator.hasNext() || encontrado == false) {
+	        Tarea tarea = iterator.next(); 
+	        if (tarea.getNombre().equals(nombreTarea)) { 
+	            iterator.remove();
+	            encontrado = true;
+	        }
+	    }
+	}
+	
+	public void añadirTareaAProyecto(String proyecto, Tarea unaTarea) {
+
+		TareaDTO tarea = new TareaDTO(
+				unaTarea.getNombre(), 
+				unaTarea.getProyecto(), 
+				unaTarea.getPrioridad(), 
+				unaTarea.getUsuario(), 
+				unaTarea.isEstado(), 
+				unaTarea.getDescripcion(), 
+				unaTarea.getInicio(), 
+				unaTarea.getFin());
+
+		tareasPorProyecto.putIfAbsent(proyecto, new ArrayList<>());
+		tareasPorProyecto.get(proyecto).add(tarea);
+	}
+	
+	public List<TareaDTO> obtenerTareasPorProyecto(String nombreProyecto) throws RuntimeException {
+
+		return tareasPorProyecto.getOrDefault(nombreProyecto, new ArrayList<>());
+    }
+ 
 	/*@Override
 	public void crearEvento(LocalDateTime fecha, LocalDateTime inicio, LocalDateTime fin, String descripcion) {
 		// TODO Auto-generated method stub

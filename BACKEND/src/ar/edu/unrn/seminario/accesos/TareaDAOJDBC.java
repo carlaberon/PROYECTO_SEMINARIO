@@ -1,6 +1,7 @@
 package ar.edu.unrn.seminario.accesos;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -23,16 +24,17 @@ public class TareaDAOJDBC implements TareaDao{
 			conn = ConnectionManager.getConnection();
 			
 			statement = conn
-					.prepareStatement("INSERT INTO tareas(nombre, proyecto, prioridad, usuario, estado, descripcion, fecha_inicio, fecha_fin)" + "VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
+					.prepareStatement("INSERT INTO tareas(nombre, proyecto,usuario_propietario, prioridad, usuario, estado, descripcion, fecha_inicio, fecha_fin)" + "VALUES(?, ?, ?,?, ?, ?, ?, ?, ?)");
 		
 			statement.setString(1, tarea.getNombre());
 			statement.setString(2, tarea.getProyecto());
-			statement.setString(3, tarea.getPrioridad());
-			statement.setString(4, tarea.getUsuario());
-			statement.setBoolean(5, tarea.isEstado());
-			statement.setString(6, tarea.getDescripcion());
-			statement.setDate(7, java.sql.Date.valueOf(tarea.getInicio().toLocalDate()));
-			statement.setDate(8, java.sql.Date.valueOf(tarea.getFin().toLocalDate()));
+			statement.setString(3, tarea.getUsuarioPropietario());
+			statement.setString(4, tarea.getPrioridad());
+			statement.setString(5, tarea.getUsuario());
+			statement.setBoolean(6, tarea.isEstado());
+			statement.setString(7, tarea.getDescripcion());
+			statement.setDate(8, java.sql.Date.valueOf(tarea.getInicio()));
+			statement.setDate(9, java.sql.Date.valueOf(tarea.getFin()));
 			
 			int cant = statement.executeUpdate();
 		
@@ -65,26 +67,101 @@ public class TareaDAOJDBC implements TareaDao{
 
 	@Override
 	public void update(Tarea tarea) {
-		// TODO Auto-generated method stub
+		try {
+		   Connection conn = ConnectionManager.getConnection();
+		   PreparedStatement statement = conn.prepareStatement("UPDATE tareas SET nombre=?, prioridad=?, usuario=?, estado=?, descripcion=?, fecha_fin=? WHERE nombre=? AND proyecto=? AND usuario_propietario=?");
+		        
+		   // Establecer los valores de los nuevos datos de la tarea
+		   statement.setString(1, tarea.getNombre());
+		   statement.setString(2, tarea.getPrioridad());
+		   statement.setString(3, tarea.getUsuario());
+		   statement.setBoolean(4, tarea.isEstado());
+		   statement.setString(5, tarea.getDescripcion());
+		   statement.setDate(5, Date.valueOf(tarea.getFin()));
+		        
+		   int verificacion = statement.executeUpdate();
+		        
+		   if (verificacion > 0) {
+		            System.out.println("Tarea actualizada exitosamente.");
+		   } else {
+		            System.out.println("No se encontró la tarea para actualizar.");
+		   }
+		        
+		   } catch (SQLException e) {
+		       System.out.println("No se pudo actualizar la tarea. " + e.toString());
+		   } finally {
+		       ConnectionManager.disconnect();
+		   }
+	}
 		
+	
+
+	@Override
+	public void remove(String nombre, String proyecto, String usuario_propietario) {
+		try {
+			Connection conn = ConnectionManager.getConnection();
+			PreparedStatement sent = conn.prepareStatement("DELETE FROM tareas WHERE nombre=? AND proyecto=? AND usuario_propietario=?");
+			sent.setString(1, nombre);
+			sent.setString(2, proyecto);
+			sent.setString(3, usuario_propietario);
+			
+			int verificacion = sent.executeUpdate();		
+			if(verificacion == 1) {
+				System.out.println("Se elimino la tarea.");
+			}
+		} catch (SQLException e) {
+			System.out.println("No se pudo eliminar la tarea. " + e.toString());
+		} finally {
+		ConnectionManager.disconnect();
+		}
 	}
 
 	@Override
-	public void remove(Long id) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void remove(Tarea tarea) {
+		try {
+			Connection conn = ConnectionManager.getConnection();
+			PreparedStatement sent = conn.prepareStatement("DELETE FROM tareas WHERE nombre=? AND proyecto=? AND usuario_propietario=?");
+			sent.setString(1, tarea.getNombre());
+			sent.setString(2, tarea.getProyecto());
+			sent.setString(3, tarea.getUsuarioPropietario());
+			
+			int verificacion = sent.executeUpdate();		
+			if(verificacion == 1) {
+				System.out.println("Se elimino la tarea.");
+			}
+		} catch (SQLException e) {
+			System.out.println("No se pudo eliminar la tarea. " + e.toString());
+		} finally {
+		ConnectionManager.disconnect();
+		}
+	}			
 
 	@Override
-	public void remove(Tarea rol) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public Tarea find(Integer codigo) {
-		// TODO Auto-generated method stub
-		return null;
+	public Tarea find(String nombreTarea, String proyecto, String usuario_propietario) throws DataEmptyException, NotNullException, InvalidDateException {
+		Tarea encontrarTarea = null;
+		try {
+			Connection conn = ConnectionManager.getConnection();
+			PreparedStatement sent = conn.prepareStatement("SELECT * FROM tareas t "
+			+ "WHERE t.nombre=? and t.proyecto=? and t.usuario_propietario=?");
+			sent.setString(1, nombreTarea);
+			sent.setString(2, proyecto);
+			sent.setString(3, usuario_propietario);
+			ResultSet result = sent.executeQuery();
+			while(result.next()) {
+				encontrarTarea = new Tarea(result.getString("nombre"), result.getString("proyecto"), 
+				result.getString("usuario_propietario"), result.getString("prioridad"), result.getString("usuario"), result.getBoolean("estado"), 
+				result.getString("descripcion"), result.getDate("fecha_inicio").toLocalDate(), result.getDate("fecha_fin").toLocalDate());
+			}
+		} catch (SQLException e) {
+			System.out.println("Error de mySql\n" + e.toString());
+			// TODO: disparar Exception propia
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+			// TODO: disparar Exception propia
+		} finally {
+			ConnectionManager.disconnect();
+		}
+		return encontrarTarea;
 	}
 
 	@Override
@@ -94,10 +171,10 @@ public class TareaDAOJDBC implements TareaDao{
 		{
 			Connection conn = ConnectionManager.getConnection();
 			Statement statement = conn.createStatement();
-			ResultSet rs = statement.executeQuery("SELECT t.nombre, t.proyecto, t.prioridad, t.usuario, t.estado, t.descripcion, t.fecha_inicio, t.fecha_fin "+"FROM tareas t");
+			ResultSet rs = statement.executeQuery("SELECT t.nombre, t.proyecto, t.usuario_propietario, t.prioridad, t.usuario, t.estado, t.descripcion, t.fecha_inicio, t.fecha_fin "+"FROM tareas t");
 			
 			while (rs.next()) {
-				Tarea tarea = new Tarea(rs.getString("nombre"), rs.getString("proyecto"), rs.getString("prioridad"), rs.getString("usuario"), rs.getBoolean("estado"),rs.getString("descripcion"), rs.getDate("fecha_inicio").toLocalDate().atStartOfDay(), rs.getDate("fecha_fin").toLocalDate().atStartOfDay());
+				Tarea tarea = new Tarea(rs.getString("nombre"), rs.getString("proyecto"),rs.getString("usuario_propietario"), rs.getString("prioridad"), rs.getString("usuario"), rs.getBoolean("estado"),rs.getString("descripcion"), rs.getDate("fecha_inicio").toLocalDate(), rs.getDate("fecha_fin").toLocalDate());
 				tareas.add(tarea);
 			}
 		} catch (SQLException e) {

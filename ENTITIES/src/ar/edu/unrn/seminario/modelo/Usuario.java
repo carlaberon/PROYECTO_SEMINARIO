@@ -120,5 +120,12 @@ public class Usuario{
         return Objects.hash(username);  // Generar un hash basado solo en el username
     }
 
+	@Override
+	public String toString() {
+		return "Usuario [username=" + username + ", nombre=" + nombre + ", email="
+				+ email + ", rol=" + rol + ", activo=" + activo + "]";
+	}
+    
+    
 }
 

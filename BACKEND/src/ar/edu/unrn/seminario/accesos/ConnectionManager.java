@@ -7,9 +7,9 @@ import java.sql.SQLException;
 public class ConnectionManager {
 	private static String DRIVER = "com.mysql.jdbc.Driver";
 	private static String URL_DB = "jdbc:mysql://localhost:3306/";
-	protected static String DB = "seminario_2024_NRO_1";
+	protected static String DB = "seminario_2024_1";
 	protected static String user = "root";
-	protected static String pass = "";
+	protected static String pass = "hernan123";
 	protected static Connection conn = null;
 
 	public static void connect() {
@@ -38,10 +38,12 @@ public class ConnectionManager {
 	}
 
 	public static Connection getConnection() {
-		if (conn == null) {
-			connect();
-		}
-		return conn;
+		try {
+	        return DriverManager.getConnection(URL_DB + DB, user, pass);
+	    } catch (SQLException sqlEx) {
+	        System.out.println("No se ha podido conectar a " + URL_DB + DB + ". " + sqlEx.getMessage());
+	        return null;
+	    }
 	}
 
 }

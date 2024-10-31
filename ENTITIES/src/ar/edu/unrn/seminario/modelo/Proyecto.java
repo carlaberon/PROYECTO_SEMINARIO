@@ -18,7 +18,6 @@ public class Proyecto {
     private String prioridad;//Alta, Media, Baja
     private Set<Proyecto> proyectos = new HashSet<>();
 
-
     public Proyecto(String nombre, Usuario usuarioPropietario) {
         this.nombre = nombre; 
         this.usuarioPropietario = usuarioPropietario;
@@ -30,9 +29,6 @@ public class Proyecto {
         this.estado = estado;
     }
     
- 
-
-
     public Proyecto(String nombre, Usuario usuarioPropietario, boolean estado, String descripcion, String prioridad) throws NotNullException, DataEmptyException{
     	    // Validar que los campos no sean nulos
     	    if (esDatoNulo(nombre)) {
@@ -173,9 +169,6 @@ public class Proyecto {
             this.estado = false;
     }
     
-	
-
-    
 	private boolean esDatoVacio(String dato) {
 		return dato.equals("");
 	}
@@ -200,5 +193,13 @@ public class Proyecto {
         result = prime * result + (usuarioPropietario == null ? 0 : usuarioPropietario.hashCode());
         return result;
     }
+
+	@Override
+	public String toString() {
+		return "Proyecto [nombre=" + nombre + ", usuarioPropietario=" + usuarioPropietario + ", estado=" + estado
+				+ ", miembros=" + miembros + ", descripcion=" + descripcion + ", prioridad=" + prioridad
+				+ ", proyectos=" + proyectos + "]";
+	}
+    
 }
 
