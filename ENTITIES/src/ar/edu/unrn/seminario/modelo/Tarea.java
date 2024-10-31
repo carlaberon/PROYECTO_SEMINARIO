@@ -9,7 +9,7 @@ public class Tarea {
     private String nombre;
     private String proyecto;  
     private String prioridad;
-	private String usuarioP;
+	private String usuarioPropietario;
     private String usuario;
     private boolean estado; // FINALIZADO: TRUE, NOFINALIZADO: FALSE
     private String descripcion;
@@ -51,7 +51,7 @@ public class Tarea {
 		
     	this.nombre = nombre;
         this.proyecto = proyecto;
-        this.usuarioP= usuarioPropietario;
+        this.usuarioPropietario= usuarioPropietario;
         this.prioridad = prioridad;
         this.usuario = username;
         this.estado = estado;
@@ -97,7 +97,7 @@ public class Tarea {
         return descripcion;
     }
     public String getUsuarioPropietario() {
-        return usuarioP;
+        return usuarioPropietario;
     }
     public LocalDate getInicio() {
         return fechaInicio;
@@ -116,7 +116,7 @@ public class Tarea {
         this.prioridad = prioridad; 
     }
     public void setUsuarioPropietario(String usuarioPropietario) {
-    	this.usuarioP=usuarioPropietario;
+    	this.usuarioPropietario=usuarioPropietario;
     }
     public void setNombre(String nombre) {
         this.nombre = nombre;
@@ -163,10 +163,6 @@ public class Tarea {
         return result; 
     }
 
-	public Object getProjecto() {
-		return null;
-	}
-	
 	private boolean esDatoVacio(String dato) {
 		return dato.equals("");
 	}
@@ -177,8 +173,8 @@ public class Tarea {
 
 	@Override
 	public String toString() {
-		return "Tarea [nombre=" + nombre + ", proyecto=" + proyecto + ", prioridad=" + prioridad + ", usuarioP="
-				+ usuarioP + ", usuario=" + usuario + ", estado=" + estado + ", descripcion=" + descripcion
+		return "Tarea [nombre=" + nombre + ", proyecto=" + proyecto + ", prioridad=" + prioridad + ", usuarioPropietario="
+				+ usuarioPropietario + ", usuario=" + usuario + ", estado=" + estado + ", descripcion=" + descripcion
 				+ ", fechaInicio=" + fechaInicio + ", fechaFin=" + fechaFin + "]";
 	}
 }

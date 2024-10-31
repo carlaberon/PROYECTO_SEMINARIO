@@ -10,6 +10,7 @@ public class TareaDTO {
 
     private String name;
     private String project_name;
+    private String usuarioPropietario;
     private String priority;
     private String user;
     private boolean estado; // FINALIZADO: TRUE, NOFINALIZADO: FALSE
@@ -17,16 +18,17 @@ public class TareaDTO {
     private LocalDate inicio; 
     private LocalDate fin;
     
-    public TareaDTO(String name, String nameProject, String priority, String user, boolean estado, String descripcion, LocalDate localDate, LocalDate localDate2) {
+    public TareaDTO(String name, String nameProject, String usuarioPropietario, String priority, String user, boolean estado, String descripcion, LocalDate inicio, LocalDate fin) {
         super();
         this.name = name;
         this.project_name = nameProject;
+        this.setUsuarioPropietario(usuarioPropietario);
         this.priority = priority;
         this.user = user;
         this.estado = estado;
         this.description = descripcion;
-        this.inicio = localDate;
-        this.fin = localDate2;
+        this.inicio = inicio;
+        this.fin = fin;
     }
 
 
@@ -80,20 +82,32 @@ public class TareaDTO {
         this.description = description;
     }
 
-    public LocalDateTime getInicio() {
+    public LocalDate getInicio() {
         return inicio;
     }
 
-    public void setInicio(LocalDateTime inicio) {
+    public void setInicio(LocalDate inicio) {
         this.inicio = inicio;
     }
 
-    public LocalDateTime getFin() {
+    public LocalDate getFin() {
         return fin;
     }
 
-    public void setFin(LocalDateTime fin) {
+    public void setFin(LocalDate fin) {
         this.fin = fin;
     }
+
+
+
+	public String getUsuarioPropietario() {
+		return usuarioPropietario;
+	}
+
+
+
+	public void setUsuarioPropietario(String usuarioPropietario) {
+		this.usuarioPropietario = usuarioPropietario;
+	}
 }
 
