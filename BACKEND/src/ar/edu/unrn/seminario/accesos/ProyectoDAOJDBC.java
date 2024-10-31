@@ -1,6 +1,7 @@
 package ar.edu.unrn.seminario.accesos;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -78,8 +79,35 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 	}
 
 	@Override
-	public void update(Proyecto Usuario) {
-		// TODO Auto-generated method stub
+	public void update(Proyecto proyecto) {
+		try {
+			   Connection conn = ConnectionManager.getConnection();
+			   PreparedStatement statement = conn.prepareStatement("UPDATE proyectos SET nombre=?, prioridad=?, usuario_propietario=?, estado=?, descripcion=? WHERE nombre=? AND usuario_propietario=?");
+			        
+			   // Establecer los valores de los nuevos datos del proyecto
+			   statement.setString(1, proyecto.getNombre());
+			   statement.setString(2, proyecto.getPrioridad1());
+			   statement.setString(3, proyecto.getUsuarioPropietario().getUsername());
+			   statement.setBoolean(4, proyecto.getEstado());
+			   statement.setString(5, proyecto.getDescripcion());
+			   
+			   //para identificar el proyecto a actualizar
+			   statement.setString(6, proyecto.getNombre());
+			   statement.setString(7, proyecto.getUsuarioPropietario().getUsername());
+			        
+			   int verificacion = statement.executeUpdate();
+			        
+			   if (verificacion > 0) {
+			            System.out.println("Proyecto actualizado correctamente");
+			   } else {
+			            System.out.println("No se encontro el proyecto a actualizar");
+			   }
+			        
+			   } catch (SQLException e) {
+			       System.out.println("No se pudo actualizar el proyecto. " + e.toString());
+			   } finally {
+			       ConnectionManager.disconnect();
+			   }
 		
 	}
 
@@ -96,10 +124,32 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 	}
 
 	@Override
-	public Proyecto find(String username) {
-		// TODO Auto-generated method stub
-		return null;
+	public Proyecto find(String nombre, String usuario_propietario) throws NotNullException, DataEmptyException {
+		Proyecto encontrarProyecto = null;
+		UsuarioDao usuarioDao = new UsuarioDAOJDBC();
+		try {
+			Connection conn = ConnectionManager.getConnection();
+			PreparedStatement statement = conn.prepareStatement("SELECT nombre, usuario_propietario, estado, descripcion, prioridad FROM proyectos WHERE nombre = ? AND usuario_propietario = ?");
+			statement.setString(1, nombre);
+			statement.setString(2, usuario_propietario);
+			ResultSet rs = statement.executeQuery();
+			while(rs.next()) {
+				String nombreUsuarioPropietario = rs.getString("usuario_propietario");
+				Usuario usuarioPropietario = usuarioDao.find(nombreUsuarioPropietario);
+				encontrarProyecto = new Proyecto(rs.getString("nombre"), usuarioPropietario, "FINALIZADO".equals(rs.getString("estado")), rs.getString("descripcion"), rs.getString("prioridad"));
+			}
+		} catch (SQLException e) {
+			System.out.println("Error de mySql\n" + e.toString());
+			// TODO: disparar Exception propia
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+			// TODO: disparar Exception propia
+		} finally {
+			ConnectionManager.disconnect();
+		}
+		return encontrarProyecto;
 	}
+
 
 	@Override
 	public List<Proyecto> findAll() throws NotNullException, DataEmptyException{

@@ -193,5 +193,13 @@ public class Proyecto {
         result = prime * result + (usuarioPropietario == null ? 0 : usuarioPropietario.hashCode());
         return result;
     }
+
+	@Override
+	public String toString() {
+		return "Proyecto [nombre=" + nombre + ", usuarioPropietario=" + usuarioPropietario + ", estado=" + estado
+				+ ", miembros=" + miembros + ", descripcion=" + descripcion + ", prioridad=" + prioridad
+				+ ", proyectos=" + proyectos + "]";
+	}
+    
 }
 

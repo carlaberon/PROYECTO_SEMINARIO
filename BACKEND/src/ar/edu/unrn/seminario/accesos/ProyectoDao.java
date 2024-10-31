@@ -7,15 +7,15 @@ import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.modelo.Proyecto;
 
 public interface ProyectoDao {
-	void create(Proyecto Usuario);
+	void create(Proyecto proyecto);
 
-	void update(Proyecto Usuario);
+	void update(Proyecto proyecto);
 
 	void remove(Long id);
 
-	void remove(Proyecto Usuario);
+	void remove(Proyecto proyecto);
 
-	Proyecto find(String username);
+	Proyecto find(String nombre, String usuarioPropietario) throws NotNullException, DataEmptyException;
 
 	List<Proyecto> findAll() throws NotNullException, DataEmptyException;
 }

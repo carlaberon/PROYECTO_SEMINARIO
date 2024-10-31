@@ -16,41 +16,47 @@ public class TestAcceso {
 
 	public static void main(String[] args) throws DataEmptyException, NotNullException, InvalidDateException {
 		RolDao rolDao = new RolDAOJDBC();
+		UsuarioDao usuarioDao = new UsuarioDAOJDBC();
+		TareaDao tareaDao = new TareaDAOJDBC();
+		ProyectoDao proyectoDao = new ProyectoDAOJDBC();
+		
 		List<Rol> roles = rolDao.findAll();
 
 		for (Rol rol : roles) {
 			System.out.println(rol);
 		}
 
-		UsuarioDao usuarioDao = new UsuarioDAOJDBC();
-		TareaDao tareaDao = new TareaDAOJDBC();
-		ProyectoDao proyectoDao = new ProyectoDAOJDBC();
+		
 		
 		Usuario usuario = new Usuario("ldifabio", "1234", "Lucas", "ldifabio@unrn.edu.ar", new Rol(1, ""));
+		Usuario usuario2 = new Usuario("hramos", "1234", "Hernan", "hernan@ramos.com.ar", new Rol(1, ""));
 		usuarioDao.create(usuario);
+		usuarioDao.create(usuario2);
 		
-		Tarea tarea = new Tarea("plan de estudio", "Aplicacion de votos","ldifabio","alta","ldifabio", false, "plan de estudios para cerrar el cuatrimestre", LocalDateTime.now(), LocalDateTime.now().plusDays(20));
+		
+		
+		Tarea tarea = new Tarea("plan de estudio", "Aplicacion de votos","ldifabio","alta","ldifabio", false, "plan de estudios para cerrar el cuatrimestre", LocalDate.now(), LocalDate.now().plusDays(20));
 		tareaDao.create(tarea);
 		
 		//Recuperacion de todas las tareas
-				List<Tarea> tareas = tareaDao.findAll();
-				for (Tarea tarea2 : tareas) {
-					System.out.println(tarea2);
-				}
-				//Recuperacion de una tarea en especifico
-				tarea = tareaDao.find("Definir plan de estudio", "Aplicacion de votos", "ldifabio");
-				System.out.println(tarea);
+		List<Tarea> tareas = tareaDao.findAll();
+		for (Tarea tarea2 : tareas) {
+			System.out.println(tarea2);
+		}
+		//Recuperacion de una tarea en especifico
+		tarea = tareaDao.find("Definir plan de estudio", "Aplicacion de votos", "ldifabio");
+		System.out.println(tarea);
 		
-				//Eliminar una tarea en particular atraves del objeto Tarea
-				tareaDao.remove(tarea);
-				tareas = tareaDao.findAll();
-				for (Tarea tarea2 : tareas) {
-					System.out.println(tarea2);
-				}
+		//Eliminar una tarea en particular atraves del objeto Tarea
+		//tareaDao.remove(tarea);
+		//tareas = tareaDao.findAll();
+		//for (Tarea tarea2 : tareas) {
+		//	System.out.println(tarea2);
+		//}
 				
-				//Modificar tarea
+		//Modificar tarea
 				
-				//--------------------------------------------------------------------------------------------------------------------------------------
+		//--------------------------------------------------------------------------------------------------------------------------------------
 		
 		/*List<Usuario> usuarios = usuarioDao.findAll();
 			for (Usuario u: usuarios) {
@@ -65,13 +71,24 @@ public class TestAcceso {
 		proyecto.getProyectos().add(subProyecto); // Añadir el subproyecto al conjunto de proyectos
 		proyectoDao.create(proyecto);
 		
+		Proyecto proyecto2 = new Proyecto("Proyecto secundario", usuario, true, "esto es una prueba de nueo", "baja");
+		proyectoDao.create(proyecto2);
+		
+		Proyecto proyecto3 = new Proyecto("Proyecto terciario", usuario2, false, "esto es una prueba de nuevo", "alta");
+		proyectoDao.create(proyecto3);
+		
 		// Imprimir el subproyecto
 		//System.out.println("Subproyecto creado: " + subProyecto);
 		
 		List<Proyecto> proyectos = proyectoDao.findAll();
-		for (Proyecto proyecto2 : proyectos) {
-			System.out.println(proyecto2.toString());
+		for (Proyecto proyectoR : proyectos) {
+			System.out.println(proyectoR.toString());
 		}
+		
+		//Recuperacion de un proyecto especifico
+		proyecto = proyectoDao.find("Aplicacion de votos", "ldifabio");
+		System.out.println(proyecto);
+		
 	}
 
 }
