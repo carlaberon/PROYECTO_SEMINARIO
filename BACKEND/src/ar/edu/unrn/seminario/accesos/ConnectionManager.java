@@ -38,10 +38,12 @@ public class ConnectionManager {
 	}
 
 	public static Connection getConnection() {
-		if (conn == null) {
-			connect();
-		}
-		return conn;
+		try {
+	        return DriverManager.getConnection(URL_DB + DB, user, pass);
+	    } catch (SQLException sqlEx) {
+	        System.out.println("No se ha podido conectar a " + URL_DB + DB + ". " + sqlEx.getMessage());
+	        return null;
+	    }
 	}
 
 }
