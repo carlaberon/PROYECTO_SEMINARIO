@@ -149,7 +149,7 @@ public class PersistenceApi implements IApi {
 		List<ProyectoDTO> proyectoDTO = new ArrayList<>();
 		List<Proyecto> proyectos = null;
 		try {
-			proyectos = proyectoDao.findAll();
+			proyectos = proyectoDao.findAll(username);
 		} catch (DataEmptyException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -162,6 +162,7 @@ public class PersistenceApi implements IApi {
 	        for (Proyecto p : proyectos) {  
 	            if (p != null) {
 	            	ProyectoDTO dto = convertirEnProyectoDTO(p);
+	  
 	                if (dto != null) { // Solo agregar si dto no es nulo
 	                    proyectoDTO.add(dto);
 	                }

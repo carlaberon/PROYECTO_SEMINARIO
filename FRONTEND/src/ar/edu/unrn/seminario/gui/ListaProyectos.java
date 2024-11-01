@@ -7,7 +7,7 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
 import ar.edu.unrn.seminario.api.IApi;
-
+import ar.edu.unrn.seminario.api.PersistenceApi;
 import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
@@ -261,7 +261,16 @@ public class ListaProyectos extends JFrame {
         }
     }
     
-    public static void main(String args[]) {
+    public static void main(String args[]) throws NotNullException, DataEmptyException {
+    	IApi api = new PersistenceApi();
+		//prueba
+		api.setUsuarioActual("Gabriel");
+		
+		api.setProyectoActual("proyecto fenix");
+	
+    	ListaProyectos ventana = new ListaProyectos (api);
+    	
+    	ventana.setVisible(true);
     	
     }
 	
