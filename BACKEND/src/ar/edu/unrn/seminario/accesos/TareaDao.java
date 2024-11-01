@@ -5,13 +5,15 @@ import java.util.List;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
+import ar.edu.unrn.seminario.exception.TaskNotUpdatedException;
+import ar.edu.unrn.seminario.exception.TaskUpdatedSuccessfullyException;
 import ar.edu.unrn.seminario.modelo.Tarea;
 
 public interface TareaDao {
 
 	void create(Tarea tarea);
 
-	void update(Tarea tarea);
+	void update(Tarea tarea) throws TaskNotUpdatedException, TaskUpdatedSuccessfullyException;
 
 	void remove(String nombre, String proyecto, String usuario_propietario);
 

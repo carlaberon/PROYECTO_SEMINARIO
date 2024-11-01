@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -20,12 +21,15 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.api.MemoryApi;
+import ar.edu.unrn.seminario.api.PersistenceApi;
 import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.TareaDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
+import ar.edu.unrn.seminario.exception.TaskNotUpdatedException;
+import ar.edu.unrn.seminario.exception.TaskUpdatedSuccessfullyException;
 
 import javax.swing.JTextArea;
 import javax.swing.JSpinner;
@@ -163,17 +167,17 @@ public class ModificarTarea extends JFrame {
 	                    UsuarioDTO nombres = null;
 	                    Date fechaFinDate = dateChooserFin.getDate();
 	                    
-	                		//Convertir Date a Localdatetime, si no cargo una fecha lanza un nullpointer
-	                        LocalDateTime fechaInicioLocalDateTime = fechaInicioDate.toInstant()
-	                                .atZone(ZoneId.systemDefault())
-	                                .toLocalDateTime();
+                		//Convertir Date a Localdatetime, si no cargo una fecha lanza un nullpointer
+                        LocalDate fechaInicioLocalDate = fechaInicioDate.toInstant()
+                                .atZone(ZoneId.systemDefault())
+                                .toLocalDate();
 
-	                        LocalDateTime fechaFinLocalDateTime = fechaFinDate.toInstant()
-	                                .atZone(ZoneId.systemDefault())
-	                                .toLocalDateTime();
+                        LocalDate fechaFinLocalDate = fechaFinDate.toInstant()
+                                .atZone(ZoneId.systemDefault())
+                                .toLocalDate();
 	                        
-	                       
-	                      api.modificarTarea(nombre,nombreTarea,proyectoSeleccionado,prioridadTarea,usuario.getUsername(), false, descripcionTarea,fechaInicioLocalDateTime, fechaFinLocalDateTime);
+	                       //modificar para que ande!!!!! (hernan)
+	                      api.modificarTarea(nombre, nombreTarea, proyectoSeleccionado, prioridadTarea, usuario.getUsername(), false, descripcionTarea, fechaInicioLocalDate, fechaFinLocalDate);
 	                       
 	                        JOptionPane.showMessageDialog(null, "Tarea creada con éxito!", "Info", JOptionPane.INFORMATION_MESSAGE);
 	                        setVisible(false);
@@ -187,9 +191,17 @@ public class ModificarTarea extends JFrame {
 	                		JOptionPane.showMessageDialog(null,"La tarea debe tener" +" " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 	                		
 						} catch (NotNullException e) {
-							
 							JOptionPane.showMessageDialog(null,"La tarea debe tener" +" " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 							
+						} catch (InvalidDateException e) {
+				            JOptionPane.showMessageDialog(null, "Error en la fecha: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+				        
+						} catch (TaskUpdatedSuccessfullyException e) {
+						    JOptionPane.showMessageDialog(null, e.getMessage(), "Éxito", JOptionPane.INFORMATION_MESSAGE);
+						    
+						} catch (TaskNotUpdatedException e) {
+						    JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+						    
 						}
 	                	
 	     
@@ -207,7 +219,15 @@ public class ModificarTarea extends JFrame {
 	            }
 	        });
 	    }
+	    public static void main(String[] args) throws NotNullException, DataEmptyException, InvalidDateException{
+			
+			IApi api = new PersistenceApi();
+			UsuarioDTO usuario = api.obtenerUsuario("ldifabio");
+			api.setUsuarioActual(usuario.getUsername());
+			ModificarTarea modificarTareaFrame = new ModificarTarea(api, "Contar votos");
+			modificarTareaFrame.setVisible(true);
+		}
+	}
 
-}
 
 

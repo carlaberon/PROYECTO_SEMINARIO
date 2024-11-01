@@ -20,6 +20,8 @@ import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
+import ar.edu.unrn.seminario.exception.TaskNotUpdatedException;
+import ar.edu.unrn.seminario.exception.TaskUpdatedSuccessfullyException;
 import ar.edu.unrn.seminario.modelo.Proyecto;
 import ar.edu.unrn.seminario.modelo.Rol;
 import ar.edu.unrn.seminario.modelo.Tarea;
@@ -31,7 +33,6 @@ public class PersistenceApi implements IApi {
 	private UsuarioDao usuarioDao;
 	private ProyectoDao proyectoDao;
 	private Usuario usuarioActual;
-	private Proyecto proyectoActual;
 	private TareaDao tareaDao;
 	public PersistenceApi() {
 		rolDao = new RolDAOJDBC();
@@ -126,8 +127,7 @@ public class PersistenceApi implements IApi {
 	@Override
 	public void registrarTarea(String name, String project, String usuarioPropietario, String priority, String user, boolean estado,
 			String descripcion, LocalDate inicio, LocalDate fin)
-			throws DataEmptyException, NotNullException, InvalidDateException 
-	{
+			throws DataEmptyException, NotNullException, InvalidDateException {
 		Tarea tarea = new Tarea(name, project, usuarioPropietario, priority, user, estado, descripcion, inicio, fin);
 		tareaDao.create(tarea);
 	}
@@ -156,8 +156,16 @@ public class PersistenceApi implements IApi {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		    for (Proyecto p : proyectos) {  
-		        proyectoDTO.add(convertirEnProyectoDTO(p));
+		// Asegúrate de que `proyectos` no sea null antes de iterar
+	    if (proyectos != null) {
+	        for (Proyecto p : proyectos) {  
+	            if (p != null) {
+	            	ProyectoDTO dto = convertirEnProyectoDTO(p);
+	                if (dto != null) { // Solo agregar si dto no es nulo
+	                    proyectoDTO.add(dto);
+	                }
+	            }
+	        }
 	    }
 
 	    return proyectoDTO;
@@ -189,23 +197,9 @@ public class PersistenceApi implements IApi {
 
 
 	@Override
-	public List<TareaDTO> obtenerTareasPorProyecto(String nombreProyecto, String usuarioPropietario) throws InvalidDateException {
-		List<TareaDTO> tareasDTO = new ArrayList<>();
-		List<Tarea> tareas = null;
-		try {
-			tareas = tareaDao.findTareas(nombreProyecto, usuarioPropietario);
-		} catch (DataEmptyException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NotNullException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		    for (Tarea t : tareas) {  
-		        tareasDTO.add(convertirEnTareaDTO(t));
-	    }
-
-	    return tareasDTO;
+	public List<TareaDTO> obtenerTareasPorProyecto(String nombreProyecto, String usuarioPropietario) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
@@ -219,20 +213,20 @@ public class PersistenceApi implements IApi {
 	@Override
 	public ProyectoDTO getProyectoActual() {
 		// TODO Auto-generated method stub
-		
-		return convertirEnProyectoDTO(this.proyectoActual);
+		return null;
 	}
 
 	@Override
-	public void setProyectoActual(String nombreProyecto) throws NotNullException, DataEmptyException {
-		String usuarioActual = getUsuarioActual().getUsername();
-		if (! usuarioActual.isEmpty()) {
-			proyectoActual = proyectoDao.find(nombreProyecto, usuarioActual);
-		}
-		
+	public void setProyectoActual(String nombreProyecto) {
+		// TODO Auto-generated method stub
 		
 	}
-   
+   /*
+	@Override
+	public UsuarioDTO getUsuarioActual() {
+		Usuario aux = usuarioDao.find(string);
+		return convertirEnUsuarioDTO(aux);
+	};*/
 
 	@Override
 	public void setUsuarioActual(String nombreUsuario) {
@@ -245,14 +239,56 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public void modificarTarea(String nomb, String nombreProyecto, String nuevoNombre, String nuevaPrioridad,
-			String nombre, Boolean estado, String nuevaDescripcion, LocalDateTime inicio, LocalDateTime fin)
-			throws NotNullException, DataEmptyException {
-		// TODO Auto-generated method stub
+	public void modificarTarea(String nombreTarea, String nombreProyecto, String nuevoNombre, String nuevaPrioridad, String nombreUsuario, Boolean estado, String nuevaDescripcion, LocalDate inicio, LocalDate fin) throws NotNullException, DataEmptyException, InvalidDateException, TaskNotUpdatedException, TaskUpdatedSuccessfullyException {
 		
-	}
+		Tarea tareaExistente = tareaDao.find(nombreTarea, nombreProyecto, nombreUsuario);
+		
+		if (tareaExistente != null) {
+			if (nuevoNombre != null && !nuevoNombre.isEmpty()) {
+				tareaExistente.setNombre(nuevoNombre);
+			}
+		    // Validar y actualizar la prioridad
+		    if (nuevaPrioridad != null && !nuevaPrioridad.isEmpty()) {
+		        tareaExistente.setPrioridad(nuevaPrioridad);
+		    }
+		    
+		    // Validar y actualizar el usuario
+	        if (nombreUsuario != null && !nombreUsuario.isEmpty()) {
+	            tareaExistente.setUsuario(nombreUsuario);
+	        }
+	        
+	        // Validar y actualizar la descripción
+	        if (nuevaDescripcion != null && !nuevaDescripcion.isEmpty()) {
+	            tareaExistente.setDescripcion(nuevaDescripcion);
+	        }
+
+	        // Validar y actualizar la fecha de inicio
+	        if (inicio != null) {
+	            tareaExistente.setInicio(inicio);
+	        }
+
+	        // Validar y actualizar la fecha de fin
+	        if (fin != null) {
+	            tareaExistente.setFin(fin);
+	        }
+	        
+	        if (estado != null) {
+	        	tareaExistente.setEstado(estado);
+	        }
+	        
+	        tareaDao.update(tareaExistente);
+	        System.out.println("Tarea modificada exitosamente.");
+	    } else {
+	        System.out.println("No se encontró la tarea para modificar.");
+	    }
+
+	    /*// Lanzar excepción si la tarea no se encontró
+	    if (tareaExistente == null) {
+	        throw new DataEmptyException("No se encontró la tarea con el nombre especificado.");
+	    }*/
+		
 	// cosas que creo que funcionan
-	
+}
 	
 	@Override
 	public int obtenerPrioridad(String prioridad) {
@@ -344,13 +380,6 @@ public class PersistenceApi implements IApi {
 	        throw new IllegalStateException("El usuario actual no ha sido establecido.");
 	    }
 	    return convertirEnUsuarioDTO(usuarioActual);
-	}
-	
-	public String obtenerUsuarioPropietario (String nombreProyecto) {
-		
-		
-		return nombreProyecto;
-		
 	}
 	
 }
