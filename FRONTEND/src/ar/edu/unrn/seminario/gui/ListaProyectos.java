@@ -260,5 +260,9 @@ public class ListaProyectos extends JFrame {
             listener.proyectoEliminado();
         }
     }
+    
+    public static void main(String args[]) {
+    	
+    }
 	
 }
