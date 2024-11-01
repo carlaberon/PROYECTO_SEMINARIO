@@ -176,7 +176,7 @@ public class ModificarTarea extends JFrame {
                                 .atZone(ZoneId.systemDefault())
                                 .toLocalDate();
 	                        
-	                       
+	                       //modificar para que ande!!!!! (hernan)
 	                      api.modificarTarea(nombre, nombreTarea, proyectoSeleccionado, prioridadTarea, usuario.getUsername(), false, descripcionTarea, fechaInicioLocalDate, fechaFinLocalDate);
 	                       
 	                        JOptionPane.showMessageDialog(null, "Tarea creada con éxito!", "Info", JOptionPane.INFORMATION_MESSAGE);
