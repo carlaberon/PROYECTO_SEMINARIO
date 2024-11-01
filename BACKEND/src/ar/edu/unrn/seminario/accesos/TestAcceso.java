@@ -57,12 +57,12 @@ public class TestAcceso {
 				
 		//--------------------------------------------------------------------------------------------------------------------------------------
 		
-		/*List<Usuario> usuarios = usuarioDao.findAll();
-			for (Usuario u: usuarios) {
-			System.out.println(u);
-			}	
-		*/
-		//System.out.println(usuarioDao.find("ldifabio"));
+		//List<Usuario> usuarios = usuarioDao.findAll();
+		//	for (Usuario u: usuarios) {
+		//	System.out.println(u);
+		//	}	
+
+		System.out.println("*" + usuarioDao.find("ldifabio"));
 		
 		
 		Proyecto subProyecto = new Proyecto("SubProyecto", usuario, false, "Descripción del subproyecto", "media");

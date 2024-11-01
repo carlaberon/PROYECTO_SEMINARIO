@@ -171,7 +171,7 @@ public class TareaDAOJDBC implements TareaDao{
 		{
 			Connection conn = ConnectionManager.getConnection();
 			Statement statement = conn.createStatement();
-			ResultSet rs = statement.executeQuery("SELECT t.nombre, t.proyecto, t.usuario_propietario, t.prioridad, t.usuario, t.estado, t.descripcion, t.fecha_inicio, t.fecha_fin "+"FROM tareas t");
+			ResultSet rs = statement.executeQuery("SELECT t.nombre, t.proyecto, t.usuario_propietario, t.prioridad, t.usuario, t.estado, t.descripcion, t.fecha_inicio, t.fecha_fin" + " FROM tareas t ");
 			
 			while (rs.next()) {
 				Tarea tarea = new Tarea(rs.getString("nombre"), rs.getString("proyecto"),rs.getString("usuario_propietario"), rs.getString("prioridad"), rs.getString("usuario"), rs.getBoolean("estado"),rs.getString("descripcion"), rs.getDate("fecha_inicio").toLocalDate(), rs.getDate("fecha_fin").toLocalDate());
@@ -179,6 +179,36 @@ public class TareaDAOJDBC implements TareaDao{
 			}
 		} catch (SQLException e) {
 			System.out.println("Error de mySql\n" + e.toString());
+			// TODO: disparar Exception propia
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+			// TODO: disparar Exception propia
+		} finally {
+			ConnectionManager.disconnect();
+		}
+
+		return tareas;
+	}
+
+
+
+	@Override
+	public List<Tarea> findTareas(String proyecto, String usuario_propietario) throws DataEmptyException, NotNullException, InvalidDateException {
+		List<Tarea>tareas = new ArrayList<Tarea>();
+		try
+		{
+			Connection conn = ConnectionManager.getConnection();
+			Statement statement = conn.createStatement();
+			ResultSet rs = statement.executeQuery(
+					"SELECT t.nombre, t.proyecto, t.usuario_propietario, t.prioridad, t.usuario, t.estado, t.descripcion, t.fecha_inicio, t.fecha_fin  "
+							+ "FROM tareas t "
+							+ "WHERE t.proyecto=? and t.usuario_propietario=?");
+			while (rs.next()) {
+				Tarea tarea = new Tarea(rs.getString("nombre"), rs.getString("proyecto"),rs.getString("usuario_propietario"), rs.getString("prioridad"), rs.getString("usuario"), rs.getBoolean("estado"),rs.getString("descripcion"), rs.getDate("fecha_inicio").toLocalDate(), rs.getDate("fecha_fin").toLocalDate());
+				tareas.add(tarea);
+			}
+		} catch (SQLException e) {
+			System.out.println("Error de mySql\n" + e.toString() + e);
 			// TODO: disparar Exception propia
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();

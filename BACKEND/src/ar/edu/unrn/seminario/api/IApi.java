@@ -62,7 +62,7 @@ public interface IApi {
 	
 	void modificarProyecto(String nombreProyecto, String nuevoNombre, String nuevaPrioridad, String nuevaDescripcion)throws NotNullException, DataEmptyException;
 
-	List<TareaDTO> obtenerTareasPorProyecto(String nombreProyecto,String usuarioPropietario);
+	List<TareaDTO> obtenerTareasPorProyecto(String nombreProyecto,String usuarioPropietario) throws InvalidDateException;
 	
 	public int obtenerValorPrioridad(String prioridad);
 	
@@ -71,7 +71,7 @@ public interface IApi {
 	
 	public ProyectoDTO getProyectoActual();//Recuperar proyecto actual	PRUEBAS
 
-	public void setProyectoActual(String nombreProyecto);	//Setear proyecto actual PRUEBAS
+	public void setProyectoActual(String nombreProyecto) throws NotNullException, DataEmptyException;	//Setear proyecto actual PRUEBAS
 	
 	public UsuarioDTO getUsuarioActual(); //Recuperar usuario actual PRUEBAS
 
