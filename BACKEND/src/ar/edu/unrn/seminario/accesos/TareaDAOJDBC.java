@@ -12,7 +12,9 @@ import java.sql.Statement;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
+import ar.edu.unrn.seminario.modelo.Proyecto;
 import ar.edu.unrn.seminario.modelo.Tarea;
+import ar.edu.unrn.seminario.modelo.Usuario;
 
 public class TareaDAOJDBC implements TareaDao{
 
@@ -195,28 +197,30 @@ public class TareaDAOJDBC implements TareaDao{
 	@Override
 	public List<Tarea> findTareas(String proyecto, String usuario_propietario) throws DataEmptyException, NotNullException, InvalidDateException {
 		List<Tarea>tareas = new ArrayList<Tarea>();
-		try
-		{
-			Connection conn = ConnectionManager.getConnection();
-			Statement statement = conn.createStatement();
-			ResultSet rs = statement.executeQuery(
-					"SELECT t.nombre, t.proyecto, t.usuario_propietario, t.prioridad, t.usuario, t.estado, t.descripcion, t.fecha_inicio, t.fecha_fin  "
-							+ "FROM tareas t "
-							+ "WHERE t.proyecto=? and t.usuario_propietario=?");
-			while (rs.next()) {
-				Tarea tarea = new Tarea(rs.getString("nombre"), rs.getString("proyecto"),rs.getString("usuario_propietario"), rs.getString("prioridad"), rs.getString("usuario"), rs.getBoolean("estado"),rs.getString("descripcion"), rs.getDate("fecha_inicio").toLocalDate(), rs.getDate("fecha_fin").toLocalDate());
-				tareas.add(tarea);
+		Tarea unaTarea = null;
+			
+			try {
+				Connection conn = ConnectionManager.getConnection();
+				PreparedStatement statement = conn.prepareStatement("SELECT nombre, proyecto, usuario_propietario, prioridad, usuario, estado, descripcion, fecha_inicio, fecha_fin FROM tareas WHERE proyecto = ? AND usuario_propietario = ?");
+				statement.setString(1, proyecto);
+				statement.setString(2, usuario_propietario);
+				ResultSet rs = statement.executeQuery();
+				while(rs.next()) {
+					unaTarea = new Tarea(rs.getString("nombre"), rs.getString("proyecto"),rs.getString("usuario_propietario"), rs.getString("prioridad"), rs.getString("usuario"), rs.getBoolean("estado"),rs.getString("descripcion"), rs.getDate("fecha_inicio").toLocalDate(), rs.getDate("fecha_fin").toLocalDate());
+					tareas.add(unaTarea);
+				}
+			} catch (SQLException e) {
+				System.out.println("Error de mySql\n" + e.toString());
+				// TODO: disparar Exception propia
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+				// TODO: disparar Exception propia
+			} finally {
+				ConnectionManager.disconnect();
 			}
-		} catch (SQLException e) {
-			System.out.println("Error de mySql\n" + e.toString() + e);
-			// TODO: disparar Exception propia
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-			// TODO: disparar Exception propia
-		} finally {
-			ConnectionManager.disconnect();
+			return tareas;
 		}
-
-		return tareas;
-	}
 }
+
+	
+	

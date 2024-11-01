@@ -373,10 +373,11 @@ public class VentanaTareas extends JFrame {
 		IApi api = new PersistenceApi();
 		//prueba
 		api.setUsuarioActual("Gabriel");
-		System.out.println(api.getUsuarioActual().getUsername());
+	
 		api.setProyectoActual("proyecto fenix");
-		System.out.println(api.getProyectoActual().getNombre());
+
 		VentanaTareas ventana = new VentanaTareas(api);
+		
 		ventana.setVisible(true);
 		
 		
