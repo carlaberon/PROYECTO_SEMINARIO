@@ -7,6 +7,7 @@ import java.util.List;
 
 import ar.edu.unrn.seminario.accesos.RolDAOJDBC;
 import ar.edu.unrn.seminario.accesos.RolDao;
+import ar.edu.unrn.seminario.accesos.TareaDAOJDBC;
 import ar.edu.unrn.seminario.accesos.TareaDao;
 import ar.edu.unrn.seminario.accesos.UsuarioDAOJDBC;
 import ar.edu.unrn.seminario.accesos.UsuarioDao;
@@ -35,6 +36,7 @@ public class PersistenceApi implements IApi {
 		rolDao = new RolDAOJDBC();
 		usuarioDao = new UsuarioDAOJDBC();
 		proyectoDao = new ProyectoDAOJDBC();
+		tareaDao = new TareaDAOJDBC();
 	}
 
 	@Override
@@ -123,7 +125,8 @@ public class PersistenceApi implements IApi {
 	@Override
 	public void registrarTarea(String name, String project, String usuarioPropietario, String priority, String user, boolean estado,
 			String descripcion, LocalDate inicio, LocalDate fin)
-			throws DataEmptyException, NotNullException, InvalidDateException {
+			throws DataEmptyException, NotNullException, InvalidDateException 
+	{
 		Tarea tarea = new Tarea(name, project, usuarioPropietario, priority, user, estado, descripcion, inicio, fin);
 		tareaDao.create(tarea);
 	}
@@ -153,7 +156,7 @@ public class PersistenceApi implements IApi {
 			e.printStackTrace();
 		}
 		    for (Proyecto p : proyectos) {  
-		        proyectoDTO.add(convertirEnProyectoDTO(null));
+		        proyectoDTO.add(convertirEnProyectoDTO(p));
 	    }
 
 	    return proyectoDTO;
@@ -326,6 +329,12 @@ public class PersistenceApi implements IApi {
 	        throw new IllegalStateException("El usuario actual no ha sido establecido.");
 	    }
 	    return convertirEnUsuarioDTO(usuarioActual);
+	}
+	public String obtenerUsuarioPropietario (String nombreProyecto) {
+		
+		
+		return nombreProyecto;
+		
 	}
 	
 }
