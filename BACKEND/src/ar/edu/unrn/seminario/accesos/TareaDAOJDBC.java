@@ -68,7 +68,7 @@ public class TareaDAOJDBC implements TareaDao{
 
 
 	@Override
-	public void update(Tarea tarea) throws TaskNotUpdatedException, TaskUpdatedSuccessfullyException {
+	public void update(Tarea tarea, String nombreOriginal) throws TaskNotUpdatedException, TaskUpdatedSuccessfullyException {
 		try {
 		   Connection conn = ConnectionManager.getConnection();
 		   PreparedStatement statement = conn.prepareStatement("UPDATE tareas SET nombre = ?, prioridad = ?, usuario = ?, estado = ?, descripcion = ?, fecha_inicio = ?, fecha_fin = ? " +
@@ -84,7 +84,7 @@ public class TareaDAOJDBC implements TareaDao{
 	       statement.setDate(7, Date.valueOf(tarea.getFin()));
 		   
 	       // Parametros de busqueda en la base de datos
-	        statement.setString(8, tarea.getNombre());
+	        statement.setString(8, nombreOriginal);
 	        statement.setString(9, tarea.getProyecto());
 	        statement.setString(10, tarea.getUsuarioPropietario());
 	       

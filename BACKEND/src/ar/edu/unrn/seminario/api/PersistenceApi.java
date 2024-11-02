@@ -276,13 +276,13 @@ public class PersistenceApi implements IApi {
 
 	@Override
 	public void modificarTarea(String nombreTarea, String nombreProyecto, String nuevoNombre, String nuevaPrioridad, String nombreUsuario, Boolean estado, String nuevaDescripcion, LocalDate inicio, LocalDate fin) throws NotNullException, DataEmptyException, InvalidDateException, TaskNotUpdatedException, TaskUpdatedSuccessfullyException {
-		
 		Tarea tareaExistente = tareaDao.find(nombreTarea, nombreProyecto, nombreUsuario);
 		
 		if (tareaExistente != null) {
 			if (nuevoNombre != null && !nuevoNombre.isEmpty()) {
 				tareaExistente.setNombre(nuevoNombre);
 			}
+			
 		    // Validar y actualizar la prioridad
 		    if (nuevaPrioridad != null && !nuevaPrioridad.isEmpty()) {
 		        tareaExistente.setPrioridad(nuevaPrioridad);
@@ -312,7 +312,7 @@ public class PersistenceApi implements IApi {
 	        	tareaExistente.setEstado(estado);
 	        }
 	        
-	        tareaDao.update(tareaExistente);
+	        tareaDao.update(tareaExistente, nombreTarea);
 	        System.out.println("Tarea modificada exitosamente.");
 	    } else {
 	        System.out.println("No se encontró la tarea para modificar.");

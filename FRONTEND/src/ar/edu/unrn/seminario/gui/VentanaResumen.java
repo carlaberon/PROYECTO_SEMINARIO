@@ -245,9 +245,10 @@ public class VentanaResumen extends JFrame {
     public static void main(String []args) throws NotNullException, DataEmptyException, RuntimeException, InvalidDateException {
 		IApi api = new PersistenceApi();
 		//prueba
-		api.setUsuarioActual("Gabriel");
+		UsuarioDTO usuario = api.obtenerUsuario("ldifabio");
+		api.setUsuarioActual(usuario.getUsername());
 	
-		api.setProyectoActual("nuevo nombre");
+		api.setProyectoActual("Aplicacion de votos");
 
 		VentanaResumen ventana = new VentanaResumen(api);
 		
