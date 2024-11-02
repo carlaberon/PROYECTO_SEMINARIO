@@ -34,7 +34,6 @@ import javax.swing.table.DefaultTableModel;
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.api.PersistenceApi;
 import ar.edu.unrn.seminario.dto.ProyectoDTO;
-import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.TareaDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
@@ -55,7 +54,6 @@ public class VentanaTareas extends JFrame {
 	
 
     public VentanaTareas(IApi api) throws RuntimeException, InvalidDateException{
-
     	this.api = api; 
     	this.usuarioActual = api.getUsuarioActual();
     	this.unproyecto = api.getProyectoActual(); 
@@ -335,6 +333,7 @@ public class VentanaTareas extends JFrame {
 		botonEliminar.setEnabled(b);
 
 	}
+	
 	void actualizarTabla(){
 	
 	    // Obtiene el model del table
@@ -369,7 +368,7 @@ public class VentanaTareas extends JFrame {
 	 modificatarea.setVisible(true);
     }
 	
-	public static void main(String []args) throws NotNullException, DataEmptyException, RuntimeException, InvalidDateException {
+	/*public static void main(String []args) throws NotNullException, DataEmptyException, RuntimeException, InvalidDateException {
 		IApi api = new PersistenceApi();
 		//prueba
 		api.setUsuarioActual("Gabriel");
@@ -382,7 +381,7 @@ public class VentanaTareas extends JFrame {
 		
 		
 	}
-
+*/
 }
 
 

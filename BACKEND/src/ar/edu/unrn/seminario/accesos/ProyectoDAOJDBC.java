@@ -78,7 +78,7 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 	}
 
 	@Override
-	public void update(Proyecto proyecto) {
+	public void update(Proyecto proyecto,String nombreOriginal) {
 		try {
 			   Connection conn = ConnectionManager.getConnection();
 			   PreparedStatement statement = conn.prepareStatement("UPDATE proyectos SET nombre=?, prioridad=?, usuario_propietario=?, estado=?, descripcion=? WHERE nombre=? AND usuario_propietario=?");
@@ -91,10 +91,13 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 			   statement.setString(5, proyecto.getDescripcion());
 			   
 			   //para identificar el proyecto a actualizar
-			   statement.setString(6, proyecto.getNombre());
+			   statement.setString(6, nombreOriginal);
 			   statement.setString(7, proyecto.getUsuarioPropietario().getUsername());
-			        
+			   System.out.println("Actualizando proyecto con los datos: ");
+			   System.out.println("Nombre: " + proyecto.getNombre());
+			   System.out.println("Usuario propietario: " + proyecto.getUsuarioPropietario().getUsername());    
 			   int verificacion = statement.executeUpdate();
+			   
 			        
 			   if (verificacion > 0) {
 			            System.out.println("Proyecto actualizado correctamente");

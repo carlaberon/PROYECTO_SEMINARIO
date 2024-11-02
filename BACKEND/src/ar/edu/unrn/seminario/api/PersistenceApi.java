@@ -3,7 +3,9 @@ package ar.edu.unrn.seminario.api;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import ar.edu.unrn.seminario.accesos.RolDAOJDBC;
 import ar.edu.unrn.seminario.accesos.RolDao;
@@ -35,6 +37,7 @@ public class PersistenceApi implements IApi {
 	private Usuario usuarioActual;
 	private Proyecto proyectoActual;
 	private TareaDao tareaDao;
+	//private Set<Proyecto> proyectos = new HashSet<>();
 	public PersistenceApi() {
 		rolDao = new RolDAOJDBC();
 		usuarioDao = new UsuarioDAOJDBC();
@@ -180,11 +183,25 @@ public class PersistenceApi implements IApi {
 	}
 	
 	@Override
-	public void modificarProyecto(String nombreProyecto, String nuevoNombre, String nuevaPrioridad,
+	public void modificarProyecto(String nombreProyecto, String usuarioPropietario,String nuevoNombre, String nuevaPrioridad,
 			String nuevaDescripcion) throws NotNullException, DataEmptyException {
-		// TODO Auto-generated method stub
+		Proyecto proyectoExistente = proyectoDao.find(nombreProyecto, usuarioPropietario);
+	    if (proyectoExistente == null) {
+	        throw new DataEmptyException("El proyecto no existe.");
+	    }
+	    String nombreOriginal = proyectoExistente.getNombre();
+		if(nuevoNombre != null) 
+			proyectoExistente.setNombre(nuevoNombre);
+		if(nuevaPrioridad != null)
+			 proyectoExistente.setPrioridad1(nuevaPrioridad);
+		if(nuevaDescripcion != null)
+			 proyectoExistente.setDescripcion(nuevaDescripcion);
 		
-	}
+		proyectoDao.update(proyectoExistente,nombreOriginal);
+		}
+		
+		
+	
 	@Override
 	public void asignarPrioridad(String nombreProyecto, String prioridad) throws NotNullException, DataEmptyException {
 		// TODO Auto-generated method stub
@@ -228,7 +245,7 @@ public class PersistenceApi implements IApi {
 
 	@Override
 	public ProyectoDTO getProyectoActual() {
-		return convertirEnProyectoDTO(this.proyectoActual);
+		return convertirEnProyectoDTO(proyectoActual);
 	}
 
 	@Override

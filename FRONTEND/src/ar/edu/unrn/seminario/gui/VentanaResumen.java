@@ -6,11 +6,16 @@ import javax.swing.border.EmptyBorder;
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
+import ar.edu.unrn.seminario.exception.DataEmptyException;
+import ar.edu.unrn.seminario.exception.InvalidDateException;
+import ar.edu.unrn.seminario.exception.NotNullException;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.api.MemoryApi;
+import ar.edu.unrn.seminario.api.PersistenceApi;
 public class VentanaResumen extends JFrame {
 
     private JPanel contentPane;
@@ -179,7 +184,16 @@ public class VentanaResumen extends JFrame {
         btnVerTareas.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
             String nombreProyecto = unproyecto.getNombre(); // Este método obtiene el nombre del proyecto seleccionado
-            VentanaTareas ventanaTareas = new VentanaTareas(api);
+            VentanaTareas ventanaTareas = null;
+			try {
+				ventanaTareas = new VentanaTareas(api);
+			} catch (RuntimeException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (InvalidDateException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
             ventanaTareas.setVisible(true);
         }
     });
@@ -228,6 +242,20 @@ public class VentanaResumen extends JFrame {
         button.setPreferredSize(new Dimension(200, 40));
         return button;
     }
+    public static void main(String []args) throws NotNullException, DataEmptyException, RuntimeException, InvalidDateException {
+		IApi api = new PersistenceApi();
+		//prueba
+		api.setUsuarioActual("Gabriel");
+	
+		api.setProyectoActual("nuevo nombre");
 
+		VentanaResumen ventana = new VentanaResumen(api);
+		
+		ventana.setVisible(true);
+		
+		
+	}
 
 }
+
+

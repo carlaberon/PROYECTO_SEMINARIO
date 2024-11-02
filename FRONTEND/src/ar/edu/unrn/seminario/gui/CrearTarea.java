@@ -214,12 +214,12 @@ public class CrearTarea extends JFrame {
             }
         });
     }
-    public static void main (String[] args) {
+    /*public static void main (String[] args) {
     	
     	IApi api = new PersistenceApi();
     	api.setUsuarioActual("Gabriel");
     	CrearTarea ventana = new CrearTarea(api);
     	ventana.setVisible(true);
-    }
+    }*/
 }
 
