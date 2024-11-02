@@ -33,6 +33,7 @@ public class PersistenceApi implements IApi {
 	private UsuarioDao usuarioDao;
 	private ProyectoDao proyectoDao;
 	private Usuario usuarioActual;
+	private Proyecto proyectoActual;
 	private TareaDao tareaDao;
 	public PersistenceApi() {
 		rolDao = new RolDAOJDBC();
@@ -148,7 +149,7 @@ public class PersistenceApi implements IApi {
 		List<ProyectoDTO> proyectoDTO = new ArrayList<>();
 		List<Proyecto> proyectos = null;
 		try {
-			proyectos = proyectoDao.findAll();
+			proyectos = proyectoDao.findAll(username);
 		} catch (DataEmptyException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -161,6 +162,7 @@ public class PersistenceApi implements IApi {
 	        for (Proyecto p : proyectos) {  
 	            if (p != null) {
 	            	ProyectoDTO dto = convertirEnProyectoDTO(p);
+	  
 	                if (dto != null) { // Solo agregar si dto no es nulo
 	                    proyectoDTO.add(dto);
 	                }
@@ -197,9 +199,23 @@ public class PersistenceApi implements IApi {
 
 
 	@Override
-	public List<TareaDTO> obtenerTareasPorProyecto(String nombreProyecto, String usuarioPropietario) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<TareaDTO> obtenerTareasPorProyecto(String nombreProyecto, String usuarioPropietario) throws InvalidDateException {
+		List<TareaDTO> tareasDTO = new ArrayList<>();
+		List<Tarea> tareas = null;
+		try {
+			tareas = tareaDao.findTareas(nombreProyecto, usuarioPropietario);
+		} catch (DataEmptyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NotNullException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		    for (Tarea t : tareas) {  
+		        tareasDTO.add(convertirEnTareaDTO(t));
+	    }
+
+	    return tareasDTO;
 	}
 
 	@Override
@@ -212,13 +228,16 @@ public class PersistenceApi implements IApi {
 
 	@Override
 	public ProyectoDTO getProyectoActual() {
-		// TODO Auto-generated method stub
-		return null;
+		return convertirEnProyectoDTO(this.proyectoActual);
 	}
 
 	@Override
-	public void setProyectoActual(String nombreProyecto) {
-		// TODO Auto-generated method stub
+	public void setProyectoActual(String nombreProyecto) throws NotNullException, DataEmptyException {
+			String usuarioActual = getUsuarioActual().getUsername();
+			if (! usuarioActual.isEmpty()) {
+				this.proyectoActual = proyectoDao.find(nombreProyecto, usuarioActual);
+			}
+			
 		
 	}
    /*

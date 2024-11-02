@@ -7,7 +7,7 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
 import ar.edu.unrn.seminario.api.IApi;
-import ar.edu.unrn.seminario.api.MemoryApi;
+import ar.edu.unrn.seminario.api.PersistenceApi;
 import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
@@ -126,7 +126,7 @@ public class ListaProyectos extends JFrame {
 						JOptionPane.YES_NO_OPTION);
 				if (opcionSeleccionada == JOptionPane.YES_OPTION) {
 					String projectName = (String) tabla.getModel().getValueAt(tabla.getSelectedRow(), 0);
-					api.eliminarProyecto(projectName);
+					api.eliminarProyecto(projectName, api.getUsuarioActual().getUsername());
 					actualizarTabla();
 					notificarProyectoEliminado(); //Notifico a los oyentes una ves acepte el OptionPane de confirmar eliminacion.
 					habilitarBotones(false);
@@ -259,6 +259,19 @@ public class ListaProyectos extends JFrame {
         for (ProyectoModificadoListener listener : listeners) {
             listener.proyectoEliminado();
         }
+    }
+    
+    public static void main(String args[]) throws NotNullException, DataEmptyException {
+    	IApi api = new PersistenceApi();
+		//prueba
+		api.setUsuarioActual("Gabriel");
+		
+		api.setProyectoActual("proyecto fenix");
+	
+    	ListaProyectos ventana = new ListaProyectos (api);
+    	
+    	ventana.setVisible(true);
+    	
     }
 	
 }

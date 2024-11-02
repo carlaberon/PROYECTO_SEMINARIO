@@ -20,6 +20,8 @@ public interface TareaDao {
 	void remove(Tarea tarea);
 
 	Tarea find(String nombreTarea, String proyecto, String usuario_propietario) throws DataEmptyException, NotNullException, InvalidDateException;
-
+	
+	List<Tarea> findTareas(String proyecto, String usuario_propietario) throws DataEmptyException, NotNullException, InvalidDateException; //buscar tareas por proyecto
+	
 	List<Tarea> findAll() throws DataEmptyException, NotNullException, InvalidDateException;
 }

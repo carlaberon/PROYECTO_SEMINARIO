@@ -32,12 +32,13 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import ar.edu.unrn.seminario.api.IApi;
-import ar.edu.unrn.seminario.api.MemoryApi;
+import ar.edu.unrn.seminario.api.PersistenceApi;
 import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.TareaDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
+import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
 
 
@@ -53,11 +54,11 @@ public class VentanaTareas extends JFrame {
     private ProyectoDTO unproyecto; //obtener proyecto por medio de la api
 	
 
-    public VentanaTareas(IApi api) throws RuntimeException{
+    public VentanaTareas(IApi api) throws RuntimeException, InvalidDateException{
 
     	this.api = api; 
     	this.usuarioActual = api.getUsuarioActual();
-    	this.unproyecto = api.getProyectoActual();
+    	this.unproyecto = api.getProyectoActual(); 
     	
     	setTitle("TAREAS");
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
@@ -72,7 +73,7 @@ public class VentanaTareas extends JFrame {
         menuBar.setBackground(new Color(138, 102, 204));
         menuBar.setPreferredSize(new Dimension(100, 50));
 
-        JMenu menuProyecto = new JMenu("nombreProyecto"); //null pointer unproyecto = api.getProyectoActual();
+        JMenu menuProyecto = new JMenu(unproyecto.getNombre());
         menuProyecto.setForeground(Color.WHITE);
         menuProyecto.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 
@@ -178,7 +179,7 @@ public class VentanaTareas extends JFrame {
 		modelo = new DefaultTableModel(new Object[][] {}, titulos);
 		try {
 			
-		List<TareaDTO> tareas = api.obtenerTareasPorProyecto(unproyecto.getNombre()); //Que pasa si el proyecto está vacio -EL PROYECTO ESTA VACIO
+		List<TareaDTO> tareas = api.obtenerTareasPorProyecto(unproyecto.getNombre(), usuarioActual.getUsername());
 			
 		modelo.setRowCount(0); // Limpiar el modelo antes de agregar nuevas filas
 		
@@ -282,7 +283,7 @@ public class VentanaTareas extends JFrame {
 					
 					String nameTarea = nombreTarea.toString();
 					
-					api.eliminarTarea(nameTarea);
+					api.eliminarTarea(nameTarea, unproyecto.getNombre(), usuarioActual.getUsername());
 					
 					((DefaultTableModel) table.getModel()).removeRow(filaSeleccionada);
 					
@@ -366,7 +367,21 @@ public class VentanaTareas extends JFrame {
 	void modificarTarea(String nombreTarea) {
 	 ModificarTarea modificatarea = new ModificarTarea(api,nombreTarea);
 	 modificatarea.setVisible(true);
-    }	
+    }
+	
+	public static void main(String []args) throws NotNullException, DataEmptyException, RuntimeException, InvalidDateException {
+		IApi api = new PersistenceApi();
+		//prueba
+		api.setUsuarioActual("Gabriel");
+	
+		api.setProyectoActual("proyecto fenix");
+
+		VentanaTareas ventana = new VentanaTareas(api);
+		
+		ventana.setVisible(true);
+		
+		
+	}
 
 }
 

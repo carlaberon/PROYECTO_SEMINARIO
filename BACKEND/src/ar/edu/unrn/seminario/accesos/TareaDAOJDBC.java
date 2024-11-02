@@ -197,5 +197,37 @@ public class TareaDAOJDBC implements TareaDao{
 		}
 
 		return tareas;
+		
+	
 	}
+
+
+
+	@Override
+	public List<Tarea> findTareas(String proyecto, String usuario_propietario)
+			throws DataEmptyException, NotNullException, InvalidDateException {
+		List<Tarea>tareas = new ArrayList<Tarea>();
+		Tarea unaTarea = null;
+			
+			try {
+				Connection conn = ConnectionManager.getConnection();
+				PreparedStatement statement = conn.prepareStatement("SELECT nombre, proyecto, usuario_propietario, prioridad, usuario, estado, descripcion, fecha_inicio, fecha_fin FROM tareas WHERE proyecto = ? AND usuario_propietario = ?");
+				statement.setString(1, proyecto);
+				statement.setString(2, usuario_propietario);
+				ResultSet rs = statement.executeQuery();
+				while(rs.next()) {
+					unaTarea = new Tarea(rs.getString("nombre"), rs.getString("proyecto"),rs.getString("usuario_propietario"), rs.getString("prioridad"), rs.getString("usuario"), rs.getBoolean("estado"),rs.getString("descripcion"), rs.getDate("fecha_inicio").toLocalDate(), rs.getDate("fecha_fin").toLocalDate());
+					tareas.add(unaTarea);
+				}
+			} catch (SQLException e) {
+				System.out.println("Error de mySql\n" + e.toString());
+				// TODO: disparar Exception propia
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+				// TODO: disparar Exception propia
+			} finally {
+				ConnectionManager.disconnect();
+			}
+			return tareas;
+		}
 }
