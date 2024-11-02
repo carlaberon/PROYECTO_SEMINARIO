@@ -7,6 +7,7 @@ import java.util.List;
 
 import ar.edu.unrn.seminario.accesos.RolDAOJDBC;
 import ar.edu.unrn.seminario.accesos.RolDao;
+import ar.edu.unrn.seminario.accesos.TareaDAOJDBC;
 import ar.edu.unrn.seminario.accesos.TareaDao;
 import ar.edu.unrn.seminario.accesos.UsuarioDAOJDBC;
 import ar.edu.unrn.seminario.accesos.UsuarioDao;
@@ -19,6 +20,8 @@ import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
+import ar.edu.unrn.seminario.exception.TaskNotUpdatedException;
+import ar.edu.unrn.seminario.exception.TaskUpdatedSuccessfullyException;
 import ar.edu.unrn.seminario.modelo.Proyecto;
 import ar.edu.unrn.seminario.modelo.Rol;
 import ar.edu.unrn.seminario.modelo.Tarea;
@@ -35,6 +38,7 @@ public class PersistenceApi implements IApi {
 		rolDao = new RolDAOJDBC();
 		usuarioDao = new UsuarioDAOJDBC();
 		proyectoDao = new ProyectoDAOJDBC();
+		tareaDao = new TareaDAOJDBC();
 	}
 
 	@Override
@@ -152,8 +156,16 @@ public class PersistenceApi implements IApi {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		    for (Proyecto p : proyectos) {  
-		        proyectoDTO.add(convertirEnProyectoDTO(null));
+		// Asegúrate de que `proyectos` no sea null antes de iterar
+	    if (proyectos != null) {
+	        for (Proyecto p : proyectos) {  
+	            if (p != null) {
+	            	ProyectoDTO dto = convertirEnProyectoDTO(p);
+	                if (dto != null) { // Solo agregar si dto no es nulo
+	                    proyectoDTO.add(dto);
+	                }
+	            }
+	        }
 	    }
 
 	    return proyectoDTO;
@@ -227,14 +239,56 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public void modificarTarea(String nomb, String nombreProyecto, String nuevoNombre, String nuevaPrioridad,
-			String nombre, Boolean estado, String nuevaDescripcion, LocalDateTime inicio, LocalDateTime fin)
-			throws NotNullException, DataEmptyException {
-		// TODO Auto-generated method stub
+	public void modificarTarea(String nombreTarea, String nombreProyecto, String nuevoNombre, String nuevaPrioridad, String nombreUsuario, Boolean estado, String nuevaDescripcion, LocalDate inicio, LocalDate fin) throws NotNullException, DataEmptyException, InvalidDateException, TaskNotUpdatedException, TaskUpdatedSuccessfullyException {
 		
-	}
+		Tarea tareaExistente = tareaDao.find(nombreTarea, nombreProyecto, nombreUsuario);
+		
+		if (tareaExistente != null) {
+			if (nuevoNombre != null && !nuevoNombre.isEmpty()) {
+				tareaExistente.setNombre(nuevoNombre);
+			}
+		    // Validar y actualizar la prioridad
+		    if (nuevaPrioridad != null && !nuevaPrioridad.isEmpty()) {
+		        tareaExistente.setPrioridad(nuevaPrioridad);
+		    }
+		    
+		    // Validar y actualizar el usuario
+	        if (nombreUsuario != null && !nombreUsuario.isEmpty()) {
+	            tareaExistente.setUsuario(nombreUsuario);
+	        }
+	        
+	        // Validar y actualizar la descripción
+	        if (nuevaDescripcion != null && !nuevaDescripcion.isEmpty()) {
+	            tareaExistente.setDescripcion(nuevaDescripcion);
+	        }
+
+	        // Validar y actualizar la fecha de inicio
+	        if (inicio != null) {
+	            tareaExistente.setInicio(inicio);
+	        }
+
+	        // Validar y actualizar la fecha de fin
+	        if (fin != null) {
+	            tareaExistente.setFin(fin);
+	        }
+	        
+	        if (estado != null) {
+	        	tareaExistente.setEstado(estado);
+	        }
+	        
+	        tareaDao.update(tareaExistente);
+	        System.out.println("Tarea modificada exitosamente.");
+	    } else {
+	        System.out.println("No se encontró la tarea para modificar.");
+	    }
+
+	    /*// Lanzar excepción si la tarea no se encontró
+	    if (tareaExistente == null) {
+	        throw new DataEmptyException("No se encontró la tarea con el nombre especificado.");
+	    }*/
+		
 	// cosas que creo que funcionan
-	
+}
 	
 	@Override
 	public int obtenerPrioridad(String prioridad) {

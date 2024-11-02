@@ -112,13 +112,25 @@ public class Tarea {
     }
     
     // Setters
-    public void setPrioridad(String prioridad) {
+    public void setPrioridad(String prioridad) throws NotNullException, DataEmptyException {
+    	if (esDatoNulo(prioridad)) {
+			throw new NotNullException("prioridad");
+    	}
+    	if (esDatoVacio(prioridad)) {
+			throw new DataEmptyException("prioridad");
+    	}
         this.prioridad = prioridad; 
     }
     public void setUsuarioPropietario(String usuarioPropietario) {
     	this.usuarioPropietario=usuarioPropietario;
     }
-    public void setNombre(String nombre) {
+    public void setNombre(String nombre) throws NotNullException, DataEmptyException {
+    	if (esDatoNulo(nombre)) {
+			throw new NotNullException("nombre");
+    	}
+    	if (esDatoVacio(nombre)) {
+			throw new DataEmptyException("nombre");
+    	}
         this.nombre = nombre;
     }
 
@@ -126,7 +138,13 @@ public class Tarea {
         this.proyecto = proyecto;
     }
 
-    public void setUsuario(String usuario) {
+    public void setUsuario(String usuario) throws NotNullException, DataEmptyException {
+    	if (esDatoNulo(usuario)) {
+			throw new NotNullException("usuario");
+    	}
+    	if (esDatoVacio(usuario)) {
+			throw new DataEmptyException("usuario");
+    	}
         this.usuario = usuario;
     }
 
@@ -134,7 +152,13 @@ public class Tarea {
         this.estado = estado;
     }
 
-    public void setDescripcion(String descripcion) {
+    public void setDescripcion(String descripcion) throws NotNullException, DataEmptyException {
+    	if (esDatoNulo(descripcion)) {
+			throw new NotNullException("descripcion");
+    	}
+    	if (esDatoVacio(descripcion)) {
+			throw new DataEmptyException("descripcion");
+    	}
         this.descripcion = descripcion;
     }
 

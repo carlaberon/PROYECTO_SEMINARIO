@@ -12,6 +12,8 @@ import java.sql.Statement;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
+import ar.edu.unrn.seminario.exception.TaskNotUpdatedException;
+import ar.edu.unrn.seminario.exception.TaskUpdatedSuccessfullyException;
 import ar.edu.unrn.seminario.modelo.Tarea;
 
 public class TareaDAOJDBC implements TareaDao{
@@ -66,10 +68,11 @@ public class TareaDAOJDBC implements TareaDao{
 
 
 	@Override
-	public void update(Tarea tarea) {
+	public void update(Tarea tarea) throws TaskNotUpdatedException, TaskUpdatedSuccessfullyException {
 		try {
 		   Connection conn = ConnectionManager.getConnection();
-		   PreparedStatement statement = conn.prepareStatement("UPDATE tareas SET nombre=?, prioridad=?, usuario=?, estado=?, descripcion=?, fecha_fin=? WHERE nombre=? AND proyecto=? AND usuario_propietario=?");
+		   PreparedStatement statement = conn.prepareStatement("UPDATE tareas SET nombre = ?, prioridad = ?, usuario = ?, estado = ?, descripcion = ?, fecha_inicio = ?, fecha_fin = ? " +
+		            "WHERE nombre = ? AND proyecto = ? AND usuario_propietario = ?");
 		        
 		   // Establecer los valores de los nuevos datos de la tarea
 		   statement.setString(1, tarea.getNombre());
@@ -77,14 +80,20 @@ public class TareaDAOJDBC implements TareaDao{
 		   statement.setString(3, tarea.getUsuario());
 		   statement.setBoolean(4, tarea.isEstado());
 		   statement.setString(5, tarea.getDescripcion());
-		   statement.setDate(5, Date.valueOf(tarea.getFin()));
-		        
+		   statement.setDate(6, Date.valueOf(tarea.getInicio()));
+	       statement.setDate(7, Date.valueOf(tarea.getFin()));
+		   
+	       // Parametros de busqueda en la base de datos
+	        statement.setString(8, tarea.getNombre());
+	        statement.setString(9, tarea.getProyecto());
+	        statement.setString(10, tarea.getUsuarioPropietario());
+	       
 		   int verificacion = statement.executeUpdate();
 		        
-		   if (verificacion > 0) {
-		            System.out.println("Tarea actualizada exitosamente.");
+		   if (verificacion == 0) {
+			   throw new TaskNotUpdatedException("No se encontro la tarea para actualizar.");
 		   } else {
-		            System.out.println("No se encontró la tarea para actualizar.");
+		       throw new TaskUpdatedSuccessfullyException("Tarea actualizada exitosamente.");
 		   }
 		        
 		   } catch (SQLException e) {
@@ -137,13 +146,13 @@ public class TareaDAOJDBC implements TareaDao{
 	}			
 
 	@Override
-	public Tarea find(String nombreTarea, String proyecto, String usuario_propietario) throws DataEmptyException, NotNullException, InvalidDateException {
+	public Tarea find(String nombre, String proyecto, String usuario_propietario) throws DataEmptyException, NotNullException, InvalidDateException {
 		Tarea encontrarTarea = null;
 		try {
 			Connection conn = ConnectionManager.getConnection();
 			PreparedStatement sent = conn.prepareStatement("SELECT * FROM tareas t "
 			+ "WHERE t.nombre=? and t.proyecto=? and t.usuario_propietario=?");
-			sent.setString(1, nombreTarea);
+			sent.setString(1, nombre);
 			sent.setString(2, proyecto);
 			sent.setString(3, usuario_propietario);
 			ResultSet result = sent.executeQuery();
