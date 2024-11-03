@@ -263,8 +263,7 @@ public class ListaProyectos extends JFrame {
     
     public static void main(String args[]) throws NotNullException, DataEmptyException {
     	IApi api = new PersistenceApi();
-		//prueba
-		api.setUsuarioActual("Gabriel");
+		api.setUsuarioActual("ldifabio");
 		
 		api.setProyectoActual("proyecto fenix");
 	
