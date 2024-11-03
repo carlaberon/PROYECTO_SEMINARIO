@@ -5,9 +5,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,7 +18,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import ar.edu.unrn.seminario.api.IApi;
-import ar.edu.unrn.seminario.api.MemoryApi;
 import ar.edu.unrn.seminario.api.PersistenceApi;
 import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.TareaDTO;
@@ -42,7 +39,6 @@ public class ModificarTarea extends JFrame {
 	    private JTextField nombreTareaTextField;
 	    private JComboBox<String> proyectoTareaComboBox; // ComboBox para seleccionar proyecto
 	    private JComboBox<String> asignarUsuarioComboBox; // ComboBox para seleccionar usuario
-	    private JTextField prioridadTareaTextField;
 	    List<String> prioridades = Arrays.asList("alta", "media", "baja");
 	    private List<ProyectoDTO> proyectos = new ArrayList<>();
 	    private List<UsuarioDTO> usuarios = new ArrayList<>();
@@ -55,7 +51,7 @@ public class ModificarTarea extends JFrame {
 	        this.usuarios = api.obtenerUsuarios();
 	        //OBTENER NOMBRE DEL USUARIO ACTUAL
 	        this.proyectos = api.obtenerProyectos(api.getUsuarioActual().getUsername());
-
+	        
 	        //setTitle("MODIFICAR TAREA");
 	        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	        setBounds(200, 200, 600, 550);
@@ -63,7 +59,7 @@ public class ModificarTarea extends JFrame {
 	        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 	        contentPane.setLayout(null);
 	        setContentPane(contentPane);
-
+	        
 	        JLabel nombreTareaLabel = new JLabel("Nombre de Tarea:");
 	        nombreTareaLabel.setBounds(43, 20, 150, 16);
 	        contentPane.add(nombreTareaLabel);
@@ -157,14 +153,14 @@ public class ModificarTarea extends JFrame {
 	             
 	            	try {
 	                    int selectedUserIndex = asignarUsuarioComboBox.getSelectedIndex();
-	                    String nombreTarea = nombreTareaTextField.getText();
+	                    //String nombreActual = nombreTareaLabel.get;
+	                    String nuevoNombreTarea = nombreTareaTextField.getText();
 	                    String proyectoSeleccionado = (String) proyectoTareaComboBox.getSelectedItem();
 	                    String prioridadTarea = (String) prioridadComboBox.getSelectedItem();
 	                    UsuarioDTO usuario = usuarios.get(selectedUserIndex);
 	                    //String name = usuario.getUsername();
 	                    String descripcionTarea = textAreaDescription.getText();
 	                    Date fechaInicioDate = dateChooserInicio.getDate();
-	                    UsuarioDTO nombres = null;
 	                    Date fechaFinDate = dateChooserFin.getDate();
 	                    
                 		//Convertir Date a Localdatetime, si no cargo una fecha lanza un nullpointer
@@ -177,7 +173,7 @@ public class ModificarTarea extends JFrame {
                                 .toLocalDate();
 	                        
 	                       //modificar para que ande!!!!! (hernan)
-	                      api.modificarTarea(nombre, nombreTarea, proyectoSeleccionado, prioridadTarea, usuario.getUsername(), false, descripcionTarea, fechaInicioLocalDate, fechaFinLocalDate);
+	                      api.modificarTarea(nombre, proyectoSeleccionado, nuevoNombreTarea, prioridadTarea, usuario.getUsername(), false, descripcionTarea, fechaInicioLocalDate, fechaFinLocalDate);
 	                       
 	                        JOptionPane.showMessageDialog(null, "Tarea creada con éxito!", "Info", JOptionPane.INFORMATION_MESSAGE);
 	                        setVisible(false);
@@ -219,14 +215,14 @@ public class ModificarTarea extends JFrame {
 	            }
 	        });
 	    }
-	    public static void main(String[] args) throws NotNullException, DataEmptyException, InvalidDateException{
+	  /*  public static void main(String[] args) throws NotNullException, DataEmptyException, InvalidDateException{
 			
 			IApi api = new PersistenceApi();
 			UsuarioDTO usuario = api.obtenerUsuario("ldifabio");
 			api.setUsuarioActual(usuario.getUsername());
 			ModificarTarea modificarTareaFrame = new ModificarTarea(api, "Contar votos");
 			modificarTareaFrame.setVisible(true);
-		}
+		}*/
 	}
 
 

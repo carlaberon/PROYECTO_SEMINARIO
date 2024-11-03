@@ -13,7 +13,7 @@ public interface TareaDao {
 
 	void create(Tarea tarea);
 
-	void update(Tarea tarea) throws TaskNotUpdatedException, TaskUpdatedSuccessfullyException;
+	void update(Tarea tarea, String nombreOriginal) throws TaskNotUpdatedException, TaskUpdatedSuccessfullyException;
 
 	void remove(String nombre, String proyecto, String usuario_propietario);
 
