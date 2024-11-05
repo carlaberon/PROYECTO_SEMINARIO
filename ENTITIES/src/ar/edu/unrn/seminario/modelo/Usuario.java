@@ -3,6 +3,8 @@ package ar.edu.unrn.seminario.modelo;
 
 import java.util.Objects;
 
+import ar.edu.unrn.seminario.exception.DataEmptyException;
+import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.exception.StateChangeException;
 
 public class Usuario{
@@ -14,8 +16,26 @@ public class Usuario{
 	private Boolean activo;
 
 	
-	public Usuario(String usuario, String contrasena, String nombre, String email, Rol rol, Boolean activo) {
+	public Usuario(String usuario, String contrasena, String nombre, String email, Rol rol, Boolean activo) throws NotNullException, DataEmptyException {
 
+    	if (esDatoNulo(usuario))
+			throw new NotNullException("usuario");
+    	if (esDatoNulo(contrasena))
+			throw new NotNullException("contrasena");
+    	if (esDatoNulo(nombre))
+			throw new NotNullException("nombre");
+    	if (esDatoNulo(email))
+			throw new NotNullException("email");
+    	
+		if (esDatoVacio(usuario))
+			throw new DataEmptyException("usuario");
+		if (esDatoVacio(contrasena))
+			throw new DataEmptyException("contrasena");
+		if (esDatoVacio(nombre))
+			throw new DataEmptyException("nombre");
+		if (esDatoVacio(email))
+			throw new DataEmptyException("email");
+    	
 		this.username = usuario;
 		this.contrasena = contrasena;
 		this.nombre = nombre;
@@ -37,7 +57,12 @@ public class Usuario{
 		return username;
 	}
 
-	public void setUsername(String usuario) {
+	public void setUsername(String usuario) throws NotNullException, DataEmptyException {
+		if (esDatoNulo(usuario))
+			throw new NotNullException("usuario");
+    	
+		if (esDatoVacio(usuario))
+			throw new DataEmptyException("usuario");
 		this.username = usuario;
 	}
 
@@ -45,7 +70,13 @@ public class Usuario{
 		return contrasena;
 	}
 
-	public void setContrasena(String contrasena) {
+	public void setContrasena(String contrasena) throws NotNullException, DataEmptyException {
+		if (esDatoNulo(contrasena))
+			throw new NotNullException("contrasena");
+    	
+		if (esDatoVacio(contrasena))
+			throw new DataEmptyException("contrasena");
+		
 		this.contrasena = contrasena;
 	}
 
@@ -53,7 +84,12 @@ public class Usuario{
 		return nombre;
 	}
 
-	public void setNombre(String nombre) {
+	public void setNombre(String nombre) throws NotNullException, DataEmptyException {
+		if (esDatoNulo(nombre))
+			throw new NotNullException("nombre");
+    	
+		if (esDatoVacio(nombre))
+			throw new DataEmptyException("nombre");
 		this.nombre = nombre;
 	}
 
@@ -61,7 +97,12 @@ public class Usuario{
 		return email;
 	}
 
-	public void setEmail(String email) {
+	public void setEmail(String email) throws NotNullException, DataEmptyException {
+		if (esDatoNulo(email))
+			throw new NotNullException("email");
+    	
+		if (esDatoVacio(email))
+			throw new DataEmptyException("email");
 		this.email = email;
 	}
 
@@ -102,6 +143,13 @@ public class Usuario{
 			this.activo = false;
 	
 	}
+	private boolean esDatoVacio(String dato) {
+		return dato.equals("");
+	}
+
+	private boolean esDatoNulo(String dato) {
+		return dato == null;
+	}
 	
 
 	// Sobrescrir equals() para comparar usuarios por el username
@@ -130,5 +178,6 @@ public class Usuario{
                ", activo=" + activo +
                '}';
     }
+    
 }
 
