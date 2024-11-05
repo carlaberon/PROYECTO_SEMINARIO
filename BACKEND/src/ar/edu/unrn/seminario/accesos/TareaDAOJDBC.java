@@ -25,10 +25,10 @@ public class TareaDAOJDBC implements TareaDao{
 			conn = ConnectionManager.getConnection();
 			
 			statement = conn
-					.prepareStatement("INSERT INTO tareas(nombre, proyecto,usuario_propietario, prioridad, usuario, estado, descripcion, fecha_inicio, fecha_fin)" + "VALUES(?, ?, ?,?, ?, ?, ?, ?, ?)");
+					.prepareStatement("INSERT INTO tareas(nombre, id_proyecto,usuario_propietario, prioridad, usuario, estado, descripcion, fecha_inicio, fecha_fin)" + "VALUES(?, ?, ?,?, ?, ?, ?, ?, ?)");
 		
 			statement.setString(1, tarea.getNombre());
-			statement.setString(2, tarea.getProyecto());
+			statement.setInt(2, tarea.getProyecto());
 			statement.setString(3, tarea.getUsuarioPropietario());
 			statement.setString(4, tarea.getPrioridad());
 			statement.setString(5, tarea.getUsuario());

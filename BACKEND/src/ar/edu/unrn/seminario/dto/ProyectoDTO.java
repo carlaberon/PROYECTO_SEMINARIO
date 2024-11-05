@@ -12,7 +12,8 @@ import ar.edu.unrn.seminario.modelo.Usuario;
 
 public class ProyectoDTO implements Comparable<ProyectoDTO>{
 
-    private String nombre;
+    private int id;
+	private String nombre;
     private UsuarioDTO usuarioPropietario;
     private String prioridad; //Alta, Media, Baja
     private boolean estado; //ACTIVO= false; FINALIZADO = true
@@ -21,7 +22,7 @@ public class ProyectoDTO implements Comparable<ProyectoDTO>{
     private Set<String> proyectos = new HashSet<>();
     private Set<String> tareas = new HashSet<>();
     
-    public ProyectoDTO(String nombreProyecto, UsuarioDTO usuarioPropietario, boolean estado, String prioridad, String descripcion) throws NotNullException, DataEmptyException {
+    public ProyectoDTO(int id, String nombreProyecto, UsuarioDTO usuarioPropietario, boolean estado, String prioridad, String descripcion) throws NotNullException, DataEmptyException {
     	
 	    // Validar que los campos no sean nulos
 	    if (esDatoNulo(nombreProyecto)) {
@@ -57,6 +58,9 @@ public class ProyectoDTO implements Comparable<ProyectoDTO>{
 
 	public String getNombre() {
         return this.nombre;
+    }
+	public int getId() {
+        return this.id;
     }
     
     public void setNombre(String nombre) throws NotNullException, DataEmptyException {
