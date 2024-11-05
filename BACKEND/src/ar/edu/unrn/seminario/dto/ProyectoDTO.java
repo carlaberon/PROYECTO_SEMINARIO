@@ -11,8 +11,10 @@ import ar.edu.unrn.seminario.modelo.Tarea;
 import ar.edu.unrn.seminario.modelo.Usuario;
 
 public class ProyectoDTO implements Comparable<ProyectoDTO>{
+	
 
-    private String nombre;
+	private int id;
+	private String nombre;
     private UsuarioDTO usuarioPropietario;
     private String prioridad; //Alta, Media, Baja
     private boolean estado; //ACTIVO= false; FINALIZADO = true
@@ -35,7 +37,7 @@ public class ProyectoDTO implements Comparable<ProyectoDTO>{
 	    }
 
 	    // Validar que los campos no estén vacíos
-	    if (esDatoVacio(nombre)) {
+	    if (esDatoVacio(nombreProyecto)) {
 	        throw new DataEmptyException("nombre");
 	    }
 	    if (esDatoVacio(descripcion)) {
@@ -183,5 +185,13 @@ public class ProyectoDTO implements Comparable<ProyectoDTO>{
 
 	private boolean esDatoNulo(String dato) {
 		return dato == null;
+	}
+	
+	public int getId() {
+		return id;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
 	}
 }

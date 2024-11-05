@@ -176,8 +176,8 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public void eliminarProyecto(String nombreProyecto, String usuarioPropietario) {
-		proyectoDao.remove(nombreProyecto,usuarioPropietario);
+	public void eliminarProyecto(int id) {
+		proyectoDao.remove(id);
 	}
 	
 	@Override
@@ -409,6 +409,7 @@ public class PersistenceApi implements IApi {
 		ProyectoDTO proyectoDto = null;
 		if(proyecto != null)
 			proyectoDto = new ProyectoDTO(proyecto.getNombre(), convertirEnUsuarioDTO(proyecto.getUsuarioPropietario()), proyecto.getEstado(), proyecto.getPrioridad1(), proyecto.getDescripcion());
+			proyectoDto.setId(proyecto.getId());
 		return proyectoDto;
 	}
 	

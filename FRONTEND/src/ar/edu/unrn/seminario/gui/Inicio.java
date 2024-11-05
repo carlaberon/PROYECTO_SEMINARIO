@@ -62,7 +62,15 @@ public class Inicio extends JFrame {
         verTodosProyectosMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                abrirListaProyectos(); // Abrir la ventana de proyectos desde el menú
+                try {
+					abrirListaProyectos();
+				} catch (NotNullException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (DataEmptyException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} // Abrir la ventana de proyectos desde el menú
             }
         });
 
@@ -163,7 +171,17 @@ public class Inicio extends JFrame {
         formatButton(btnNuevoProyecto);
         formatButton(btnVerProyectos);
 
-        btnVerProyectos.addActionListener(e -> abrirListaProyectos()); // Acción para el botón
+        btnVerProyectos.addActionListener(e -> {
+			try {
+				abrirListaProyectos();
+			} catch (NotNullException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (DataEmptyException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}); // Acción para el botón
         proyectosButtonsPanel.add(btnNuevoProyecto);
         proyectosButtonsPanel.add(btnVerProyectos);
 
@@ -191,7 +209,7 @@ public class Inicio extends JFrame {
         crearProyecto.setVisible(true); // Hacer visible la ventana de proyectos
     }
     
-    private void abrirListaProyectos() {
+    private void abrirListaProyectos() throws NotNullException, DataEmptyException {
         ListaProyectos listaProyectos = new ListaProyectos(api); // Crear una instancia de ListaProyectos
         listaProyectos.setVisible(true); // Hacer visible la ventana de proyectos
     }
