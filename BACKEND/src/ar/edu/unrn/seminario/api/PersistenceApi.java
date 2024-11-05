@@ -162,7 +162,6 @@ public class PersistenceApi implements IApi {
 	@Override
 	public void eliminarProyecto(String nombreProyecto, String usuarioPropietario) {
 		proyectoDao.remove(nombreProyecto,usuarioPropietario);
-		
 	}
 	
 	@Override
