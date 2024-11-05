@@ -9,13 +9,13 @@ import ar.edu.unrn.seminario.modelo.Proyecto;
 public interface ProyectoDao {
 	void create(Proyecto proyecto);
 
-	void update(Proyecto proyecto,String nombreOriginal);
+	void update(Proyecto proyecto);
 
-	void remove(String nombre, String usuario_propietario);
+	void remove(int id);
 
 	void remove(Proyecto proyecto);
 
-	Proyecto find(String nombre, String usuarioPropietario) throws NotNullException, DataEmptyException;
+	Proyecto find(int id) throws NotNullException, DataEmptyException;
 
 	List<Proyecto> findAll() throws NotNullException, DataEmptyException;
 	
