@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -19,7 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import ar.edu.unrn.seminario.api.IApi;
-import ar.edu.unrn.seminario.api.MemoryApi;
+import ar.edu.unrn.seminario.api.PersistenceApi;
 import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.TareaDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
@@ -43,14 +44,15 @@ public class CrearTarea extends JFrame {
     List<String> prioridades = Arrays.asList("alta", "media", "baja");
     private List<ProyectoDTO> proyectos = new ArrayList<>();
     private List<UsuarioDTO> usuarios = new ArrayList<>();
-
+    private String usuarioPropietario;
+    
     private IApi api;
     
     public CrearTarea(IApi api) {
 
         this.api = api; 
-        
-        this.usuarios = api.obtenerUsuarios();
+        this.usuarioPropietario = api.getUsuarioActual().getUsername();
+        this.usuarios = api.obtenerUsuarios(); 
         //OBTENER NOMBRE DEL USUARIO ACTUAL
         this.proyectos = api.obtenerProyectos(api.getUsuarioActual().getUsername());
 
@@ -79,7 +81,10 @@ public class CrearTarea extends JFrame {
         proyectoTareaComboBox.setBounds(190, 60, 160, 22);
         if (! this.proyectos.isEmpty() ) {
         	for (ProyectoDTO proyecto : this.proyectos) {
-                proyectoTareaComboBox.addItem(proyecto.getNombre());
+        		if (proyecto.getUsuarioPropietario().getUsername().equals(usuarioPropietario)) {
+        			proyectoTareaComboBox.addItem(proyecto.getNombre());
+        		}
+                
             }
         }
         
@@ -141,13 +146,17 @@ public class CrearTarea extends JFrame {
         contentPane.add(cancelarButton);
         
         JDateChooser dateChooserInicio = new JDateChooser();
-        dateChooserInicio.setBounds(190, 183, 70, 19);
+        dateChooserInicio.setDateFormatString("dd-MM-yyyy");
+        dateChooserInicio.setBounds(190, 183, 160, 19);
         contentPane.add(dateChooserInicio);
         
         JDateChooser dateChooserFin = new JDateChooser();
-        dateChooserFin.setBounds(190, 232, 70, 19);
+        dateChooserFin.setDateFormatString("dd-MM-yyyy");
+        dateChooserFin.setBounds(190, 232, 160, 19);
         contentPane.add(dateChooserFin);
 
+        contentPane.revalidate();
+        contentPane.repaint();
 
         
         aceptarButton.addActionListener(new ActionListener() { 
@@ -161,21 +170,17 @@ public class CrearTarea extends JFrame {
                     UsuarioDTO usuario = usuarios.get(selectedUserIndex);
                     String descripcionTarea = textAreaDescription.getText();
                     Date fechaInicioDate = dateChooserInicio.getDate();
-                    UsuarioDTO nombres = null;
+                    //UsuarioDTO nombres = null;
                     Date fechaFinDate = dateChooserFin.getDate();
                     
-                		//Convertir Date a Localdatetime, si no cargo una fecha lanza un nullpointer
-                        LocalDateTime fechaInicioLocalDateTime = fechaInicioDate.toInstant()
-                                .atZone(ZoneId.systemDefault())
-                                .toLocalDateTime();
+                		//Convertir Date a Localdate, si no cargo una fecha lanza un nullpointer
+                        LocalDate fechaInicioLocalDate = fechaInicioDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
-                        LocalDateTime fechaFinLocalDateTime = fechaFinDate.toInstant()
-                                .atZone(ZoneId.systemDefault())
-                                .toLocalDateTime();
+                        LocalDate fechaFinLocalDate = fechaFinDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                         
-                       
-                      api.registrarTarea(nombreTarea,proyectoSeleccionado,prioridadTarea,usuario.getUsername(), false, descripcionTarea,fechaInicioLocalDateTime, fechaFinLocalDateTime);
-                       
+                      
+                      api.registrarTarea(nombreTarea,proyectoSeleccionado, api.getUsuarioActual().getUsername(),prioridadTarea,usuario.getUsername(),false, descripcionTarea, fechaInicioLocalDate, fechaFinLocalDate);
+                      
                         JOptionPane.showMessageDialog(null, "Tarea creada con éxito!", "Info", JOptionPane.INFORMATION_MESSAGE);
                         setVisible(false);
                         dispose();
@@ -183,7 +188,7 @@ public class CrearTarea extends JFrame {
                 	
                 	} catch (NullPointerException excepcion) {
                 		
-                		JOptionPane.showMessageDialog(null,"Completar los campos de fecha", "Error", JOptionPane.ERROR_MESSAGE);
+                		JOptionPane.showMessageDialog(null,excepcion.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 	} catch (DataEmptyException e) {
                 		JOptionPane.showMessageDialog(null,"La tarea debe tener" +" " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 		
@@ -209,5 +214,12 @@ public class CrearTarea extends JFrame {
             }
         });
     }
+    /*public static void main (String[] args) {
+    	
+    	IApi api = new PersistenceApi();
+    	api.setUsuarioActual("Gabriel");
+    	CrearTarea ventana = new CrearTarea(api);
+    	ventana.setVisible(true);
+    }*/
 }
 

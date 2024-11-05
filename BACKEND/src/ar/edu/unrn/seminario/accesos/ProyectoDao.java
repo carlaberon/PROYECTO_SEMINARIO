@@ -9,7 +9,7 @@ import ar.edu.unrn.seminario.modelo.Proyecto;
 public interface ProyectoDao {
 	void create(Proyecto proyecto);
 
-	void update(Proyecto proyecto);
+	void update(Proyecto proyecto,String nombreOriginal);
 
 	void remove(String nombre, String usuario_propietario);
 
@@ -18,4 +18,6 @@ public interface ProyectoDao {
 	Proyecto find(String nombre, String usuarioPropietario) throws NotNullException, DataEmptyException;
 
 	List<Proyecto> findAll() throws NotNullException, DataEmptyException;
+	
+	List<Proyecto> findAll(String usuario) throws NotNullException, DataEmptyException;
 }

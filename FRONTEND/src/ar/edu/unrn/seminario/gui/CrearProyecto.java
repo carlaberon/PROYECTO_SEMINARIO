@@ -181,12 +181,12 @@ public class CrearProyecto extends JFrame {
             listener.proyectoEliminado();
         }
     }
-public static void main(String[] args) throws NotNullException, DataEmptyException, InvalidDateException{
+    /*public static void main(String[] args) throws NotNullException, DataEmptyException, InvalidDateException{
 		
 		IApi api = new PersistenceApi();
 		UsuarioDTO usuario = api.obtenerUsuario("ldifabio");
 		api.setUsuarioActual(usuario.getUsername());
 		CrearProyecto crearProyectoFrame = new CrearProyecto(api);
 		crearProyectoFrame.setVisible(true);
-	}
+	}*/
 }
