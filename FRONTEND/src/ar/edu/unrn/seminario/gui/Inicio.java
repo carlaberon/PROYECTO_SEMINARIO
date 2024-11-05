@@ -239,7 +239,7 @@ public class Inicio extends JFrame implements ProyectoModificadoListener{
 	public static void main(String[] args) throws NotNullException, DataEmptyException, InvalidDateException{
 		
 		IApi api = new PersistenceApi();
-		UsuarioDTO usuario = api.obtenerUsuario("gabriel");
+		UsuarioDTO usuario = api.obtenerUsuario("ldifabio");
 		api.setUsuarioActual(usuario.getUsername());
 		new Inicio(api);
 	}
