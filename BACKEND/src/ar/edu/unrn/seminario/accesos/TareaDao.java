@@ -12,13 +12,13 @@ public interface TareaDao {
 
 	void create(Tarea tarea);
 
-	void update(Tarea tarea, String nombreOriginal) throws TaskNotUpdatedException;
+	void update(Tarea tarea, int idProyectoOriginal) throws TaskNotUpdatedException;
 
 	void remove(String nombre, String proyecto, String usuario_propietario);
 
 	void remove(Tarea tarea);
 
-	Tarea find(String nombreTarea, String proyecto, String usuario_propietario) throws DataEmptyException, NotNullException, InvalidDateException;
+	Tarea find(int id) throws DataEmptyException, NotNullException, InvalidDateException;
 	
 	List<Tarea> findTareas(String proyecto, String usuario_propietario) throws DataEmptyException, NotNullException, InvalidDateException; //buscar tareas por proyecto
 	

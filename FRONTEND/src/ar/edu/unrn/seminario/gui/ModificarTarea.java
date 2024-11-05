@@ -42,7 +42,7 @@ public class ModificarTarea extends JFrame {
 	    private List<UsuarioDTO> usuarios = new ArrayList<>();
 
 	    private IApi api;
-	    public ModificarTarea(IApi api, String nombre) throws NotNullException, DataEmptyException {
+	    public ModificarTarea(IApi api, int id) throws NotNullException, DataEmptyException {
 
 	        this.api = api; 
 	        
@@ -171,7 +171,7 @@ public class ModificarTarea extends JFrame {
                                 .toLocalDate();
 	                        
 	                       //modificar para que ande!!!!! (hernan)
-	                      api.modificarTarea(nombre, proyectoSeleccionado, nuevoNombreTarea, prioridadTarea, usuario.getUsername(), false, descripcionTarea, fechaInicioLocalDate, fechaFinLocalDate);
+	                      api.modificarTarea(id, proyectoSeleccionado, nuevoNombreTarea, prioridadTarea, usuario.getUsername(), false, descripcionTarea, fechaInicioLocalDate, fechaFinLocalDate);
 	                       
 	                       JOptionPane.showMessageDialog(null, "Tarea modificada con éxito!", "Info", JOptionPane.INFORMATION_MESSAGE);
 	                       setVisible(false);

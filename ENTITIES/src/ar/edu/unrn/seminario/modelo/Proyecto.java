@@ -10,6 +10,7 @@ import ar.edu.unrn.seminario.exception.NotNullException;
 
 public class Proyecto {
 
+	private int id;
     private String nombre;
     private Usuario usuarioPropietario;
     private boolean estado; // ACTIVO = false, FINALIZADO = true
@@ -198,6 +199,14 @@ public class Proyecto {
 		return "Proyecto [nombre=" + nombre + ", usuarioPropietario=" + usuarioPropietario + ", estado=" + estado
 				+ ", miembros=" + miembros + ", descripcion=" + descripcion + ", prioridad=" + prioridad
 				+ ", proyectos=" + proyectos + "]";
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
     
 }

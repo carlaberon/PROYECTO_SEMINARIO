@@ -173,7 +173,7 @@ public class VentanaTareas extends JFrame {
         table.setShowGrid(true);
 
         // Modelo de la tabla
-		String[] titulos = { "NOMBRE", "PROYECTO", "ESTADO","DESCRIPCION", "ASIGNADO", "PRIORIDAD", "FECHA INICIO", "FECHA FIN" };
+		String[] titulos = { "ID","NOMBRE", "PROYECTO", "ESTADO","DESCRIPCION", "ASIGNADO", "PRIORIDAD", "FECHA INICIO", "FECHA FIN" };
 		modelo = new DefaultTableModel(new Object[][] {}, titulos);
 		try {
 			
@@ -183,6 +183,7 @@ public class VentanaTareas extends JFrame {
 		
 		for (TareaDTO t : tareas) {
 		    modelo.addRow(new Object[] {
+		    	t.getId(),
 		        t.getName(),
 		        t.getProject(),
 		        t.isEstado() ? "FINALIZADA" : "EN CURSO", // Modifica el estado a una cadena legible
@@ -218,9 +219,19 @@ public class VentanaTareas extends JFrame {
         JButton btnTarea = createButton("Tarea +", new Color(138, 102, 204));
         btnTarea.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				CrearTarea crearTarea = new CrearTarea(api);
-				crearTarea.setLocationRelativeTo(null);
-				crearTarea.setVisible(true);
+				CrearTarea crearTarea;
+				try {
+					crearTarea = new CrearTarea(api);
+					crearTarea.setLocationRelativeTo(null);
+					crearTarea.setVisible(true);
+				} catch (NotNullException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (DataEmptyException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 	
 			}
 		});
@@ -267,9 +278,9 @@ public class VentanaTareas extends JFrame {
     	        int filaSeleccionada = table.getSelectedRow(); 
 
     	        if (filaSeleccionada != -1) {
-    	            Object nombreTarea = table.getValueAt(filaSeleccionada, 0);
+    	            int idTarea = (int) table.getValueAt(filaSeleccionada, 0);
     	            try {
-						modificarTarea(nombreTarea.toString());
+						modificarTarea(idTarea);
 					} catch (NotNullException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -382,17 +393,17 @@ public class VentanaTareas extends JFrame {
 		    });
 		}
 	}
-	void modificarTarea(String nombreTarea) throws NotNullException, DataEmptyException {
-	 ModificarTarea modificatarea = new ModificarTarea(api,nombreTarea);
+	void modificarTarea(int idTarea) throws NotNullException, DataEmptyException {
+	 ModificarTarea modificatarea = new ModificarTarea(api,idTarea);
 	 modificatarea.setVisible(true);
     }
 	
-	/*public static void main(String []args) throws NotNullException, DataEmptyException, RuntimeException, InvalidDateException {
+	public static void main(String []args) throws NotNullException, DataEmptyException, RuntimeException, InvalidDateException {
 		IApi api = new PersistenceApi();
 		//prueba
-		api.setUsuarioActual("Gabriel");
+		api.setUsuarioActual("ldifabio");
 	
-		api.setProyectoActual("proyecto fenix");
+		api.setProyectoActual("Aplicacion de votos");
 
 		VentanaTareas ventana = new VentanaTareas(api);
 		
@@ -400,7 +411,7 @@ public class VentanaTareas extends JFrame {
 		
 		
 	}
-*/
+
 }
 
 

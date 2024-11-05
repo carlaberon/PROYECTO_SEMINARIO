@@ -6,6 +6,7 @@ import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
 
 public class Tarea {
+	private int id;
     private String nombre;
     private String proyecto;  
     private String prioridad;
@@ -16,7 +17,7 @@ public class Tarea {
     private LocalDate fechaInicio; 
     private LocalDate fechaFin;
 
-    public Tarea(String nombre, String proyecto, String usuarioPropietario, String prioridad, String username, boolean estado, String descripcion, LocalDate inicio, LocalDate fin) throws DataEmptyException, NotNullException, InvalidDateException {
+    public Tarea(int id, String nombre, String proyecto, String usuarioPropietario, String prioridad, String username, boolean estado, String descripcion, LocalDate inicio, LocalDate fin) throws DataEmptyException, NotNullException, InvalidDateException {
     
  
     	if (esDatoNulo(nombre))
@@ -49,6 +50,7 @@ public class Tarea {
 				throw new InvalidDateException("La fecha de inicio debe ser anterior a la fecha de finalizacion");
 			}
 		
+		this.id = id;
     	this.nombre = nombre;
         this.proyecto = proyecto;
         this.usuarioPropietario= usuarioPropietario;
@@ -200,6 +202,14 @@ public class Tarea {
 		return "Tarea [nombre=" + nombre + ", proyecto=" + proyecto + ", prioridad=" + prioridad + ", usuarioPropietario="
 				+ usuarioPropietario + ", usuario=" + usuario + ", estado=" + estado + ", descripcion=" + descripcion
 				+ ", fechaInicio=" + fechaInicio + ", fechaFin=" + fechaFin + "]";
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 }
 

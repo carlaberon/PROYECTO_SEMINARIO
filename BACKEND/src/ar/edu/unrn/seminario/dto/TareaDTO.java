@@ -11,6 +11,7 @@ import ar.edu.unrn.seminario.modelo.Usuario;
 
 public class TareaDTO {
 
+	private int id;
     private String name;
     private String project_name;
     private String usuarioPropietario;
@@ -21,7 +22,7 @@ public class TareaDTO {
     private LocalDate inicio; 
     private LocalDate fin;
     
-    public TareaDTO(String name, String nameProject, String usuarioPropietario, String priority, String user, boolean estado, String descripcion, LocalDate inicio, LocalDate fin) throws NotNullException, InvalidDateException, DataEmptyException {
+    public TareaDTO(int id, String name, String nameProject, String usuarioPropietario, String priority, String user, boolean estado, String descripcion, LocalDate inicio, LocalDate fin) throws NotNullException, InvalidDateException, DataEmptyException {
     	super();
     	
     	if (esDatoNulo(name))
@@ -54,7 +55,7 @@ public class TareaDTO {
 				throw new InvalidDateException("La fecha de inicio debe ser anterior a la fecha de finalizacion");
 			}
     	
-    
+		this.id = id;
         this.name = name;
         this.project_name = nameProject;
         this.setUsuarioPropietario(usuarioPropietario);
@@ -178,6 +179,18 @@ public class TareaDTO {
 
 	private boolean esDatoNulo(String dato) {
 		return dato == null;
+	}
+
+
+
+	public int getId() {
+		return id;
+	}
+
+
+
+	public void setId(int id) {
+		this.id = id;
 	}
 }
 

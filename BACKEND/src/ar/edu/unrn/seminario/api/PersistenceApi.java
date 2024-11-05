@@ -128,10 +128,10 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public void registrarTarea(String name, String project, String usuarioPropietario, String priority, String user, boolean estado,
+	public void registrarTarea(int id, String name, String project, String usuarioPropietario, String priority, String user, boolean estado,
 			String descripcion, LocalDate inicio, LocalDate fin)
 			throws DataEmptyException, NotNullException, InvalidDateException {
-		Tarea tarea = new Tarea(name, project, usuarioPropietario, priority, user, estado, descripcion, inicio, fin);
+		Tarea tarea = new Tarea(id, name, project, usuarioPropietario, priority, user, estado, descripcion, inicio, fin);
 		tareaDao.create(tarea);
 	}
 
@@ -276,8 +276,8 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public void modificarTarea(String nombreTarea, String nombreProyecto, String nuevoNombre, String nuevaPrioridad, String nombreUsuario, Boolean estado, String nuevaDescripcion, LocalDate inicio, LocalDate fin) throws NotNullException, DataEmptyException, InvalidDateException, TaskNotUpdatedException {
-		Tarea tareaExistente = tareaDao.find(nombreTarea, nombreProyecto, nombreUsuario);
+	public void modificarTarea(int id, String nombreProyecto, String nuevoNombre, String nuevaPrioridad, String nombreUsuario, Boolean estado, String nuevaDescripcion, LocalDate inicio, LocalDate fin) throws NotNullException, DataEmptyException, InvalidDateException, TaskNotUpdatedException {
+		Tarea tareaExistente = tareaDao.find(id);
 		
 		if (tareaExistente != null) {
 			if (nuevoNombre != null && !nuevoNombre.isEmpty()) {
@@ -313,7 +313,7 @@ public class PersistenceApi implements IApi {
 	        	tareaExistente.setEstado(estado);
 	        }
 	        
-	        tareaDao.update(tareaExistente, nombreTarea);
+	        tareaDao.update(tareaExistente, id);
 	        System.out.println("Tarea modificada exitosamente.");
 	    } else {
 	        System.out.println("No se encontró la tarea para modificar.");
@@ -400,7 +400,7 @@ public class PersistenceApi implements IApi {
 	}
 	
 	private TareaDTO convertirEnTareaDTO(Tarea tarea) throws NotNullException, InvalidDateException, DataEmptyException {
-		TareaDTO tareaDto = new TareaDTO(tarea.getNombre(), tarea.getProyecto(), tarea.getUsuarioPropietario(),
+		TareaDTO tareaDto = new TareaDTO(tarea.getId(), tarea.getNombre(), tarea.getProyecto(), tarea.getUsuarioPropietario(),
 				tarea.getPrioridad(), tarea.getUsuario(), tarea.isEstado(), tarea.getDescripcion(), tarea.getInicio(), tarea.getFin());
 		return tareaDto;
 	}
