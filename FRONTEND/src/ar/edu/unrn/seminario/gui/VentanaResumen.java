@@ -193,6 +193,12 @@ public class VentanaResumen extends JFrame {
 			} catch (InvalidDateException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
+			} catch (NotNullException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (DataEmptyException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
             ventanaTareas.setVisible(true);
         }

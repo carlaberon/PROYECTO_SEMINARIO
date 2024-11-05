@@ -210,11 +210,15 @@ public class Inicio extends JFrame implements ProyectoModificadoListener{
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
-
-
-						api.setProyectoActual(proyecto.getNombre());
-		
-
+						try {
+							api.setProyectoActual(proyecto.getNombre());
+						} catch (NotNullException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						} catch (DataEmptyException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 					abrirVentanaResumen();
 				}
             	

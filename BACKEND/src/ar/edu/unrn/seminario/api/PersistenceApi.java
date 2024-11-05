@@ -23,7 +23,6 @@ import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.exception.TaskNotUpdatedException;
-import ar.edu.unrn.seminario.exception.TaskUpdatedSuccessfullyException;
 import ar.edu.unrn.seminario.modelo.Proyecto;
 import ar.edu.unrn.seminario.modelo.Rol;
 import ar.edu.unrn.seminario.modelo.Tarea;
@@ -53,11 +52,11 @@ public class PersistenceApi implements IApi {
 	}
 	
 	@Override
-	public List<TareaDTO> obtenerTareas() {
+	public List<TareaDTO> obtenerTareas() throws NotNullException, InvalidDateException, DataEmptyException {
 		List<TareaDTO> tareasDTO = new ArrayList<>();
 		List<Tarea> tareas = null;
 		try {
-			tareas = tareaDao.findAll();
+			tareas = tareaDao.findTareas(proyectoActual.getNombre(), usuarioActual.getUsername());
 		} catch (DataEmptyException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -216,7 +215,7 @@ public class PersistenceApi implements IApi {
 
 
 	@Override
-	public List<TareaDTO> obtenerTareasPorProyecto(String nombreProyecto, String usuarioPropietario) throws InvalidDateException {
+	public List<TareaDTO> obtenerTareasPorProyecto(String nombreProyecto, String usuarioPropietario) throws InvalidDateException, NotNullException, DataEmptyException {
 		List<TareaDTO> tareasDTO = new ArrayList<>();
 		List<Tarea> tareas = null;
 		try {
@@ -275,7 +274,7 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public void modificarTarea(String nombreTarea, String nombreProyecto, String nuevoNombre, String nuevaPrioridad, String nombreUsuario, Boolean estado, String nuevaDescripcion, LocalDate inicio, LocalDate fin) throws NotNullException, DataEmptyException, InvalidDateException, TaskNotUpdatedException, TaskUpdatedSuccessfullyException {
+	public void modificarTarea(String nombreTarea, String nombreProyecto, String nuevoNombre, String nuevaPrioridad, String nombreUsuario, Boolean estado, String nuevaDescripcion, LocalDate inicio, LocalDate fin) throws NotNullException, DataEmptyException, InvalidDateException, TaskNotUpdatedException {
 		Tarea tareaExistente = tareaDao.find(nombreTarea, nombreProyecto, nombreUsuario);
 		
 		if (tareaExistente != null) {
@@ -398,7 +397,7 @@ public class PersistenceApi implements IApi {
 		return usuarioDto;
 	}
 	
-	private TareaDTO convertirEnTareaDTO(Tarea tarea) {
+	private TareaDTO convertirEnTareaDTO(Tarea tarea) throws NotNullException, InvalidDateException, DataEmptyException {
 		TareaDTO tareaDto = new TareaDTO(tarea.getNombre(), tarea.getProyecto(), tarea.getUsuarioPropietario(),
 				tarea.getPrioridad(), tarea.getUsuario(), tarea.isEstado(), tarea.getDescripcion(), tarea.getInicio(), tarea.getFin());
 		return tareaDto;

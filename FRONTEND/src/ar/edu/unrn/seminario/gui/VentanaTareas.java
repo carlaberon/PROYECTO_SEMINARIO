@@ -53,14 +53,14 @@ public class VentanaTareas extends JFrame {
     private ProyectoDTO unproyecto; //obtener proyecto por medio de la api
 	
 
-    public VentanaTareas(IApi api) throws RuntimeException, InvalidDateException{
+    public VentanaTareas(IApi api) throws RuntimeException, InvalidDateException, NotNullException, DataEmptyException{
     	this.api = api; 
     	this.usuarioActual = api.getUsuarioActual();
     	this.unproyecto = api.getProyectoActual(); 
     	
     	setTitle("TAREAS");
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        setBounds(100, 100, 900, 600);
+        setBounds(50, 50, 1200, 900);
         
         contentPane = new JPanel();
         contentPane.setLayout(new BorderLayout());
@@ -235,7 +235,18 @@ public class VentanaTareas extends JFrame {
         buttonPanel.add(btnActualizarTabla);
         btnActualizarTabla.addActionListener(new ActionListener() {
     			public void actionPerformed(ActionEvent arg0) {
-    				actualizarTabla();
+    				try {
+						actualizarTabla();
+					} catch (NotNullException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (InvalidDateException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (DataEmptyException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
     			}
     		});
         
@@ -334,7 +345,7 @@ public class VentanaTareas extends JFrame {
 
 	}
 	
-	void actualizarTabla(){
+	void actualizarTabla() throws NotNullException, InvalidDateException, DataEmptyException{
 	
 	    // Obtiene el model del table
 	    DefaultTableModel modelo = (DefaultTableModel) table.getModel();

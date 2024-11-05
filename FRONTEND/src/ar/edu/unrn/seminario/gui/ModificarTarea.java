@@ -26,8 +26,6 @@ import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.exception.TaskNotUpdatedException;
-import ar.edu.unrn.seminario.exception.TaskUpdatedSuccessfullyException;
-
 import javax.swing.JTextArea;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
@@ -52,7 +50,7 @@ public class ModificarTarea extends JFrame {
 	        //OBTENER NOMBRE DEL USUARIO ACTUAL
 	        this.proyectos = api.obtenerProyectos(api.getUsuarioActual().getUsername());
 	        
-	        //setTitle("MODIFICAR TAREA");
+	        setTitle("MODIFICAR TAREA");
 	        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	        setBounds(200, 200, 600, 550);
 	        contentPane = new JPanel();
@@ -175,9 +173,9 @@ public class ModificarTarea extends JFrame {
 	                       //modificar para que ande!!!!! (hernan)
 	                      api.modificarTarea(nombre, proyectoSeleccionado, nuevoNombreTarea, prioridadTarea, usuario.getUsername(), false, descripcionTarea, fechaInicioLocalDate, fechaFinLocalDate);
 	                       
-	                        JOptionPane.showMessageDialog(null, "Tarea creada con éxito!", "Info", JOptionPane.INFORMATION_MESSAGE);
-	                        setVisible(false);
-	                        dispose();
+	                       JOptionPane.showMessageDialog(null, "Tarea modificada con éxito!", "Info", JOptionPane.INFORMATION_MESSAGE);
+	                       setVisible(false);
+	                       dispose();
 	                       
 	                	
 	                	} catch (NullPointerException excepcion) {
@@ -192,9 +190,6 @@ public class ModificarTarea extends JFrame {
 						} catch (InvalidDateException e) {
 				            JOptionPane.showMessageDialog(null, "Error en la fecha: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 				        
-						} catch (TaskUpdatedSuccessfullyException e) {
-						    JOptionPane.showMessageDialog(null, e.getMessage(), "Éxito", JOptionPane.INFORMATION_MESSAGE);
-						    
 						} catch (TaskNotUpdatedException e) {
 						    JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 						    
