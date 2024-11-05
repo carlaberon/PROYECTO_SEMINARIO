@@ -121,16 +121,16 @@ public class Inicio extends JFrame implements ProyectoModificadoListener{
 
         			@Override
         			public void actionPerformed(ActionEvent e) {
-        				// TODO Auto-generated method stub
-        				try {
-							api.setProyectoActual(proyecto.getNombre());
-						} catch (NotNullException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						} catch (DataEmptyException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
+							try {
+								api.setProyectoActual(proyecto.getNombre());
+							} catch (NotNullException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							} catch (DataEmptyException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+
         				abrirVentanaResumen();
         			}
             	
@@ -210,15 +210,11 @@ public class Inicio extends JFrame implements ProyectoModificadoListener{
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
-					try {
+
+
 						api.setProyectoActual(proyecto.getNombre());
-					} catch (NotNullException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (DataEmptyException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+		
+
 					abrirVentanaResumen();
 				}
             	
@@ -240,6 +236,7 @@ public class Inicio extends JFrame implements ProyectoModificadoListener{
 		
 		IApi api = new PersistenceApi();
 		UsuarioDTO usuario = api.obtenerUsuario("ldifabio");
+
 		api.setUsuarioActual(usuario.getUsername());
 		new Inicio(api);
 	}
