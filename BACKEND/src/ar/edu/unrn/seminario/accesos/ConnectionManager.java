@@ -10,6 +10,7 @@ public class ConnectionManager {
 	protected static String DB = "seminario_2024_1_2";
 	protected static String user = "root";
 	protected static String pass = "hernan123";
+
 	protected static Connection conn = null;
 
 	public static void connect() {

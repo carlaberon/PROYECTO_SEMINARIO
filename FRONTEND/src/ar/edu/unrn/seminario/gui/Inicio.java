@@ -18,7 +18,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.ArrayList;
 
-public class Inicio extends JFrame implements ProyectoModificadoListener{
+public class Inicio extends JFrame {
 
     private JFrame frame;
     private IApi api;
@@ -121,6 +121,7 @@ public class Inicio extends JFrame implements ProyectoModificadoListener{
 
         			@Override
         			public void actionPerformed(ActionEvent e) {
+
 							try {
 								api.setProyectoActual(proyecto.getNombre());
 							} catch (NotNullException e1) {
@@ -131,17 +132,17 @@ public class Inicio extends JFrame implements ProyectoModificadoListener{
 								e1.printStackTrace();
 							}
 
-        				try {
-							abrirVentanaResumen();
-						} catch (NotNullException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						} catch (DataEmptyException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
+							try {
+								abrirVentanaResumen();
+							} catch (NotNullException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							} catch (DataEmptyException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
         			}
-            	
+        					
             });
             
             proyectosListPanel.add(proyectoButton);
@@ -187,13 +188,11 @@ public class Inicio extends JFrame implements ProyectoModificadoListener{
 
     private void abrirCrearProyecto() {
     	CrearProyecto crearProyecto = new CrearProyecto(api); // Crear una instancia de ListaProyectos
-        crearProyecto.addProyectoModificadoListener(Inicio.this);  // Registrar Inicio como listener de ProyectoEliminadoListener
         crearProyecto.setVisible(true); // Hacer visible la ventana de proyectos
     }
     
     private void abrirListaProyectos() {
         ListaProyectos listaProyectos = new ListaProyectos(api); // Crear una instancia de ListaProyectos
-        listaProyectos.addProyectoModificadoListener(this);  // Registrar Inicio como listener de ProyectoEliminadoListener
         listaProyectos.setVisible(true); // Hacer visible la ventana de proyectos
     }
 
@@ -218,6 +217,7 @@ public class Inicio extends JFrame implements ProyectoModificadoListener{
 				@Override
 				public void actionPerformed(ActionEvent e) {
 
+
 						try {
 							api.setProyectoActual(proyecto.getNombre());
 						} catch (NotNullException e1) {
@@ -231,6 +231,7 @@ public class Inicio extends JFrame implements ProyectoModificadoListener{
 
 					try {
 						abrirVentanaResumen();
+
 					} catch (NotNullException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -238,6 +239,7 @@ public class Inicio extends JFrame implements ProyectoModificadoListener{
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
+
 				}
             	
             });
@@ -249,10 +251,11 @@ public class Inicio extends JFrame implements ProyectoModificadoListener{
         proyectosListPanel.repaint();    // Repintar el panel
     }
 
-	@Override
+
 	public void proyectoEliminado() throws NotNullException, DataEmptyException {
 		actualizarProyectos(); //Cuando se elimina un proyecto activa el metodo actualizarProyectos para actualizar Inicio
 	}
+
     
 	public static void main(String[] args) throws NotNullException, DataEmptyException, InvalidDateException{
 		
