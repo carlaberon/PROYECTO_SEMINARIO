@@ -131,7 +131,15 @@ public class Inicio extends JFrame implements ProyectoModificadoListener{
 								e1.printStackTrace();
 							}
 
-        				abrirVentanaResumen();
+        				try {
+							abrirVentanaResumen();
+						} catch (NotNullException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						} catch (DataEmptyException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
         			}
             	
             });
@@ -189,7 +197,7 @@ public class Inicio extends JFrame implements ProyectoModificadoListener{
         listaProyectos.setVisible(true); // Hacer visible la ventana de proyectos
     }
 
-    private void abrirVentanaResumen() {
+    private void abrirVentanaResumen() throws NotNullException, DataEmptyException {
         VentanaResumen ventanaResumen = new VentanaResumen(api); // Crear una instancia de VentanaResumen
         ventanaResumen.setVisible(true); // Hacer visible la ventana de resumen
     }
@@ -221,7 +229,15 @@ public class Inicio extends JFrame implements ProyectoModificadoListener{
 						}
 		
 
-					abrirVentanaResumen();
+					try {
+						abrirVentanaResumen();
+					} catch (NotNullException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (DataEmptyException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
             	
             });

@@ -23,7 +23,7 @@ public class VentanaResumen extends JFrame {
     private UsuarioDTO usuarioActual; //obtener usuario actual por medio de la api
     private ProyectoDTO unproyecto; //obtener proyecto por medio de la api
     
-    public VentanaResumen(IApi api) {
+    public VentanaResumen(IApi api) throws NotNullException, DataEmptyException {
 
     	this.api = api;
     	this.usuarioActual = api.getUsuarioActual();

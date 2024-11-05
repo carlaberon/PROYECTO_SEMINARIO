@@ -176,7 +176,7 @@ public class CrearProyecto extends JFrame {
     }
 
     // Método para notificar a los listeners
-    private void notificarProyectoCreado() { //Notificar a los oyentes de el/los proyecto eliminados
+    private void notificarProyectoCreado() throws NotNullException, DataEmptyException { //Notificar a los oyentes de el/los proyecto eliminados
         for (ProyectoModificadoListener listener : listeners) {
             listener.proyectoEliminado();
         }

@@ -268,7 +268,15 @@ public class VentanaTareas extends JFrame {
 
     	        if (filaSeleccionada != -1) {
     	            Object nombreTarea = table.getValueAt(filaSeleccionada, 0);
-    	            modificarTarea(nombreTarea.toString());
+    	            try {
+						modificarTarea(nombreTarea.toString());
+					} catch (NotNullException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (DataEmptyException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
     	        } else {
     	            JOptionPane.showMessageDialog(null, "Seleccione una tarea para modificar", "Error", JOptionPane.ERROR_MESSAGE);
     	        }
@@ -374,7 +382,7 @@ public class VentanaTareas extends JFrame {
 		    });
 		}
 	}
-	void modificarTarea(String nombreTarea) {
+	void modificarTarea(String nombreTarea) throws NotNullException, DataEmptyException {
 	 ModificarTarea modificatarea = new ModificarTarea(api,nombreTarea);
 	 modificatarea.setVisible(true);
     }

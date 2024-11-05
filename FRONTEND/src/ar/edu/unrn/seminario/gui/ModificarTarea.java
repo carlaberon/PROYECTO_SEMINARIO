@@ -42,7 +42,7 @@ public class ModificarTarea extends JFrame {
 	    private List<UsuarioDTO> usuarios = new ArrayList<>();
 
 	    private IApi api;
-	    public ModificarTarea(IApi api, String nombre) {
+	    public ModificarTarea(IApi api, String nombre) throws NotNullException, DataEmptyException {
 
 	        this.api = api; 
 	        
