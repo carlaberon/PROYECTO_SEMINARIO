@@ -75,7 +75,7 @@ public class PersistenceApi implements IApi {
 	}
 	
 	@Override
-	public List<UsuarioDTO> obtenerUsuarios() {
+	public List<UsuarioDTO> obtenerUsuarios() throws NotNullException, DataEmptyException {
 		List<UsuarioDTO> dtos = new ArrayList<>();
 		List<Usuario> usuarios = usuarioDao.findAll();
 		for (Usuario u : usuarios) {
@@ -147,7 +147,7 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public List<ProyectoDTO> obtenerProyectos(String username) {
+	public List<ProyectoDTO> obtenerProyectos(String username) throws NotNullException, DataEmptyException {
 		List<ProyectoDTO> proyectoDTO = new ArrayList<>();
 		List<Proyecto> proyectos = null;
 		try {
@@ -243,7 +243,7 @@ public class PersistenceApi implements IApi {
 	
 
 	@Override
-	public ProyectoDTO getProyectoActual() {
+	public ProyectoDTO getProyectoActual() throws NotNullException, DataEmptyException {
 		return convertirEnProyectoDTO(proyectoActual);
 	}
 
@@ -347,7 +347,7 @@ public class PersistenceApi implements IApi {
 	
 
 	@Override
-	public UsuarioDTO obtenerUsuario(String username) {
+	public UsuarioDTO obtenerUsuario(String username) throws NotNullException, DataEmptyException {
 		Usuario usuario = usuarioDao.find(username);
 		if (usuario != null){
 			 UsuarioDTO userDTO = new UsuarioDTO(
@@ -394,7 +394,7 @@ public class PersistenceApi implements IApi {
 	}
 
 
-	private UsuarioDTO convertirEnUsuarioDTO(Usuario usuario) {
+	private UsuarioDTO convertirEnUsuarioDTO(Usuario usuario) throws NotNullException, DataEmptyException {
 		UsuarioDTO usuarioDto = new UsuarioDTO(usuario.getUsername(), usuario.getContrasena(), usuario.getNombre(), 
 				usuario.getEmail(), convertirEnRolDTO(usuario.getRol()), usuario.isActivo());
 		return usuarioDto;
@@ -406,14 +406,14 @@ public class PersistenceApi implements IApi {
 		return tareaDto;
 	}
 	
-	private ProyectoDTO convertirEnProyectoDTO(Proyecto proyecto) {
+	private ProyectoDTO convertirEnProyectoDTO(Proyecto proyecto) throws NotNullException, DataEmptyException {
 		ProyectoDTO proyectoDto = null;
 		if(proyecto != null)
 			proyectoDto = new ProyectoDTO(proyecto.getNombre(), convertirEnUsuarioDTO(proyecto.getUsuarioPropietario()), proyecto.getEstado(), proyecto.getPrioridad1(), proyecto.getDescripcion());
 		return proyectoDto;
 	}
 	
-	public UsuarioDTO getUsuarioActual() {
+	public UsuarioDTO getUsuarioActual() throws NotNullException, DataEmptyException {
 	    if (usuarioActual == null) {
 	        throw new IllegalStateException("El usuario actual no ha sido establecido.");
 	    }

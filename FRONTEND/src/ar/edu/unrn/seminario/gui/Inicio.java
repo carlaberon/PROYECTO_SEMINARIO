@@ -25,7 +25,7 @@ public class Inicio extends JFrame implements ProyectoModificadoListener{
     private JPanel proyectosListPanel;
     private UsuarioDTO usuarioActual;
     
-    public Inicio(IApi api) {
+    public Inicio(IApi api) throws NotNullException, DataEmptyException {
     	this.api = api;
     	this.usuarioActual = api.getUsuarioActual();
     	
@@ -194,7 +194,7 @@ public class Inicio extends JFrame implements ProyectoModificadoListener{
         ventanaResumen.setVisible(true); // Hacer visible la ventana de resumen
     }
 
-    public void actualizarProyectos() {
+    public void actualizarProyectos() throws NotNullException, DataEmptyException {
         proyectosListPanel.removeAll(); // Limpiar el panel actual
         
         List<ProyectoDTO> proyectos = api.obtenerProyectos(usuarioActual.getUsername()); // Obtener los proyectos actualizados
@@ -234,7 +234,7 @@ public class Inicio extends JFrame implements ProyectoModificadoListener{
     }
 
 	@Override
-	public void proyectoEliminado() {
+	public void proyectoEliminado() throws NotNullException, DataEmptyException {
 		actualizarProyectos(); //Cuando se elimina un proyecto activa el metodo actualizarProyectos para actualizar Inicio
 	}
     

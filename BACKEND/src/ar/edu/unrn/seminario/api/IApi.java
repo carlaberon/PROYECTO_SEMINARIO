@@ -21,7 +21,7 @@ import ar.edu.unrn.seminario.modelo.Usuario;
 public interface IApi {
 	void registrarUsuario(String username, String password, String email, String nombre, Integer rol);
 
-	UsuarioDTO obtenerUsuario(String username);
+	UsuarioDTO obtenerUsuario(String username) throws NotNullException, DataEmptyException;
 
 	void eliminarUsuario(String username);
 
@@ -37,7 +37,7 @@ public interface IApi {
 
 	void desactivarRol(Integer codigo); // recuperar el objeto Rol, imp
 
-	List<UsuarioDTO> obtenerUsuarios(); // recuperar todos los usuarios
+	List<UsuarioDTO> obtenerUsuarios() throws NotNullException, DataEmptyException; // recuperar todos los usuarios
 
 	void activarUsuario(String username); // recuperar el objeto Usuario, implementar el comportamiento de estado.
 
@@ -53,7 +53,7 @@ public interface IApi {
 	
 	public void eliminarTarea(String nombreTarea, String proyecto, String usuarioPropietario);
 	
-	List<ProyectoDTO> obtenerProyectos(String username);
+	List<ProyectoDTO> obtenerProyectos(String username) throws NotNullException, DataEmptyException;
 		
 	void asignarPrioridad(String nombreProyecto, String prioridad) throws NotNullException, DataEmptyException;
 	
@@ -70,11 +70,11 @@ public interface IApi {
 	void crearProyecto(String nombre, String string, boolean estado, String descripcion, String prioridad)
 			throws NotNullException, DataEmptyException;
 	
-	public ProyectoDTO getProyectoActual();//Recuperar proyecto actual	PRUEBAS
+	public ProyectoDTO getProyectoActual() throws NotNullException, DataEmptyException;//Recuperar proyecto actual	PRUEBAS
 
 	public void setProyectoActual(String nombreProyecto) throws NotNullException, DataEmptyException;	//Setear proyecto actual PRUEBAS
 	
-	public UsuarioDTO getUsuarioActual(); //Recuperar usuario actual PRUEBAS
+	public UsuarioDTO getUsuarioActual() throws NotNullException, DataEmptyException; //Recuperar usuario actual PRUEBAS
 
 	public void setUsuarioActual(String nombreUsuario);	//Setear usuario actual PRUEBAS
 
