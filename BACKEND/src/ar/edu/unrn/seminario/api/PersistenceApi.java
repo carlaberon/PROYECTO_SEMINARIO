@@ -254,6 +254,9 @@ public class PersistenceApi implements IApi {
 			if (! usuarioActual.isEmpty()) {
 				this.proyectoActual = proyectoDao.find(nombreProyecto, usuarioActual);
 			}
+			else {
+				throw new NullPointerException();
+			}
 			
 		
 	}

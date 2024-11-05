@@ -53,7 +53,7 @@ public class VentanaTareas extends JFrame {
     private ProyectoDTO unproyecto; //obtener proyecto por medio de la api
 	
 
-    public VentanaTareas(IApi api) throws RuntimeException, InvalidDateException{
+    public VentanaTareas(IApi api) throws RuntimeException, InvalidDateException, NotNullException, DataEmptyException{
     	this.api = api; 
     	this.usuarioActual = api.getUsuarioActual();
     	this.unproyecto = api.getProyectoActual(); 
@@ -334,7 +334,7 @@ public class VentanaTareas extends JFrame {
 
 	}
 	
-	void actualizarTabla(){
+	void actualizarTabla() throws NotNullException, InvalidDateException, DataEmptyException{
 	
 	    // Obtiene el model del table
 	    DefaultTableModel modelo = (DefaultTableModel) table.getModel();

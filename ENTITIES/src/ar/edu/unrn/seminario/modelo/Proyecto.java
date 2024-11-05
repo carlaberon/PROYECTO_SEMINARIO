@@ -18,12 +18,18 @@ public class Proyecto {
     private String prioridad;//Alta, Media, Baja
     private Set<Proyecto> proyectos = new HashSet<>();
 
-    public Proyecto(String nombre, Usuario usuarioPropietario) {
+    public Proyecto(String nombre, Usuario usuarioPropietario) throws NotNullException {
+	    if (esDatoNulo(nombre)) {
+	        throw new NotNullException("nombre");
+	    }
         this.nombre = nombre; 
         this.usuarioPropietario = usuarioPropietario;
     }
 
-    public Proyecto(String nombre, Usuario usuarioPropietario, boolean estado) {
+    public Proyecto(String nombre, Usuario usuarioPropietario, boolean estado) throws NotNullException {
+	    if (esDatoNulo(nombre)) {
+	        throw new NotNullException("nombre");
+	    }
         this.nombre = nombre; 
         this.usuarioPropietario = usuarioPropietario;
         this.estado = estado;
@@ -59,13 +65,6 @@ public class Proyecto {
         this.prioridad = prioridad;
     }
 
-    public Proyecto() {
-    	
-    }
-
-    public Proyecto(String nombre2, String string) {
-		// TODO Auto-generated constructor stub
-	}
 
 	public String getNombre() {
         return nombre;
