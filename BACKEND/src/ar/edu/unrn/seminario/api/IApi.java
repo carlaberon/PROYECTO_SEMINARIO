@@ -48,7 +48,7 @@ public interface IApi {
 	
 	public int obtenerPrioridad(String prioridad);
 	
-	List<TareaDTO> obtenerTareas();
+	List<TareaDTO> obtenerTareas() throws NotNullException, InvalidDateException, DataEmptyException;
 	
 	void añadirTareaAProyecto(String proyecto, Tarea tarea);
 	
@@ -64,7 +64,7 @@ public interface IApi {
 	
 	void modificarProyecto(String nombreProyecto, String usuarioPropietario,String nuevoNombre, String nuevaPrioridad, String nuevaDescripcion)throws NotNullException, DataEmptyException;
 
-	List<TareaDTO> obtenerTareasPorProyecto(String nombreProyecto,String usuarioPropietario) throws InvalidDateException;
+	List<TareaDTO> obtenerTareasPorProyecto(String nombreProyecto,String usuarioPropietario) throws InvalidDateException, NotNullException, DataEmptyException;
 	
 	public int obtenerValorPrioridad(String prioridad);
 	
