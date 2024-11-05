@@ -152,7 +152,7 @@ public class TareaDAOJDBC implements TareaDao{
 			
 			ResultSet result = sent.executeQuery();
 			while(result.next()) {
-				encontrarTarea = new Tarea(result.getInt("id"), result.getString("nombre"), result.getString("proyecto"), 
+				encontrarTarea = new Tarea(result.getString("nombre"), result.getString("proyecto"), 
 				result.getString("usuario_propietario"), result.getString("prioridad"), result.getString("usuario"), result.getBoolean("estado"), 
 				result.getString("descripcion"), result.getDate("fecha_inicio").toLocalDate(), result.getDate("fecha_fin").toLocalDate());
 			}
@@ -178,7 +178,7 @@ public class TareaDAOJDBC implements TareaDao{
 			ResultSet rs = statement.executeQuery("SELECT t.id, t.nombre, t.proyecto, t.usuario_propietario, t.prioridad, t.usuario, t.estado, t.descripcion, t.fecha_inicio, t.fecha_fin "+"FROM tareas t");
 			
 			while (rs.next()) {
-				Tarea tarea = new Tarea(rs.getInt("id"), rs.getString("nombre"), rs.getString("proyecto"),rs.getString("usuario_propietario"), rs.getString("prioridad"), rs.getString("usuario"), rs.getBoolean("estado"),rs.getString("descripcion"), rs.getDate("fecha_inicio").toLocalDate(), rs.getDate("fecha_fin").toLocalDate());
+				Tarea tarea = new Tarea(rs.getString("nombre"), rs.getString("proyecto"),rs.getString("usuario_propietario"), rs.getString("prioridad"), rs.getString("usuario"), rs.getBoolean("estado"),rs.getString("descripcion"), rs.getDate("fecha_inicio").toLocalDate(), rs.getDate("fecha_fin").toLocalDate());
 				tareas.add(tarea);
 			}
 		} catch (SQLException e) {

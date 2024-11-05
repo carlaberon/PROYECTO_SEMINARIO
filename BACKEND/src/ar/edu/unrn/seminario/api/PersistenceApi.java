@@ -128,10 +128,10 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public void registrarTarea(int id, String name, String project, String usuarioPropietario, String priority, String user, boolean estado,
+	public void registrarTarea(String name, String project, String usuarioPropietario, String priority, String user, boolean estado,
 			String descripcion, LocalDate inicio, LocalDate fin)
 			throws DataEmptyException, NotNullException, InvalidDateException {
-		Tarea tarea = new Tarea(id, name, project, usuarioPropietario, priority, user, estado, descripcion, inicio, fin);
+		Tarea tarea = new Tarea(name, project, usuarioPropietario, priority, user, estado, descripcion, inicio, fin);
 		tareaDao.create(tarea);
 	}
 

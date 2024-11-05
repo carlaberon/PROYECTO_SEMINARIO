@@ -17,7 +17,7 @@ public class Tarea {
     private LocalDate fechaInicio; 
     private LocalDate fechaFin;
 
-    public Tarea(int id, String nombre, String proyecto, String usuarioPropietario, String prioridad, String username, boolean estado, String descripcion, LocalDate inicio, LocalDate fin) throws DataEmptyException, NotNullException, InvalidDateException {
+    public Tarea(String nombre, String proyecto, String usuarioPropietario, String prioridad, String username, boolean estado, String descripcion, LocalDate inicio, LocalDate fin) throws DataEmptyException, NotNullException, InvalidDateException {
     
  
     	if (esDatoNulo(nombre))
@@ -50,7 +50,6 @@ public class Tarea {
 				throw new InvalidDateException("La fecha de inicio debe ser anterior a la fecha de finalizacion");
 			}
 		
-		this.id = id;
     	this.nombre = nombre;
         this.proyecto = proyecto;
         this.usuarioPropietario= usuarioPropietario;
