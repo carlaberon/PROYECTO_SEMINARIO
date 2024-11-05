@@ -27,7 +27,7 @@ public class ListaProyectos extends JFrame {
 	private IApi api;
 	private JTable tabla;
 	private JButton eliminarProyecto;
-	private List<ProyectoModificadoListener> listeners = new ArrayList<>(); //En esta lista estan los oyentes de ProyectoEliminadoListener
+	private JButton volver;
 	
     public ListaProyectos(IApi api) {
     	this.api = api;
@@ -118,7 +118,7 @@ public class ListaProyectos extends JFrame {
         eliminarProyecto = createButton("Eliminar", new Color(138, 102, 204));
         habilitarBotones(false);
         eliminarProyecto.addActionListener(new ActionListener() {
-			
+		
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int opcionSeleccionada = JOptionPane.showConfirmDialog(null,
@@ -128,7 +128,6 @@ public class ListaProyectos extends JFrame {
 					String projectName = (String) tabla.getModel().getValueAt(tabla.getSelectedRow(), 0);
 					api.eliminarProyecto(projectName, api.getUsuarioActual().getUsername());
 					actualizarTabla();
-					notificarProyectoEliminado(); //Notifico a los oyentes una ves acepte el OptionPane de confirmar eliminacion.
 					habilitarBotones(false);
 				}
 				
@@ -249,18 +248,7 @@ public class ListaProyectos extends JFrame {
 	private void habilitarBotones(boolean b) {
 		eliminarProyecto.setEnabled(b);
 	}
-	
-	public void addProyectoModificadoListener(ProyectoModificadoListener listener) { //Añadir un oyente a la lista tipo ProyectoEliminadoListener
-        listeners.add(listener);
-    }
 
-    // Método para notificar a los listeners
-    private void notificarProyectoEliminado() { //Notificar a los oyentes de el/los proyecto eliminados
-        for (ProyectoModificadoListener listener : listeners) {
-            listener.proyectoEliminado();
-        }
-    }
-    
     public static void main(String args[]) throws NotNullException, DataEmptyException {
     	IApi api = new PersistenceApi();
 		api.setUsuarioActual("ldifabio");
