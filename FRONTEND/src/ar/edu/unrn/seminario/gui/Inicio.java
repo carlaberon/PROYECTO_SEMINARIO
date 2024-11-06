@@ -254,7 +254,7 @@ public class Inicio extends JFrame {
         proyectos.sort((proyecto1, proyecto2) -> {
             int prioridad1 = api.obtenerValorPrioridad(proyecto1.getPrioridad());
             int prioridad2 = api.obtenerValorPrioridad(proyecto2.getPrioridad());
-            return Integer.compare(prioridad1, prioridad2); // Orden ascendente por valor de prioridad
+            return Integer.compare(prioridad1, prioridad2); 
         });
 
         for (ProyectoDTO proyecto : proyectos) {
