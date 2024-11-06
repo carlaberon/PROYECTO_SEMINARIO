@@ -45,24 +45,6 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 				System.out.println("Error al actualizar");
 			}
 			
-			//Se inserta cada proyecto
-			for(Proyecto subProyecto : proyecto.getProyectos()) {
-				statement = conn.
-						prepareStatement("INSERT INTO `proyectos` (`nombre`, `usuario_propietario`, `estado`, `descripcion`, `prioridad`, `proyecto`) " + "VALUES (?, ?, ?, ?, ?, ?)");
-				
-				statement.setString(1, subProyecto.getNombre());
-				statement.setString(2, subProyecto.getUsuarioPropietario().getUsername());
-				statement.setBoolean(3, subProyecto.getEstado());
-				statement.setString(4, subProyecto.getDescripcion());
-				statement.setString(5, subProyecto.getPrioridad());
-				statement.setString(6, proyecto.getNombre()); //se vincula al proyecto principal
-				
-				int subCant = statement.executeUpdate();
-				if (subCant > 0) {
-					System.out.println("Subproyecto insertado: " + subProyecto.getNombre());
-				}
-			}
-			
 		}
 		catch (SQLException e) {
 			System.out.println("Error al actualizar");	
@@ -161,15 +143,15 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 		UsuarioDao usuarioDao = new UsuarioDAOJDBC();
 		try {
 			Connection conn = ConnectionManager.getConnection();
-			PreparedStatement statement = conn.prepareStatement("SELECT nombre, usuario_propietario, estado, descripcion, prioridad FROM proyectos WHERE id = ? and estado NOT LIKE '#%'");
+			PreparedStatement statement = conn.prepareStatement("SELECT id, nombre, usuario_propietario, estado, descripcion, prioridad FROM proyectos WHERE id = ? and estado NOT LIKE '#%'");
 			statement.setInt(1, id);
 			
 			ResultSet rs = statement.executeQuery();
 			while(rs.next()) {
 				String nombreUsuarioPropietario = rs.getString("usuario_propietario");
 				Usuario usuarioPropietario = usuarioDao.find(nombreUsuarioPropietario);
-				encontrarProyecto = new Proyecto(rs.getString("nombre"), usuarioPropietario, "FINALIZADO".equals(rs.getString("estado")), rs.getString("descripcion"), rs.getString("prioridad"));
-				encontrarProyecto.setId(id);
+				encontrarProyecto = new Proyecto(rs.getInt("id"),rs.getString("nombre"), usuarioPropietario, "FINALIZADO".equals(rs.getString("estado")), rs.getString("descripcion"), rs.getString("prioridad"));
+				
 			}
 		} catch (SQLException e) {
 			System.out.println("Error de mySql\n" + e.toString());
@@ -200,8 +182,8 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 				Usuario usuarioPropietario = usuarioDao.find(nombreUsuarioPropietario);
 				
 				Proyecto proyecto;
-				proyecto = new Proyecto(rs.getString("nombre"), usuarioPropietario, rs.getBoolean("estado"), rs.getString("descripcion"), rs.getString("prioridad"));
-				proyecto.setId(rs.getInt("id"));
+				proyecto = new Proyecto(rs.getInt("id"),rs.getString("nombre"), usuarioPropietario, rs.getBoolean("estado"), rs.getString("descripcion"), rs.getString("prioridad"));
+				
 				proyectos.add(proyecto);
 			}
 		} catch (SQLException e) {
@@ -233,8 +215,8 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 					
 					Usuario usuarioPropietario = usuarioDao.find(nombreUsuarioPropietario);
 					
-					unProyecto = new Proyecto(rs.getString("nombre"), usuarioPropietario, rs.getBoolean("estado"), rs.getString("descripcion"), rs.getString("prioridad"));
-					unProyecto.setId(rs.getInt("id"));
+					unProyecto = new Proyecto(rs.getInt("id"), rs.getString("nombre"), usuarioPropietario, rs.getBoolean("estado"), rs.getString("descripcion"), rs.getString("prioridad"));
+					
 					proyectos.add(unProyecto);
 				}
 			} catch (SQLException e) {
