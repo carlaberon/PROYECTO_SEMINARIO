@@ -238,8 +238,16 @@ public class PersistenceApi implements IApi {
 
 	@Override
 	public int obtenerValorPrioridad(String prioridad) {
-		// TODO Auto-generated method stub
-		return 0;
+		switch (prioridad) {
+        case "alta":
+            return 1;
+        case "media":
+            return 2;
+        case "baja":
+            return 3;
+        default:
+            return 0; // En caso de prioridad desconocida
+    }
 	}
 
 	
@@ -348,21 +356,6 @@ public class PersistenceApi implements IApi {
 	        throw new DataEmptyException("No se encontró la tarea con el nombre especificado.");
 	    }*/
 		
-
-	
-	@Override
-	public int obtenerPrioridad(String prioridad) {
-	    switch (prioridad) {
-	        case "alta":
-	            return 1;
-	        case "media":
-	            return 2;
-	        case "baja":
-	            return 3;
-	        default:
-	            return 0; // En caso de prioridad desconocida
-	    }
-	}
 	
 	
 	//ACA PONDRE LOS MODULOS QUE CONSIDERO QUE NO SON NECESARIOS:

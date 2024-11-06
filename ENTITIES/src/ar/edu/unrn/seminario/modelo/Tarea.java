@@ -10,9 +10,8 @@ public class Tarea {
 	
     private int id;
 	private String nombre;
-    private int id_proyecto; 
+    private Proyecto id_proyecto; 
     private String prioridad;
-	private String usuarioPropietario;
     private String usuario;
     private boolean estado; // FINALIZADO: TRUE, NOFINALIZADO: FALSE
     private String descripcion;
@@ -20,14 +19,13 @@ public class Tarea {
     private LocalDate fechaFin;
 
 
-    public Tarea(String nombre, String usuarioPropietario, String prioridad, String username, boolean estado, String descripcion, LocalDate inicio, LocalDate fin) throws DataEmptyException, NotNullException, InvalidDateException {
+    public Tarea(String nombre,  String prioridad, String username, boolean estado, String descripcion, LocalDate inicio, LocalDate fin) throws DataEmptyException, NotNullException, InvalidDateException {
     
  
     	if (esDatoNulo(nombre))
 			throw new NotNullException("nombre");
    
-    	if (esDatoNulo(usuarioPropietario))
-			throw new NotNullException("usuario propietario");
+    	
     	if (esDatoNulo(prioridad))
 			throw new NotNullException("prioridad");
     	if (esDatoNulo(username))
@@ -38,8 +36,7 @@ public class Tarea {
 		if (esDatoVacio(nombre))
 			throw new DataEmptyException("nombre");
 		
-		if (esDatoVacio(usuarioPropietario))
-			throw new DataEmptyException("usuario propietario");
+	
 		if (esDatoVacio(prioridad))
 			throw new DataEmptyException("prioridad");
 		if (esDatoVacio(username))
@@ -54,7 +51,6 @@ public class Tarea {
 
     	this.nombre = nombre;
         this.id_proyecto = id_proyecto;
-        this.usuarioPropietario= usuarioPropietario;
         this.prioridad = prioridad;
         this.usuario = username;
         this.estado = estado;
@@ -70,7 +66,7 @@ public class Tarea {
         return nombre;
     }
 
-    public int getProyecto() { 
+    public Proyecto getProyecto() { 
         return id_proyecto;
     }
 
@@ -99,9 +95,7 @@ public class Tarea {
     public String getDescripcion() {
         return descripcion;
     }
-    public String getUsuarioPropietario() {
-        return usuarioPropietario;
-    }
+
     public LocalDate getInicio() {
         return fechaInicio;
     }
@@ -124,9 +118,7 @@ public class Tarea {
     	}
         this.prioridad = prioridad; 
     }
-    public void setUsuarioPropietario(String usuarioPropietario) {
-    	this.usuarioPropietario=usuarioPropietario;
-    }
+
     public void setNombre(String nombre) throws NotNullException, DataEmptyException {
     	if (esDatoNulo(nombre)) {
 			throw new NotNullException("nombre");
@@ -137,7 +129,7 @@ public class Tarea {
         this.nombre = nombre;
     }
 
-    public void setProyecto(int id_proyecto) {  // Mantener como String
+    public void setProyecto(Proyecto id_proyecto) {  // Mantener como String
         this.id_proyecto = id_proyecto;
     }
 
@@ -200,8 +192,7 @@ public class Tarea {
 
 	@Override
 	public String toString() {
-		return "Tarea [nombre=" + nombre + ", proyecto=" + id_proyecto + ", prioridad=" + prioridad + ", usuarioPropietario="
-				+ usuarioPropietario + ", usuario=" + usuario + ", estado=" + estado + ", descripcion=" + descripcion
+		return "Tarea [nombre=" + nombre + ", proyecto=" + id_proyecto + ", prioridad=" + prioridad + ", usuario=" + usuario + ", estado=" + estado + ", descripcion=" + descripcion
 				+ ", fechaInicio=" + fechaInicio + ", fechaFin=" + fechaFin + "]";
 	}
 	
@@ -213,11 +204,11 @@ public class Tarea {
 		this.id = id;
 	}
 	
-	public int getIdProyecto() {
+	public Proyecto getIdProyecto() {
 		return this.id_proyecto;
 	}
 	
-	public void setIdProyecto(int id_project) {
+	public void setIdProyecto(Proyecto id_project) {
 		this.id_proyecto = id_project;
 		
 	}
