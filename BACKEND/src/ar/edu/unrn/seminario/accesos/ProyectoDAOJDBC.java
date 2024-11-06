@@ -170,6 +170,7 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 				String nombreUsuarioPropietario = rs.getString("usuario_propietario");
 				Usuario usuarioPropietario = usuarioDao.find(nombreUsuarioPropietario);
 				encontrarProyecto = new Proyecto(rs.getString("nombre"), usuarioPropietario, "FINALIZADO".equals(rs.getString("estado")), rs.getString("descripcion"), rs.getString("prioridad"));
+				encontrarProyecto.setId(id);
 			}
 		} catch (SQLException e) {
 			System.out.println("Error de mySql\n" + e.toString());
@@ -224,7 +225,7 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 			
 			try {
 				Connection conn = ConnectionManager.getConnection();
-				PreparedStatement statement = conn.prepareStatement("SELECT p.id, p.nombre, p.usuario_propietario, p.estado, p.descripcion, p.prioridad, p.proyecto FROM proyectos p WHERE p.usuario_propietario = ?");
+				PreparedStatement statement = conn.prepareStatement("SELECT p.id, p.nombre, p.usuario_propietario, p.estado, p.descripcion, p.prioridad, p.proyecto FROM proyectos p WHERE p.usuario_propietario = ? and p.nombre NOT LIKE '#%'");
 				statement.setString(1, usuario);
 
 				ResultSet rs = statement.executeQuery();
