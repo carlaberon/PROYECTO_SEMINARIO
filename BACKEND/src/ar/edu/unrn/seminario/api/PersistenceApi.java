@@ -349,14 +349,20 @@ public class PersistenceApi implements IApi {
 	public UsuarioDTO obtenerUsuario(String username) {
 		Usuario usuario = usuarioDao.find(username);
 		if (usuario != null){
-			 UsuarioDTO userDTO = new UsuarioDTO(
-			            usuario.getUsername(),
-			            usuario.getContrasena(),
-			            usuario.getNombre(),
-			            usuario.getEmail(),
-			            convertirEnRolDTO(usuario.getRol()), // Asegúrate de que este método existe y convierte el Rol a RolDTO
-			            usuario.isActivo()
-			        );
+			 UsuarioDTO userDTO = null;
+			try {
+				userDTO = new UsuarioDTO(
+				            usuario.getUsername(),
+				            usuario.getContrasena(),
+				            usuario.getNombre(),
+				            usuario.getEmail(),
+				            convertirEnRolDTO(usuario.getRol()), // Asegúrate de que este método existe y convierte el Rol a RolDTO
+				            usuario.isActivo()
+				        );
+			} catch (NotNullException | DataEmptyException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			        return userDTO; // Retorna el UsuarioDTO
 			    }
 			    
