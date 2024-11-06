@@ -181,8 +181,8 @@ public class TareaDAOJDBC implements TareaDao{
 		return unaTarea;
 	}
 	
-	/*
-
+	
+/*
 	@Override
 	public void remove(Tarea tarea) {
 		try {
@@ -204,8 +204,34 @@ public class TareaDAOJDBC implements TareaDao{
 	}			
 
 
+	@Override
+	public Tarea find(int id) throws DataEmptyException, NotNullException, InvalidDateException {
+		Tarea encontrarTarea = null;
+		try {
+			Connection conn = ConnectionManager.getConnection();
+			PreparedStatement sent = conn.prepareStatement("SELECT * FROM tareas WHERE id = ?");
+			
+			sent.setInt(1, id);
+			
+			ResultSet result = sent.executeQuery();
+			while(result.next()) {
+				encontrarTarea = new Tarea(result.getString("nombre"), result.getString("proyecto"), 
+				result.getString("usuario_propietario"), result.getString("prioridad"), result.getString("usuario"), result.getBoolean("estado"), 
+				result.getString("descripcion"), result.getDate("fecha_inicio").toLocalDate(), result.getDate("fecha_fin").toLocalDate());
+			}
+		} catch (SQLException e) {
+			System.out.println("Error de mySql\n" + e.toString());
+			// TODO: disparar Exception propia
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+			// TODO: disparar Exception propia
+		} finally {
+			ConnectionManager.disconnect();
+		}
+		return encontrarTarea;
+	}*/
 
-	/*@Override
+	@Override
 	public List<Tarea> findAll() throws DataEmptyException, NotNullException, InvalidDateException {
 		List<Tarea>tareas = new ArrayList<Tarea>();
 		try
@@ -215,8 +241,8 @@ public class TareaDAOJDBC implements TareaDao{
 			ResultSet rs = statement.executeQuery("SELECT t.id, t.nombre, t.proyecto, t.usuario_propietario, t.prioridad, t.usuario, t.estado, t.descripcion, t.fecha_inicio, t.fecha_fin "+"FROM tareas t");
 			
 			while (rs.next()) {
-				Tarea tarea = new Tarea(rs.getInt("id"), rs.getString("nombre"), rs.getString("proyecto"),rs.getString("usuario_propietario"), rs.getString("prioridad"), rs.getString("usuario"), rs.getBoolean("estado"),rs.getString("descripcion"), rs.getDate("fecha_inicio").toLocalDate(), rs.getDate("fecha_fin").toLocalDate());
-				tareas.add(tarea);
+				//Tarea tarea = new Tarea(rs.getString("nombre"), rs.getString("proyecto"),rs.getString("usuario_propietario"), rs.getString("prioridad"), rs.getString("usuario"), rs.getBoolean("estado"),rs.getString("descripcion"), rs.getDate("fecha_inicio").toLocalDate(), rs.getDate("fecha_fin").toLocalDate());
+				//tareas.add(tarea);
 			}
 		} catch (SQLException e) {
 			System.out.println("Error de mySql\n" + e.toString());
@@ -231,7 +257,7 @@ public class TareaDAOJDBC implements TareaDao{
 		return tareas;
 		
 	
-	}*/
+	}
 
 
 

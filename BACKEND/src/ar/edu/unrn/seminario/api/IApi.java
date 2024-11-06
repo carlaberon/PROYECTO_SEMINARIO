@@ -43,7 +43,7 @@ public interface IApi {
 
 	void desactivarUsuario(String username); // recuperar el objeto Usuario, implementar el comportamiento de estado.
 	
-	public void registrarTarea(String name, String project, String usuarioPropietario, String priority, String user, boolean estado, String descripcion, LocalDate inicio, LocalDate fin) throws DataEmptyException, NotNullException, InvalidDateException;
+	public void registrarTarea(String name,int id_proyecto, String usuarioPropietario, String priority, String user, boolean estado, String descripcion, LocalDate inicio, LocalDate fin) throws DataEmptyException, NotNullException, InvalidDateException;
 	
 	public int obtenerPrioridad(String prioridad);
 	
@@ -57,16 +57,15 @@ public interface IApi {
 		
 	void asignarPrioridad(String nombreProyecto, String prioridad) throws NotNullException, DataEmptyException;
 	
-	int obtenerValorPrioridad(String prioridad); 
-	
     public int compare(Proyecto p1, Proyecto p2);
     
 	void eliminarProyecto(int id);
 	
 	void modificarProyecto(int idProyecto, String nuevoNombre, String nuevaPrioridad, String nuevaDescripcion)throws NotNullException, DataEmptyException;
 
-	List<TareaDTO> obtenerTareasPorProyecto(String nombreProyecto,String usuarioPropietario) throws InvalidDateException, NotNullException, DataEmptyException;
+	List<TareaDTO> obtenerTareasPorProyecto(int id_project, String usuario_propietario) throws InvalidDateException, NotNullException, DataEmptyException;
 	
+	public int obtenerValorPrioridad(String prioridad);
 	
 	void crearProyecto(String nombre, String string, boolean estado, String descripcion, String prioridad)
 			throws NotNullException, DataEmptyException;
@@ -75,11 +74,15 @@ public interface IApi {
 
 	public void setProyectoActual(int id) throws NotNullException, DataEmptyException;	//Setear proyecto actual PRUEBAS
 	
+	public void setTareaActual(int idTarea) throws DataEmptyException, NotNullException, InvalidDateException;
+	
+	public TareaDTO getTareaActual() throws NotNullException, DataEmptyException, InvalidDateException;
+	
 	public UsuarioDTO getUsuarioActual() throws NotNullException, DataEmptyException; //Recuperar usuario actual PRUEBAS
 
 	public void setUsuarioActual(String nombreUsuario);	//Setear usuario actual PRUEBAS
 
-	void modificarTarea(int id, String nombreProyecto, String nuevoNombre, String nuevaPrioridad,String nombreUsuario,Boolean estado, String nuevaDescripcion,LocalDate inicio, LocalDate fin)throws NotNullException, DataEmptyException, InvalidDateException, TaskNotUpdatedException;
+	void modificarTarea(int id, String usuario_propietario, String nombreProyecto, String nuevoNombre, String nuevaPrioridad,String nombreUsuario,Boolean estado, String nuevaDescripcion,LocalDate inicio, LocalDate fin)throws NotNullException, DataEmptyException, InvalidDateException, TaskNotUpdatedException;
 	
 	//void crearPlan(String nombre, Proyecto pertenece);
 	//void crearEvento(LocalDateTime fecha, LocalDateTime inicio, LocalDateTime fin, String descripcion);
