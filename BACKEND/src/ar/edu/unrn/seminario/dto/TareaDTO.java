@@ -22,7 +22,7 @@ public class TareaDTO {
     private LocalDate inicio; 
     private LocalDate fin;
     
-    public TareaDTO(int id, String name, String nameProject, String usuarioPropietario, String priority, String user, boolean estado, String descripcion, LocalDate inicio, LocalDate fin) throws NotNullException, InvalidDateException, DataEmptyException {
+    public TareaDTO(String name, String nameProject, String usuarioPropietario, String priority, String user, boolean estado, String descripcion, LocalDate inicio, LocalDate fin) throws NotNullException, InvalidDateException, DataEmptyException {
     	super();
     	
     	if (esDatoNulo(name))

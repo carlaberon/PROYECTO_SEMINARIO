@@ -7,7 +7,9 @@ import ar.edu.unrn.seminario.exception.NotNullException;
 
 public class Tarea {
 	
-    private String nombre;
+	
+    private int id;
+	private String nombre;
     private int id_proyecto; 
     private String prioridad;
 	private String usuarioPropietario;
@@ -17,7 +19,7 @@ public class Tarea {
     private LocalDate fechaInicio; 
     private LocalDate fechaFin;
 
-    public Tarea(String nombre, int id_proyecto, String usuarioPropietario, String prioridad, String username, boolean estado, String descripcion, LocalDate inicio, LocalDate fin) throws DataEmptyException, NotNullException, InvalidDateException {
+    public Tarea(String nombre, String usuarioPropietario, String prioridad, String username, boolean estado, String descripcion, LocalDate inicio, LocalDate fin) throws DataEmptyException, NotNullException, InvalidDateException {
     
  
     	if (esDatoNulo(nombre))
@@ -200,6 +202,23 @@ public class Tarea {
 		return "Tarea [nombre=" + nombre + ", proyecto=" + id_proyecto + ", prioridad=" + prioridad + ", usuarioPropietario="
 				+ usuarioPropietario + ", usuario=" + usuario + ", estado=" + estado + ", descripcion=" + descripcion
 				+ ", fechaInicio=" + fechaInicio + ", fechaFin=" + fechaFin + "]";
+	}
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public int getIdProyecto() {
+		return this.id_proyecto;
+	}
+	
+	public void setIdProyecto(int id_project) {
+		this.id_proyecto = id_project;
+		
 	}
 
 
