@@ -10,7 +10,7 @@ import ar.edu.unrn.seminario.modelo.Proyecto;
 import ar.edu.unrn.seminario.modelo.Tarea;
 import ar.edu.unrn.seminario.modelo.Usuario;
 
-public class ProyectoDTO implements Comparable<ProyectoDTO>{
+public class ProyectoDTO {
 	
 
 	private int id;
@@ -18,12 +18,9 @@ public class ProyectoDTO implements Comparable<ProyectoDTO>{
     private UsuarioDTO usuarioPropietario;
     private String prioridad; //Alta, Media, Baja
     private boolean estado; //ACTIVO= false; FINALIZADO = true
-    private Set<String> miembros = new HashSet<>();
-    private String descripcion; 
-    private Set<String> proyectos = new HashSet<>();
-    private Set<String> tareas = new HashSet<>();
+    private String descripcion;
     
-    public ProyectoDTO(String nombreProyecto, UsuarioDTO usuarioPropietario, boolean estado, String prioridad, String descripcion) throws NotNullException, DataEmptyException {
+    public ProyectoDTO(int id, String nombreProyecto, UsuarioDTO usuarioPropietario, boolean estado, String prioridad, String descripcion) throws NotNullException, DataEmptyException {
     	
 	    // Validar que los campos no sean nulos
 	    if (esDatoNulo(nombreProyecto)) {
@@ -48,7 +45,7 @@ public class ProyectoDTO implements Comparable<ProyectoDTO>{
 	    }
     	
     	
-    	
+	    this.id = id;
     	this.nombre = nombreProyecto;
         this.usuarioPropietario = usuarioPropietario;
         this.prioridad = prioridad;
@@ -100,15 +97,7 @@ public class ProyectoDTO implements Comparable<ProyectoDTO>{
     public void setEstado(boolean estado) {
         this.estado = estado;
     }
-
-    public Set<String> getMiembros() {
-        return miembros;
-    }
-
-    public void setMiembros(Set<String> miembros) {
-        this.miembros = miembros;
-    }
-
+    
     public String getDescripcion() {
         return descripcion;
     }
@@ -121,22 +110,6 @@ public class ProyectoDTO implements Comparable<ProyectoDTO>{
 	        throw new DataEmptyException("descripcion");
 	    }
         this.descripcion = descripcion;
-    }
-
-    public Set<String> getProyectos() {
-        return proyectos;
-    }
-
-    public void setProyectos(Set<String> proyectos) {
-        this.proyectos = proyectos;
-    }
-
-    public Set<String> getTareas() {
-        return tareas;
-    }
-
-    public void setTareas(Set<String> tareas) {
-        this.tareas = tareas;
     }
     
     @Override
@@ -154,30 +127,6 @@ public class ProyectoDTO implements Comparable<ProyectoDTO>{
 		// TODO Auto-generated method stub
 		
 	}
-	
-	public int obtenerValorPrioridad(String prioridad) {
-        switch (prioridad) {
-            case "alta":
-                return 3;
-            case "media":
-                return 2;
-            case "baja":
-                return 1;
-            default:
-                return 0; // En caso de prioridad desconocida
-        }
-    }
-	
-	@Override
-    public int compareTo(ProyectoDTO otroProyecto) {
-        // Ordenar por prioridad de mayor a menor
-        // Asumimos que las prioridades son "Alta", "Media", "Baja"
-        int prioridadActual = obtenerValorPrioridad(this.prioridad);
-        int prioridadOtro = obtenerValorPrioridad(otroProyecto.getPrioridad());
-
-        // Si prioridadActual > prioridadOtro, el proyecto actual será mayor
-        return Integer.compare(prioridadOtro, prioridadActual); // Mayor a menor
-    }
 	
 	private boolean esDatoVacio(String dato) {
 		return dato.equals("");

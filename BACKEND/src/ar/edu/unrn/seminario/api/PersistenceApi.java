@@ -118,7 +118,7 @@ public class PersistenceApi implements IApi {
 			throws NotNullException, DataEmptyException {
 		
 		Usuario propietario = usuarioDao.find(string);
-	    Proyecto nuevoProyecto = new Proyecto(nombre, propietario, estado, descripcion, prioridad);
+	    Proyecto nuevoProyecto = new Proyecto(0, nombre, propietario, estado, descripcion, prioridad);
 	    proyectoDao.create(nuevoProyecto);
 	}
 	
@@ -235,15 +235,7 @@ public class PersistenceApi implements IApi {
 
 	    return tareasDTO;
 	}
-
-	@Override
-	public int obtenerValorPrioridad(String prioridad) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 	
-
 	@Override
 	public ProyectoDTO getProyectoActual() throws NotNullException, DataEmptyException {
 		return convertirEnProyectoDTO(proyectoActual);
@@ -431,7 +423,7 @@ public class PersistenceApi implements IApi {
 	private ProyectoDTO convertirEnProyectoDTO(Proyecto proyecto) throws NotNullException, DataEmptyException {
 		ProyectoDTO proyectoDto = null;
 		if(proyecto != null)
-			proyectoDto = new ProyectoDTO(proyecto.getNombre(), convertirEnUsuarioDTO(proyecto.getUsuarioPropietario()), proyecto.getEstado(), proyecto.getPrioridad(), proyecto.getDescripcion());
+			proyectoDto = new ProyectoDTO(proyecto.getId(),proyecto.getNombre(), convertirEnUsuarioDTO(proyecto.getUsuarioPropietario()), proyecto.getEstado(), proyecto.getPrioridad(), proyecto.getDescripcion());
 			
 		proyectoDto.setId(proyecto.getId());
 		return proyectoDto;
