@@ -51,7 +51,7 @@ public interface IApi {
 	
 	void añadirTareaAProyecto(String proyecto, Tarea tarea);
 	
-	public void eliminarTarea(String nombreTarea, String proyecto, String usuarioPropietario);
+	public void eliminarTarea(int idTarea);
 	
 	List<ProyectoDTO> obtenerProyectos(String username) throws NotNullException, DataEmptyException;
 		

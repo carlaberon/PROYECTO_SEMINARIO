@@ -254,7 +254,7 @@ public class VentanaResumen extends JFrame {
 		UsuarioDTO usuario = api.obtenerUsuario("ldifabio");
 		api.setUsuarioActual(usuario.getUsername());
 	
-		api.setProyectoActual("Aplicacion de votos");
+		api.setProyectoActual(1);
 
 		VentanaResumen ventana = new VentanaResumen(api);
 		
