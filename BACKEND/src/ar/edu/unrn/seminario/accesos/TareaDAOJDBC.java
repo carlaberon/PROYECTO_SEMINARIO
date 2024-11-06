@@ -25,17 +25,16 @@ public class TareaDAOJDBC implements TareaDao{
 			conn = ConnectionManager.getConnection();
 			
 			statement = conn
-					.prepareStatement("INSERT INTO tareas(nombre, proyecto,usuario_propietario, prioridad, usuario, estado, descripcion, fecha_inicio, fecha_fin)" + "VALUES(?, ?, ?,?, ?, ?, ?, ?, ?)");
+					.prepareStatement("INSERT INTO tareas(nombre, id_proyecto, prioridad, usuario, estado, descripcion, fecha_inicio, fecha_fin)" + "VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
 		
 			statement.setString(1, tarea.getNombre());
-			statement.setString(2, tarea.getProyecto());
-			statement.setString(3, tarea.getUsuarioPropietario());
-			statement.setString(4, tarea.getPrioridad());
-			statement.setString(5, tarea.getUsuario());
-			statement.setBoolean(6, tarea.isEstado());
-			statement.setString(7, tarea.getDescripcion());
-			statement.setDate(8, java.sql.Date.valueOf(tarea.getInicio()));
-			statement.setDate(9, java.sql.Date.valueOf(tarea.getFin()));
+			statement.setInt(2, tarea.getIdProyecto());
+			statement.setString(3, tarea.getPrioridad());
+			statement.setString(4, tarea.getUsuario());
+			statement.setBoolean(5,tarea.isEstado());
+			statement.setString(6, tarea.getDescripcion());
+			statement.setDate(7, java.sql.Date.valueOf(tarea.getInicio()));
+			statement.setDate(8, java.sql.Date.valueOf(tarea.getFin()));
 			
 			int cant = statement.executeUpdate();
 		
@@ -46,12 +45,12 @@ public class TareaDAOJDBC implements TareaDao{
 			// TODO: disparar Exception propia
 			}
 		else {
-			System.out.println("Error al actualizar");
+			System.out.println("Error al actualizar$");
 		}
 			
 		}
 		catch (SQLException e) {
-			System.out.println("Error al actualizar");	
+			System.out.println("Error al actualizar: " + e.getMessage() );	
 			// TODO: disparar Exception propia
 			}
 		catch (Exception e) {

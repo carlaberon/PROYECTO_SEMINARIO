@@ -43,7 +43,7 @@ public interface IApi {
 
 	void desactivarUsuario(String username); // recuperar el objeto Usuario, implementar el comportamiento de estado.
 	
-	public void registrarTarea(int id,String name, String project, String usuarioPropietario, String priority, String user, boolean estado, String descripcion, LocalDate inicio, LocalDate fin) throws DataEmptyException, NotNullException, InvalidDateException;
+	public void registrarTarea(String name,int id_proyecto, String usuarioPropietario, String priority, String user, boolean estado, String descripcion, LocalDate inicio, LocalDate fin) throws DataEmptyException, NotNullException, InvalidDateException;
 	
 	public int obtenerPrioridad(String prioridad);
 	
@@ -72,7 +72,7 @@ public interface IApi {
 	
 	public ProyectoDTO getProyectoActual() throws NotNullException, DataEmptyException;//Recuperar proyecto actual	PRUEBAS
 
-	public void setProyectoActual(String nombreProyecto) throws NotNullException, DataEmptyException;	//Setear proyecto actual PRUEBAS
+	public void setProyectoActual(int id) throws NotNullException, DataEmptyException;	//Setear proyecto actual PRUEBAS
 	
 	public UsuarioDTO getUsuarioActual() throws NotNullException, DataEmptyException; //Recuperar usuario actual PRUEBAS
 

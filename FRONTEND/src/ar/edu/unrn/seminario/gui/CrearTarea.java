@@ -179,7 +179,7 @@ public class CrearTarea extends JFrame {
                         LocalDate fechaFinLocalDate = fechaFinDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                         
                       
-                      api.registrarTarea(nombreTarea,proyectoSeleccionado, api.getUsuarioActual().getUsername(),prioridadTarea,usuario.getUsername(),false, descripcionTarea, fechaInicioLocalDate, fechaFinLocalDate);
+                      api.registrarTarea(nombreTarea, api.getProyectoActual().getId(), api.getUsuarioActual().getUsername(),prioridadTarea,usuario.getUsername(),false, descripcionTarea, fechaInicioLocalDate, fechaFinLocalDate);
                       
                         JOptionPane.showMessageDialog(null, "Tarea creada con éxito!", "Info", JOptionPane.INFORMATION_MESSAGE);
                         setVisible(false);
@@ -214,12 +214,14 @@ public class CrearTarea extends JFrame {
             }
         });
     }
-    /*public static void main (String[] args) {
+   public static void main (String[] args) throws NotNullException, DataEmptyException {
     	
     	IApi api = new PersistenceApi();
-    	api.setUsuarioActual("Gabriel");
+    	api.setUsuarioActual("ldifabio");
+    	api.setProyectoActual(1);
+    	System.out.println(api.getProyectoActual().getId()); 
     	CrearTarea ventana = new CrearTarea(api);
     	ventana.setVisible(true);
-    }*/
+    }
 }
 

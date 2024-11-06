@@ -170,6 +170,7 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 				String nombreUsuarioPropietario = rs.getString("usuario_propietario");
 				Usuario usuarioPropietario = usuarioDao.find(nombreUsuarioPropietario);
 				encontrarProyecto = new Proyecto(rs.getString("nombre"), usuarioPropietario, "FINALIZADO".equals(rs.getString("estado")), rs.getString("descripcion"), rs.getString("prioridad"));
+				encontrarProyecto.setId(id);
 			}
 		} catch (SQLException e) {
 			System.out.println("Error de mySql\n" + e.toString());
