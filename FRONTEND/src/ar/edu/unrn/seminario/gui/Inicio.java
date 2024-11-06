@@ -263,7 +263,7 @@ public class Inicio extends JFrame {
 
 
 						try {
-							api.setProyectoActual(proyecto.getNombre());
+							api.setProyectoActual(proyecto.getId());
 						} catch (NotNullException e1) {
 							//msj front-end
 							e1.printStackTrace();

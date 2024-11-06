@@ -177,7 +177,7 @@ public class VentanaTareas extends JFrame {
 		modelo = new DefaultTableModel(new Object[][] {}, titulos);
 		try {
 			
-		List<TareaDTO> tareas = api.obtenerTareasPorProyecto(unproyecto.getNombre(), usuarioActual.getUsername());
+		List<TareaDTO> tareas = api.obtenerTareasPorProyecto(unproyecto.getId(), usuarioActual.getUsername());
 			
 		modelo.setRowCount(0); // Limpiar el modelo antes de agregar nuevas filas
 		
@@ -185,7 +185,7 @@ public class VentanaTareas extends JFrame {
 		    modelo.addRow(new Object[] {
 		    	t.getId(),
 		        t.getName(),
-		        t.getProject(),
+		        unproyecto.getNombre(),
 		        t.isEstado() ? "FINALIZADA" : "EN CURSO", // Modifica el estado a una cadena legible
 		        t.getDescription(),
 		        t.getUser(),
@@ -273,24 +273,28 @@ public class VentanaTareas extends JFrame {
       
       
       habilitarBotones(false);
+      
+      //#las excepciones están mal programadas
       botonModificar.addActionListener(new ActionListener() {
     	    public void actionPerformed(ActionEvent e) {
     	        int filaSeleccionada = table.getSelectedRow(); 
+    	        int idTarea = (int) table.getValueAt(filaSeleccionada, 0);
+    	        try {
+					api.setTareaActual(idTarea);
+				} catch (DataEmptyException | NotNullException | InvalidDateException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+    	        try {
+					modificarTarea();
+				} catch (NotNullException | DataEmptyException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (InvalidDateException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 
-    	        if (filaSeleccionada != -1) {
-    	            int idTarea = (int) table.getValueAt(filaSeleccionada, 0);
-    	            try {
-						modificarTarea(idTarea);
-					} catch (NotNullException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (DataEmptyException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-    	        } else {
-    	            JOptionPane.showMessageDialog(null, "Seleccione una tarea para modificar", "Error", JOptionPane.ERROR_MESSAGE);
-    	        }
     	    }
     	});
       
@@ -383,7 +387,7 @@ public class VentanaTareas extends JFrame {
 		for (TareaDTO t : tareas) {
 		    modelo.addRow(new Object[] {
 		        t.getName(),
-		        t.getProject(),
+		        unproyecto.getNombre(),
 		        t.isEstado() ? "FINALIZADA" : "EN CURSO", // Modifica el estado a una cadena legible
 		        t.getDescription(),
 		        t.getUser(),
@@ -393,8 +397,10 @@ public class VentanaTareas extends JFrame {
 		    });
 		}
 	}
-	void modificarTarea(int idTarea) throws NotNullException, DataEmptyException {
-	 ModificarTarea modificatarea = new ModificarTarea(api,idTarea);
+	//api.setTareaActual->id
+	//api.getTareaActual<-id
+	void modificarTarea() throws NotNullException, DataEmptyException, InvalidDateException {
+	 ModificarTarea modificatarea = new ModificarTarea(api);
 	 modificatarea.setVisible(true);
     }
 	
@@ -403,7 +409,7 @@ public class VentanaTareas extends JFrame {
 		//prueba
 		api.setUsuarioActual("ldifabio");
 	
-		api.setProyectoActual("Aplicacion de votos");
+		api.setProyectoActual(1);
 
 		VentanaTareas ventana = new VentanaTareas(api);
 		
