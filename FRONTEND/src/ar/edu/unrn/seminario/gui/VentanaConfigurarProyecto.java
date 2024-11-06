@@ -101,7 +101,7 @@ public class VentanaConfigurarProyecto extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String prioridadSeleccionada = (String) prioridadComboBox.getSelectedItem();
 				try {
-					if (prioridadSeleccionada == null && textField_Nombre.getText().isEmpty() && textField_Descripcion.getText().isEmpty()) {
+					if (prioridadSeleccionada.isEmpty() && textField_Nombre.getText().isEmpty() && textField_Descripcion.getText().isEmpty()) {
 		                throw new DataEmptyException("nombre, prioridad y descripcion ");
 		            }
 					api.modificarProyecto(api.getProyectoActual().getId(), textField_Nombre.getText(), prioridadSeleccionada, textField_Descripcion.getText());

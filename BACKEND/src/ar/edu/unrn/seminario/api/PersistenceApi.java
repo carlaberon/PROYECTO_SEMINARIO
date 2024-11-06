@@ -188,12 +188,12 @@ public class PersistenceApi implements IApi {
 			String nuevaDescripcion) throws NotNullException, DataEmptyException {
 		Proyecto proyectoExistente = proyectoDao.find(idProyecto);
 //	    if (proyectoExistente == null) {
-//	        throw new DataEmptyException("El proyecto no existe.");
+//	        throw new DataEmptyException("El proyecto no existe."); nunca va a suceder esto
 //	    }
 	    
 		if(!nuevoNombre.isEmpty()) 
 			proyectoExistente.setNombre(nuevoNombre);
-		if(nuevaPrioridad != null)
+		if(!nuevaPrioridad.isEmpty())
 			 proyectoExistente.setPrioridad(nuevaPrioridad);
 		if(!nuevaDescripcion.isEmpty())
 			 proyectoExistente.setDescripcion(nuevaDescripcion);
