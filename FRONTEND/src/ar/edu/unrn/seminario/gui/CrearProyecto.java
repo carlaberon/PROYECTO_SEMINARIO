@@ -41,7 +41,7 @@ public class CrearProyecto extends JFrame {
 	private JComboBox<String> proyectoComboBox;
 	private IApi api;
 	private JTextField descripcionTextField;
-	private List<ProyectoModificadoListener> listeners = new ArrayList<>(); //En esta lista estan los oyentes de ProyectoEliminadoListener
+	
 	public CrearProyecto(IApi api) {
 		this.api = api;
 		
@@ -95,23 +95,22 @@ public class CrearProyecto extends JFrame {
 		contentPane.add(aceptarButton);
 		aceptarButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String nombreProyecto = nombreProyectoTextField.getText();
-				String descripcion = descripcionTextField.getText();
-                String prioridadSeleccionada = (String) prioridadComboBox.getSelectedItem();
+				String nombreNuevoProyecto = nombreProyectoTextField.getText();
+				String descripcionNueva = descripcionTextField.getText();
+                String prioridadSeleccionadaNueva = (String) prioridadComboBox.getSelectedItem();
                 
                 
 
 				try {
 					// Verificar si no se seleccionó una prioridad
-		            if (prioridadSeleccionada == null || prioridadSeleccionada.isEmpty()) {
+		            if (prioridadSeleccionadaNueva == null || prioridadSeleccionadaNueva.isEmpty()) {
 		                throw new DataEmptyException("prioridad");
 		            }
 			
 					
 					// Crear un nuevo proyecto
-	                api.crearProyecto(nombreProyecto, api.getUsuarioActual().getUsername(), false, descripcion, prioridadSeleccionada);
+	                api.crearProyecto(nombreNuevoProyecto, api.getUsuarioActual().getUsername(), false, descripcionNueva, prioridadSeleccionadaNueva);
 	                JOptionPane.showMessageDialog(null, "Proyecto registrado con éxito!", "Info", JOptionPane.INFORMATION_MESSAGE);
-	                notificarProyectoCreado(); //Notifico a los oyentes que se creo un proyecto.
 	                setVisible(false);
 	                dispose();
 				} catch (NotNullException ex) {
@@ -171,16 +170,6 @@ public class CrearProyecto extends JFrame {
 		contentPane.add(lblPrioridad);		
 	}
 	
-	public void addProyectoModificadoListener(ProyectoModificadoListener listener) { //Añadir un oyente a la lista tipo ProyectoEliminadoListener
-        listeners.add(listener);
-    }
-
-    // Método para notificar a los listeners
-    private void notificarProyectoCreado() { //Notificar a los oyentes de el/los proyecto eliminados
-        for (ProyectoModificadoListener listener : listeners) {
-            listener.proyectoEliminado();
-        }
-    }
     /*public static void main(String[] args) throws NotNullException, DataEmptyException, InvalidDateException{
 		
 		IApi api = new PersistenceApi();

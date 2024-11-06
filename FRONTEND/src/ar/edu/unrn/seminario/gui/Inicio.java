@@ -25,7 +25,7 @@ public class Inicio extends JFrame {
     private JPanel proyectosListPanel;
     private UsuarioDTO usuarioActual;
     
-    public Inicio(IApi api) {
+    public Inicio(IApi api) throws NotNullException, DataEmptyException {
     	this.api = api;
     	this.usuarioActual = api.getUsuarioActual();
     	
@@ -62,7 +62,15 @@ public class Inicio extends JFrame {
         verTodosProyectosMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                abrirListaProyectos(); // Abrir la ventana de proyectos desde el menú
+                try {
+					abrirListaProyectos();
+				} catch (NotNullException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (DataEmptyException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} // Abrir la ventana de proyectos desde el menú
             }
         });
 
@@ -121,19 +129,28 @@ public class Inicio extends JFrame {
 
         			@Override
         			public void actionPerformed(ActionEvent e) {
-        				// TODO Auto-generated method stub
-        				try {
-							api.setProyectoActual(proyecto.getNombre());
-						} catch (NotNullException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						} catch (DataEmptyException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-        				abrirVentanaResumen();
+
+							try {
+								api.setProyectoActual(proyecto.getNombre());
+							} catch (NotNullException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							} catch (DataEmptyException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+
+							try {
+								abrirVentanaResumen();
+							} catch (NotNullException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							} catch (DataEmptyException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
         			}
-            	
+        					
             });
             
             proyectosListPanel.add(proyectoButton);
@@ -143,20 +160,56 @@ public class Inicio extends JFrame {
 
         JPanel proyectosButtonsPanel = new JPanel();
         proyectosButtonsPanel.setBackground(new Color(30, 30, 30));
-
+        proyectosButtonsPanel.setLayout(new BoxLayout(proyectosButtonsPanel, BoxLayout.Y_AXIS));
+        
         JButton btnNuevoProyecto = new JButton("Proyecto +");
         btnNuevoProyecto.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		abrirCrearProyecto();
         	}
         });
+        
         JButton btnVerProyectos = new JButton("Ver todos los proyectos");
+        btnVerProyectos.addActionListener(e -> {
+        	try {
+        		abrirListaProyectos();
+        	} catch (NotNullException e1) {
+        		// TODO Auto-generated catch block
+        		e1.printStackTrace();
+        	} catch (DataEmptyException e1) {
+        		// TODO Auto-generated catch block
+        		e1.printStackTrace();
+        	}
+        }); // Acción para el botón
+        
+        JButton actualizarProyectos = new JButton("Actualizar");
+        actualizarProyectos.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					actualizarProyectos();
+				} catch (NotNullException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (DataEmptyException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+        formatButton(actualizarProyectos);
         formatButton(btnNuevoProyecto);
         formatButton(btnVerProyectos);
-
-        btnVerProyectos.addActionListener(e -> abrirListaProyectos()); // Acción para el botón
-        proyectosButtonsPanel.add(btnNuevoProyecto);
+        
+        JPanel panelHorizontal = new JPanel();
+        panelHorizontal.setLayout(new BoxLayout(panelHorizontal, BoxLayout.Y_AXIS)); // Configuración horizontal
+        panelHorizontal.setBackground(new Color(30, 30, 30));
+        panelHorizontal.add(actualizarProyectos);
+        panelHorizontal.add(btnNuevoProyecto);
+       
+        proyectosButtonsPanel.add(panelHorizontal);
         proyectosButtonsPanel.add(btnVerProyectos);
+        
 
         rightPanel.add(proyectosLabel, BorderLayout.NORTH);
         rightPanel.add(proyectosListPanel, BorderLayout.CENTER);
@@ -182,17 +235,17 @@ public class Inicio extends JFrame {
         crearProyecto.setVisible(true); // Hacer visible la ventana de proyectos
     }
     
-    private void abrirListaProyectos() {
+    private void abrirListaProyectos() throws NotNullException, DataEmptyException {
         ListaProyectos listaProyectos = new ListaProyectos(api); // Crear una instancia de ListaProyectos
         listaProyectos.setVisible(true); // Hacer visible la ventana de proyectos
     }
 
-    private void abrirVentanaResumen() {
+    private void abrirVentanaResumen() throws NotNullException, DataEmptyException {
         VentanaResumen ventanaResumen = new VentanaResumen(api); // Crear una instancia de VentanaResumen
         ventanaResumen.setVisible(true); // Hacer visible la ventana de resumen
     }
 
-    public void actualizarProyectos() {
+    public void actualizarProyectos() throws NotNullException, DataEmptyException {
         proyectosListPanel.removeAll(); // Limpiar el panel actual
         
         List<ProyectoDTO> proyectos = api.obtenerProyectos(usuarioActual.getUsername()); // Obtener los proyectos actualizados
@@ -207,9 +260,22 @@ public class Inicio extends JFrame {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					// TODO Auto-generated method stub
+
+
+						try {
+							api.setProyectoActual(proyecto.getId());
+						} catch (NotNullException e1) {
+							//msj front-end
+							e1.printStackTrace();
+						} catch (DataEmptyException e1) {
+							//msj front-end
+							e1.printStackTrace();
+						}
+		
+
 					try {
-						api.setProyectoActual(proyecto.getNombre());
+						abrirVentanaResumen();
+
 					} catch (NotNullException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -217,7 +283,7 @@ public class Inicio extends JFrame {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-					abrirVentanaResumen();
+
 				}
             	
             });
@@ -229,11 +295,17 @@ public class Inicio extends JFrame {
         proyectosListPanel.repaint();    // Repintar el panel
     }
 
+
+	public void proyectoEliminado() throws NotNullException, DataEmptyException {
+		actualizarProyectos(); //Cuando se elimina un proyecto activa el metodo actualizarProyectos para actualizar Inicio
+	}
+
     
 	public static void main(String[] args) throws NotNullException, DataEmptyException, InvalidDateException{
 		
 		IApi api = new PersistenceApi();
 		UsuarioDTO usuario = api.obtenerUsuario("ldifabio");
+
 		api.setUsuarioActual(usuario.getUsername());
 		new Inicio(api);
 	}

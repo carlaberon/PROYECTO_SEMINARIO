@@ -11,8 +11,9 @@ import ar.edu.unrn.seminario.modelo.Usuario;
 
 public class TareaDTO {
 
+	private int id;
+	private int id_project;
     private String name;
-    private String project_name;
     private String usuarioPropietario;
     private String priority;
     private String user;
@@ -21,13 +22,11 @@ public class TareaDTO {
     private LocalDate inicio; 
     private LocalDate fin;
     
-    public TareaDTO(String name, String nameProject, String usuarioPropietario, String priority, String user, boolean estado, String descripcion, LocalDate inicio, LocalDate fin) throws NotNullException, InvalidDateException, DataEmptyException {
+    public TareaDTO(String name, String usuarioPropietario, String priority, String user, boolean estado, String descripcion, LocalDate inicio, LocalDate fin) throws NotNullException, InvalidDateException, DataEmptyException {
     	super();
     	
     	if (esDatoNulo(name))
 			throw new NotNullException("nombre");
-    	if (esDatoNulo(nameProject))
-			throw new NotNullException("nombre de proyecto");
     	if (esDatoNulo(usuarioPropietario))
 			throw new NotNullException("nombre de usuario propietario");
     	if (esDatoNulo(priority))
@@ -39,8 +38,6 @@ public class TareaDTO {
     	
 		if (esDatoVacio(name))
 			throw new DataEmptyException("nombre");
-		if (esDatoVacio(nameProject))
-			throw new DataEmptyException("nombre de proyecto");
 		if (esDatoVacio(usuarioPropietario))
 			throw new DataEmptyException("usuario propietario");
 		if (esDatoVacio(priority))
@@ -54,9 +51,8 @@ public class TareaDTO {
 				throw new InvalidDateException("La fecha de inicio debe ser anterior a la fecha de finalizacion");
 			}
     	
-    
+		this.id = id;
         this.name = name;
-        this.project_name = nameProject;
         this.setUsuarioPropietario(usuarioPropietario);
         this.priority = priority;
         this.user = user;
@@ -83,19 +79,19 @@ public class TareaDTO {
 		this.name = name;
     }
 
-    public String getProject() {
-        return project_name;
-    }
+    //public String getProject() {
+    //    return project_name;
+    //}
 
-    public void setProject(String project) throws NotNullException, DataEmptyException {
-    	if (esDatoNulo(project))
-			throw new NotNullException("proyecto");
-    	
-		if (esDatoVacio(project))
-			throw new DataEmptyException("proyecto");
-       
-        this.project_name = project;
-    }
+//    public void setProject(String project) throws NotNullException, DataEmptyException {
+//    	if (esDatoNulo(project))
+//			throw new NotNullException("proyecto");
+//    	
+//		if (esDatoVacio(project))
+//			throw new DataEmptyException("proyecto");
+//       
+//        this.project_name = project;
+//    }
 
     public String getPriority() {
         return priority;
@@ -178,6 +174,26 @@ public class TareaDTO {
 
 	private boolean esDatoNulo(String dato) {
 		return dato == null;
+	}
+
+
+
+	public int getId() {
+		return id;
+	}
+
+
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public int getIdProject() {
+		return id_project;
+	}
+
+	public void setIdProject(int id_project) {
+		this.id_project = id_project;
 	}
 }
 

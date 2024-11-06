@@ -173,18 +173,19 @@ public class VentanaTareas extends JFrame {
         table.setShowGrid(true);
 
         // Modelo de la tabla
-		String[] titulos = { "NOMBRE", "PROYECTO", "ESTADO","DESCRIPCION", "ASIGNADO", "PRIORIDAD", "FECHA INICIO", "FECHA FIN" };
+		String[] titulos = { "ID","NOMBRE", "PROYECTO", "ESTADO","DESCRIPCION", "ASIGNADO", "PRIORIDAD", "FECHA INICIO", "FECHA FIN" };
 		modelo = new DefaultTableModel(new Object[][] {}, titulos);
 		try {
 			
-		List<TareaDTO> tareas = api.obtenerTareasPorProyecto(unproyecto.getNombre(), usuarioActual.getUsername());
+		List<TareaDTO> tareas = api.obtenerTareasPorProyecto(unproyecto.getId(), usuarioActual.getUsername());
 			
 		modelo.setRowCount(0); // Limpiar el modelo antes de agregar nuevas filas
 		
 		for (TareaDTO t : tareas) {
 		    modelo.addRow(new Object[] {
+		    	t.getId(),
 		        t.getName(),
-		        t.getProject(),
+		        unproyecto.getNombre(),
 		        t.isEstado() ? "FINALIZADA" : "EN CURSO", // Modifica el estado a una cadena legible
 		        t.getDescription(),
 		        t.getUser(),
@@ -218,9 +219,19 @@ public class VentanaTareas extends JFrame {
         JButton btnTarea = createButton("Tarea +", new Color(138, 102, 204));
         btnTarea.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				CrearTarea crearTarea = new CrearTarea(api);
-				crearTarea.setLocationRelativeTo(null);
-				crearTarea.setVisible(true);
+				CrearTarea crearTarea;
+				try {
+					crearTarea = new CrearTarea(api);
+					crearTarea.setLocationRelativeTo(null);
+					crearTarea.setVisible(true);
+				} catch (NotNullException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (DataEmptyException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 	
 			}
 		});
@@ -262,16 +273,28 @@ public class VentanaTareas extends JFrame {
       
       
       habilitarBotones(false);
+      
+      //#las excepciones están mal programadas
       botonModificar.addActionListener(new ActionListener() {
     	    public void actionPerformed(ActionEvent e) {
     	        int filaSeleccionada = table.getSelectedRow(); 
+    	        int idTarea = (int) table.getValueAt(filaSeleccionada, 0);
+    	        try {
+					api.setTareaActual(idTarea);
+				} catch (DataEmptyException | NotNullException | InvalidDateException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+    	        try {
+					modificarTarea();
+				} catch (NotNullException | DataEmptyException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (InvalidDateException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 
-    	        if (filaSeleccionada != -1) {
-    	            Object nombreTarea = table.getValueAt(filaSeleccionada, 0);
-    	            modificarTarea(nombreTarea.toString());
-    	        } else {
-    	            JOptionPane.showMessageDialog(null, "Seleccione una tarea para modificar", "Error", JOptionPane.ERROR_MESSAGE);
-    	        }
     	    }
     	});
       
@@ -364,7 +387,7 @@ public class VentanaTareas extends JFrame {
 		for (TareaDTO t : tareas) {
 		    modelo.addRow(new Object[] {
 		        t.getName(),
-		        t.getProject(),
+		        unproyecto.getNombre(),
 		        t.isEstado() ? "FINALIZADA" : "EN CURSO", // Modifica el estado a una cadena legible
 		        t.getDescription(),
 		        t.getUser(),
@@ -374,17 +397,19 @@ public class VentanaTareas extends JFrame {
 		    });
 		}
 	}
-	void modificarTarea(String nombreTarea) {
-	 ModificarTarea modificatarea = new ModificarTarea(api,nombreTarea);
+	//api.setTareaActual->id
+	//api.getTareaActual<-id
+	void modificarTarea() throws NotNullException, DataEmptyException, InvalidDateException {
+	 ModificarTarea modificatarea = new ModificarTarea(api);
 	 modificatarea.setVisible(true);
     }
 	
-	/*public static void main(String []args) throws NotNullException, DataEmptyException, RuntimeException, InvalidDateException {
+	public static void main(String []args) throws NotNullException, DataEmptyException, RuntimeException, InvalidDateException {
 		IApi api = new PersistenceApi();
 		//prueba
-		api.setUsuarioActual("Gabriel");
+		api.setUsuarioActual("ldifabio");
 	
-		api.setProyectoActual("proyecto fenix");
+		api.setProyectoActual(1);
 
 		VentanaTareas ventana = new VentanaTareas(api);
 		
@@ -392,7 +417,7 @@ public class VentanaTareas extends JFrame {
 		
 		
 	}
-*/
+
 }
 
 

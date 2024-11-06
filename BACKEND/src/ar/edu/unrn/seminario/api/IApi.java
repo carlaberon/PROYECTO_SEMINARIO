@@ -21,7 +21,7 @@ import ar.edu.unrn.seminario.modelo.Usuario;
 public interface IApi {
 	void registrarUsuario(String username, String password, String email, String nombre, Integer rol);
 
-	UsuarioDTO obtenerUsuario(String username);
+	UsuarioDTO obtenerUsuario(String username) throws NotNullException, DataEmptyException;
 
 	void eliminarUsuario(String username);
 
@@ -37,13 +37,13 @@ public interface IApi {
 
 	void desactivarRol(Integer codigo); // recuperar el objeto Rol, imp
 
-	List<UsuarioDTO> obtenerUsuarios(); // recuperar todos los usuarios
+	List<UsuarioDTO> obtenerUsuarios() throws NotNullException, DataEmptyException; // recuperar todos los usuarios
 
 	void activarUsuario(String username); // recuperar el objeto Usuario, implementar el comportamiento de estado.
 
 	void desactivarUsuario(String username); // recuperar el objeto Usuario, implementar el comportamiento de estado.
 	
-	public void registrarTarea(String name, String project, String usuarioPropietario, String priority, String user, boolean estado, String descripcion, LocalDate inicio, LocalDate fin) throws DataEmptyException, NotNullException, InvalidDateException;
+	public void registrarTarea(String name,int id_proyecto, String usuarioPropietario, String priority, String user, boolean estado, String descripcion, LocalDate inicio, LocalDate fin) throws DataEmptyException, NotNullException, InvalidDateException;
 	
 	public int obtenerPrioridad(String prioridad);
 	
@@ -53,32 +53,36 @@ public interface IApi {
 	
 	public void eliminarTarea(String nombreTarea, String proyecto, String usuarioPropietario);
 	
-	List<ProyectoDTO> obtenerProyectos(String username);
+	List<ProyectoDTO> obtenerProyectos(String username) throws NotNullException, DataEmptyException;
 		
 	void asignarPrioridad(String nombreProyecto, String prioridad) throws NotNullException, DataEmptyException;
 	
     public int compare(Proyecto p1, Proyecto p2);
     
-	void eliminarProyecto(String nombreProyecto, String usuarioPropietario);
+	void eliminarProyecto(int id);
 	
 	void modificarProyecto(String nombreProyecto, String usuarioPropietario,String nuevoNombre, String nuevaPrioridad, String nuevaDescripcion)throws NotNullException, DataEmptyException;
 
-	List<TareaDTO> obtenerTareasPorProyecto(String nombreProyecto,String usuarioPropietario) throws InvalidDateException, NotNullException, DataEmptyException;
+	List<TareaDTO> obtenerTareasPorProyecto(int id_project, String usuario_propietario) throws InvalidDateException, NotNullException, DataEmptyException;
 	
 	public int obtenerValorPrioridad(String prioridad);
 	
 	void crearProyecto(String nombre, String string, boolean estado, String descripcion, String prioridad)
 			throws NotNullException, DataEmptyException;
 	
-	public ProyectoDTO getProyectoActual();//Recuperar proyecto actual	PRUEBAS
+	public ProyectoDTO getProyectoActual() throws NotNullException, DataEmptyException;//Recuperar proyecto actual	PRUEBAS
 
-	public void setProyectoActual(String nombreProyecto) throws NotNullException, DataEmptyException;	//Setear proyecto actual PRUEBAS
+	public void setProyectoActual(int id) throws NotNullException, DataEmptyException;	//Setear proyecto actual PRUEBAS
 	
-	public UsuarioDTO getUsuarioActual(); //Recuperar usuario actual PRUEBAS
+	public void setTareaActual(int idTarea) throws DataEmptyException, NotNullException, InvalidDateException;
+	
+	public TareaDTO getTareaActual() throws NotNullException, DataEmptyException, InvalidDateException;
+	
+	public UsuarioDTO getUsuarioActual() throws NotNullException, DataEmptyException; //Recuperar usuario actual PRUEBAS
 
 	public void setUsuarioActual(String nombreUsuario);	//Setear usuario actual PRUEBAS
 
-	void modificarTarea(String nombreTarea, String nombreProyecto, String nuevoNombre, String nuevaPrioridad,String nombreUsuario,Boolean estado, String nuevaDescripcion,LocalDate inicio, LocalDate fin)throws NotNullException, DataEmptyException, InvalidDateException, TaskNotUpdatedException;
+	void modificarTarea(int id, String usuario_propietario, String nombreProyecto, String nuevoNombre, String nuevaPrioridad,String nombreUsuario,Boolean estado, String nuevaDescripcion,LocalDate inicio, LocalDate fin)throws NotNullException, DataEmptyException, InvalidDateException, TaskNotUpdatedException;
 	
 	//void crearPlan(String nombre, Proyecto pertenece);
 	//void crearEvento(LocalDateTime fecha, LocalDateTime inicio, LocalDateTime fin, String descripcion);
