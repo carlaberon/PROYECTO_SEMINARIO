@@ -160,8 +160,8 @@ public class TareaDAOJDBC implements TareaDao{
 			Connection conn = ConnectionManager.getConnection();
 			PreparedStatement statement = conn.prepareStatement("SELECT id, nombre , prioridad, usuario, estado, descripcion, fecha_inicio, fecha_fin FROM tareas WHERE id = ?");
 			statement.setInt(1, id);
-			statement.setString(2,usuario_propietario);
-			statement.setInt(3, id_proyecto);
+			//statement.setString(2,usuario_propietario);
+			//statement.setInt(3, id_proyecto);
 			
 			ResultSet rs = statement.executeQuery();
 			while(rs.next()) {
