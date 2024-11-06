@@ -182,7 +182,7 @@ public class TareaDAOJDBC implements TareaDao{
 	}
 	
 	
-
+/*
 	@Override
 	public void remove(Tarea tarea) {
 		try {
@@ -229,7 +229,7 @@ public class TareaDAOJDBC implements TareaDao{
 			ConnectionManager.disconnect();
 		}
 		return encontrarTarea;
-	}
+	}*/
 
 	@Override
 	public List<Tarea> findAll() throws DataEmptyException, NotNullException, InvalidDateException {
@@ -241,8 +241,8 @@ public class TareaDAOJDBC implements TareaDao{
 			ResultSet rs = statement.executeQuery("SELECT t.id, t.nombre, t.proyecto, t.usuario_propietario, t.prioridad, t.usuario, t.estado, t.descripcion, t.fecha_inicio, t.fecha_fin "+"FROM tareas t");
 			
 			while (rs.next()) {
-				Tarea tarea = new Tarea(rs.getString("nombre"), rs.getString("proyecto"),rs.getString("usuario_propietario"), rs.getString("prioridad"), rs.getString("usuario"), rs.getBoolean("estado"),rs.getString("descripcion"), rs.getDate("fecha_inicio").toLocalDate(), rs.getDate("fecha_fin").toLocalDate());
-				tareas.add(tarea);
+				//Tarea tarea = new Tarea(rs.getString("nombre"), rs.getString("proyecto"),rs.getString("usuario_propietario"), rs.getString("prioridad"), rs.getString("usuario"), rs.getBoolean("estado"),rs.getString("descripcion"), rs.getDate("fecha_inicio").toLocalDate(), rs.getDate("fecha_fin").toLocalDate());
+				//tareas.add(tarea);
 			}
 		} catch (SQLException e) {
 			System.out.println("Error de mySql\n" + e.toString());
