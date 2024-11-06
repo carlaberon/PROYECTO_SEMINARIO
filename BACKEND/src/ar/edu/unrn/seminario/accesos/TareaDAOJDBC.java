@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDate;
 
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
@@ -26,16 +25,17 @@ public class TareaDAOJDBC implements TareaDao{
 			conn = ConnectionManager.getConnection();
 			
 			statement = conn
-					.prepareStatement("INSERT INTO tareas(nombre, id_proyecto, prioridad, usuario, estado, descripcion, fecha_inicio, fecha_fin)" + "VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
+					.prepareStatement("INSERT INTO tareas(nombre, proyecto,usuario_propietario, prioridad, usuario, estado, descripcion, fecha_inicio, fecha_fin)" + "VALUES(?, ?, ?,?, ?, ?, ?, ?, ?)");
 		
 			statement.setString(1, tarea.getNombre());
-			statement.setInt(2, tarea.getIdProyecto());
-			statement.setString(3, tarea.getPrioridad());
-			statement.setString(4, tarea.getUsuario());
-			statement.setBoolean(5,tarea.isEstado());
-			statement.setString(6, tarea.getDescripcion());
-			statement.setDate(7, java.sql.Date.valueOf(tarea.getInicio()));
-			statement.setDate(8, java.sql.Date.valueOf(tarea.getFin()));
+			statement.setString(2, tarea.getProyecto());
+			statement.setString(3, tarea.getUsuarioPropietario());
+			statement.setString(4, tarea.getPrioridad());
+			statement.setString(5, tarea.getUsuario());
+			statement.setBoolean(6, tarea.isEstado());
+			statement.setString(7, tarea.getDescripcion());
+			statement.setDate(8, java.sql.Date.valueOf(tarea.getInicio()));
+			statement.setDate(9, java.sql.Date.valueOf(tarea.getFin()));
 			
 			int cant = statement.executeUpdate();
 		
@@ -43,15 +43,15 @@ public class TareaDAOJDBC implements TareaDao{
 			
 			System.out.println("Modificando " + cant + " registros");
 			
-			// TODO: disparar Exception propia #!
+			// TODO: disparar Exception propia
 			}
 		else {
-			System.out.println("Error al actualizar$");
+			System.out.println("Error al actualizar");
 		}
 			
 		}
 		catch (SQLException e) {
-			System.out.println("Error al actualizar: " + e.getMessage() );	
+			System.out.println("Error al actualizar");	
 			// TODO: disparar Exception propia
 			}
 		catch (Exception e) {
@@ -67,11 +67,11 @@ public class TareaDAOJDBC implements TareaDao{
 
 
 	@Override
-	public void update(Tarea tarea, int id) throws TaskNotUpdatedException {
+	public void update(Tarea tarea, int idProyectoOriginal) throws TaskNotUpdatedException {
 		try {
 		   Connection conn = ConnectionManager.getConnection();
 		   PreparedStatement statement = conn.prepareStatement("UPDATE tareas SET nombre = ?, prioridad = ?, usuario = ?, estado = ?, descripcion = ?, fecha_inicio = ?, fecha_fin = ? " +
-		           "WHERE id = ? ");
+		           "WHERE id = ? AND id_proyecto = ?");
 		        
 		   // Establecer los valores de los nuevos datos de la tarea
 		   statement.setString(1, tarea.getNombre());
@@ -84,6 +84,7 @@ public class TareaDAOJDBC implements TareaDao{
 		   
 	       // Parametros de busqueda en la base de datos
 	        statement.setInt(8, tarea.getId());
+	        statement.setInt(9, idProyectoOriginal);
 	       
 		   int verificacion = statement.executeUpdate();
 		        
@@ -97,42 +98,10 @@ public class TareaDAOJDBC implements TareaDao{
 		       ConnectionManager.disconnect();
 		   }
 	}
-	
-	@Override
-	public List<Tarea> findByProject(int id_project,String usuario_propietario)
-			throws DataEmptyException, NotNullException, InvalidDateException {
-		List<Tarea>tareas = new ArrayList<Tarea>();
-		Tarea unaTarea = null;
-			
-			try {
-				Connection conn = ConnectionManager.getConnection();
-				PreparedStatement statement = conn.prepareStatement("SELECT id, nombre , prioridad, usuario, estado, descripcion, fecha_inicio, fecha_fin FROM tareas WHERE id_proyecto = ?");
-				statement.setInt(1, id_project);
-				ResultSet rs = statement.executeQuery();
-				while(rs.next()) {
-					unaTarea = new Tarea(rs.getString("nombre"),usuario_propietario, rs.getString("prioridad"), rs.getString("usuario"), rs.getBoolean("estado"),rs.getString("descripcion"), rs.getDate("fecha_inicio").toLocalDate(), rs.getDate("fecha_fin").toLocalDate());
-					unaTarea.setId(rs.getInt("id"));
-					unaTarea.setIdProyecto(id_project);
-
-					tareas.add(unaTarea);
-				}
-			
-				
-			} catch (SQLException e) {
-				System.out.println("Error de mySql\n" + e.toString());
-				// TODO: disparar Exception propia
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-				// TODO: disparar Exception propia
-			} finally {
-				ConnectionManager.disconnect();
-			}
-			return tareas;
-		}
 		
 	
 
-/*	@Override
+	@Override
 	public void remove(String nombre, String proyecto, String usuario_propietario) {
 		try {
 			Connection conn = ConnectionManager.getConnection();
@@ -172,9 +141,34 @@ public class TareaDAOJDBC implements TareaDao{
 		}
 	}			
 
+	@Override
+	public Tarea find(int id) throws DataEmptyException, NotNullException, InvalidDateException {
+		Tarea encontrarTarea = null;
+		try {
+			Connection conn = ConnectionManager.getConnection();
+			PreparedStatement sent = conn.prepareStatement("SELECT * FROM tareas WHERE id = ?");
+			
+			sent.setInt(1, id);
+			
+			ResultSet result = sent.executeQuery();
+			while(result.next()) {
+				encontrarTarea = new Tarea(result.getString("nombre"), result.getString("proyecto"), 
+				result.getString("usuario_propietario"), result.getString("prioridad"), result.getString("usuario"), result.getBoolean("estado"), 
+				result.getString("descripcion"), result.getDate("fecha_inicio").toLocalDate(), result.getDate("fecha_fin").toLocalDate());
+			}
+		} catch (SQLException e) {
+			System.out.println("Error de mySql\n" + e.toString());
+			// TODO: disparar Exception propia
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+			// TODO: disparar Exception propia
+		} finally {
+			ConnectionManager.disconnect();
+		}
+		return encontrarTarea;
+	}
 
-
-	/*@Override
+	@Override
 	public List<Tarea> findAll() throws DataEmptyException, NotNullException, InvalidDateException {
 		List<Tarea>tareas = new ArrayList<Tarea>();
 		try
@@ -184,7 +178,7 @@ public class TareaDAOJDBC implements TareaDao{
 			ResultSet rs = statement.executeQuery("SELECT t.id, t.nombre, t.proyecto, t.usuario_propietario, t.prioridad, t.usuario, t.estado, t.descripcion, t.fecha_inicio, t.fecha_fin "+"FROM tareas t");
 			
 			while (rs.next()) {
-				Tarea tarea = new Tarea(rs.getInt("id"), rs.getString("nombre"), rs.getString("proyecto"),rs.getString("usuario_propietario"), rs.getString("prioridad"), rs.getString("usuario"), rs.getBoolean("estado"),rs.getString("descripcion"), rs.getDate("fecha_inicio").toLocalDate(), rs.getDate("fecha_fin").toLocalDate());
+				Tarea tarea = new Tarea(rs.getString("nombre"), rs.getString("proyecto"),rs.getString("usuario_propietario"), rs.getString("prioridad"), rs.getString("usuario"), rs.getBoolean("estado"),rs.getString("descripcion"), rs.getDate("fecha_inicio").toLocalDate(), rs.getDate("fecha_fin").toLocalDate());
 				tareas.add(tarea);
 			}
 		} catch (SQLException e) {
@@ -200,9 +194,35 @@ public class TareaDAOJDBC implements TareaDao{
 		return tareas;
 		
 	
-	}*/
+	}
 
 
 
-
+	@Override
+	public List<Tarea> findTareas(String proyecto, String usuario_propietario)
+			throws DataEmptyException, NotNullException, InvalidDateException {
+		List<Tarea>tareas = new ArrayList<Tarea>();
+		Tarea unaTarea = null;
+			
+			try {
+				Connection conn = ConnectionManager.getConnection();
+				PreparedStatement statement = conn.prepareStatement("SELECT nombre, proyecto, usuario_propietario, prioridad, usuario, estado, descripcion, fecha_inicio, fecha_fin FROM tareas WHERE proyecto = ? AND usuario_propietario = ?");
+				statement.setString(1, proyecto);
+				statement.setString(2, usuario_propietario);
+				ResultSet rs = statement.executeQuery();
+				while(rs.next()) {
+					unaTarea = new Tarea(rs.getString("nombre"), rs.getString("proyecto"),rs.getString("usuario_propietario"), rs.getString("prioridad"), rs.getString("usuario"), rs.getBoolean("estado"),rs.getString("descripcion"), rs.getDate("fecha_inicio").toLocalDate(), rs.getDate("fecha_fin").toLocalDate());
+					tareas.add(unaTarea);
+				}
+			} catch (SQLException e) {
+				System.out.println("Error de mySql\n" + e.toString());
+				// TODO: disparar Exception propia
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+				// TODO: disparar Exception propia
+			} finally {
+				ConnectionManager.disconnect();
+			}
+			return tareas;
+		}
 }
