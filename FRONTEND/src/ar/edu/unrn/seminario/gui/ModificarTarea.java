@@ -40,15 +40,21 @@ public class ModificarTarea extends JFrame {
 	    List<String> prioridades = Arrays.asList("alta", "media", "baja");
 	    private List<ProyectoDTO> proyectos = new ArrayList<>();
 	    private List<UsuarioDTO> usuarios = new ArrayList<>();
+	    private ProyectoDTO unproyecto;
+	    private TareaDTO tarea;
 
 	    private IApi api;
-	    public ModificarTarea(IApi api, int id) throws NotNullException, DataEmptyException {
+	    public ModificarTarea(IApi api) throws NotNullException, DataEmptyException, InvalidDateException {
 
 	        this.api = api; 
 	        
 	        this.usuarios = api.obtenerUsuarios();
-	        //OBTENER NOMBRE DEL USUARIO ACTUAL
+	        
 	        this.proyectos = api.obtenerProyectos(api.getUsuarioActual().getUsername());
+	        
+	        this.unproyecto= api.getProyectoActual();
+	        
+	        this.tarea = api.getTareaActual();
 	        
 	        setTitle("MODIFICAR TAREA");
 	        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -161,17 +167,13 @@ public class ModificarTarea extends JFrame {
 	                    Date fechaInicioDate = dateChooserInicio.getDate();
 	                    Date fechaFinDate = dateChooserFin.getDate();
 	                    
-                		//Convertir Date a Localdatetime, si no cargo una fecha lanza un nullpointer
-                        LocalDate fechaInicioLocalDate = fechaInicioDate.toInstant()
-                                .atZone(ZoneId.systemDefault())
-                                .toLocalDate();
+                        
+                        LocalDate fechaInicioLocalDate = fechaInicioDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                        LocalDate fechaFinLocalDate = fechaFinDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
-                        LocalDate fechaFinLocalDate = fechaFinDate.toInstant()
-                                .atZone(ZoneId.systemDefault())
-                                .toLocalDate();
 	                        
-	                       //modificar para que ande!!!!! (hernan)
-	                      api.modificarTarea(id, proyectoSeleccionado, nuevoNombreTarea, prioridadTarea, usuario.getUsername(), false, descripcionTarea, fechaInicioLocalDate, fechaFinLocalDate);
+	                     
+	                      api.modificarTarea(tarea.getId(), unproyecto.getUsuarioPropietario().getUsername(),  proyectoSeleccionado, nuevoNombreTarea, prioridadTarea, usuario.getUsername(), false, descripcionTarea, fechaInicioLocalDate, fechaFinLocalDate);
 	                       
 	                       JOptionPane.showMessageDialog(null, "Tarea modificada con éxito!", "Info", JOptionPane.INFORMATION_MESSAGE);
 	                       setVisible(false);
