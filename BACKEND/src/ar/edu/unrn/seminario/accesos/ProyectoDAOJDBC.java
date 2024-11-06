@@ -78,10 +78,10 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 	}
 
 	@Override
-	public void update(Proyecto proyecto,String nombreOriginal) {
+	public void update(Proyecto proyecto) {
 		try {
 			   Connection conn = ConnectionManager.getConnection();
-			   PreparedStatement statement = conn.prepareStatement("UPDATE proyectos SET nombre=?, prioridad=?, usuario_propietario=?, estado=?, descripcion=? WHERE nombre=? AND usuario_propietario=?");
+			   PreparedStatement statement = conn.prepareStatement("UPDATE proyectos SET nombre=?, prioridad=?, usuario_propietario=?, estado=?, descripcion=? WHERE id = ?");
 			        
 			   // Establecer los valores de los nuevos datos del proyecto
 			   statement.setString(1, proyecto.getNombre());
@@ -91,8 +91,7 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 			   statement.setString(5, proyecto.getDescripcion());
 			   
 			   //para identificar el proyecto a actualizar
-			   statement.setString(6, nombreOriginal);
-			   statement.setString(7, proyecto.getUsuarioPropietario().getUsername());
+			   statement.setInt(6, proyecto.getId()); //El proyecto pasado por parametro deberia contener la id del proyecto a actualizar
 			   System.out.println("Actualizando proyecto con los datos: ");
 			   System.out.println("Nombre: " + proyecto.getNombre());
 			   System.out.println("Usuario propietario: " + proyecto.getUsuarioPropietario().getUsername());    
@@ -114,12 +113,12 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 	}
 
 	@Override
-	public void remove(String nombre, String usuario_propietario) {
+	public void remove(int id) {
 		try {
 			Connection conn = ConnectionManager.getConnection();
-			PreparedStatement statement = conn.prepareStatement("DELETE FROM proyectos WHERE nombre = ? AND usuario_propietario = ?");
-			statement.setString(1, nombre);
-			statement.setString(2, usuario_propietario);
+			PreparedStatement statement = conn.prepareStatement("UPDATE proyectos SET nombre = CONCAT('#', nombre) WHERE id = ?");
+			statement.setInt(1, id);
+			
 			
 			int verificacion = statement.executeUpdate();		
 			if(verificacion == 1) {
@@ -139,9 +138,8 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 	public void remove(Proyecto proyecto) {
 		try {
 			Connection conn = ConnectionManager.getConnection();
-			PreparedStatement statement = conn.prepareStatement("DELETE FROM proyectos WHERE nombre = ? AND usuario_propietario = ?");
-			statement.setString(1, proyecto.getNombre());
-			statement.setString(2, proyecto.getUsuarioPropietario().getUsername());
+			PreparedStatement statement = conn.prepareStatement("UPDATE proyectos SET nombre = CONCAT('#', nombre) WHERE id = ?");
+			statement.setInt(1, proyecto.getId());
 			
 			int verificacion = statement.executeUpdate();		
 			if(verificacion == 1) {
@@ -159,14 +157,14 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 	}
 
 	@Override
-	public Proyecto find(String nombre, String usuario_propietario) throws NotNullException, DataEmptyException {
+	public Proyecto find(int id) throws NotNullException, DataEmptyException {
 		Proyecto encontrarProyecto = null;
 		UsuarioDao usuarioDao = new UsuarioDAOJDBC();
 		try {
 			Connection conn = ConnectionManager.getConnection();
-			PreparedStatement statement = conn.prepareStatement("SELECT nombre, usuario_propietario, estado, descripcion, prioridad FROM proyectos WHERE nombre = ? AND usuario_propietario = ?");
-			statement.setString(1, nombre);
-			statement.setString(2, usuario_propietario);
+			PreparedStatement statement = conn.prepareStatement("SELECT nombre, usuario_propietario, estado, descripcion, prioridad FROM proyectos WHERE id = ?");
+			statement.setInt(1, id);
+			
 			ResultSet rs = statement.executeQuery();
 			while(rs.next()) {
 				String nombreUsuarioPropietario = rs.getString("usuario_propietario");
@@ -187,14 +185,14 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 
 
 	@Override
-	public List<Proyecto> findAll() throws NotNullException, DataEmptyException{
+	public List<Proyecto> findAll() throws NotNullException, DataEmptyException{ //Eliminar??, no se usa. No sigue la logica del modelo.
 		List<Proyecto>proyectos = new ArrayList<Proyecto>();
 		UsuarioDao usuarioDao = new UsuarioDAOJDBC();
 		try
 		{
 			Connection conn = ConnectionManager.getConnection();
 			Statement statement = conn.createStatement();
-			ResultSet rs = statement.executeQuery("SELECT p.nombre, p.usuario_propietario, p.estado, p.descripcion, p.prioridad, p.proyecto FROM proyectos p");
+			ResultSet rs = statement.executeQuery("SELECT p.id, p.nombre, p.usuario_propietario, p.estado, p.descripcion, p.prioridad, p.proyecto FROM proyectos p");
 			
 			while (rs.next()) {
 				String nombreUsuarioPropietario = rs.getString("usuario_propietario");
@@ -203,6 +201,7 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 				
 				Proyecto proyecto;
 				proyecto = new Proyecto(rs.getString("nombre"), usuarioPropietario, rs.getBoolean("estado"), rs.getString("descripcion"), rs.getString("prioridad"));
+				proyecto.setId(rs.getInt("id"));
 				proyectos.add(proyecto);
 			}
 		} catch (SQLException e) {
@@ -225,7 +224,7 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 			
 			try {
 				Connection conn = ConnectionManager.getConnection();
-				PreparedStatement statement = conn.prepareStatement("SELECT p.nombre, p.usuario_propietario, p.estado, p.descripcion, p.prioridad, p.proyecto FROM proyectos p WHERE p.usuario_propietario = ?");
+				PreparedStatement statement = conn.prepareStatement("SELECT p.id, p.nombre, p.usuario_propietario, p.estado, p.descripcion, p.prioridad, p.proyecto FROM proyectos p WHERE p.usuario_propietario = ?");
 				statement.setString(1, usuario);
 
 				ResultSet rs = statement.executeQuery();
@@ -235,7 +234,7 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 					Usuario usuarioPropietario = usuarioDao.find(nombreUsuarioPropietario);
 					
 					unProyecto = new Proyecto(rs.getString("nombre"), usuarioPropietario, rs.getBoolean("estado"), rs.getString("descripcion"), rs.getString("prioridad"));
-					
+					unProyecto.setId(rs.getInt("id"));
 					proyectos.add(unProyecto);
 				}
 			} catch (SQLException e) {

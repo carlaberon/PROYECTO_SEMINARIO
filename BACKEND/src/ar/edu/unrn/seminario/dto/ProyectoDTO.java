@@ -11,8 +11,9 @@ import ar.edu.unrn.seminario.modelo.Tarea;
 import ar.edu.unrn.seminario.modelo.Usuario;
 
 public class ProyectoDTO implements Comparable<ProyectoDTO>{
+	
 
-    private int id;
+	private int id;
 	private String nombre;
     private UsuarioDTO usuarioPropietario;
     private String prioridad; //Alta, Media, Baja
@@ -22,7 +23,7 @@ public class ProyectoDTO implements Comparable<ProyectoDTO>{
     private Set<String> proyectos = new HashSet<>();
     private Set<String> tareas = new HashSet<>();
     
-    public ProyectoDTO(int id, String nombreProyecto, UsuarioDTO usuarioPropietario, boolean estado, String prioridad, String descripcion) throws NotNullException, DataEmptyException {
+    public ProyectoDTO(String nombreProyecto, UsuarioDTO usuarioPropietario, boolean estado, String prioridad, String descripcion) throws NotNullException, DataEmptyException {
     	
 	    // Validar que los campos no sean nulos
 	    if (esDatoNulo(nombreProyecto)) {
@@ -36,7 +37,7 @@ public class ProyectoDTO implements Comparable<ProyectoDTO>{
 	    }
 
 	    // Validar que los campos no estén vacíos
-	    if (esDatoVacio(nombre)) {
+	    if (esDatoVacio(nombreProyecto)) {
 	        throw new DataEmptyException("nombre");
 	    }
 	    if (esDatoVacio(descripcion)) {
@@ -58,9 +59,6 @@ public class ProyectoDTO implements Comparable<ProyectoDTO>{
 
 	public String getNombre() {
         return this.nombre;
-    }
-	public int getId() {
-        return this.id;
     }
     
     public void setNombre(String nombre) throws NotNullException, DataEmptyException {
@@ -187,5 +185,13 @@ public class ProyectoDTO implements Comparable<ProyectoDTO>{
 
 	private boolean esDatoNulo(String dato) {
 		return dato == null;
+	}
+	
+	public int getId() {
+		return id;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
 	}
 }

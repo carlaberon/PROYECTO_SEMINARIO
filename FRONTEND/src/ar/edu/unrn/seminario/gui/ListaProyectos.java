@@ -29,7 +29,7 @@ public class ListaProyectos extends JFrame {
 	private JButton eliminarProyecto;
 	private JButton volver;
 	
-    public ListaProyectos(IApi api) {
+    public ListaProyectos(IApi api) throws NotNullException, DataEmptyException {
     	this.api = api;
 
         // Configuración básica de la ventana
@@ -47,7 +47,7 @@ public class ListaProyectos extends JFrame {
         getContentPane().setBackground(fondoColor);
         
         tabla = new JTable();
-        String[] proyectosTabla = {"Nombre", "Descripcion", "Estado", "Prioridad", "Propietario"};
+        String[] proyectosTabla = {"Id", "Nombre", "Descripcion", "Estado", "Prioridad", "Propietario"};
         
         DefaultTableModel modelo = new DefaultTableModel(new Object[][] {}, proyectosTabla);
         tabla.setModel(modelo);
@@ -57,6 +57,7 @@ public class ListaProyectos extends JFrame {
         if(!proyectos.isEmpty()) {
         	for (ProyectoDTO p : proyectos) {
         		modelo.addRow(new Object[] {
+        				p.getId(),
         				p.getNombre(), 
         				p.getDescripcion(), 
         				p.isEstado() ? "FINALIZADO" : "EN CURSO",
@@ -64,8 +65,13 @@ public class ListaProyectos extends JFrame {
         						p.getUsuarioPropietario().getUsername()});
         	}
         }
+     
+        // Ocultar la columna ID
+        tabla.getColumnModel().getColumn(0).setMinWidth(0);
+        tabla.getColumnModel().getColumn(0).setMaxWidth(0);
+        tabla.getColumnModel().getColumn(0).setPreferredWidth(0);
         
-     // Configurar render de la tabla
+        // Configurar render de la tabla
         tabla.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -125,9 +131,17 @@ public class ListaProyectos extends JFrame {
 						"Estas seguro que queres eliminar el proyecto?", "Confirmar cambio de estado.",
 						JOptionPane.YES_NO_OPTION);
 				if (opcionSeleccionada == JOptionPane.YES_OPTION) {
-					String projectName = (String) tabla.getModel().getValueAt(tabla.getSelectedRow(), 0);
-					api.eliminarProyecto(projectName, api.getUsuarioActual().getUsername());
-					actualizarTabla();
+					int projecId = (int) tabla.getModel().getValueAt(tabla.getSelectedRow(), 0);
+					api.eliminarProyecto(projecId);
+					try {
+						actualizarTabla();
+					} catch (NotNullException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (DataEmptyException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 					habilitarBotones(false);
 				}
 				
@@ -213,7 +227,7 @@ public class ListaProyectos extends JFrame {
             return super.stopCellEditing();
         }
     }
-    public void actualizarTabla(){
+    public void actualizarTabla() throws NotNullException, DataEmptyException{
     	// Obtiene el model del table
     			DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
     			// Obtiene la lista de usuarios a mostrar

@@ -59,7 +59,7 @@ public interface IApi {
 	
     public int compare(Proyecto p1, Proyecto p2);
     
-	void eliminarProyecto(String nombreProyecto, String usuarioPropietario);
+	void eliminarProyecto(int id);
 	
 	void modificarProyecto(String nombreProyecto, String usuarioPropietario,String nuevoNombre, String nuevaPrioridad, String nuevaDescripcion)throws NotNullException, DataEmptyException;
 
