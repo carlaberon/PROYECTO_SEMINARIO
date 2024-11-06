@@ -28,7 +28,7 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 		
 			statement.setString(1, proyecto.getNombre());
 			statement.setObject(2, proyecto.getUsuarioPropietario().getUsername());
-			statement.setBoolean(3, proyecto.getEstado());
+			statement.setString(3, "EN CURSO");
 			statement.setString(4, proyecto.getDescripcion());
 			statement.setString(5, proyecto.getPrioridad());
 			statement.setNull(6, java.sql.Types.VARCHAR);
@@ -81,17 +81,16 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 	public void update(Proyecto proyecto) {
 		try {
 			   Connection conn = ConnectionManager.getConnection();
-			   PreparedStatement statement = conn.prepareStatement("UPDATE proyectos SET nombre=?, prioridad=?, usuario_propietario=?, estado=?, descripcion=? WHERE id = ?");
+			   PreparedStatement statement = conn.prepareStatement("UPDATE proyectos SET nombre=?, prioridad=?, usuario_propietario=?, descripcion=? WHERE id = ?");
 			        
 			   // Establecer los valores de los nuevos datos del proyecto
 			   statement.setString(1, proyecto.getNombre());
 			   statement.setString(2, proyecto.getPrioridad());
 			   statement.setString(3, proyecto.getUsuarioPropietario().getUsername());
-			   statement.setBoolean(4, proyecto.getEstado());
-			   statement.setString(5, proyecto.getDescripcion());
+			   statement.setString(4, proyecto.getDescripcion());
 			   
 			   //para identificar el proyecto a actualizar
-			   statement.setInt(6, proyecto.getId()); //El proyecto pasado por parametro deberia contener la id del proyecto a actualizar
+			   statement.setInt(5, proyecto.getId()); //El proyecto pasado por parametro deberia contener la id del proyecto a actualizar
 			   System.out.println("Actualizando proyecto con los datos: ");
 			   System.out.println("Nombre: " + proyecto.getNombre());
 			   System.out.println("Usuario propietario: " + proyecto.getUsuarioPropietario().getUsername());    
