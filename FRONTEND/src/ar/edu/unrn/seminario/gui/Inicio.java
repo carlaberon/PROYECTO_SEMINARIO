@@ -131,7 +131,7 @@ public class Inicio extends JFrame {
         			public void actionPerformed(ActionEvent e) {
 
 							try {
-								api.setProyectoActual(proyecto.getNombre());
+								api.setProyectoActual(proyecto.getId());
 							} catch (NotNullException e1) {
 								// TODO Auto-generated catch block
 								e1.printStackTrace();
@@ -263,7 +263,7 @@ public class Inicio extends JFrame {
 
 
 						try {
-							api.setProyectoActual(proyecto.getNombre());
+							api.setProyectoActual(proyecto.getId());
 						} catch (NotNullException e1) {
 							//msj front-end
 							e1.printStackTrace();
