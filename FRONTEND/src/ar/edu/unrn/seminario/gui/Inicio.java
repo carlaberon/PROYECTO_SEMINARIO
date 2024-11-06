@@ -251,7 +251,8 @@ public class Inicio extends JFrame {
         proyectosListPanel.removeAll(); // Limpiar el panel actual
         
         List<ProyectoDTO> proyectos = api.obtenerProyectos(usuarioActual.getUsername()); // Obtener los proyectos actualizados
-        
+        proyectos.sort((p1, p2) -> Integer.compare(api.obtenerPrioridad(p1.getPrioridad()), 
+                api.obtenerPrioridad(p2.getPrioridad())));
 
         for (ProyectoDTO proyecto : proyectos) {
             JButton proyectoButton = new JButton(proyecto.getNombre());

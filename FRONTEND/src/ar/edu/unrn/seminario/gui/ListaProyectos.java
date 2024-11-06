@@ -234,6 +234,8 @@ public class ListaProyectos extends JFrame {
     			DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
     			// Obtiene la lista de usuarios a mostrar
     			List<ProyectoDTO> proyectos = api.obtenerProyectos(api.getUsuarioActual().getUsername());
+    	        proyectos.sort((p1, p2) -> Integer.compare(api.obtenerPrioridad(p1.getPrioridad()), 
+    	                api.obtenerPrioridad(p2.getPrioridad())));
     			
     			// Resetea el model
     			modelo.setRowCount(0);
