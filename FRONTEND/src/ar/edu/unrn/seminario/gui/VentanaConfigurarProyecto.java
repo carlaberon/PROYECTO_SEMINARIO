@@ -101,10 +101,10 @@ public class VentanaConfigurarProyecto extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String prioridadSeleccionada = (String) prioridadComboBox.getSelectedItem();
 				try {
-					if (prioridadSeleccionada == null || prioridadSeleccionada.isEmpty()) {
-		                throw new DataEmptyException("prioridad");
+					if (prioridadSeleccionada == null && textField_Nombre.getText().isEmpty() && textField_Descripcion.getText().isEmpty()) {
+		                throw new DataEmptyException("nombre, prioridad y descripcion ");
 		            }
-					api.modificarProyecto(api.getProyectoActual().getNombre(),api.getUsuarioActual().getUsername() , textField_Nombre.getText(), prioridadSeleccionada, textField_Descripcion.getText());
+					api.modificarProyecto(api.getProyectoActual().getId(), textField_Nombre.getText(), prioridadSeleccionada, textField_Descripcion.getText());
 					
 					int opcionSeleccionada = JOptionPane.showConfirmDialog(null,
 							"Estas seguro que queres modificar el proyecto?", "Confirmar cambio de estado.",
@@ -117,10 +117,10 @@ public class VentanaConfigurarProyecto extends JFrame {
 					setVisible(false);
 					dispose();
 					
-				} catch (NotNullException ex) {
-		            JOptionPane.showMessageDialog(null, "El campo " + ex.getMessage() + " no puede ser nulo.", "Error", JOptionPane.ERROR_MESSAGE);
-		        } catch (DataEmptyException ex) {
-		            JOptionPane.showMessageDialog(null, "El campo " + ex.getMessage() + " no puede estar vacío.", "Error", JOptionPane.ERROR_MESSAGE);
+				} catch (NotNullException e1) {
+		            JOptionPane.showMessageDialog(null, "El campo " + e1.getMessage() + " no puede ser nulo.", "Error", JOptionPane.ERROR_MESSAGE);
+		        } catch (DataEmptyException e2) {
+		            JOptionPane.showMessageDialog(null, "Los campos " + e2.getMessage() + "estan vacíos.", "Error! No se realizo ningun cambio!", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});

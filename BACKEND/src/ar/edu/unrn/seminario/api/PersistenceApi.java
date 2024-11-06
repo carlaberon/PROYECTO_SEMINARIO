@@ -184,21 +184,21 @@ public class PersistenceApi implements IApi {
 	}
 	
 	@Override
-	public void modificarProyecto(String nombreProyecto, String usuarioPropietario,String nuevoNombre, String nuevaPrioridad,
+	public void modificarProyecto(int idProyecto, String nuevoNombre, String nuevaPrioridad,
 			String nuevaDescripcion) throws NotNullException, DataEmptyException {
-		Proyecto proyectoExistente = proyectoDao.find(nombreProyecto, usuarioPropietario);
-	    if (proyectoExistente == null) {
-	        throw new DataEmptyException("El proyecto no existe.");
-	    }
-	    String nombreOriginal = proyectoExistente.getNombre();
-		if(nuevoNombre != null) 
+		Proyecto proyectoExistente = proyectoDao.find(idProyecto);
+//	    if (proyectoExistente == null) {
+//	        throw new DataEmptyException("El proyecto no existe.");
+//	    }
+	    
+		if(!nuevoNombre.isEmpty()) 
 			proyectoExistente.setNombre(nuevoNombre);
 		if(nuevaPrioridad != null)
-			 proyectoExistente.setPrioridad1(nuevaPrioridad);
-		if(nuevaDescripcion != null)
+			 proyectoExistente.setPrioridad(nuevaPrioridad);
+		if(!nuevaDescripcion.isEmpty())
 			 proyectoExistente.setDescripcion(nuevaDescripcion);
 		
-		proyectoDao.update(proyectoExistente,nombreOriginal);
+		proyectoDao.update(proyectoExistente);
 		}
 		
 		
@@ -432,7 +432,7 @@ public class PersistenceApi implements IApi {
 	private ProyectoDTO convertirEnProyectoDTO(Proyecto proyecto) throws NotNullException, DataEmptyException {
 		ProyectoDTO proyectoDto = null;
 		if(proyecto != null)
-			proyectoDto = new ProyectoDTO(proyecto.getNombre(), convertirEnUsuarioDTO(proyecto.getUsuarioPropietario()), proyecto.getEstado(), proyecto.getPrioridad1(), proyecto.getDescripcion());
+			proyectoDto = new ProyectoDTO(proyecto.getNombre(), convertirEnUsuarioDTO(proyecto.getUsuarioPropietario()), proyecto.getEstado(), proyecto.getPrioridad(), proyecto.getDescripcion());
 			
 		proyectoDto.setId(proyecto.getId());
 		return proyectoDto;

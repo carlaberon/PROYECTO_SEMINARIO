@@ -121,11 +121,11 @@ public class Proyecto {
         }
         this.descripcion = descripcion;
     }
-    public String getPrioridad1() {
+    public String getPrioridad() {
         return prioridad;
     }
 
-    public void setPrioridad1(String prioridad) throws NotNullException, DataEmptyException {
+    public void setPrioridad(String prioridad) throws NotNullException, DataEmptyException {
     	if (esDatoNulo(prioridad)) {
             throw new NotNullException("prioridad");
         }

@@ -30,7 +30,7 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 			statement.setObject(2, proyecto.getUsuarioPropietario().getUsername());
 			statement.setBoolean(3, proyecto.getEstado());
 			statement.setString(4, proyecto.getDescripcion());
-			statement.setString(5, proyecto.getPrioridad1());
+			statement.setString(5, proyecto.getPrioridad());
 			statement.setNull(6, java.sql.Types.VARCHAR);
 			
 			
@@ -54,7 +54,7 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 				statement.setString(2, subProyecto.getUsuarioPropietario().getUsername());
 				statement.setBoolean(3, subProyecto.getEstado());
 				statement.setString(4, subProyecto.getDescripcion());
-				statement.setString(5, subProyecto.getPrioridad1());
+				statement.setString(5, subProyecto.getPrioridad());
 				statement.setString(6, proyecto.getNombre()); //se vincula al proyecto principal
 				
 				int subCant = statement.executeUpdate();
@@ -85,7 +85,7 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 			        
 			   // Establecer los valores de los nuevos datos del proyecto
 			   statement.setString(1, proyecto.getNombre());
-			   statement.setString(2, proyecto.getPrioridad1());
+			   statement.setString(2, proyecto.getPrioridad());
 			   statement.setString(3, proyecto.getUsuarioPropietario().getUsername());
 			   statement.setBoolean(4, proyecto.getEstado());
 			   statement.setString(5, proyecto.getDescripcion());
