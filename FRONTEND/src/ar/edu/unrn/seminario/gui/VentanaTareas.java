@@ -405,7 +405,7 @@ public class VentanaTareas extends JFrame {
 	 modificatarea.setVisible(true);
     }
 	
-	public static void main(String []args) throws NotNullException, DataEmptyException, RuntimeException, InvalidDateException {
+	/*public static void main(String []args) throws NotNullException, DataEmptyException, RuntimeException, InvalidDateException {
 		
 		IApi api = new PersistenceApi();
 		//prueba
@@ -418,7 +418,7 @@ public class VentanaTareas extends JFrame {
 		ventana.setVisible(true);
 		
 		
-	}
+	}*/
 
 }
 

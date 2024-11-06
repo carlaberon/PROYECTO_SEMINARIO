@@ -263,7 +263,6 @@ public class PersistenceApi implements IApi {
 	}
 	
 	public void setTareaActual(int idTarea) throws DataEmptyException, NotNullException, InvalidDateException {
-		
 		this.tareaActual = tareaDao.find(idTarea, usuarioActual.getUsername(), proyectoActual.getId());
 	}
 	
