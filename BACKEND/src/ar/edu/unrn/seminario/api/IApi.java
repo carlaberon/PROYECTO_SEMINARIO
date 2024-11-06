@@ -65,8 +65,6 @@ public interface IApi {
 
 	List<TareaDTO> obtenerTareasPorProyecto(int id_project, String usuario_propietario) throws InvalidDateException, NotNullException, DataEmptyException;
 	
-	public int obtenerValorPrioridad(String prioridad);
-	
 	void crearProyecto(String nombre, String string, boolean estado, String descripcion, String prioridad)
 			throws NotNullException, DataEmptyException;
 	
