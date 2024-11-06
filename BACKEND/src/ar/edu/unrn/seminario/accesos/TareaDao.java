@@ -19,7 +19,7 @@ public interface TareaDao {
 	void remove(int id);
 	
 
-	//public Tarea find(int id, String usuario_propietario) throws DataEmptyException, NotNullException, InvalidDateException;
+	public Tarea find(int id, String usuario_propietario, int id_project) throws DataEmptyException, NotNullException, InvalidDateException;
 	
 	List<Tarea> findAll() throws DataEmptyException, NotNullException, InvalidDateException;
 }

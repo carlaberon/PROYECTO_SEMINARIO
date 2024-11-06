@@ -14,7 +14,9 @@ import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.exception.TaskNotUpdatedException;
+import ar.edu.unrn.seminario.modelo.Proyecto;
 import ar.edu.unrn.seminario.modelo.Tarea;
+import ar.edu.unrn.seminario.modelo.Usuario;
 
 public class TareaDAOJDBC implements TareaDao{
 
@@ -149,6 +151,34 @@ public class TareaDAOJDBC implements TareaDao{
 		} finally {
 		ConnectionManager.disconnect();
 		}
+	}
+	
+	public Tarea find(int id,  String usuario_propietario, int id_proyecto) throws NotNullException, DataEmptyException, InvalidDateException {
+		Tarea unaTarea = null;
+		
+		try {
+			Connection conn = ConnectionManager.getConnection();
+			PreparedStatement statement = conn.prepareStatement("SELECT id, nombre , prioridad, usuario, estado, descripcion, fecha_inicio, fecha_fin FROM tareas WHERE id = ?");
+			statement.setInt(1, id);
+			statement.setString(2,usuario_propietario);
+			statement.setInt(3, id_proyecto);
+			
+			ResultSet rs = statement.executeQuery();
+			while(rs.next()) {
+				unaTarea = new Tarea(rs.getString("nombre"),usuario_propietario, rs.getString("prioridad"), rs.getString("usuario"), rs.getBoolean("estado"),rs.getString("descripcion"), rs.getDate("fecha_inicio").toLocalDate(), rs.getDate("fecha_fin").toLocalDate());
+				unaTarea.setId(rs.getInt("id"));
+				unaTarea.setId(id_proyecto);
+			}
+		} catch (SQLException e) {
+			System.out.println("Error de mySql\n" + e.toString());
+			// TODO: disparar Exception propia
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+			// TODO: disparar Exception propia
+		} finally {
+			ConnectionManager.disconnect();
+		}
+		return unaTarea;
 	}
 	
 	/*

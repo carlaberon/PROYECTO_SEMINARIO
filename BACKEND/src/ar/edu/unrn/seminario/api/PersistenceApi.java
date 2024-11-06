@@ -263,7 +263,8 @@ public class PersistenceApi implements IApi {
 	}
 	
 	public void setTareaActual(int idTarea) throws DataEmptyException, NotNullException, InvalidDateException {
-		this.tareaActual = tareaDao.find(idTarea, usuarioActual.getUsername());
+		
+		this.tareaActual = tareaDao.find(idTarea, usuarioActual.getUsername(), proyectoActual.getId());
 	}
 	
 	public TareaDTO getTareaActual() throws NotNullException, DataEmptyException, InvalidDateException {
@@ -289,7 +290,7 @@ public class PersistenceApi implements IApi {
 	@Override
 	public void modificarTarea(int id, String usuario_propietario, String nombreProyecto, String nuevoNombre, String nuevaPrioridad, String nombreUsuario, Boolean estado, String nuevaDescripcion, LocalDate inicio, LocalDate fin) throws NotNullException, DataEmptyException, InvalidDateException, TaskNotUpdatedException {
 		
-		Tarea tarea = tareaDao.find(id, usuario_propietario);
+		Tarea tarea = tareaDao.find(id, usuario_propietario, proyectoActual.getId());
 		
 		//en los setters de tareas están programadas las excepciones que verifican que éstos datos no sean null o empty
 		tarea.setNombre(nuevoNombre);
