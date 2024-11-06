@@ -235,15 +235,7 @@ public class PersistenceApi implements IApi {
 
 	    return tareasDTO;
 	}
-
-	@Override
-	public int obtenerValorPrioridad(String prioridad) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 	
-
 	@Override
 	public ProyectoDTO getProyectoActual() throws NotNullException, DataEmptyException {
 		return convertirEnProyectoDTO(proyectoActual);
