@@ -304,18 +304,18 @@ public class VentanaTareas extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			
 			int filaSeleccionada = table.getSelectedRow(); 
+	        int idTarea = (int) table.getValueAt(filaSeleccionada, 0);
 			
 			if (filaSeleccionada != -1) {
+			}
 				
-				Object nombreTarea = table.getValueAt(filaSeleccionada, 0);
-				
-				int confirmacion = JOptionPane.showConfirmDialog(botonEliminar, "¿Desea eliminar la tarea: " + nombreTarea,"Confirmar Eliminacion", JOptionPane.YES_NO_OPTION);
+				int confirmacion = JOptionPane.showConfirmDialog(botonEliminar, "¿Desea eliminar la tarea: " ,"Confirmar Eliminacion", JOptionPane.YES_NO_OPTION);
 				
 				if (confirmacion == JOptionPane.YES_OPTION) {
 					
-					String nameTarea = nombreTarea.toString();
 					
-					api.eliminarTarea(nameTarea, unproyecto.getNombre(), usuarioActual.getUsername());
+					
+					api.eliminarTarea(idTarea);
 					
 					((DefaultTableModel) table.getModel()).removeRow(filaSeleccionada);
 					
@@ -323,7 +323,7 @@ public class VentanaTareas extends JFrame {
 				
 			}
 	
-		}
+
     	  
       });
     }
@@ -386,6 +386,7 @@ public class VentanaTareas extends JFrame {
 	    // Agrega las tareas en el modelo
 		for (TareaDTO t : tareas) {
 		    modelo.addRow(new Object[] {
+		        t.getId(),
 		        t.getName(),
 		        unproyecto.getNombre(),
 		        t.isEstado() ? "FINALIZADA" : "EN CURSO", // Modifica el estado a una cadena legible
@@ -405,6 +406,7 @@ public class VentanaTareas extends JFrame {
     }
 	
 	public static void main(String []args) throws NotNullException, DataEmptyException, RuntimeException, InvalidDateException {
+		
 		IApi api = new PersistenceApi();
 		//prueba
 		api.setUsuarioActual("ldifabio");

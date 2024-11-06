@@ -142,8 +142,8 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public void eliminarTarea(String nombreTarea, String proyecto, String usuarioPropietario) {
-		tareaDao.remove(nombreTarea, proyecto, usuarioPropietario);
+	public void eliminarTarea(int id) {
+		tareaDao.remove(id);
 	}
 
 	@Override

@@ -248,20 +248,20 @@ public class VentanaResumen extends JFrame {
         button.setPreferredSize(new Dimension(200, 40));
         return button;
     }
-//    public static void main(String []args) throws NotNullException, DataEmptyException, RuntimeException, InvalidDateException {
-//		IApi api = new PersistenceApi();
-//		//prueba
-//		UsuarioDTO usuario = api.obtenerUsuario("ldifabio");
-//		api.setUsuarioActual(usuario.getUsername());
-//	
-//		api.setProyectoActual("Aplicacion de votos");
-//
-//		VentanaResumen ventana = new VentanaResumen(api);
-//		
-//		ventana.setVisible(true);
-//		
-//		
-//	}
+    public static void main(String []args) throws NotNullException, DataEmptyException, RuntimeException, InvalidDateException {
+		IApi api = new PersistenceApi();
+		//prueba
+		UsuarioDTO usuario = api.obtenerUsuario("ldifabio");
+		api.setUsuarioActual(usuario.getUsername());
+	
+		api.setProyectoActual(1);
+
+		VentanaResumen ventana = new VentanaResumen(api);
+		
+		ventana.setVisible(true);
+		
+		
+	}
 
 }
 
