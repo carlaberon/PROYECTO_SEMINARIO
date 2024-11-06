@@ -53,6 +53,8 @@ public class ListaProyectos extends JFrame {
         tabla.setModel(modelo);
         
         List<ProyectoDTO> proyectos = api.obtenerProyectos(api.getUsuarioActual().getUsername());
+        proyectos.sort((p1, p2) -> Integer.compare(api.obtenerPrioridad(p1.getPrioridad()), 
+                api.obtenerPrioridad(p2.getPrioridad())));
         
         if(!proyectos.isEmpty()) {
         	for (ProyectoDTO p : proyectos) {
