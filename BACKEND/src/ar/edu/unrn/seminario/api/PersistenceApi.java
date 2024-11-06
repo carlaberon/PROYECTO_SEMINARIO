@@ -205,7 +205,19 @@ public class PersistenceApi implements IApi {
 		// TODO Auto-generated method stub
 		
 	}
-
+	@Override
+	public int obtenerValorPrioridad(String prioridad) {
+	    switch (prioridad) {
+	        case "alta":
+	            return 1;
+	        case "media":
+	            return 2;
+	        case "baja":
+	            return 3;
+	        default:
+	            return 0; // En caso de prioridad desconocida
+	    }
+	}
 	@Override
 	public int compare(Proyecto p1, Proyecto p2) {
 		// TODO Auto-generated method stub
@@ -233,11 +245,6 @@ public class PersistenceApi implements IApi {
 	    return tareasDTO;
 	}
 
-	@Override
-	public int obtenerValorPrioridad(String prioridad) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
 	
 
@@ -247,10 +254,10 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public void setProyectoActual(String nombreProyecto) throws NotNullException, DataEmptyException {
+	public void setProyectoActual(int nombreProyecto) throws NotNullException, DataEmptyException {
 			String usuarioActual = getUsuarioActual().getUsername();
 			if (! usuarioActual.isEmpty()) {
-				this.proyectoActual = proyectoDao.find(nombreProyecto, usuarioActual);
+				this.proyectoActual = proyectoDao.find(nombreProyecto);
 			}
 			else {
 				throw new NullPointerException();

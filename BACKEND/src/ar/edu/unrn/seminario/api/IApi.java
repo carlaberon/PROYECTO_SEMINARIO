@@ -57,6 +57,8 @@ public interface IApi {
 		
 	void asignarPrioridad(String nombreProyecto, String prioridad) throws NotNullException, DataEmptyException;
 	
+	int obtenerValorPrioridad(String prioridad); 
+	
     public int compare(Proyecto p1, Proyecto p2);
     
 	void eliminarProyecto(int id);
@@ -65,14 +67,13 @@ public interface IApi {
 
 	List<TareaDTO> obtenerTareasPorProyecto(String nombreProyecto,String usuarioPropietario) throws InvalidDateException, NotNullException, DataEmptyException;
 	
-	public int obtenerValorPrioridad(String prioridad);
 	
 	void crearProyecto(String nombre, String string, boolean estado, String descripcion, String prioridad)
 			throws NotNullException, DataEmptyException;
 	
 	public ProyectoDTO getProyectoActual() throws NotNullException, DataEmptyException;//Recuperar proyecto actual	PRUEBAS
 
-	public void setProyectoActual(String nombreProyecto) throws NotNullException, DataEmptyException;	//Setear proyecto actual PRUEBAS
+	public void setProyectoActual(int id) throws NotNullException, DataEmptyException;	//Setear proyecto actual PRUEBAS
 	
 	public UsuarioDTO getUsuarioActual() throws NotNullException, DataEmptyException; //Recuperar usuario actual PRUEBAS
 
