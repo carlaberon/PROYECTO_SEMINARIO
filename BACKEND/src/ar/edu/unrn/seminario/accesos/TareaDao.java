@@ -17,13 +17,9 @@ public interface TareaDao {
 	void update(Tarea tarea, int id) throws TaskNotUpdatedException;
 	
 	void remove(int id);
-
-	//void remove(String nombre, String proyecto, String usuario_propietario);
-
 	
 
 	//public Tarea find(int id, String usuario_propietario) throws DataEmptyException, NotNullException, InvalidDateException;
 	
-	
-	//List<Tarea> findAll() throws DataEmptyException, NotNullException, InvalidDateException;
+	List<Tarea> findAll() throws DataEmptyException, NotNullException, InvalidDateException;
 }
