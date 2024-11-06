@@ -265,16 +265,16 @@ public class ListaProyectos extends JFrame {
 		eliminarProyecto.setEnabled(b);
 	}
 
-    public static void main(String args[]) throws NotNullException, DataEmptyException {
-    	IApi api = new PersistenceApi();
-		api.setUsuarioActual("ldifabio");
-		
-		api.setProyectoActual("proyecto fenix");
-	
-    	ListaProyectos ventana = new ListaProyectos (api);
-    	
-    	ventana.setVisible(true);
-    	
-    }
+//    public static void main(String args[]) throws NotNullException, DataEmptyException {
+//    	IApi api = new PersistenceApi();
+//		api.setUsuarioActual("ldifabio");
+//		
+//		api.setProyectoActual("proyecto fenix");
+//	
+//    	ListaProyectos ventana = new ListaProyectos (api);
+//    	
+//    	ventana.setVisible(true);
+//    	
+//    }
 	
 }
