@@ -58,7 +58,7 @@ public class CrearProyecto extends JFrame {
 		contentPane.setLayout(null);
 		setContentPane(contentPane);
 
-		JLabel nombreProyecto = new JLabel("Nombre Proyecto*:");
+		JLabel nombreProyecto = new JLabel("Nombre Proyecto:");
 		nombreProyecto.setForeground(new Color(240, 240, 240));
 		nombreProyecto.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 		nombreProyecto.setBounds(88, 93, 227, 39);

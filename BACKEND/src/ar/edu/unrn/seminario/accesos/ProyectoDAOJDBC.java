@@ -161,7 +161,7 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 		UsuarioDao usuarioDao = new UsuarioDAOJDBC();
 		try {
 			Connection conn = ConnectionManager.getConnection();
-			PreparedStatement statement = conn.prepareStatement("SELECT nombre, usuario_propietario, estado, descripcion, prioridad FROM proyectos WHERE id = ? and p.estado NOT LIKE '#%'");
+			PreparedStatement statement = conn.prepareStatement("SELECT nombre, usuario_propietario, estado, descripcion, prioridad FROM proyectos WHERE id = ? and estado NOT LIKE '#%'");
 			statement.setInt(1, id);
 			
 			ResultSet rs = statement.executeQuery();
