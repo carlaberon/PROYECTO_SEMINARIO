@@ -1,20 +1,15 @@
 package ar.edu.unrn.seminario.dto;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
-import ar.edu.unrn.seminario.modelo.Proyecto;
-import ar.edu.unrn.seminario.modelo.Usuario;
 
 public class TareaDTO {
 
 	private int id;
-	private int id_project;
-    private String name;
-    private String usuarioPropietario;
+	private String name;
+	private ProyectoDTO project;
     private String priority;
     private String user;
     private boolean estado; // FINALIZADO: TRUE, NOFINALIZADO: FALSE
@@ -22,13 +17,11 @@ public class TareaDTO {
     private LocalDate inicio; 
     private LocalDate fin;
     
-    public TareaDTO(String name, String usuarioPropietario, String priority, String user, boolean estado, String descripcion, LocalDate inicio, LocalDate fin) throws NotNullException, InvalidDateException, DataEmptyException {
+    public TareaDTO(int id, String name, ProyectoDTO project,String priority, String user, boolean estado, String descripcion, LocalDate inicio, LocalDate fin) throws NotNullException, InvalidDateException, DataEmptyException {
     	super();
     	
     	if (esDatoNulo(name))
 			throw new NotNullException("nombre");
-    	if (esDatoNulo(usuarioPropietario))
-			throw new NotNullException("nombre de usuario propietario");
     	if (esDatoNulo(priority))
 			throw new NotNullException("prioridad");
     	if (esDatoNulo(user))
@@ -38,8 +31,6 @@ public class TareaDTO {
     	
 		if (esDatoVacio(name))
 			throw new DataEmptyException("nombre");
-		if (esDatoVacio(usuarioPropietario))
-			throw new DataEmptyException("usuario propietario");
 		if (esDatoVacio(priority))
 			throw new DataEmptyException("prioridad");
 		if (esDatoVacio(user))
@@ -53,7 +44,7 @@ public class TareaDTO {
     	
 		this.id = id;
         this.name = name;
-        this.setUsuarioPropietario(usuarioPropietario);
+        this.project = project;
         this.priority = priority;
         this.user = user;
         this.estado = estado;
@@ -78,20 +69,6 @@ public class TareaDTO {
        
 		this.name = name;
     }
-
-    //public String getProject() {
-    //    return project_name;
-    //}
-
-//    public void setProject(String project) throws NotNullException, DataEmptyException {
-//    	if (esDatoNulo(project))
-//			throw new NotNullException("proyecto");
-//    	
-//		if (esDatoVacio(project))
-//			throw new DataEmptyException("proyecto");
-//       
-//        this.project_name = project;
-//    }
 
     public String getPriority() {
         return priority;
@@ -152,22 +129,6 @@ public class TareaDTO {
         this.fin = fin;
     }
 
-
-
-	public String getUsuarioPropietario() {
-		return usuarioPropietario;
-	}
-
-
-
-	public void setUsuarioPropietario(String usuarioPropietario) throws NotNullException, DataEmptyException {
-    	if (esDatoNulo(usuarioPropietario))
-			throw new NotNullException("usuario propietario");
-    	
-		if (esDatoVacio(usuarioPropietario))
-			throw new DataEmptyException("usuario propietario");
-		this.usuarioPropietario = usuarioPropietario;
-	}
 	private boolean esDatoVacio(String dato) {
 		return dato.equals("");
 	}
@@ -176,24 +137,16 @@ public class TareaDTO {
 		return dato == null;
 	}
 
-
-
 	public int getId() {
 		return id;
 	}
 
-
-
-	public void setId(int id) {
-		this.id = id;
-	}
-	
-	public int getIdProject() {
-		return id_project;
+	public ProyectoDTO getProject() {
+		return project;
 	}
 
-	public void setIdProject(int id_project) {
-		this.id_project = id_project;
+	public void setProject(ProyectoDTO project) {
+		this.project = project;
 	}
 }
 

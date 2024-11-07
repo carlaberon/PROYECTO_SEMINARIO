@@ -55,7 +55,7 @@ public class PersistenceApi implements IApi {
 		List<TareaDTO> tareasDTO = new ArrayList<>();
 		List<Tarea> tareas = null;
 		try {
-			tareas = tareaDao.findByProject(proyectoActual.getId(), usuarioActual.getUsername());
+			tareas = tareaDao.findByProject(proyectoActual.getId());
 		} catch (DataEmptyException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -127,11 +127,11 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public void registrarTarea(String name,int id_proyecto ,  String usuarioPropietario, String priority, String user, boolean estado,
+	public void registrarTarea(String name,int id_proyecto, String priority, String user, boolean estado,
 			String descripcion, LocalDate inicio, LocalDate fin)
 			throws DataEmptyException, NotNullException, InvalidDateException {
-		Tarea tarea = new Tarea(name, usuarioPropietario, priority, user, estado, descripcion, inicio, fin);
-		tarea.setIdProyecto(id_proyecto);
+		
+		Tarea tarea = new Tarea(0, name, proyectoDao.find(id_proyecto), priority, user, estado, descripcion, inicio, fin);
 		tareaDao.create(tarea);
 	}
 
@@ -215,11 +215,11 @@ public class PersistenceApi implements IApi {
 
 
 	@Override
-	public List<TareaDTO> obtenerTareasPorProyecto(int id, String usuario_propietario) throws InvalidDateException, NotNullException, DataEmptyException {
+	public List<TareaDTO> obtenerTareasPorProyecto(int id) throws InvalidDateException, NotNullException, DataEmptyException {
 		List<TareaDTO> tareasDTO = new ArrayList<>();
 		List<Tarea> tareas = null;
 		try {
-			tareas = tareaDao.findByProject(id, usuario_propietario);
+			tareas = tareaDao.findByProject(id);
 		} catch (DataEmptyException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -253,8 +253,7 @@ public class PersistenceApi implements IApi {
 	}
 	
 	public void setTareaActual(int idTarea) throws DataEmptyException, NotNullException, InvalidDateException {
-		
-		this.tareaActual = tareaDao.find(idTarea, usuarioActual.getUsername(), proyectoActual.getId());
+		this.tareaActual = tareaDao.find(idTarea);
 	}
 	
 	public TareaDTO getTareaActual() throws NotNullException, DataEmptyException, InvalidDateException {
@@ -278,9 +277,9 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public void modificarTarea(int id, String usuario_propietario, String nombreProyecto, String nuevoNombre, String nuevaPrioridad, String nombreUsuario, Boolean estado, String nuevaDescripcion, LocalDate inicio, LocalDate fin) throws NotNullException, DataEmptyException, InvalidDateException, TaskNotUpdatedException {
+	public void modificarTarea(int id, String nuevoNombre, String nuevaPrioridad, String nombreUsuario, Boolean estado, String nuevaDescripcion, LocalDate inicio, LocalDate fin) throws NotNullException, DataEmptyException, InvalidDateException, TaskNotUpdatedException {
 		
-		Tarea tarea = tareaDao.find(id, usuario_propietario, proyectoActual.getId());
+		Tarea tarea = tareaDao.find(id);
 		
 		//en los setters de tareas están programadas las excepciones que verifican que éstos datos no sean null o empty
 		tarea.setNombre(nuevoNombre);
@@ -290,7 +289,7 @@ public class PersistenceApi implements IApi {
 		tarea.setDescripcion(nuevaDescripcion);
 		tarea.setInicio(inicio);
 		tarea.setFin(fin);
-		tareaDao.update(tarea, id);
+		tareaDao.update(tarea);
 		
 		
 //		if (tareaExistente != null) {
@@ -413,9 +412,7 @@ public class PersistenceApi implements IApi {
 	}
 	
 	private TareaDTO convertirEnTareaDTO(Tarea tarea) throws NotNullException, InvalidDateException, DataEmptyException {
-		TareaDTO tareaDto = new TareaDTO(tarea.getNombre(), tarea.getUsuarioPropietario(),tarea.getPrioridad(), tarea.getUsuario(), tarea.isEstado(), tarea.getDescripcion(), tarea.getInicio(), tarea.getFin());
-		
-		tareaDto.setId(tarea.getId());
+		TareaDTO tareaDto = new TareaDTO(tarea.getId(), tarea.getNombre(), convertirEnProyectoDTO(tarea.getProyecto()), tarea.getPrioridad(), tarea.getUsuario(), tarea.isEstado(), tarea.getDescripcion(), tarea.getInicio(), tarea.getFin());
 		return tareaDto;
 	}
 	
