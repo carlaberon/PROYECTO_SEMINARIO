@@ -18,12 +18,9 @@ public class ProyectoDTO {
     private UsuarioDTO usuarioPropietario;
     private String prioridad; //Alta, Media, Baja
     private boolean estado; //ACTIVO= false; FINALIZADO = true
-    private Set<String> miembros = new HashSet<>();
-    private String descripcion; 
-    private Set<String> proyectos = new HashSet<>();
-    private Set<String> tareas = new HashSet<>();
+    private String descripcion;
     
-    public ProyectoDTO(String nombreProyecto, UsuarioDTO usuarioPropietario, boolean estado, String prioridad, String descripcion) throws NotNullException, DataEmptyException {
+    public ProyectoDTO(int id, String nombreProyecto, UsuarioDTO usuarioPropietario, boolean estado, String prioridad, String descripcion) throws NotNullException, DataEmptyException {
     	
 	    // Validar que los campos no sean nulos
 	    if (esDatoNulo(nombreProyecto)) {
@@ -48,7 +45,7 @@ public class ProyectoDTO {
 	    }
     	
     	
-    	
+	    this.id = id;
     	this.nombre = nombreProyecto;
         this.usuarioPropietario = usuarioPropietario;
         this.prioridad = prioridad;
@@ -100,15 +97,7 @@ public class ProyectoDTO {
     public void setEstado(boolean estado) {
         this.estado = estado;
     }
-
-    public Set<String> getMiembros() {
-        return miembros;
-    }
-
-    public void setMiembros(Set<String> miembros) {
-        this.miembros = miembros;
-    }
-
+    
     public String getDescripcion() {
         return descripcion;
     }
@@ -121,22 +110,6 @@ public class ProyectoDTO {
 	        throw new DataEmptyException("descripcion");
 	    }
         this.descripcion = descripcion;
-    }
-
-    public Set<String> getProyectos() {
-        return proyectos;
-    }
-
-    public void setProyectos(Set<String> proyectos) {
-        this.proyectos = proyectos;
-    }
-
-    public Set<String> getTareas() {
-        return tareas;
-    }
-
-    public void setTareas(Set<String> tareas) {
-        this.tareas = tareas;
     }
     
     @Override
@@ -154,7 +127,6 @@ public class ProyectoDTO {
 		// TODO Auto-generated method stub
 		
 	}
-
 	
 	private boolean esDatoVacio(String dato) {
 		return dato.equals("");

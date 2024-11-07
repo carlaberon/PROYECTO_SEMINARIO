@@ -183,7 +183,7 @@ public class VentanaResumen extends JFrame {
         centerPanel1.add(tareasPanel);
         btnVerTareas.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
-            String nombreProyecto = unproyecto.getNombre(); // Este método obtiene el nombre del proyecto seleccionado
+            //String nombreProyecto = unproyecto.getNombre(); // Este método obtiene el nombre del proyecto seleccionado
             VentanaTareas ventanaTareas = null;
 			try {
 				ventanaTareas = new VentanaTareas(api);

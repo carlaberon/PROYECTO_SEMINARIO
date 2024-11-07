@@ -134,6 +134,7 @@ public class Inicio extends JFrame {
 
 							try {
 								api.setProyectoActual(proyecto.getId());
+								
 							} catch (NotNullException e1) {
 								// TODO Auto-generated catch block
 								e1.printStackTrace();

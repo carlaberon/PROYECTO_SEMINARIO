@@ -10,7 +10,7 @@ public class Tarea {
 	
     private int id;
 	private String nombre;
-    private Proyecto id_proyecto; 
+    private Proyecto proyecto; 
     private String prioridad;
     private String usuario;
     private boolean estado; // FINALIZADO: TRUE, NOFINALIZADO: FALSE
@@ -19,13 +19,11 @@ public class Tarea {
     private LocalDate fechaFin;
 
 
-    public Tarea(String nombre,  String prioridad, String username, boolean estado, String descripcion, LocalDate inicio, LocalDate fin) throws DataEmptyException, NotNullException, InvalidDateException {
+    public Tarea(int id, String nombre, Proyecto proyecto, String prioridad, String username, boolean estado, String descripcion, LocalDate inicio, LocalDate fin) throws DataEmptyException, NotNullException, InvalidDateException {
     
  
     	if (esDatoNulo(nombre))
 			throw new NotNullException("nombre");
-   
-    	
     	if (esDatoNulo(prioridad))
 			throw new NotNullException("prioridad");
     	if (esDatoNulo(username))
@@ -35,8 +33,6 @@ public class Tarea {
     	
 		if (esDatoVacio(nombre))
 			throw new DataEmptyException("nombre");
-		
-	
 		if (esDatoVacio(prioridad))
 			throw new DataEmptyException("prioridad");
 		if (esDatoVacio(username))
@@ -48,9 +44,9 @@ public class Tarea {
 				throw new InvalidDateException("La fecha de inicio debe ser anterior a la fecha de finalizacion");
 			}
 		
-
+		this.id = id;
     	this.nombre = nombre;
-        this.id_proyecto = id_proyecto;
+        this.proyecto = proyecto;
         this.prioridad = prioridad;
         this.usuario = username;
         this.estado = estado;
@@ -64,10 +60,6 @@ public class Tarea {
     // Getters
     public String getNombre() {
         return nombre;
-    }
-
-    public Proyecto getProyecto() { 
-        return id_proyecto;
     }
 
     public String getUsuario() {
@@ -129,9 +121,6 @@ public class Tarea {
         this.nombre = nombre;
     }
 
-    public void setProyecto(Proyecto id_proyecto) {  // Mantener como String
-        this.id_proyecto = id_proyecto;
-    }
 
     public void setUsuario(String usuario) throws NotNullException, DataEmptyException {
     	if (esDatoNulo(usuario)) {
@@ -189,30 +178,26 @@ public class Tarea {
 	private boolean esDatoNulo(String dato) {
 		return dato == null;
 	}
-
-	@Override
-	public String toString() {
-		return "Tarea [nombre=" + nombre + ", proyecto=" + id_proyecto + ", prioridad=" + prioridad + ", usuario=" + usuario + ", estado=" + estado + ", descripcion=" + descripcion
-				+ ", fechaInicio=" + fechaInicio + ", fechaFin=" + fechaFin + "]";
-	}
 	
 	public int getId() {
 		return id;
 	}
 
-	public void setId(int id) {
-		this.id = id;
-	}
-	
-	public Proyecto getIdProyecto() {
-		return this.id_proyecto;
-	}
-	
-	public void setIdProyecto(Proyecto id_project) {
-		this.id_proyecto = id_project;
-		
+	public Proyecto getProyecto() {
+		return proyecto;
 	}
 
+	public void setProyecto(Proyecto proyecto) {
+		this.proyecto = proyecto;
+	}
+
+	@Override
+	public String toString() {
+		return "Tarea [id=" + id + ", nombre=" + nombre + ", proyecto=" + proyecto + ", prioridad=" + prioridad
+				+ ", usuario=" + usuario + ", estado=" + estado + ", descripcion=" + descripcion + ", fechaInicio="
+				+ fechaInicio + ", fechaFin=" + fechaFin + "]";
+	}
+	
 
 }
 
