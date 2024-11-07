@@ -177,7 +177,7 @@ public class VentanaTareas extends JFrame {
 		modelo = new DefaultTableModel(new Object[][] {}, titulos);
 		try {
 			
-		List<TareaDTO> tareas = api.obtenerTareasPorProyecto(unproyecto.getId(), usuarioActual.getUsername());
+		List<TareaDTO> tareas = api.obtenerTareasPorProyecto(unproyecto.getId());
 			
 		modelo.setRowCount(0); // Limpiar el modelo antes de agregar nuevas filas
 		

@@ -160,7 +160,6 @@ public class ModificarTarea extends JFrame {
 	                    int selectedUserIndex = asignarUsuarioComboBox.getSelectedIndex();
 	                    //String nombreActual = nombreTareaLabel.get;
 	                    String nuevoNombreTarea = nombreTareaTextField.getText();
-	                    String proyectoSeleccionado = (String) proyectoTareaComboBox.getSelectedItem();
 	                    String prioridadTarea = (String) prioridadComboBox.getSelectedItem();
 	                    UsuarioDTO usuario = usuarios.get(selectedUserIndex);
 	                    //String name = usuario.getUsername();
@@ -172,7 +171,7 @@ public class ModificarTarea extends JFrame {
                         LocalDate fechaInicioLocalDate = fechaInicioDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                         LocalDate fechaFinLocalDate = fechaFinDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();	                        
                    
-	                     api.modificarTarea(tarea.getId(), unproyecto.getUsuarioPropietario().getUsername(),  proyectoSeleccionado, nuevoNombreTarea, prioridadTarea, usuario.getUsername(), false, descripcionTarea, fechaInicioLocalDate, fechaFinLocalDate);
+	                     api.modificarTarea(tarea.getId(), nuevoNombreTarea, prioridadTarea, usuario.getUsername(), false, descripcionTarea, fechaInicioLocalDate, fechaFinLocalDate);
 	                    
 	                      
 	                       JOptionPane.showMessageDialog(null, "Tarea modificada con éxito!", "Info", JOptionPane.INFORMATION_MESSAGE);

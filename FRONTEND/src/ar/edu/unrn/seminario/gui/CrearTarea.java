@@ -173,17 +173,17 @@ public class CrearTarea extends JFrame {
                     //UsuarioDTO nombres = null;
                     Date fechaFinDate = dateChooserFin.getDate();
                     
-                		//Convertir Date a Localdate, si no cargo una fecha lanza un nullpointer
-                        LocalDate fechaInicioLocalDate = fechaInicioDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                	//Convertir Date a Localdate, si no cargo una fecha lanza un nullpointer
+                    LocalDate fechaInicioLocalDate = fechaInicioDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
-                        LocalDate fechaFinLocalDate = fechaFinDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                    LocalDate fechaFinLocalDate = fechaFinDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                         
                       
-                      api.registrarTarea(nombreTarea, api.getProyectoActual().getId(), api.getUsuarioActual().getUsername(),prioridadTarea,usuario.getUsername(),false, descripcionTarea, fechaInicioLocalDate, fechaFinLocalDate);
+                    api.registrarTarea(nombreTarea, api.getProyectoActual().getId(),prioridadTarea,usuario.getUsername(),false, descripcionTarea, fechaInicioLocalDate, fechaFinLocalDate);
                       
-                        JOptionPane.showMessageDialog(null, "Tarea creada con éxito!", "Info", JOptionPane.INFORMATION_MESSAGE);
-                        setVisible(false);
-                        dispose();
+                    JOptionPane.showMessageDialog(null, "Tarea creada con éxito!", "Info", JOptionPane.INFORMATION_MESSAGE);
+                    setVisible(false);
+                    dispose();
                        
                 	
                 	} catch (NullPointerException excepcion) {
