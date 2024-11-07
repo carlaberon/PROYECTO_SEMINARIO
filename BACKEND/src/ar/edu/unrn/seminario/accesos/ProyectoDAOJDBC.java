@@ -115,7 +115,7 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 	public void remove(int id) {
 		try {
 			Connection conn = ConnectionManager.getConnection();
-			PreparedStatement statement = conn.prepareStatement("UPDATE proyectos SET nombre = CONCAT('#', nombre) WHERE id = ?");
+			PreparedStatement statement = conn.prepareStatement("UPDATE proyectos SET estado = CONCAT('#', estado) WHERE id = ?");
 			statement.setInt(1, id);
 			
 			
@@ -137,7 +137,7 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 	public void remove(Proyecto proyecto) {
 		try {
 			Connection conn = ConnectionManager.getConnection();
-			PreparedStatement statement = conn.prepareStatement("UPDATE proyectos SET nombre = CONCAT('#', nombre) WHERE id = ?");
+			PreparedStatement statement = conn.prepareStatement("UPDATE proyectos SET estado = CONCAT('#', estado) WHERE id = ?");
 			statement.setInt(1, proyecto.getId());
 			
 			int verificacion = statement.executeUpdate();		
@@ -161,7 +161,7 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 		UsuarioDao usuarioDao = new UsuarioDAOJDBC();
 		try {
 			Connection conn = ConnectionManager.getConnection();
-			PreparedStatement statement = conn.prepareStatement("SELECT nombre, usuario_propietario, estado, descripcion, prioridad FROM proyectos WHERE id = ?");
+			PreparedStatement statement = conn.prepareStatement("SELECT nombre, usuario_propietario, estado, descripcion, prioridad FROM proyectos WHERE id = ? and estado NOT LIKE '#%'");
 			statement.setInt(1, id);
 			
 			ResultSet rs = statement.executeQuery();
@@ -224,7 +224,7 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 			
 			try {
 				Connection conn = ConnectionManager.getConnection();
-				PreparedStatement statement = conn.prepareStatement("SELECT p.id, p.nombre, p.usuario_propietario, p.estado, p.descripcion, p.prioridad, p.proyecto FROM proyectos p WHERE p.usuario_propietario = ? and p.nombre NOT LIKE '#%'");
+				PreparedStatement statement = conn.prepareStatement("SELECT p.id, p.nombre, p.usuario_propietario, p.estado, p.descripcion, p.prioridad, p.proyecto FROM proyectos p WHERE p.usuario_propietario = ? and p.estado NOT LIKE '#%'");
 				statement.setString(1, usuario);
 
 				ResultSet rs = statement.executeQuery();

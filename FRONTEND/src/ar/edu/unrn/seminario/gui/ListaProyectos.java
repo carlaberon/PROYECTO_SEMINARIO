@@ -53,8 +53,9 @@ public class ListaProyectos extends JFrame {
         tabla.setModel(modelo);
         
         List<ProyectoDTO> proyectos = api.obtenerProyectos(api.getUsuarioActual().getUsername());
-        proyectos.sort((p1, p2) -> Integer.compare(api.obtenerValorPrioridad(p1.getPrioridad()), 
-                api.obtenerValorPrioridad(p2.getPrioridad())));
+        proyectos.sort((p1, p2) -> Integer.compare(api.obtenerPrioridad(p1.getPrioridad()), 
+                api.obtenerPrioridad(p2.getPrioridad())));
+        
         if(!proyectos.isEmpty()) {
         	for (ProyectoDTO p : proyectos) {
         		modelo.addRow(new Object[] {
@@ -233,6 +234,8 @@ public class ListaProyectos extends JFrame {
     			DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
     			// Obtiene la lista de usuarios a mostrar
     			List<ProyectoDTO> proyectos = api.obtenerProyectos(api.getUsuarioActual().getUsername());
+    	        proyectos.sort((p1, p2) -> Integer.compare(api.obtenerPrioridad(p1.getPrioridad()), 
+    	                api.obtenerPrioridad(p2.getPrioridad())));
     			
     			// Resetea el model
     			modelo.setRowCount(0);
@@ -264,16 +267,16 @@ public class ListaProyectos extends JFrame {
 		eliminarProyecto.setEnabled(b);
 	}
 
-   /* public static void main(String args[]) throws NotNullException, DataEmptyException {
-    	IApi api = new PersistenceApi();
-		api.setUsuarioActual("ldifabio");
-		
-		api.setProyectoActual("proyecto fenix");
-	
-    	ListaProyectos ventana = new ListaProyectos (api);
-    	
-    	ventana.setVisible(true);
-    	
-    }*/
+//    public static void main(String args[]) throws NotNullException, DataEmptyException {
+//    	IApi api = new PersistenceApi();
+//		api.setUsuarioActual("ldifabio");
+//		
+//		api.setProyectoActual("proyecto fenix");
+//	
+//    	ListaProyectos ventana = new ListaProyectos (api);
+//    	
+//    	ventana.setVisible(true);
+//    	
+//    }
 	
 }

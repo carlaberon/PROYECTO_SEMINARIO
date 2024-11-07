@@ -118,8 +118,9 @@ public class Inicio extends JFrame {
 
         //BACK -> DTO -> FRONT
         List<ProyectoDTO> proyectos = api.obtenerProyectos(usuarioActual.getUsername());
-        proyectos.sort((p1, p2) -> Integer.compare(api.obtenerValorPrioridad(p1.getPrioridad()), 
-                api.obtenerValorPrioridad(p2.getPrioridad())));
+        proyectos.sort((p1, p2) -> Integer.compare(api.obtenerPrioridad(p1.getPrioridad()), 
+                api.obtenerPrioridad(p2.getPrioridad())));
+        
         if(!proyectos.isEmpty()) {
         	for (ProyectoDTO proyecto : proyectos) {
         		JButton proyectoButton = new JButton(proyecto.getNombre());
@@ -250,12 +251,8 @@ public class Inicio extends JFrame {
         proyectosListPanel.removeAll(); // Limpiar el panel actual
         
         List<ProyectoDTO> proyectos = api.obtenerProyectos(usuarioActual.getUsername()); // Obtener los proyectos actualizados
-        
-        proyectos.sort((proyecto1, proyecto2) -> {
-            int prioridad1 = api.obtenerValorPrioridad(proyecto1.getPrioridad());
-            int prioridad2 = api.obtenerValorPrioridad(proyecto2.getPrioridad());
-            return Integer.compare(prioridad1, prioridad2); // Orden ascendente por valor de prioridad
-        });
+        proyectos.sort((p1, p2) -> Integer.compare(api.obtenerPrioridad(p1.getPrioridad()), 
+                api.obtenerPrioridad(p2.getPrioridad())));
 
         for (ProyectoDTO proyecto : proyectos) {
             JButton proyectoButton = new JButton(proyecto.getNombre());

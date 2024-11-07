@@ -235,23 +235,7 @@ public class PersistenceApi implements IApi {
 
 	    return tareasDTO;
 	}
-
-	@Override
-	public int obtenerValorPrioridad(String prioridad) {
-		switch (prioridad) {
-        case "alta":
-            return 1;
-        case "media":
-            return 2;
-        case "baja":
-            return 3;
-        default:
-            return 0; // En caso de prioridad desconocida
-    }
-	}
-
 	
-
 	@Override
 	public ProyectoDTO getProyectoActual() throws NotNullException, DataEmptyException {
 		return convertirEnProyectoDTO(proyectoActual);
@@ -356,6 +340,21 @@ public class PersistenceApi implements IApi {
 	        throw new DataEmptyException("No se encontró la tarea con el nombre especificado.");
 	    }*/
 		
+
+	
+	@Override
+	public int obtenerPrioridad(String prioridad) {
+	    switch (prioridad) {
+	        case "alta":
+	            return 1;
+	        case "media":
+	            return 2;
+	        case "baja":
+	            return 3;
+	        default:
+	            return 0; // En caso de prioridad desconocida
+	    }
+	}
 	
 	
 	//ACA PONDRE LOS MODULOS QUE CONSIDERO QUE NO SON NECESARIOS:
