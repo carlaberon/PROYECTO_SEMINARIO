@@ -16,10 +16,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import ar.edu.unrn.seminario.api.IApi;
-import ar.edu.unrn.seminario.api.PersistenceApi;
-import ar.edu.unrn.seminario.dto.UsuarioDTO;
+
 import ar.edu.unrn.seminario.exception.DataEmptyException;
-import ar.edu.unrn.seminario.exception.InvalidDateException;
+
 import ar.edu.unrn.seminario.exception.NotNullException;
 
 public class VentanaConfigurarProyecto extends JFrame {
@@ -74,7 +73,7 @@ public class VentanaConfigurarProyecto extends JFrame {
 		contentPane.add(prioridadComboBox);
 
 		// Añadir elementos al JComboBox
-		prioridadComboBox.addItem("");
+		//prioridadComboBox.addItem("");
 		for (String prioridad : prioridades) {
 			prioridadComboBox.addItem(prioridad);
 		}
@@ -84,12 +83,12 @@ public class VentanaConfigurarProyecto extends JFrame {
 		descripcion.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 		descripcion.setBounds(83, 291, 109, 44);
 		contentPane.add(descripcion);
-		
 		textField_Descripcion = new JTextField();
 		textField_Descripcion.setColumns(10);
 		textField_Descripcion.setBounds(216, 306, 451, 26);
 		contentPane.add(textField_Descripcion);
 		
+		mostararDatosActuales(api);
 		aceptar = new JButton("Aceptar");
 		aceptar.setFont(new Font("Segoe UI", Font.BOLD, 14));
 		aceptar.setForeground(new Color(255, 255, 255));
@@ -145,7 +144,18 @@ public class VentanaConfigurarProyecto extends JFrame {
 		
 	}
 
-
+	private void mostararDatosActuales(IApi api) {
+        try {
+            String nombreProyecto = api.getProyectoActual().getNombre();
+            String prioridadProyecto = api.getProyectoActual().getPrioridad();
+            String descripcionProyecto = api.getProyectoActual().getDescripcion();
+            textField_Nombre.setText(nombreProyecto);
+            prioridadComboBox.setSelectedItem(prioridadProyecto);
+            textField_Descripcion.setText(descripcionProyecto);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al cargar los datos del proyecto.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 	/*public static void main(String[] args) throws NotNullException, DataEmptyException, InvalidDateException{
 	
 	IApi api = new PersistenceApi();

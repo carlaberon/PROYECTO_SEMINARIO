@@ -38,6 +38,10 @@ public class ModificarTarea extends JFrame {
 	    private JComboBox<String> proyectoTareaComboBox; // ComboBox para seleccionar proyecto
 	    private JComboBox<String> asignarUsuarioComboBox; // ComboBox para seleccionar usuario
 	    List<String> prioridades = Arrays.asList("alta", "media", "baja");
+	    private JComboBox<String> prioridadComboBox;
+	    private JTextArea textAreaDescription;
+	    private JDateChooser dateChooserInicio;
+	    private JDateChooser dateChooserFin;
 	    private List<ProyectoDTO> proyectos = new ArrayList<>();
 	    private List<UsuarioDTO> usuarios = new ArrayList<>();
 	    private ProyectoDTO unproyecto;
@@ -105,7 +109,7 @@ public class ModificarTarea extends JFrame {
 	        JLabel prioridadTareaLabel = new JLabel("Prioridad:");
 	        prioridadTareaLabel.setBounds(43, 140, 150, 16);
 	        contentPane.add(prioridadTareaLabel);
-	        JComboBox<String> prioridadComboBox = new JComboBox<>();
+	        prioridadComboBox = new JComboBox<>();
 			prioridadComboBox.setForeground(new Color(29, 17, 40));
 			prioridadComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 10));
 			prioridadComboBox.setBounds(190, 133, 160, 25);
@@ -114,7 +118,7 @@ public class ModificarTarea extends JFrame {
 			prioridadComboBox.addItem("");
 
 			// Llenar el JComboBox con las claves del mapa de prioridad
-	        for (String prioridad : prioridades) {
+	        for (String prioridad :Arrays.asList("alta", "media", "baja")) {
 	            prioridadComboBox.addItem(prioridad);
 	        }
 
@@ -122,7 +126,7 @@ public class ModificarTarea extends JFrame {
 	        lblDescripcin.setBounds(43, 291, 150, 16);
 	        contentPane.add(lblDescripcin);
 
-	        JTextArea textAreaDescription = new JTextArea();
+	        textAreaDescription = new JTextArea();
 	        textAreaDescription.setBounds(208, 291, 329, 111);
 	        contentPane.add(textAreaDescription);
 
@@ -142,15 +146,19 @@ public class ModificarTarea extends JFrame {
 	        cancelarButton.setBounds(440, 438, 97, 25);
 	        contentPane.add(cancelarButton);
 	        
-	        JDateChooser dateChooserInicio = new JDateChooser();
-	        dateChooserInicio.setBounds(190, 183, 70, 19);
+	        dateChooserInicio = new JDateChooser();
+	        dateChooserInicio.setBounds(190, 183, 160, 19);
 	        contentPane.add(dateChooserInicio);
 	        
-	        JDateChooser dateChooserFin = new JDateChooser();
-	        dateChooserFin.setBounds(190, 232, 70, 19);
+	        dateChooserFin = new JDateChooser();
+	        dateChooserFin.getCalendarButton().addActionListener(new ActionListener() {
+	        	public void actionPerformed(ActionEvent e) {
+	        	}
+	        });
+	        dateChooserFin.setBounds(190, 232, 160, 19);
 	        contentPane.add(dateChooserFin);
 
-
+	        cargarDatosTarea();
 	        
 	        aceptarButton.addActionListener(new ActionListener() { 
 	            public void actionPerformed(ActionEvent arg0) {
@@ -210,6 +218,7 @@ public class ModificarTarea extends JFrame {
 	                dispose();
 	            }
 	        });
+	        
 	    }
 	  /*  public static void main(String[] args) throws NotNullException, DataEmptyException, InvalidDateException{
 			
@@ -219,7 +228,22 @@ public class ModificarTarea extends JFrame {
 			ModificarTarea modificarTareaFrame = new ModificarTarea(api, "Contar votos");
 			modificarTareaFrame.setVisible(true);
 		}*/
-	}
 
+	    private void cargarDatosTarea() {
+            nombreTareaTextField.setText(tarea.getName());
+            textAreaDescription.setText(tarea.getDescription());
+
+            proyectoTareaComboBox.setSelectedItem(tarea.getProject().getNombre());
+            //asignarUsuarioComboBox.setSelectedItem(tarea.getUser().getUsername());
+            prioridadComboBox.setSelectedItem(tarea.getPriority());
+
+            dateChooserInicio.setDate(convertirADate(tarea.getInicio()));
+            dateChooserFin.setDate(convertirADate(tarea.getFin()));
+        }
+
+        private Date convertirADate(LocalDate localDate) {
+            return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        }
+    }
 
 

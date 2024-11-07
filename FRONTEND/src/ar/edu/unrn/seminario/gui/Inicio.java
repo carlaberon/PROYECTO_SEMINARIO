@@ -255,8 +255,8 @@ public class Inicio extends JFrame {
         List<ProyectoDTO> proyectos = api.obtenerProyectos(usuarioActual.getUsername()); // Obtener los proyectos actualizados
         
         proyectos.sort((proyecto1, proyecto2) -> {
-            int prioridad1 = api.obtenerValorPrioridad(proyecto1.getPrioridad());
-            int prioridad2 = api.obtenerValorPrioridad(proyecto2.getPrioridad());
+            int prioridad1 = api.obtenerPrioridad(proyecto1.getPrioridad());
+            int prioridad2 = api.obtenerPrioridad(proyecto2.getPrioridad());
             return Integer.compare(prioridad1, prioridad2); 
         });
 
