@@ -111,8 +111,7 @@ public class TareaDAOJDBC implements TareaDao{
 			
 			try {
 				Connection conn = ConnectionManager.getConnection();
-				PreparedStatement statement = conn.prepareStatement("SELECT t.id, t.nombre, t.prioridad, t.usuario, t.estado, t.descripcion, t.fecha_inicio, t.fecha_fin, p.id, p.nombre, "
-						+ "p.usuario_propietario, p.estado, p.descripcion, p.prioridad, u.usuario, u.contrasena, u.nombre, u.email, u.activo, u.rol, r.codigo, r.nombre, r.activo\r\n"
+				PreparedStatement statement = conn.prepareStatement("SELECT t.id, t.nombre, t.prioridad, t.usuario, t.estado, t.descripcion, t.fecha_inicio, t.fecha_fin, p.id, p.nombre, p.usuario_propietario, p.estado, p.descripcion, p.prioridad, u.usuario, u.contrasena, u.nombre, u.email, u.activo, u.rol, r.codigo, r.nombre, r.activo\r\n"
 						+ "FROM tareas t join proyectos p on t.id_proyecto = p.id\r\n"
 						+ "join proyectos_miembros pm on pm.id_proyecto = p.id\r\n"
 						+ "join usuarios u on pm.usuario_miembro = u.usuario\r\n"
