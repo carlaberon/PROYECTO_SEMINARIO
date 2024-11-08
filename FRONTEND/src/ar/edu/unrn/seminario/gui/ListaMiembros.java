@@ -122,4 +122,9 @@ public class ListaMiembros extends JFrame {
         setVisible(true);
     }
 
+    /*public static void main(String[] args) throws NotNullException, DataEmptyException, InvalidDateException {
+    	IApi api = new MemoryApi();
+        ListaMiembros listamiembros = new ListaMiembros(api);
+        listamiembros.setVisible(true);
+    }*/
 }

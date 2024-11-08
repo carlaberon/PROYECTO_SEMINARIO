@@ -195,7 +195,7 @@ public class ModificarTarea extends JFrame {
 							JOptionPane.showMessageDialog(null,"La tarea debe tener" +" " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 							
 						} catch (InvalidDateException e) {
-				            JOptionPane.showMessageDialog(null, "Error en la fecha: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null,"Ingrese fechas válidas: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 				        
 						} catch (TaskNotUpdatedException e) {
 						    JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
