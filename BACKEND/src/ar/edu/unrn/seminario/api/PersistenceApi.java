@@ -20,6 +20,7 @@ import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
+import ar.edu.unrn.seminario.exception.TaskNotCreatedException;
 import ar.edu.unrn.seminario.exception.TaskNotUpdatedException;
 import ar.edu.unrn.seminario.modelo.Proyecto;
 import ar.edu.unrn.seminario.modelo.Rol;
@@ -129,7 +130,7 @@ public class PersistenceApi implements IApi {
 	@Override
 	public void registrarTarea(String name,int id_proyecto, String priority, String user, boolean estado,
 			String descripcion, LocalDate inicio, LocalDate fin)
-			throws DataEmptyException, NotNullException, InvalidDateException {
+			throws DataEmptyException, NotNullException, InvalidDateException, TaskNotCreatedException {
 		
 		Tarea tarea = new Tarea(0, name, proyectoDao.find(id_proyecto), priority, user, estado, descripcion, inicio, fin);
 		tareaDao.create(tarea);

@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
+import ar.edu.unrn.seminario.exception.TaskNotCreatedException;
 import ar.edu.unrn.seminario.exception.TaskNotUpdatedException;
 import ar.edu.unrn.seminario.modelo.Proyecto;
 import ar.edu.unrn.seminario.modelo.Rol;
@@ -19,7 +20,7 @@ import ar.edu.unrn.seminario.modelo.Usuario;
 public class TareaDAOJDBC implements TareaDao{
 
 	@Override
-	public void create(Tarea tarea) {
+	public void create(Tarea tarea) throws TaskNotCreatedException{
 		PreparedStatement statement;
 		Connection conn;
 		try {
@@ -39,20 +40,15 @@ public class TareaDAOJDBC implements TareaDao{
 			
 			int cant = statement.executeUpdate();
 		
-			if ( cant > 0) {
+			if ( cant <= 0) {
 			
-			System.out.println("Modificando " + cant + " registros");
-			
-			// TODO: disparar Exception propia #!
+				throw new TaskNotCreatedException("Error: No se pudo crear la tarea en la base de datos.");
 			}
-		else {
-			System.out.println("Error al actualizar$");
-		}
-			
+			System.out.println("Modificando " + cant + " registros");
 		}
 		catch (SQLException e) {
-			System.out.println("Error al actualizar: " + e.getMessage() );	
-			// TODO: disparar Exception propia
+
+			throw new TaskNotCreatedException("Error al actualizar la base de datos: " + e.getMessage());
 			}
 		catch (Exception e) {
 			System.out.println("Error al insertar un usuario");
