@@ -235,8 +235,10 @@ public class Inicio extends JFrame {
     }
 
     private void abrirCrearProyecto() {
+    	this.frame.setVisible(false);
     	CrearProyecto crearProyecto = new CrearProyecto(api); // Crear una instancia de ListaProyectos
         crearProyecto.setVisible(true); // Hacer visible la ventana de proyectos
+        
     }
     
     private void abrirListaProyectos() throws NotNullException, DataEmptyException {
