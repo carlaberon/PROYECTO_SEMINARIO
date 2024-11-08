@@ -40,7 +40,7 @@ public class ListaMiembros extends JFrame {
         model.addColumn("Roles");
         //model.addColumn("Proyecto");
         
-        usuarios = api.obtenerUsuarios();
+        //usuarios = api.obtenerUsuarios();
         for (UsuarioDTO u : usuarios) {
         	model.addRow(new Object[] {u.getUsername(), u.getEmail(), u.isActivo(), u.getRol()});
 		}
@@ -122,9 +122,4 @@ public class ListaMiembros extends JFrame {
         setVisible(true);
     }
 
-    public static void main(String[] args) throws NotNullException, DataEmptyException, InvalidDateException {
-    	IApi api = new MemoryApi();
-        ListaMiembros listamiembros = new ListaMiembros(api);
-        listamiembros.setVisible(true);
-    }
 }
