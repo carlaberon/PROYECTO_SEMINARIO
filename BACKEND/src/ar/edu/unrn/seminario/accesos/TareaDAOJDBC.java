@@ -111,14 +111,13 @@ public class TareaDAOJDBC implements TareaDao{
 			
 			try {
 				Connection conn = ConnectionManager.getConnection();
-				PreparedStatement statement = conn.prepareStatement("SELECT t.id, t.nombre, t.prioridad, t.usuario, t.estado, t.descripcion, t.fecha_inicio, t.fecha_fin, p.id, p.nombre, "
-						+ "p.usuario_propietario, p.estado, p.descripcion, p.prioridad, u.usuario, u.contrasena, u.nombre, u.email, u.activo, u.rol, r.codigo, r.nombre, r.activo\r\n"
+				PreparedStatement statement = conn.prepareStatement("SELECT t.id, t.nombre, t.prioridad, t.usuario, t.estado, t.descripcion, t.fecha_inicio, t.fecha_fin, p.id, p.nombre, p.usuario_propietario, p.estado, p.descripcion, p.prioridad, u.usuario, u.contrasena, u.nombre, u.email, u.activo, u.rol, r.codigo, r.nombre, r.activo\r\n"
 						+ "FROM tareas t join proyectos p on t.id_proyecto = p.id\r\n"
 						+ "join proyectos_miembros pm on pm.id_proyecto = p.id\r\n"
 						+ "join usuarios u on pm.usuario_miembro = u.usuario\r\n"
 						+ "join usuario_rol ur on ur.nombre_usuario = u.usuario\r\n"
 						+ "join roles r on r.codigo = ur.codigo_rol\r\n"
-						+ "WHERE t.id_proyecto = ? and p.usuario_propietario = u.usuario and t.nombre NOT LIKE '#%'");
+						+ "WHERE t.id_proyecto = ? AND t.nombre NOT LIKE '#%' AND u.usuario = p.usuario_propietario");
 				statement.setInt(1, id_project);
 				ResultSet rs = statement.executeQuery();
 				while(rs.next()) {
@@ -129,7 +128,6 @@ public class TareaDAOJDBC implements TareaDao{
 							rs.getString("t.descripcion"), rs.getDate("t.fecha_inicio").toLocalDate(), rs.getDate("t.fecha_fin").toLocalDate());
 					
 					tareas.add(unaTarea);
-					System.out.println(unaTarea);
 				}
 			
 				
