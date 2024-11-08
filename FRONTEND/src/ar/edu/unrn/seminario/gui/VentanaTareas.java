@@ -60,7 +60,7 @@ public class VentanaTareas extends JFrame {
     	
     	setTitle("TAREAS");
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        setBounds(50, 50, 1200, 900);
+        setBounds(50, 50, 1200, 650);
         
         contentPane = new JPanel();
         contentPane.setLayout(new BorderLayout());
@@ -203,6 +203,12 @@ public class VentanaTareas extends JFrame {
 		scrollPane.setViewportView(table);
 		scrollPane.getViewport().setBackground(new Color(45, 44, 50)); // Fondo del scrollPane
       	
+		// Ocultar la columna ID
+        table.getColumnModel().getColumn(0).setMinWidth(0);
+        table.getColumnModel().getColumn(0).setMaxWidth(0);
+        table.getColumnModel().getColumn(0).setPreferredWidth(0);
+
+		
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -397,6 +403,11 @@ public class VentanaTareas extends JFrame {
 		        t.getFin()
 		    });
 		}
+		// Ocultar la columna ID
+        table.getColumnModel().getColumn(0).setMinWidth(0);
+        table.getColumnModel().getColumn(0).setMaxWidth(0);
+        table.getColumnModel().getColumn(0).setPreferredWidth(0);
+
 	}
 	//api.setTareaActual->id
 	//api.getTareaActual<-id
