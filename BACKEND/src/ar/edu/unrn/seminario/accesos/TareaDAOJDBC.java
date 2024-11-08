@@ -118,7 +118,7 @@ public class TareaDAOJDBC implements TareaDao{
 						+ "join usuarios u on pm.usuario_miembro = u.usuario\r\n"
 						+ "join usuario_rol ur on ur.nombre_usuario = u.usuario\r\n"
 						+ "join roles r on r.codigo = ur.codigo_rol\r\n"
-						+ "WHERE t.id_proyecto = ? and t.nombre NOT LIKE '#%'");
+						+ "WHERE t.id_proyecto = ? and p.usuario_propietario = u.usuario and t.nombre NOT LIKE '#%'");
 				statement.setInt(1, id_project);
 				ResultSet rs = statement.executeQuery();
 				while(rs.next()) {
