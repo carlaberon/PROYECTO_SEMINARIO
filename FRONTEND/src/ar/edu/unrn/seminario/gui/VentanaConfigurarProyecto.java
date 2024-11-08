@@ -72,8 +72,6 @@ public class VentanaConfigurarProyecto extends JFrame {
 		prioridadComboBox.setBounds(216, 251, 451, 26);
 		contentPane.add(prioridadComboBox);
 
-		// Añadir elementos al JComboBox
-		//prioridadComboBox.addItem("");
 		for (String prioridad : prioridades) {
 			prioridadComboBox.addItem(prioridad);
 		}

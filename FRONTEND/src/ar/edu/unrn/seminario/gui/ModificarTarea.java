@@ -114,8 +114,6 @@ public class ModificarTarea extends JFrame {
 			prioridadComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 10));
 			prioridadComboBox.setBounds(190, 133, 160, 25);
 			contentPane.add(prioridadComboBox);
-			
-			prioridadComboBox.addItem("");
 
 			// Llenar el JComboBox con las claves del mapa de prioridad
 	        for (String prioridad :Arrays.asList("alta", "media", "baja")) {
@@ -234,11 +232,12 @@ public class ModificarTarea extends JFrame {
             textAreaDescription.setText(tarea.getDescription());
 
             proyectoTareaComboBox.setSelectedItem(tarea.getProject().getNombre());
-            //asignarUsuarioComboBox.setSelectedItem(tarea.getUser().getUsername());
+            asignarUsuarioComboBox.setSelectedItem(tarea.getUser());
             prioridadComboBox.setSelectedItem(tarea.getPriority());
 
             dateChooserInicio.setDate(convertirADate(tarea.getInicio()));
             dateChooserFin.setDate(convertirADate(tarea.getFin()));
+            
         }
 
         private Date convertirADate(LocalDate localDate) {
