@@ -135,7 +135,7 @@ public class VentanaResumen extends JFrame {
         centerPanel1.add(descPanel);
 
         // Estado del proyecto
-        JPanel estadoPanel = createPanel("Estado del proyecto",unproyecto.isEstado() ? "FINALIZADO" : "EN CURSO");
+        JPanel estadoPanel = createPanel("Estado del proyecto",unproyecto.isEstado());
         centerPanel1.add(estadoPanel);
 
         // Detalles del plan

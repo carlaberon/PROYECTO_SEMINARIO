@@ -1,23 +1,23 @@
-//package ar.edu.unrn.seminario.accesos;
-//
-//import java.time.LocalDate;
-//import java.util.List;
-//
-//import ar.edu.unrn.seminario.exception.DataEmptyException;
-//import ar.edu.unrn.seminario.exception.InvalidDateException;
-//import ar.edu.unrn.seminario.exception.NotNullException;
-//import ar.edu.unrn.seminario.modelo.Proyecto;
-//import ar.edu.unrn.seminario.modelo.Rol;
-//import ar.edu.unrn.seminario.modelo.Tarea;
-//import ar.edu.unrn.seminario.modelo.Usuario;
-//
-//public class TestAcceso {
-//
-//	public static void main(String[] args) throws DataEmptyException, NotNullException, InvalidDateException {
+package ar.edu.unrn.seminario.accesos;
+
+import java.time.LocalDate;
+import java.util.List;
+
+import ar.edu.unrn.seminario.exception.DataEmptyException;
+import ar.edu.unrn.seminario.exception.InvalidDateException;
+import ar.edu.unrn.seminario.exception.NotNullException;
+import ar.edu.unrn.seminario.modelo.Proyecto;
+import ar.edu.unrn.seminario.modelo.Rol;
+import ar.edu.unrn.seminario.modelo.Tarea;
+import ar.edu.unrn.seminario.modelo.Usuario;
+
+public class TestAcceso {
+
+	public static void main(String[] args) throws DataEmptyException, NotNullException, InvalidDateException {
 //		RolDao rolDao = new RolDAOJDBC();
 //		UsuarioDao usuarioDao = new UsuarioDAOJDBC();
 //		TareaDao tareaDao = new TareaDAOJDBC();
-//		ProyectoDao proyectoDao = new ProyectoDAOJDBC();
+		ProyectoDao proyectoDao = new ProyectoDAOJDBC();
 //		
 //		List<Rol> roles = rolDao.findAll();
 //
@@ -45,23 +45,23 @@
 //		//Recuperacion de una tarea en especifico
 //		tarea = tareaDao.find("Definir plan de estudio", "Aplicacion de votos", "ldifabio");
 //		System.out.println(tarea);
-//		
-//		//Eliminar una tarea en particular atraves del objeto Tarea
-//		//tareaDao.remove(tarea);
-//		//tareas = tareaDao.findAll();
-//		//for (Tarea tarea2 : tareas) {
-//		//	System.out.println(tarea2);
-//		//}
-//				
-//		//Modificar tarea
-//				
-//		//--------------------------------------------------------------------------------------------------------------------------------------
-//		
-//		//List<Usuario> usuarios = usuarioDao.findAll();
-//		//	for (Usuario u: usuarios) {
-//		//	System.out.println(u);
-//		//	}	
-//
+		
+		//Eliminar una tarea en particular atraves del objeto Tarea
+		//tareaDao.remove(tarea);
+		//tareas = tareaDao.findAll();
+		//for (Tarea tarea2 : tareas) {
+		//	System.out.println(tarea2);
+		//}
+				
+		//Modificar tarea
+				
+		//--------------------------------------------------------------------------------------------------------------------------------------
+		
+		//List<Usuario> usuarios = usuarioDao.findAll();
+		//	for (Usuario u: usuarios) {
+		//	System.out.println(u);
+		//	}	
+
 //		System.out.println("*" + usuarioDao.find("ldifabio"));
 //		
 //		
@@ -83,17 +83,21 @@
 //		for (Proyecto proyectoR : proyectos) {
 //			System.out.println(proyectoR.toString());
 //		}
-//		
-//		//Recuperacion de un proyecto especifico
-//		proyecto = proyectoDao.find("Aplicacion de votos", "ldifabio");
+		
+		//Recuperacion de un proyecto especifico
+//		Proyecto proyecto = proyectoDao.find(1);
 //		System.out.println(proyecto);
-//		
-//		//Eliminar proyecto en concreto
-//		//proyectoDao.remove("SubProyecto", "ldifabio");
-//		//proyectoDao.remove("Proyecto Principal", "ldifabio"); //remueve por nombre y usuario
-//		//proyectoDao.remove(proyecto3); //remueve el proyecto 
-//		
-//		
-//	}
-//
-//}
+		List<Proyecto> proyectos = proyectoDao.findAll("ldifabio");
+		for (Proyecto proyecto2 : proyectos) {
+			System.out.println(proyecto2);
+		}
+		
+		//Eliminar proyecto en concreto
+		//proyectoDao.remove("SubProyecto", "ldifabio");
+		//proyectoDao.remove("Proyecto Principal", "ldifabio"); //remueve por nombre y usuario
+		//proyectoDao.remove(proyecto3); //remueve el proyecto 
+		
+		
+	}
+
+}

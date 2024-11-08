@@ -112,7 +112,7 @@ public class PersistenceApi implements IApi {
 		return rolDTO;
 	}
 	@Override
-	public void crearProyecto(String nombre, String string, boolean estado, String descripcion, String prioridad)
+	public void crearProyecto(String nombre, String string, String estado, String descripcion, String prioridad)
 			throws NotNullException, DataEmptyException {
 		
 		Usuario propietario = usuarioDao.find(string);
