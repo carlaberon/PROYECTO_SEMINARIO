@@ -146,11 +146,17 @@ public class Tarea {
         this.descripcion = descripcion;
     }
 
-    public void setInicio(LocalDate inicio) {
+    public void setInicio(LocalDate inicio) throws InvalidDateException {
+		 if (this.fechaFin.isBefore(inicio)) {
+				throw new InvalidDateException("La fecha de inicio debe ser anterior a la fecha de finalizacion");
+			}
         this.fechaInicio = inicio;
     }
 
-    public void setFin(LocalDate fin) {
+    public void setFin(LocalDate fin) throws InvalidDateException {
+		 if (fin.isBefore(this.fechaInicio)) {
+				throw new InvalidDateException("La fecha de inicio debe ser anterior a la fecha de finalizacion");
+			}
         this.fechaFin = fin;
     }
 
