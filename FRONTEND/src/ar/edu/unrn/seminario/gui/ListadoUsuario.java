@@ -61,11 +61,11 @@ public class ListadoUsuario extends JFrame  {
 		modelo = new DefaultTableModel(new Object[][] {}, titulos);
 
 		// Obtiene la lista de usuarios a mostrar
-		List<UsuarioDTO> usuarios = api.obtenerUsuarios();
+		//List<UsuarioDTO> usuarios = api.obtenerUsuarios();
 		// Agrega los usuarios en el model
-		for (UsuarioDTO u : usuarios) {
+		/*for (UsuarioDTO u : usuarios) {
 			modelo.addRow(new Object[] { u.getUsername(), u.getNombre(), u.getEmail(), u.isActivo(), u.getRol() });
-		}
+		}*/
 
 		table.setModel(modelo);
 
@@ -159,14 +159,14 @@ public class ListadoUsuario extends JFrame  {
 		// Obtiene el model del table
 		DefaultTableModel modelo = (DefaultTableModel) table.getModel();
 		// Obtiene la lista de usuarios a mostrar
-		List<UsuarioDTO> usuarios = api.obtenerUsuarios();
+		//List<UsuarioDTO> usuarios = api.obtenerUsuarios();
 		// Resetea el model
 		modelo.setRowCount(0);
 
-		// Agrega los usuarios en el model
+		/*// Agrega los usuarios en el model
 		for (UsuarioDTO u : usuarios) {
 			modelo.addRow(new Object[] { u.getUsername(), u.getNombre(), u.getEmail(), u.isActivo(), u.getRol() });
-		}
+		}*/
 
 	}
 
