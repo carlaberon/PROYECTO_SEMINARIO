@@ -421,7 +421,7 @@ public class PersistenceApi implements IApi {
 		ProyectoDTO proyectoDto = null;
 		if(proyecto != null)
 			proyectoDto = new ProyectoDTO(proyecto.getId(),proyecto.getNombre(), convertirEnUsuarioDTO(proyecto.getUsuarioPropietario()), proyecto.getEstado(), proyecto.getPrioridad(), proyecto.getDescripcion());
-			
+		
 		proyectoDto.setId(proyecto.getId());
 		return proyectoDto;
 	}

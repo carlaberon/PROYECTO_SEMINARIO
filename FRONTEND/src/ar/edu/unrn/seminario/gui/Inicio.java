@@ -313,7 +313,9 @@ public class Inicio extends JFrame {
 		UsuarioDTO usuario = api.obtenerUsuario("ldifabio");
 
 		api.setUsuarioActual(usuario.getUsername());
+		
 		new Inicio(api);
+		
 	}
 
 	
