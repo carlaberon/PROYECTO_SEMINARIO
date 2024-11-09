@@ -1,7 +1,6 @@
 package ar.edu.unrn.seminario.accesos;
 
-import java.time.LocalDate;
-import java.util.List;
+/*import java.util.List;
 
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
@@ -9,9 +8,9 @@ import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.modelo.Proyecto;
 import ar.edu.unrn.seminario.modelo.Rol;
 import ar.edu.unrn.seminario.modelo.Tarea;
-import ar.edu.unrn.seminario.modelo.Usuario;
+import ar.edu.unrn.seminario.modelo.Usuario;*/
 
-public class TestAcceso {
+/*public class TestAcceso {
 
 	public static void main(String[] args) throws DataEmptyException, NotNullException, InvalidDateException {
 		RolDao rolDao = new RolDAOJDBC();
@@ -34,17 +33,17 @@ public class TestAcceso {
 		
 		
 		
-		Tarea tarea = new Tarea("plan de estudio", "Aplicacion de votos","ldifabio","alta","ldifabio", false, "plan de estudios para cerrar el cuatrimestre", LocalDate.now(), LocalDate.now().plusDays(20));
-		tareaDao.create(tarea);
+		//Tarea tarea = new Tarea("plan de estudio", "Aplicacion de votos","ldifabio","alta","ldifabio", false, "plan de estudios para cerrar el cuatrimestre", LocalDate.now(), LocalDate.now().plusDays(20));
+		//tareaDao.create(tarea);
 		
 		//Recuperacion de todas las tareas
-		List<Tarea> tareas = tareaDao.findAll();
-		for (Tarea tarea2 : tareas) {
-			System.out.println(tarea2);
-		}
+		//List<Tarea> tareas = tareaDao.findAll();
+		//for (Tarea tarea2 : tareas) {
+		//	System.out.println(tarea2);
+		//}
 		//Recuperacion de una tarea en especifico
-		tarea = tareaDao.find("Definir plan de estudio", "Aplicacion de votos", "ldifabio");
-		System.out.println(tarea);
+		//tarea = tareaDao.find("Definir plan de estudio", "Aplicacion de votos", "ldifabio");
+		//System.out.println(tarea);
 		
 		//Eliminar una tarea en particular atraves del objeto Tarea
 		//tareaDao.remove(tarea);
@@ -62,7 +61,7 @@ public class TestAcceso {
 		//	System.out.println(u);
 		//	}	
 
-		System.out.println("*" + usuarioDao.find("ldifabio"));
+		/*System.out.println("*" + usuarioDao.find("ldifabio"));
 		
 		
 		Proyecto subProyecto = new Proyecto("SubProyecto", usuario, false, "Descripción del subproyecto", "media");
@@ -96,4 +95,4 @@ public class TestAcceso {
 		
 	}
 
-}
+}*/
