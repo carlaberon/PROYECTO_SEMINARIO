@@ -49,16 +49,10 @@ public interface IApi {
 	
 	List<TareaDTO> obtenerTareas() throws NotNullException, InvalidDateException, DataEmptyException;
 	
-	void añadirTareaAProyecto(String proyecto, Tarea tarea);
-	
 	public void eliminarTarea(int idTarea);
 	
 	List<ProyectoDTO> obtenerProyectos(String username) throws NotNullException, DataEmptyException;
-		
-	void asignarPrioridad(String nombreProyecto, String prioridad) throws NotNullException, DataEmptyException;
-	
-    public int compare(Proyecto p1, Proyecto p2);
-    
+		    
 	void eliminarProyecto(int id);
 	
 	void modificarProyecto(int idProyecto, String nuevoNombre, String nuevaPrioridad, String nuevaDescripcion)throws NotNullException, DataEmptyException;
