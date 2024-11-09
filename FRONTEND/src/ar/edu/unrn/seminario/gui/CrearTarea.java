@@ -220,10 +220,14 @@ public class CrearTarea extends JFrame {
    public static void main (String[] args) throws NotNullException, DataEmptyException {
     	
     	IApi api = new PersistenceApi();
+    	
     	api.setUsuarioActual("ldifabio");
+    	
     	api.setProyectoActual(1);
-    	System.out.println(api.getProyectoActual().getId()); 
+    	
+    
     	CrearTarea ventana = new CrearTarea(api);
+    	
     	ventana.setVisible(true);
     }
 }

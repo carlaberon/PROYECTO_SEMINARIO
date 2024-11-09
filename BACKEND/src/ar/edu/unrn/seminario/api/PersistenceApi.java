@@ -124,7 +124,7 @@ public class PersistenceApi implements IApi {
 
 	private RolDTO convertirEnRolDTO(Rol rol) {
 		RolDTO rolDto = new RolDTO(rol.getCodigo(), rol.getNombre(), rol.isActivo());
-		return rolDto;
+		return null;
 	}
 
 	@Override
@@ -242,14 +242,10 @@ public class PersistenceApi implements IApi {
 
 	@Override
 	public void setProyectoActual(int id) throws NotNullException, DataEmptyException {
-			String usuarioActual = getUsuarioActual().getUsername();
-			if (! usuarioActual.isEmpty()) {
-				this.proyectoActual = proyectoDao.find(id);
-			}
-			else {
-				throw new NullPointerException();
-			}
-			
+		String usuarioActual = getUsuarioActual().getUsername();
+		this.proyectoActual = proyectoDao.find(id);
+	
+	
 		
 	}
 	
@@ -421,7 +417,7 @@ public class PersistenceApi implements IApi {
 		ProyectoDTO proyectoDto = null;
 		if(proyecto != null)
 			proyectoDto = new ProyectoDTO(proyecto.getId(),proyecto.getNombre(), convertirEnUsuarioDTO(proyecto.getUsuarioPropietario()), proyecto.getEstado(), proyecto.getPrioridad(), proyecto.getDescripcion());
-		
+			
 		proyectoDto.setId(proyecto.getId());
 		return proyectoDto;
 	}
