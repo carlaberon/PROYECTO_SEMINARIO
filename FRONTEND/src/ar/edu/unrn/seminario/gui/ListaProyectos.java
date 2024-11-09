@@ -233,12 +233,17 @@ public class ListaProyectos extends JFrame {
     			if(!proyectos.isEmpty()) {
     				for (ProyectoDTO p : proyectos) {
     					modelo.addRow(new Object[] {
+    							p.getId(),
     							p.getNombre(), 
     							p.getDescripcion(), 
     							p.isEstado(),
     							p.getPrioridad(), 
     							p.getUsuarioPropietario().getUsername()});
     				}
+    		        // Ocultar la columna ID
+    		        tabla.getColumnModel().getColumn(0).setMinWidth(0);
+    		        tabla.getColumnModel().getColumn(0).setMaxWidth(0);
+    		        tabla.getColumnModel().getColumn(0).setPreferredWidth(0);
     			}
 
     }

@@ -19,8 +19,5 @@ public interface TareaDao {
 	
 	void remove(int id);
 	
-
 	public Tarea find(int id) throws DataEmptyException, NotNullException, InvalidDateException;
-	
-	//List<Tarea> findAll() throws DataEmptyException, NotNullException, InvalidDateException;
 }
