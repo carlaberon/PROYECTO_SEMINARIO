@@ -53,7 +53,7 @@ public interface IApi {
 	
 	List<ProyectoDTO> obtenerProyectos(String username) throws NotNullException, DataEmptyException;
 		    
-	void eliminarProyecto(int id);
+	void eliminarProyecto(int id) throws DataEmptyException, NotNullException, InvalidDateException;
 	
 	void modificarProyecto(int idProyecto, String nuevoNombre, String nuevaPrioridad, String nuevaDescripcion)throws NotNullException, DataEmptyException;
 

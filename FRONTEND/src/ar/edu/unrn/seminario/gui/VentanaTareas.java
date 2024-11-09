@@ -322,7 +322,7 @@ public class VentanaTareas extends JFrame {
 					
 					
 					api.eliminarTarea(idTarea);
-					
+					habilitarBotones(false);
 					((DefaultTableModel) table.getModel()).removeRow(filaSeleccionada);
 					
 				}

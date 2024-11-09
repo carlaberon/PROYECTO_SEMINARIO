@@ -154,8 +154,12 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public void eliminarProyecto(int id) {
+	public void eliminarProyecto(int id) throws DataEmptyException, NotNullException, InvalidDateException {
 		proyectoDao.remove(id);
+		List<Tarea> tareas = tareaDao.findByProject(id);
+		for (Tarea tarea : tareas) {
+			tareaDao.remove(tarea.getId());
+		}
 	}
 	
 	@Override
