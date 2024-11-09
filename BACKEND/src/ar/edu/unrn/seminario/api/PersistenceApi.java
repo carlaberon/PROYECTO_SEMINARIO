@@ -1,6 +1,8 @@
 package ar.edu.unrn.seminario.api;
 
+import java.sql.Date;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -353,8 +355,18 @@ public class PersistenceApi implements IApi {
 	            return 0; // En caso de prioridad desconocida
 	    }
 	}
-	
-	
+	/*@Override
+	public LocalDate convertirDate(Date inicio) {
+		try {
+			LocalDate fechaInicioLocalDate = inicio.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			return fechaInicioLocalDate;	
+		} catch (NullPointerException e) {
+		throw new NotDateNullException("la fecha es vacia");
+			// TODO: handle exception
+		}
+		
+		
+	}*/
 	//ACA PONDRE LOS MODULOS QUE CONSIDERO QUE NO SON NECESARIOS:
 	
 
@@ -427,10 +439,19 @@ public class PersistenceApi implements IApi {
 	}
 	
 	public UsuarioDTO getUsuarioActual() throws NotNullException, DataEmptyException {
-	    if (usuarioActual == null) {
-	        throw new IllegalStateException("El usuario actual no ha sido establecido.");
-	    }
+	    
 	    return convertirEnUsuarioDTO(usuarioActual);
 	}
+   /*
+	@Override
+	public LocalDate convertirDate(java.util.Date inicio) {
+		try {
+			LocalDate fechaInicioLocalDate = inicio.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			return fechaInicioLocalDate;	
+		} catch (NullPointerException e) {
+		throw new NotDateNullException("la fecha es vacia");
+			// TODO: handle exception
+		}
+	}*/
 	
 }
