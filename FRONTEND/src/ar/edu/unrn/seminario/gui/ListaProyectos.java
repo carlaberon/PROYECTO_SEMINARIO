@@ -64,8 +64,8 @@ public class ListaProyectos extends JFrame {
         				p.getNombre(), 
         				p.getDescripcion(), 
         				p.isEstado(),
-        						p.getPrioridad(), 
-        						p.getUsuarioPropietario().getUsername()});
+        				p.getPrioridad(), 
+        				p.getUsuarioPropietario().getUsername()});
         	}
         }
      
@@ -105,14 +105,6 @@ public class ListaProyectos extends JFrame {
 			}
 		});
 
-
-     // ComboBox para prioridad
-        //String[] prioridades = {"Alta", "Media", "Baja"};
-        //JComboBox<String> comboBox = new JComboBox<>(prioridades);
-        //TableColumn prioridadColumna = tabla.getColumnModel().getColumn(3);
-        //prioridadColumna.setCellEditor(new DefaultCellEditor(comboBox));
-
-        // Crear un panel inferior con un color específico
         JPanel panelInferior = new JPanel();
         panelInferior.setBackground(new Color(109, 114, 195)); // Púrpura para el fondo del panel inferior
         JLabel labelInferior = new JLabel("LabProject - Sistema de Gestión de Proyectos");
@@ -241,12 +233,17 @@ public class ListaProyectos extends JFrame {
     			if(!proyectos.isEmpty()) {
     				for (ProyectoDTO p : proyectos) {
     					modelo.addRow(new Object[] {
+    							p.getId(),
     							p.getNombre(), 
     							p.getDescripcion(), 
     							p.isEstado(),
     							p.getPrioridad(), 
     							p.getUsuarioPropietario().getUsername()});
     				}
+    		        // Ocultar la columna ID
+    		        tabla.getColumnModel().getColumn(0).setMinWidth(0);
+    		        tabla.getColumnModel().getColumn(0).setMaxWidth(0);
+    		        tabla.getColumnModel().getColumn(0).setPreferredWidth(0);
     			}
 
     }

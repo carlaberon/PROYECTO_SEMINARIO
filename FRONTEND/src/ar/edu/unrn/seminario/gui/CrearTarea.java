@@ -27,6 +27,7 @@ import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
+import ar.edu.unrn.seminario.exception.TaskNotCreatedException;
 
 import javax.swing.JTextArea;
 import javax.swing.JSpinner;
@@ -39,7 +40,6 @@ public class CrearTarea extends JFrame {
     private JPanel contentPane;
     private JTextField nombreTareaTextField;
     private JComboBox<String> asignarUsuarioComboBox; // ComboBox para seleccionar usuario
-    private JTextField prioridadTareaTextField;
     List<String> prioridades = Arrays.asList("alta", "media", "baja");
     private List<ProyectoDTO> proyectos = new ArrayList<>();
     private List<UsuarioDTO> usuarios = new ArrayList<>();
@@ -113,7 +113,6 @@ public class CrearTarea extends JFrame {
 		prioridadComboBox.setBounds(190, 133, 160, 25);
 		contentPane.add(prioridadComboBox);
 		
-		prioridadComboBox.addItem("");
 
 		// Llenar el JComboBox con las claves del mapa de prioridad
         for (String prioridad : prioridades) {
@@ -168,7 +167,6 @@ public class CrearTarea extends JFrame {
                     UsuarioDTO usuario = usuarios.get(selectedUserIndex);
                     String descripcionTarea = textAreaDescription.getText();
                     Date fechaInicioDate = dateChooserInicio.getDate();
-                    //UsuarioDTO nombres = null;
                     Date fechaFinDate = dateChooserFin.getDate();
                     
                 	//Convertir Date a Localdate, si no cargo una fecha lanza un nullpointer
@@ -184,8 +182,9 @@ public class CrearTarea extends JFrame {
                     dispose();
                        
                 	
-                	} catch (NullPointerException excepcion) {
-                		JOptionPane.showMessageDialog(null,excepcion.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                	} catch (NullPointerException e) {
+                		
+                		JOptionPane.showMessageDialog(null,e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 	} catch (DataEmptyException e) {
                 		JOptionPane.showMessageDialog(null,"La tarea debe tener" +" " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 		
@@ -196,6 +195,10 @@ public class CrearTarea extends JFrame {
 					} catch (InvalidDateException e) {
 
 						JOptionPane.showMessageDialog(null,"Ingrese fechas válidas: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+					} catch (TaskNotCreatedException e) {
+						
+						JOptionPane.showMessageDialog(null, "No se pudo crear la tarea. Por favor, revise los datos ingresados y vuelva a intentarlo.", "Error al crear tarea", JOptionPane.ERROR_MESSAGE);
+
 					}
                 	
      
@@ -211,14 +214,14 @@ public class CrearTarea extends JFrame {
             }
         });
     }
-   public static void main (String[] args) throws NotNullException, DataEmptyException {
+   /*public static void main (String[] args) throws NotNullException, DataEmptyException {
     	
     	IApi api = new PersistenceApi();
     	api.setUsuarioActual("ldifabio");
     	api.setProyectoActual(1);
-    	System.out.println(api.getProyectoActual().getId()); 
+
     	CrearTarea ventana = new CrearTarea(api);
     	ventana.setVisible(true);
-    }
+    }*/
 }
 

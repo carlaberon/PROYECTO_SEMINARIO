@@ -7,12 +7,10 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.time.LocalDate;
-
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
+import ar.edu.unrn.seminario.exception.TaskNotCreatedException;
 import ar.edu.unrn.seminario.exception.TaskNotUpdatedException;
 import ar.edu.unrn.seminario.modelo.Proyecto;
 import ar.edu.unrn.seminario.modelo.Rol;
@@ -22,7 +20,7 @@ import ar.edu.unrn.seminario.modelo.Usuario;
 public class TareaDAOJDBC implements TareaDao{
 
 	@Override
-	public void create(Tarea tarea) {
+	public void create(Tarea tarea) throws TaskNotCreatedException{
 		PreparedStatement statement;
 		Connection conn;
 		try {
@@ -42,20 +40,15 @@ public class TareaDAOJDBC implements TareaDao{
 			
 			int cant = statement.executeUpdate();
 		
-			if ( cant > 0) {
+			if ( cant <= 0) {
 			
-			System.out.println("Modificando " + cant + " registros");
-			
-			// TODO: disparar Exception propia #!
+				throw new TaskNotCreatedException("Error: No se pudo crear la tarea en la base de datos.");
 			}
-		else {
-			System.out.println("Error al actualizar$");
-		}
-			
+			System.out.println("Modificando " + cant + " registros");
 		}
 		catch (SQLException e) {
-			System.out.println("Error al actualizar: " + e.getMessage() );	
-			// TODO: disparar Exception propia
+
+			throw new TaskNotCreatedException("Error al actualizar la base de datos: " + e.getMessage());
 			}
 		catch (Exception e) {
 			System.out.println("Error al insertar un usuario");
@@ -198,59 +191,4 @@ public class TareaDAOJDBC implements TareaDao{
 		}
 		return unaTarea;
 	}
-	
-	
-/*
-	@Override
-	public void remove(Tarea tarea) {
-		try {
-			Connection conn = ConnectionManager.getConnection();
-			PreparedStatement sent = conn.prepareStatement("DELETE FROM tareas WHERE nombre=? AND proyecto=? AND usuario_propietario=?");
-			sent.setString(1, tarea.getNombre());
-			sent.setString(2, tarea.getProyecto());
-			sent.setString(3, tarea.getUsuarioPropietario());
-			
-			int verificacion = sent.executeUpdate();		
-			if(verificacion == 1) {
-				System.out.println("Se elimino la tarea.");
-			}
-		} catch (SQLException e) {
-			System.out.println("No se pudo eliminar la tarea. " + e.toString());
-		} finally {
-		ConnectionManager.disconnect();
-		}
-	}			
-*/
-
-/*	@Override
-	public List<Tarea> findAll() throws DataEmptyException, NotNullException, InvalidDateException {
-		List<Tarea>tareas = new ArrayList<Tarea>();
-		try
-		{
-			Connection conn = ConnectionManager.getConnection();
-			Statement statement = conn.createStatement();
-			ResultSet rs = statement.executeQuery("SELECT t.id, t.nombre, t.proyecto, t.usuario_propietario, t.prioridad, t.usuario, t.estado, t.descripcion, t.fecha_inicio, t.fecha_fin "+"FROM tareas t");
-			
-			while (rs.next()) {
-				//Tarea tarea = new Tarea(rs.getString("nombre"), rs.getString("proyecto"),rs.getString("usuario_propietario"), rs.getString("prioridad"), rs.getString("usuario"), rs.getBoolean("estado"),rs.getString("descripcion"), rs.getDate("fecha_inicio").toLocalDate(), rs.getDate("fecha_fin").toLocalDate());
-				//tareas.add(tarea);
-			}
-		} catch (SQLException e) {
-			System.out.println("Error de mySql\n" + e.toString());
-			// TODO: disparar Exception propia
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-			// TODO: disparar Exception propia
-		} finally {
-			ConnectionManager.disconnect();
-		}
-
-		return tareas;
-		
-	
-	}*/
-
-
-
-
 }

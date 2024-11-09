@@ -1,10 +1,9 @@
 package ar.edu.unrn.seminario.api;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
-import ar.edu.unrn.seminario.dto.EventoDTO;
+//import ar.edu.unrn.seminario.dto.EventoDTO;
 import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.TareaDTO;
@@ -12,11 +11,12 @@ import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
+import ar.edu.unrn.seminario.exception.TaskNotCreatedException;
 import ar.edu.unrn.seminario.exception.TaskNotUpdatedException;
-import ar.edu.unrn.seminario.modelo.Evento;
+//import ar.edu.unrn.seminario.modelo.Evento;
 import ar.edu.unrn.seminario.modelo.Proyecto;
 import ar.edu.unrn.seminario.modelo.Tarea;
-import ar.edu.unrn.seminario.modelo.Usuario;
+//import ar.edu.unrn.seminario.modelo.Usuario;
 
 public interface IApi {
 	void registrarUsuario(String username, String password, String email, String nombre, Integer rol);
@@ -43,22 +43,16 @@ public interface IApi {
 
 	void desactivarUsuario(String username); // recuperar el objeto Usuario, implementar el comportamiento de estado.
 	
-	public void registrarTarea(String name,int id_proyecto, String priority, String user, String estado, String descripcion, LocalDate inicio, LocalDate fin) throws DataEmptyException, NotNullException, InvalidDateException;
+	public void registrarTarea(String name,int id_proyecto, String priority, String user, String estado, String descripcion, LocalDate inicio, LocalDate fin) throws DataEmptyException, NotNullException, InvalidDateException, TaskNotCreatedException;
 	
 	public int obtenerPrioridad(String prioridad);
 	
 	List<TareaDTO> obtenerTareas() throws NotNullException, InvalidDateException, DataEmptyException;
 	
-	void añadirTareaAProyecto(String proyecto, Tarea tarea);
-	
 	public void eliminarTarea(int idTarea);
 	
 	List<ProyectoDTO> obtenerProyectos(String username) throws NotNullException, DataEmptyException;
-		
-	void asignarPrioridad(String nombreProyecto, String prioridad) throws NotNullException, DataEmptyException;
-	
-    public int compare(Proyecto p1, Proyecto p2);
-    
+		    
 	void eliminarProyecto(int id);
 	
 	void modificarProyecto(int idProyecto, String nuevoNombre, String nuevaPrioridad, String nuevaDescripcion)throws NotNullException, DataEmptyException;

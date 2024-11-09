@@ -13,7 +13,6 @@ import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.exception.ProjectInsertionError;
 import ar.edu.unrn.seminario.modelo.Proyecto;
 import ar.edu.unrn.seminario.modelo.Rol;
-import ar.edu.unrn.seminario.modelo.Tarea;
 import ar.edu.unrn.seminario.modelo.Usuario;
 
 public class ProyectoDAOJDBC implements ProyectoDao{

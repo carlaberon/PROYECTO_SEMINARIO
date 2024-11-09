@@ -2,12 +2,12 @@ package ar.edu.unrn.seminario.dto;
 
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.NotNullException;
-import ar.edu.unrn.seminario.modelo.Rol;
+//import ar.edu.unrn.seminario.modelo.Rol;
 
 public class UsuarioDTO {
 	private String username;
 	private String password;
-	private static String nombre;
+	private String nombre;
 	private String email;
 	private RolDTO rol;
 	private boolean activo;
@@ -68,7 +68,7 @@ public class UsuarioDTO {
 		this.password = password;
 	}
 
-	public static String getNombre() {
+	public String getNombre() {
 		return nombre;
 	}
 
