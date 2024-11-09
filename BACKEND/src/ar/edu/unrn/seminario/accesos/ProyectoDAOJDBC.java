@@ -39,7 +39,7 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 			int cant = statement.executeUpdate();
 		
 			if ( cant > 0) {
-				System.out.println("Proyecto principal insertado.");
+				System.out.println("Proyecto principal insertado."); //lanzar excepcion positivas??
 				
 				// Obtener el ID generado
 	            ResultSet generatedKeys = statement.getGeneratedKeys();
@@ -54,6 +54,9 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 	                memberStatement.setString(2, proyecto.getUsuarioPropietario().getUsername());
 	                
 	                int miembroInsertado = memberStatement.executeUpdate();
+	                if(miembroInsertado > 0) {
+	                	//lanzar excepcion positivas??
+	                }
 	                memberStatement.close();
 	            }
 			// TODO: disparar Exception propia
@@ -136,7 +139,7 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 			
 			int verificacion = statement.executeUpdate();		
 			if(verificacion == 1) {
-				System.out.println("Se elimino el proyecto.");
+				System.out.println("Se elimino el proyecto."); //lanzar excepcion positivas??
 			} else {
 				System.out.println("No se encontro el proyecto a eliminar");
 			}
@@ -152,7 +155,6 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 	@Override
 	public Proyecto find(int id) throws NotNullException, DataEmptyException {
 		Proyecto encontrarProyecto = null;
-		UsuarioDao usuarioDao = new UsuarioDAOJDBC();
 		try {
 			Connection conn = ConnectionManager.getConnection();
 			PreparedStatement statement = conn.prepareStatement("SELECT p.id, p.nombre, p.usuario_propietario, p.estado, p.descripcion, p.prioridad, u.usuario, u.contrasena, u.nombre, u.email, u.activo, u.rol, r.codigo, r.nombre, r.activo\r\n" 
@@ -185,7 +187,6 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 
 	@Override
 	public List<Proyecto> findAll(String usuario) throws NotNullException, DataEmptyException {
-		UsuarioDao usuarioDao = new UsuarioDAOJDBC();
 		List<Proyecto> proyectos = new ArrayList<Proyecto>();
 		Proyecto unProyecto = null;
 			
