@@ -292,6 +292,8 @@ public class VentanaTareas extends JFrame {
 					e1.printStackTrace();
 				}
     	        try {
+    	        	habilitarBotones(false);
+    	        	table.clearSelection();
 					modificarTarea();
 				} catch (NotNullException | DataEmptyException e1) {
 					// TODO Auto-generated catch block
