@@ -65,37 +65,37 @@ public class CrearTarea extends JFrame {
         setContentPane(contentPane);
 
         JLabel nombreTareaLabel = new JLabel("Nombre de Tarea:");
-        nombreTareaLabel.setBounds(43, 20, 150, 16);
+        nombreTareaLabel.setBounds(43, 53, 150, 16);
         contentPane.add(nombreTareaLabel);
 
         nombreTareaTextField = new JTextField();
-        nombreTareaTextField.setBounds(190, 20, 160, 22);
+        nombreTareaTextField.setBounds(190, 50, 160, 22);
         contentPane.add(nombreTareaTextField);
         nombreTareaTextField.setColumns(10);
 
-        JLabel proyectoTareaLabel = new JLabel("Proyecto:");
-        proyectoTareaLabel.setBounds(43, 60, 150, 16);
-        contentPane.add(proyectoTareaLabel);
+//        JLabel proyectoTareaLabel = new JLabel("Proyecto:");
+//        proyectoTareaLabel.setBounds(43, 60, 150, 16);
+//        contentPane.add(proyectoTareaLabel);
 
-        proyectoTareaComboBox = new JComboBox<>();
-        proyectoTareaComboBox.setBounds(190, 60, 160, 22);
-        if (! this.proyectos.isEmpty() ) {
-        	for (ProyectoDTO proyecto : this.proyectos) {
-        		if (proyecto.getUsuarioPropietario().getUsername().equals(usuarioPropietario)) {
-        			proyectoTareaComboBox.addItem(proyecto.getNombre());
-        		}
-                
-            }
-        }
+//        proyectoTareaComboBox = new JComboBox<>();
+//        proyectoTareaComboBox.setBounds(190, 60, 160, 22);
+//        if (! this.proyectos.isEmpty() ) {
+//        	for (ProyectoDTO proyecto : this.proyectos) {
+//        		if (proyecto.getUsuarioPropietario().getUsername().equals(usuarioPropietario)) {
+//        			proyectoTareaComboBox.addItem(proyecto.getNombre());
+//        		}
+//                
+//            }
+//        }
         
-        contentPane.add(proyectoTareaComboBox);
+//        contentPane.add(proyectoTareaComboBox);
 
         JLabel asignarUsuarioLabel = new JLabel("Asignar Usuario:");
         asignarUsuarioLabel.setBounds(43, 100, 150, 16);
         contentPane.add(asignarUsuarioLabel);
 
         asignarUsuarioComboBox = new JComboBox<>();
-        asignarUsuarioComboBox.setBounds(190, 100, 160, 22);
+        asignarUsuarioComboBox.setBounds(190, 97, 160, 22);
         
         if ( ! this.usuarios.isEmpty()) {
         	 for (UsuarioDTO usuario : this.usuarios) {
@@ -165,7 +165,6 @@ public class CrearTarea extends JFrame {
             	try {
                     int selectedUserIndex = asignarUsuarioComboBox.getSelectedIndex();
                     String nombreTarea = nombreTareaTextField.getText();
-                    String proyectoSeleccionado = (String) proyectoTareaComboBox.getSelectedItem();
                     String prioridadTarea = (String) prioridadComboBox.getSelectedItem();
                     UsuarioDTO usuario = usuarios.get(selectedUserIndex);
                     String descripcionTarea = textAreaDescription.getText();
