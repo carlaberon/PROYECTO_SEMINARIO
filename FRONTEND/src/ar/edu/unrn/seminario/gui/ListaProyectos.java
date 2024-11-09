@@ -56,6 +56,14 @@ public class ListaProyectos extends JFrame {
 
         proyectos.sort((p1, p2) -> Integer.compare(api.obtenerPrioridad(p1.getPrioridad()), 
                 api.obtenerPrioridad(p2.getPrioridad())));
+        proyectos.sort((p1, p2) -> {
+            int prioridadComparacion = Integer.compare(api.obtenerPrioridad(p1.getPrioridad()), 
+                                                       api.obtenerPrioridad(p2.getPrioridad()));
+            if (prioridadComparacion != 0) {
+                return prioridadComparacion;
+            }
+            return p1.getNombre().compareTo(p2.getNombre());
+        });
 
         if(!proyectos.isEmpty()) {
         	for (ProyectoDTO p : proyectos) {
@@ -227,23 +235,25 @@ public class ListaProyectos extends JFrame {
     			DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
     			// Obtiene la lista de usuarios a mostrar
     			List<ProyectoDTO> proyectos = api.obtenerProyectos(api.getUsuarioActual().getUsername());
-    			
+    			  proyectos.sort((p1, p2) -> {
+    		            int prioridadComparacion = Integer.compare(api.obtenerPrioridad(p1.getPrioridad()), 
+    		                                                       api.obtenerPrioridad(p2.getPrioridad()));
+    		            if (prioridadComparacion != 0) {
+    		                return prioridadComparacion;
+    		            }
+    		            return p1.getNombre().compareTo(p2.getNombre());
+    		        });
     			// Resetea el model
     			modelo.setRowCount(0);
     			if(!proyectos.isEmpty()) {
     				for (ProyectoDTO p : proyectos) {
     					modelo.addRow(new Object[] {
-    							p.getId(),
     							p.getNombre(), 
     							p.getDescripcion(), 
     							p.isEstado(),
     							p.getPrioridad(), 
     							p.getUsuarioPropietario().getUsername()});
     				}
-    		        // Ocultar la columna ID
-    		        tabla.getColumnModel().getColumn(0).setMinWidth(0);
-    		        tabla.getColumnModel().getColumn(0).setMaxWidth(0);
-    		        tabla.getColumnModel().getColumn(0).setPreferredWidth(0);
     			}
 
     }

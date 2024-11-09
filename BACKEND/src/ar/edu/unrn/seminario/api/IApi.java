@@ -14,8 +14,8 @@ import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.exception.TaskNotCreatedException;
 import ar.edu.unrn.seminario.exception.TaskNotUpdatedException;
 //import ar.edu.unrn.seminario.modelo.Evento;
-import ar.edu.unrn.seminario.modelo.Proyecto;
-import ar.edu.unrn.seminario.modelo.Tarea;
+//import ar.edu.unrn.seminario.modelo.Proyecto;
+//import ar.edu.unrn.seminario.modelo.Tarea;
 //import ar.edu.unrn.seminario.modelo.Usuario;
 
 public interface IApi {
