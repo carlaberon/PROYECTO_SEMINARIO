@@ -35,7 +35,7 @@ public class TareaDAOJDBC implements TareaDao{
 			statement.setInt(2, tarea.getProyecto().getId());
 			statement.setString(3, tarea.getPrioridad());
 			statement.setString(4, tarea.getUsuario());
-			statement.setBoolean(5,tarea.isEstado());
+			statement.setString(5,tarea.getEstado());
 			statement.setString(6, tarea.getDescripcion());
 			statement.setDate(7, java.sql.Date.valueOf(tarea.getInicio()));
 			statement.setDate(8, java.sql.Date.valueOf(tarea.getFin()));
@@ -79,7 +79,7 @@ public class TareaDAOJDBC implements TareaDao{
 		   statement.setString(1, tarea.getNombre());
 		   statement.setString(2, tarea.getPrioridad());
 		   statement.setString(3, tarea.getUsuario());
-		   statement.setBoolean(4, tarea.isEstado());
+		   statement.setString(4, tarea.getEstado());
 		   statement.setString(5, tarea.getDescripcion());
 		   statement.setDate(6, Date.valueOf(tarea.getInicio()));
 	       statement.setDate(7, Date.valueOf(tarea.getFin()));
@@ -124,7 +124,7 @@ public class TareaDAOJDBC implements TareaDao{
 					unRol = new Rol(rs.getInt("r.codigo"), rs.getString("r.nombre"), rs.getBoolean("r.activo"));
 					unUsuario = new Usuario(rs.getString("u.usuario"), rs.getString("u.contrasena"), rs.getString("u.nombre"), rs.getString("u.email"), unRol, rs.getBoolean("u.activo"));
 					unProyecto = new Proyecto(rs.getInt("p.id"), rs.getString("p.nombre"), unUsuario, rs.getString("estado"), rs.getString("p.descripcion"), rs.getString("p.prioridad"));
-					unaTarea = new Tarea(rs.getInt("t.id"), rs.getString("t.nombre"), unProyecto,rs.getString("t.prioridad"), rs.getString("t.usuario"), rs.getBoolean("t.estado"),
+					unaTarea = new Tarea(rs.getInt("t.id"), rs.getString("t.nombre"), unProyecto,rs.getString("t.prioridad"), rs.getString("t.usuario"), rs.getString("t.estado"),
 							rs.getString("t.descripcion"), rs.getDate("t.fecha_inicio").toLocalDate(), rs.getDate("t.fecha_fin").toLocalDate());
 					
 					tareas.add(unaTarea);
@@ -185,7 +185,7 @@ public class TareaDAOJDBC implements TareaDao{
 				unRol = new Rol(rs.getInt("r.codigo"), rs.getString("r.nombre"), rs.getBoolean("r.activo"));
 				unUsuario = new Usuario(rs.getString("u.usuario"), rs.getString("u.contrasena"), rs.getString("u.nombre"), rs.getString("u.email"), unRol, rs.getBoolean("u.activo"));
 				unProyecto = new Proyecto(rs.getInt("p.id"), rs.getString("p.nombre"), unUsuario, rs.getString("estado"), rs.getString("p.descripcion"), rs.getString("p.prioridad"));
-				unaTarea = new Tarea(rs.getInt("id"), rs.getString("nombre"), unProyecto, rs.getString("prioridad"), rs.getString("usuario"), rs.getBoolean("estado"),rs.getString("descripcion"), rs.getDate("fecha_inicio").toLocalDate(), rs.getDate("fecha_fin").toLocalDate());
+				unaTarea = new Tarea(rs.getInt("id"), rs.getString("nombre"), unProyecto, rs.getString("prioridad"), rs.getString("usuario"), rs.getString("estado"),rs.getString("descripcion"), rs.getDate("fecha_inicio").toLocalDate(), rs.getDate("fecha_fin").toLocalDate());
 			}
 		} catch (SQLException e) {
 			System.out.println("Error de mySql\n" + e.toString());

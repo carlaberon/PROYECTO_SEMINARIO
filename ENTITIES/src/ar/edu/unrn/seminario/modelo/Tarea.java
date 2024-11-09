@@ -13,13 +13,13 @@ public class Tarea {
     private Proyecto proyecto; 
     private String prioridad;
     private String usuario;
-    private boolean estado; // FINALIZADO: TRUE, NOFINALIZADO: FALSE
+    private String estado; // FINALIZADO O EN CURSO
     private String descripcion;
     private LocalDate fechaInicio; 
     private LocalDate fechaFin;
 
 
-    public Tarea(int id, String nombre, Proyecto proyecto, String prioridad, String username, boolean estado, String descripcion, LocalDate inicio, LocalDate fin) throws DataEmptyException, NotNullException, InvalidDateException {
+    public Tarea(int id, String nombre, Proyecto proyecto, String prioridad, String username, String estado, String descripcion, LocalDate inicio, LocalDate fin) throws DataEmptyException, NotNullException, InvalidDateException {
     
  
     	if (esDatoNulo(nombre))
@@ -66,22 +66,22 @@ public class Tarea {
         return usuario;
     }
 
-    public boolean isEstado() {
-        return estado; // Devuelve si la tarea está realizada
+    public String getEstado() {
+        return estado; 
     }
    
     public String obtenerEstado() {
-        return isEstado() ? "REALIZADA" : "ENCURSO";
+        return estado;
     }
 
     public void finalizarTarea() {
-        if (!isEstado())
-            this.estado = true;
+        if (estado != "FINALIZADO")
+        	estado = "FINALIZADO";
     }
 
     public void tareaEnCurso() {
-        if (isEstado())
-            this.estado = false;
+        if (estado != "EN CURSO")
+            this.estado = "EN CURSO";
     }
 
     public String getDescripcion() {
@@ -132,7 +132,7 @@ public class Tarea {
         this.usuario = usuario;
     }
 
-    public void setEstado(boolean estado) {
+    public void setEstado(String estado) {
         this.estado = estado;
     }
 

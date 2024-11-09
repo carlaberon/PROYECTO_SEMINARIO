@@ -127,7 +127,7 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public void registrarTarea(String name,int id_proyecto, String priority, String user, boolean estado,
+	public void registrarTarea(String name,int id_proyecto, String priority, String user, String estado,
 			String descripcion, LocalDate inicio, LocalDate fin)
 			throws DataEmptyException, NotNullException, InvalidDateException {
 		
@@ -277,7 +277,7 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public void modificarTarea(int id, String nuevoNombre, String nuevaPrioridad, String nombreUsuario, Boolean estado, String nuevaDescripcion, LocalDate inicio, LocalDate fin) throws NotNullException, DataEmptyException, InvalidDateException, TaskNotUpdatedException {
+	public void modificarTarea(int id, String nuevoNombre, String nuevaPrioridad, String nombreUsuario, String estado, String nuevaDescripcion, LocalDate inicio, LocalDate fin) throws NotNullException, DataEmptyException, InvalidDateException, TaskNotUpdatedException {
 		
 		Tarea tarea = tareaDao.find(id);
 		
@@ -412,7 +412,7 @@ public class PersistenceApi implements IApi {
 	}
 	
 	private TareaDTO convertirEnTareaDTO(Tarea tarea) throws NotNullException, InvalidDateException, DataEmptyException {
-		TareaDTO tareaDto = new TareaDTO(tarea.getId(), tarea.getNombre(), convertirEnProyectoDTO(tarea.getProyecto()), tarea.getPrioridad(), tarea.getUsuario(), tarea.isEstado(), tarea.getDescripcion(), tarea.getInicio(), tarea.getFin());
+		TareaDTO tareaDto = new TareaDTO(tarea.getId(), tarea.getNombre(), convertirEnProyectoDTO(tarea.getProyecto()), tarea.getPrioridad(), tarea.getUsuario(), tarea.getEstado(), tarea.getDescripcion(), tarea.getInicio(), tarea.getFin());
 		return tareaDto;
 	}
 	

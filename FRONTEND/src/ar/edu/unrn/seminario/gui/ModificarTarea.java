@@ -177,7 +177,7 @@ public class ModificarTarea extends JFrame {
                         LocalDate fechaInicioLocalDate = fechaInicioDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                         LocalDate fechaFinLocalDate = fechaFinDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();	                        
                    
-	                     api.modificarTarea(tarea.getId(), nuevoNombreTarea, prioridadTarea, usuario.getUsername(), false, descripcionTarea, fechaInicioLocalDate, fechaFinLocalDate);
+	                     api.modificarTarea(tarea.getId(), nuevoNombreTarea, prioridadTarea, usuario.getUsername(), "EN CURSO", descripcionTarea, fechaInicioLocalDate, fechaFinLocalDate);
 	                    
 	                      
 	                       JOptionPane.showMessageDialog(null, "Tarea modificada con éxito!", "Info", JOptionPane.INFORMATION_MESSAGE);

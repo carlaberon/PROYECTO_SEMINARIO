@@ -12,12 +12,12 @@ public class TareaDTO {
 	private ProyectoDTO project;
     private String priority;
     private String user;
-    private boolean estado; // FINALIZADO: TRUE, NOFINALIZADO: FALSE
+    private String estado; // // FINALIZADO O EN CURSO
     private String description;
     private LocalDate inicio; 
     private LocalDate fin;
     
-    public TareaDTO(int id, String name, ProyectoDTO project,String priority, String user, boolean estado, String descripcion, LocalDate inicio, LocalDate fin) throws NotNullException, InvalidDateException, DataEmptyException {
+    public TareaDTO(int id, String name, ProyectoDTO project,String priority, String user, String estado, String descripcion, LocalDate inicio, LocalDate fin) throws NotNullException, InvalidDateException, DataEmptyException {
     	super();
     	
     	if (esDatoNulo(name))
@@ -96,11 +96,11 @@ public class TareaDTO {
         this.user = user;
     }
 
-    public boolean isEstado() {
+    public String getEstado() {
         return estado;
     }
 
-    public void setEstado(boolean estado) {
+    public void setEstado(String estado) {
         this.estado = estado;
     }
 
