@@ -39,9 +39,7 @@ public class CrearTarea extends JFrame {
 
     private JPanel contentPane;
     private JTextField nombreTareaTextField;
-    private JComboBox<String> proyectoTareaComboBox; // ComboBox para seleccionar proyecto
     private JComboBox<String> asignarUsuarioComboBox; // ComboBox para seleccionar usuario
-    private JTextField prioridadTareaTextField;
     List<String> prioridades = Arrays.asList("alta", "media", "baja");
     private List<ProyectoDTO> proyectos = new ArrayList<>();
     private List<UsuarioDTO> usuarios = new ArrayList<>();
@@ -169,7 +167,6 @@ public class CrearTarea extends JFrame {
                     UsuarioDTO usuario = usuarios.get(selectedUserIndex);
                     String descripcionTarea = textAreaDescription.getText();
                     Date fechaInicioDate = dateChooserInicio.getDate();
-                    //UsuarioDTO nombres = null;
                     Date fechaFinDate = dateChooserFin.getDate();
                     
                 	//Convertir Date a Localdate, si no cargo una fecha lanza un nullpointer
@@ -217,7 +214,7 @@ public class CrearTarea extends JFrame {
             }
         });
     }
-   public static void main (String[] args) throws NotNullException, DataEmptyException {
+   /*public static void main (String[] args) throws NotNullException, DataEmptyException {
     	
     	IApi api = new PersistenceApi();
     	api.setUsuarioActual("ldifabio");
@@ -225,6 +222,6 @@ public class CrearTarea extends JFrame {
 
     	CrearTarea ventana = new CrearTarea(api);
     	ventana.setVisible(true);
-    }
+    }*/
 }
 
