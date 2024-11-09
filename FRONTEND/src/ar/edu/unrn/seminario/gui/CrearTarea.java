@@ -40,7 +40,7 @@ public class CrearTarea extends JFrame {
     private JPanel contentPane;
     private JTextField nombreTareaTextField;
     private JComboBox<String> asignarUsuarioComboBox; // ComboBox para seleccionar usuario
-    List<String> prioridades = Arrays.asList("alta", "media", "baja");
+    List<String> prioridades = Arrays.asList("Alta", "Media", "Baja");
     private List<ProyectoDTO> proyectos = new ArrayList<>();
     private List<UsuarioDTO> usuarios = new ArrayList<>();
     private String usuarioPropietario;

@@ -37,7 +37,7 @@ public class ModificarTarea extends JFrame {
 	    private JTextField nombreTareaTextField;
 	    private JComboBox<String> proyectoTareaComboBox; // ComboBox para seleccionar proyecto
 	    private JComboBox<String> asignarUsuarioComboBox; // ComboBox para seleccionar usuario
-	    List<String> prioridades = Arrays.asList("alta", "media", "baja");
+	    List<String> prioridades = Arrays.asList("Alta", "Media", "Baja");
 	    private JComboBox<String> prioridadComboBox;
 	    private JTextArea textAreaDescription;
 	    private JDateChooser dateChooserInicio;
@@ -116,7 +116,7 @@ public class ModificarTarea extends JFrame {
 			contentPane.add(prioridadComboBox);
 
 			// Llenar el JComboBox con las claves del mapa de prioridad
-	        for (String prioridad :Arrays.asList("alta", "media", "baja")) {
+	        for (String prioridad :Arrays.asList("Alta", "Media", "Baja")) {
 	            prioridadComboBox.addItem(prioridad);
 	        }
 
