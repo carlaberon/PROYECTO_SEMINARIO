@@ -27,6 +27,7 @@ import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
+import ar.edu.unrn.seminario.exception.TaskNotCreatedException;
 
 import javax.swing.JTextArea;
 import javax.swing.JSpinner;
@@ -199,6 +200,10 @@ public class CrearTarea extends JFrame {
 					} catch (InvalidDateException e) {
 
 						JOptionPane.showMessageDialog(null,"Ingrese fechas válidas: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+					} catch (TaskNotCreatedException e) {
+						
+						JOptionPane.showMessageDialog(null, "No se pudo crear la tarea. Por favor, revise los datos ingresados y vuelva a intentarlo.", "Error al crear tarea", JOptionPane.ERROR_MESSAGE);
+
 					}
                 	
      
