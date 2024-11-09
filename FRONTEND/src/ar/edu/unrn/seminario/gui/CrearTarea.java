@@ -185,9 +185,9 @@ public class CrearTarea extends JFrame {
                     dispose();
                        
                 	
-                	} catch (NullPointerException excepcion) {
+                	} catch (NullPointerException e) {
                 		
-                		JOptionPane.showMessageDialog(null,excepcion.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                		JOptionPane.showMessageDialog(null,e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 	} catch (DataEmptyException e) {
                 		JOptionPane.showMessageDialog(null,"La tarea debe tener" +" " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 		
@@ -222,7 +222,7 @@ public class CrearTarea extends JFrame {
     	IApi api = new PersistenceApi();
     	api.setUsuarioActual("ldifabio");
     	api.setProyectoActual(1);
-    	System.out.println(api.getProyectoActual().getId()); 
+
     	CrearTarea ventana = new CrearTarea(api);
     	ventana.setVisible(true);
     }

@@ -246,11 +246,6 @@ public class PersistenceApi implements IApi {
 			if (! usuarioActual.isEmpty()) {
 				this.proyectoActual = proyectoDao.find(id);
 			}
-			else {
-				throw new NullPointerException();
-			}
-			
-		
 	}
 	
 	public void setTareaActual(int idTarea) throws DataEmptyException, NotNullException, InvalidDateException {
