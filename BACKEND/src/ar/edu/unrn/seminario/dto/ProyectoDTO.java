@@ -1,14 +1,9 @@
 package ar.edu.unrn.seminario.dto;
 
-import java.util.HashSet;
-import java.util.Set;
 
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.NotNullException;
-import ar.edu.unrn.seminario.modelo.Miembro;
-import ar.edu.unrn.seminario.modelo.Proyecto;
-import ar.edu.unrn.seminario.modelo.Tarea;
-import ar.edu.unrn.seminario.modelo.Usuario;
+
 
 public class ProyectoDTO {
 	
@@ -17,10 +12,10 @@ public class ProyectoDTO {
 	private String nombre;
     private UsuarioDTO usuarioPropietario;
     private String prioridad; //Alta, Media, Baja
-    private boolean estado; //ACTIVO= false; FINALIZADO = true
+    private String estado; //ACTIVO= false; FINALIZADO = true
     private String descripcion;
     
-    public ProyectoDTO(int id, String nombreProyecto, UsuarioDTO usuarioPropietario, boolean estado, String prioridad, String descripcion) throws NotNullException, DataEmptyException {
+    public ProyectoDTO(int id, String nombreProyecto, UsuarioDTO usuarioPropietario, String estado, String prioridad, String descripcion) throws NotNullException, DataEmptyException {
     	
 	    // Validar que los campos no sean nulos
 	    if (esDatoNulo(nombreProyecto)) {
@@ -90,11 +85,11 @@ public class ProyectoDTO {
         this.prioridad = prioridad;
     }
 
-    public boolean isEstado() {
+    public String isEstado() {
         return estado;
     }
 
-    public void setEstado(boolean estado) {
+    public void setEstado(String estado) {
         this.estado = estado;
     }
     
@@ -117,7 +112,7 @@ public class ProyectoDTO {
         return "ProyectoDTO{" +
                 "nombre='" + nombre + '\'' +
                 ", usuarioPropietario='" + usuarioPropietario + '\'' +
-                ", estado=" + (estado ? "FINALIZADO" : "ACTIVO") +
+                ", estado=" + estado +
                 ", prioridad='" + prioridad + '\'' +
                 ", descripcion='" + descripcion + '\'' +
                 '}';

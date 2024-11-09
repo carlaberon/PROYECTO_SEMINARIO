@@ -14,7 +14,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import ar.edu.unrn.seminario.api.IApi;
-import ar.edu.unrn.seminario.api.MemoryApi;
 import ar.edu.unrn.seminario.api.PersistenceApi;
 public class VentanaResumen extends JFrame {
 
@@ -135,7 +134,7 @@ public class VentanaResumen extends JFrame {
         centerPanel1.add(descPanel);
 
         // Estado del proyecto
-        JPanel estadoPanel = createPanel("Estado del proyecto",unproyecto.isEstado() ? "FINALIZADO" : "EN CURSO");
+        JPanel estadoPanel = createPanel("Estado del proyecto",unproyecto.isEstado());
         centerPanel1.add(estadoPanel);
 
         // Detalles del plan
@@ -162,14 +161,14 @@ public class VentanaResumen extends JFrame {
             }
         });
 
-        btnVerMiembros.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ListaMiembros listaMiembros = new ListaMiembros(api); //MODIFICADO X MI
-                listaMiembros.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                listaMiembros.setVisible(true);  
-            }
-        });
+//        btnVerMiembros.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                ListaMiembros listaMiembros = new ListaMiembros(api); //MODIFICADO X MI
+//                listaMiembros.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+//                listaMiembros.setVisible(true);  
+//            }
+//        });
 
         miembrosPanel.add(btnMiembro);
         miembrosPanel.add(btnVerMiembros);

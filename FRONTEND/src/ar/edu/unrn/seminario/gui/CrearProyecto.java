@@ -18,7 +18,6 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import ar.edu.unrn.seminario.api.IApi;
-import ar.edu.unrn.seminario.api.MemoryApi;
 import ar.edu.unrn.seminario.api.PersistenceApi;
 import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
@@ -80,7 +79,7 @@ public class CrearProyecto extends JFrame {
 		prioridadComboBox.setBounds(325, 205, 390, 25);
 		contentPane.add(prioridadComboBox);
 		
-		prioridadComboBox.addItem("");
+	
 
 		// Llenar el JComboBox con las claves del mapa de prioridad
         for (String prioridad : prioridades) {
@@ -109,7 +108,7 @@ public class CrearProyecto extends JFrame {
 			
 					
 					// Crear un nuevo proyecto
-	                api.crearProyecto(nombreNuevoProyecto, api.getUsuarioActual().getUsername(), false, descripcionNueva, prioridadSeleccionadaNueva);
+	                api.crearProyecto(nombreNuevoProyecto, api.getUsuarioActual().getUsername(), "EN CURSO", descripcionNueva, prioridadSeleccionadaNueva);
 	                JOptionPane.showMessageDialog(null, "Proyecto registrado con éxito!", "Info", JOptionPane.INFORMATION_MESSAGE);
 	                setVisible(false);
 	                dispose();

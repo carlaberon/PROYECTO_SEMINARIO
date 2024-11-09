@@ -186,7 +186,7 @@ public class VentanaTareas extends JFrame {
 		    	t.getId(),
 		        t.getName(),
 		        unproyecto.getNombre(),
-		        t.isEstado() ? "FINALIZADA" : "EN CURSO", // Modifica el estado a una cadena legible
+		        t.getEstado(), // Modifica el estado a una cadena legible
 		        t.getDescription(),
 		        t.getUser(),
 		        t.getPriority(), 
@@ -395,7 +395,7 @@ public class VentanaTareas extends JFrame {
 		        t.getId(),
 		        t.getName(),
 		        unproyecto.getNombre(),
-		        t.isEstado() ? "FINALIZADA" : "EN CURSO", // Modifica el estado a una cadena legible
+		        t.getEstado(), // Modifica el estado a una cadena legible
 		        t.getDescription(),
 		        t.getUser(),
 		        t.getPriority(), 

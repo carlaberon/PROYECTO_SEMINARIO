@@ -1,22 +1,27 @@
 package ar.edu.unrn.seminario.accesos;
 
+
 /*import java.util.List;
+
 
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.modelo.Proyecto;
+
 import ar.edu.unrn.seminario.modelo.Rol;
 import ar.edu.unrn.seminario.modelo.Tarea;
 import ar.edu.unrn.seminario.modelo.Usuario;*/
 
+
 /*public class TestAcceso {
 
 	public static void main(String[] args) throws DataEmptyException, NotNullException, InvalidDateException {
-		RolDao rolDao = new RolDAOJDBC();
-		UsuarioDao usuarioDao = new UsuarioDAOJDBC();
-		TareaDao tareaDao = new TareaDAOJDBC();
+//		RolDao rolDao = new RolDAOJDBC();
+//		UsuarioDao usuarioDao = new UsuarioDAOJDBC();
+//		TareaDao tareaDao = new TareaDAOJDBC();
 		ProyectoDao proyectoDao = new ProyectoDAOJDBC();
+
 		
 		List<Rol> roles = rolDao.findAll();
 
@@ -44,6 +49,8 @@ import ar.edu.unrn.seminario.modelo.Usuario;*/
 		//Recuperacion de una tarea en especifico
 		//tarea = tareaDao.find("Definir plan de estudio", "Aplicacion de votos", "ldifabio");
 		//System.out.println(tarea);
+
+
 		
 		//Eliminar una tarea en particular atraves del objeto Tarea
 		//tareaDao.remove(tarea);
@@ -60,6 +67,7 @@ import ar.edu.unrn.seminario.modelo.Usuario;*/
 		//	for (Usuario u: usuarios) {
 		//	System.out.println(u);
 		//	}	
+
 
 		/*System.out.println("*" + usuarioDao.find("ldifabio"));
 		
@@ -82,10 +90,37 @@ import ar.edu.unrn.seminario.modelo.Usuario;*/
 		for (Proyecto proyectoR : proyectos) {
 			System.out.println(proyectoR.toString());
 		}
+
+//		System.out.println("*" + usuarioDao.find("ldifabio"));
+//		
+//		
+//		Proyecto subProyecto = new Proyecto("SubProyecto", usuario, false, "Descripción del subproyecto", "media");
+//		Proyecto proyecto = new Proyecto("Proyecto Principal", usuario, true, "esto es una prueba", "alta");
+//		proyecto.getProyectos().add(subProyecto); // Añadir el subproyecto al conjunto de proyectos
+//		proyectoDao.create(proyecto);
+//		
+//		Proyecto proyecto2 = new Proyecto("Proyecto secundario", usuario, true, "esto es una prueba de nueo", "baja");
+//		proyectoDao.create(proyecto2);
+//		
+//		Proyecto proyecto3 = new Proyecto("Proyecto terciario", usuario2, false, "esto es una prueba de nuevo", "alta");
+//		proyectoDao.create(proyecto3);
+//		
+//		//Imprimir el subproyecto
+//		System.out.println("Subproyecto creado: " + subProyecto);
+//		
+//		List<Proyecto> proyectos = proyectoDao.findAll();
+//		for (Proyecto proyectoR : proyectos) {
+//			System.out.println(proyectoR.toString());
+//		}
+
 		
 		//Recuperacion de un proyecto especifico
-		proyecto = proyectoDao.find("Aplicacion de votos", "ldifabio");
-		System.out.println(proyecto);
+//		Proyecto proyecto = proyectoDao.find(1);
+//		System.out.println(proyecto);
+		List<Proyecto> proyectos = proyectoDao.findAll("ldifabio");
+		for (Proyecto proyecto2 : proyectos) {
+			System.out.println(proyecto2);
+		}
 		
 		//Eliminar proyecto en concreto
 		//proyectoDao.remove("SubProyecto", "ldifabio");
