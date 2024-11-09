@@ -13,11 +13,11 @@ public class Proyecto {
 	private int id;
     private String nombre;
     private Usuario usuarioPropietario;
-    private boolean estado; // ACTIVO = false, FINALIZADO = true
+    private String estado; 
     private String descripcion;
     private String prioridad;//Alta, Media, Baja
     
-    public Proyecto(int id, String nombre, Usuario usuarioPropietario, boolean estado, String descripcion, String prioridad) throws NotNullException, DataEmptyException{
+    public Proyecto(int id, String nombre, Usuario usuarioPropietario, String estado, String descripcion, String prioridad) throws NotNullException, DataEmptyException{
     	    // Validar que los campos no sean nulos
     	    if (esDatoNulo(nombre)) {
     	        throw new NotNullException("nombre");
@@ -98,31 +98,31 @@ public class Proyecto {
         this.prioridad = prioridad;
     }
   
-    public boolean getEstado() {
+    public String getEstado() {
         return estado; // ACTIVO: FALSE, FINALIZADO: TRUE
     }
     
-    public void setEstado(boolean estado) {
+    public void setEstado(String estado) {
         this.estado = estado; // ACTIVO: FALSE, FINALIZADO: TRUE
     }
     
-    public boolean isFinished() {
+    public String isFinished() {
         return estado; // ACTIVO: FALSE, FINALIZADO: TRUE
     }
 
     public String obtenerEstado() {
-        return isFinished() ? "FINALIZADO" : "ACTIVO";
+        return estado;
     }
 
     public void finalizarProyecto() {
-        if (!isFinished())
-            this.estado = true;
+        if (estado != "FINALIZADO")
+            this.estado = "FINALIZADO";
     }
 
-    public void activarProyecto() {
-        if (isFinished())
-            this.estado = false;
-    }
+//    public void activarProyecto() {
+//        if (isFinished())
+//            this.estado = false;
+//    }
     
 	private boolean esDatoVacio(String dato) {
 		return dato.equals("");

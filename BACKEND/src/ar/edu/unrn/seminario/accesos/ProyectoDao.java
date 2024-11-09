@@ -17,7 +17,5 @@ public interface ProyectoDao {
 
 	Proyecto find(int id) throws NotNullException, DataEmptyException;
 
-	List<Proyecto> findAll() throws NotNullException, DataEmptyException;
-	
 	List<Proyecto> findAll(String usuario) throws NotNullException, DataEmptyException;
 }

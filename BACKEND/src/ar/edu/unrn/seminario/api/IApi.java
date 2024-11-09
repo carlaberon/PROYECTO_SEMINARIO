@@ -12,7 +12,6 @@ import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
-import ar.edu.unrn.seminario.exception.TaskNotCreatedException;
 import ar.edu.unrn.seminario.exception.TaskNotUpdatedException;
 import ar.edu.unrn.seminario.modelo.Evento;
 import ar.edu.unrn.seminario.modelo.Proyecto;
@@ -44,7 +43,7 @@ public interface IApi {
 
 	void desactivarUsuario(String username); // recuperar el objeto Usuario, implementar el comportamiento de estado.
 	
-	public void registrarTarea(String name,int id_proyecto, String priority, String user, boolean estado, String descripcion, LocalDate inicio, LocalDate fin) throws DataEmptyException, NotNullException, InvalidDateException, TaskNotCreatedException;
+	public void registrarTarea(String name,int id_proyecto, String priority, String user, String estado, String descripcion, LocalDate inicio, LocalDate fin) throws DataEmptyException, NotNullException, InvalidDateException;
 	
 	public int obtenerPrioridad(String prioridad);
 	
@@ -66,7 +65,7 @@ public interface IApi {
 
 	List<TareaDTO> obtenerTareasPorProyecto(int id_project) throws InvalidDateException, NotNullException, DataEmptyException;
 	
-	void crearProyecto(String nombre, String string, boolean estado, String descripcion, String prioridad)
+	void crearProyecto(String nombre, String string, String estado, String descripcion, String prioridad)
 			throws NotNullException, DataEmptyException;
 	
 	public ProyectoDTO getProyectoActual() throws NotNullException, DataEmptyException;//Recuperar proyecto actual	PRUEBAS
@@ -81,7 +80,7 @@ public interface IApi {
 
 	public void setUsuarioActual(String nombreUsuario);	//Setear usuario actual PRUEBAS
 
-	void modificarTarea(int id, String nuevoNombre, String nuevaPrioridad,String nombreUsuario,Boolean estado, String nuevaDescripcion,LocalDate inicio, LocalDate fin)throws NotNullException, DataEmptyException, InvalidDateException, TaskNotUpdatedException;
+	void modificarTarea(int id, String nuevoNombre, String nuevaPrioridad,String nombreUsuario, String estado, String nuevaDescripcion,LocalDate inicio, LocalDate fin)throws NotNullException, DataEmptyException, InvalidDateException, TaskNotUpdatedException;
 	
 	//void crearPlan(String nombre, Proyecto pertenece);
 	//void crearEvento(LocalDateTime fecha, LocalDateTime inicio, LocalDateTime fin, String descripcion);

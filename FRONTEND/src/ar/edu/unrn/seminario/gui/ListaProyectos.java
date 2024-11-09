@@ -63,7 +63,7 @@ public class ListaProyectos extends JFrame {
         				p.getId(),
         				p.getNombre(), 
         				p.getDescripcion(), 
-        				p.isEstado() ? "FINALIZADO" : "EN CURSO",
+        				p.isEstado(),
         						p.getPrioridad(), 
         						p.getUsuarioPropietario().getUsername()});
         	}
@@ -243,7 +243,7 @@ public class ListaProyectos extends JFrame {
     					modelo.addRow(new Object[] {
     							p.getNombre(), 
     							p.getDescripcion(), 
-    							p.isEstado() ? "FINALIZADO" : "EN CURSO",
+    							p.isEstado(),
     							p.getPrioridad(), 
     							p.getUsuarioPropietario().getUsername()});
     				}
