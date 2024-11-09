@@ -38,7 +38,6 @@ public class CrearTarea extends JFrame {
 
     private JPanel contentPane;
     private JTextField nombreTareaTextField;
-    private JComboBox<String> proyectoTareaComboBox; // ComboBox para seleccionar proyecto
     private JComboBox<String> asignarUsuarioComboBox; // ComboBox para seleccionar usuario
     private JTextField prioridadTareaTextField;
     List<String> prioridades = Arrays.asList("alta", "media", "baja");
@@ -186,7 +185,6 @@ public class CrearTarea extends JFrame {
                        
                 	
                 	} catch (NullPointerException excepcion) {
-                		
                 		JOptionPane.showMessageDialog(null,excepcion.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 	} catch (DataEmptyException e) {
                 		JOptionPane.showMessageDialog(null,"La tarea debe tener" +" " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
