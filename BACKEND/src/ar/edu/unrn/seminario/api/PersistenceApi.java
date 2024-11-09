@@ -124,7 +124,7 @@ public class PersistenceApi implements IApi {
 
 	private RolDTO convertirEnRolDTO(Rol rol) {
 		RolDTO rolDto = new RolDTO(rol.getCodigo(), rol.getNombre(), rol.isActivo());
-		return null;
+		return rolDto;
 	}
 
 	@Override

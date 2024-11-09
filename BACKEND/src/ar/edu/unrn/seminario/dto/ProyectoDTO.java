@@ -1,14 +1,9 @@
 package ar.edu.unrn.seminario.dto;
 
-import java.util.HashSet;
-import java.util.Set;
 
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.NotNullException;
-import ar.edu.unrn.seminario.modelo.Miembro;
-import ar.edu.unrn.seminario.modelo.Proyecto;
-import ar.edu.unrn.seminario.modelo.Tarea;
-import ar.edu.unrn.seminario.modelo.Usuario;
+
 
 public class ProyectoDTO {
 	

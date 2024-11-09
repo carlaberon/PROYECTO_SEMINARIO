@@ -115,7 +115,6 @@ public class CrearTarea extends JFrame {
 		prioridadComboBox.setBounds(190, 133, 160, 25);
 		contentPane.add(prioridadComboBox);
 		
-		prioridadComboBox.addItem("");
 
 		// Llenar el JComboBox con las claves del mapa de prioridad
         for (String prioridad : prioridades) {

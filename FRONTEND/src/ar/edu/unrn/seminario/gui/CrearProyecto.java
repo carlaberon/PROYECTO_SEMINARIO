@@ -79,7 +79,7 @@ public class CrearProyecto extends JFrame {
 		prioridadComboBox.setBounds(325, 205, 390, 25);
 		contentPane.add(prioridadComboBox);
 		
-		prioridadComboBox.addItem("");
+	
 
 		// Llenar el JComboBox con las claves del mapa de prioridad
         for (String prioridad : prioridades) {
