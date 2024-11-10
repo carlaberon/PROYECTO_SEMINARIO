@@ -12,7 +12,9 @@ import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.exception.TaskNotCreatedException;
+import ar.edu.unrn.seminario.exception.TaskNotFoundException;
 import ar.edu.unrn.seminario.exception.TaskNotUpdatedException;
+import ar.edu.unrn.seminario.exception.TaskQueryException;
 //import ar.edu.unrn.seminario.modelo.Evento;
 //import ar.edu.unrn.seminario.modelo.Proyecto;
 //import ar.edu.unrn.seminario.modelo.Tarea;
@@ -47,17 +49,17 @@ public interface IApi {
 	
 	public int obtenerPrioridad(String prioridad);
 	
-	List<TareaDTO> obtenerTareas() throws NotNullException, InvalidDateException, DataEmptyException;
+	List<TareaDTO> obtenerTareas() throws NotNullException, InvalidDateException, DataEmptyException, TaskQueryException;
 	
-	public void eliminarTarea(int idTarea);
+	public void eliminarTarea(int idTarea) throws TaskNotFoundException;
 	
 	List<ProyectoDTO> obtenerProyectos(String username) throws NotNullException, DataEmptyException;
 		    
-	void eliminarProyecto(int id);
+	public void eliminarProyecto(int id) throws TaskNotFoundException, DataEmptyException, NotNullException, InvalidDateException, TaskQueryException;
 	
 	void modificarProyecto(int idProyecto, String nuevoNombre, String nuevaPrioridad, String nuevaDescripcion)throws NotNullException, DataEmptyException;
 
-	List<TareaDTO> obtenerTareasPorProyecto(int id_project) throws InvalidDateException, NotNullException, DataEmptyException;
+	List<TareaDTO> obtenerTareasPorProyecto(int id_project) throws InvalidDateException, NotNullException, DataEmptyException, TaskQueryException;
 	
 	void crearProyecto(String nombre, String string, String estado, String descripcion, String prioridad)
 			throws NotNullException, DataEmptyException;
@@ -66,7 +68,7 @@ public interface IApi {
 
 	public void setProyectoActual(int id) throws NotNullException, DataEmptyException;	//Setear proyecto actual PRUEBAS
 	
-	public void setTareaActual(int idTarea) throws DataEmptyException, NotNullException, InvalidDateException;
+	public void setTareaActual(int idTarea) throws DataEmptyException, NotNullException, InvalidDateException, TaskQueryException;
 	
 	public TareaDTO getTareaActual() throws NotNullException, DataEmptyException, InvalidDateException;
 	
@@ -74,7 +76,7 @@ public interface IApi {
 
 	public void setUsuarioActual(String nombreUsuario);	//Setear usuario actual PRUEBAS
 
-	void modificarTarea(int id, String nuevoNombre, String nuevaPrioridad,String nombreUsuario, String estado, String nuevaDescripcion,LocalDate inicio, LocalDate fin)throws NotNullException, DataEmptyException, InvalidDateException, TaskNotUpdatedException;
+	void modificarTarea(int id, String nuevoNombre, String nuevaPrioridad,String nombreUsuario, String estado, String nuevaDescripcion,LocalDate inicio, LocalDate fin)throws NotNullException, DataEmptyException, InvalidDateException, TaskNotUpdatedException, TaskQueryException;
 	
 	//void crearPlan(String nombre, Proyecto pertenece);
 	//void crearEvento(LocalDateTime fecha, LocalDateTime inicio, LocalDateTime fin, String descripcion);

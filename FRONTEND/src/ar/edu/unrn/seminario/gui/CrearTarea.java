@@ -40,7 +40,7 @@ public class CrearTarea extends JFrame {
     private JPanel contentPane;
     private JTextField nombreTareaTextField;
     private JComboBox<String> asignarUsuarioComboBox; // ComboBox para seleccionar usuario
-    List<String> prioridades = Arrays.asList("alta", "media", "baja");
+    List<String> prioridades = Arrays.asList("Alta", "Media", "Baja");
     private List<ProyectoDTO> proyectos = new ArrayList<>();
     private List<UsuarioDTO> usuarios = new ArrayList<>();
     private String usuarioPropietario;
@@ -184,7 +184,7 @@ public class CrearTarea extends JFrame {
                 	
                 	} catch (NullPointerException e) {
                 		
-                		JOptionPane.showMessageDialog(null,e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                		JOptionPane.showMessageDialog(null,"Las fechas no pueden ser nulas.", "Error", JOptionPane.ERROR_MESSAGE);
                 	} catch (DataEmptyException e) {
                 		JOptionPane.showMessageDialog(null,"La tarea debe tener" +" " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 		
