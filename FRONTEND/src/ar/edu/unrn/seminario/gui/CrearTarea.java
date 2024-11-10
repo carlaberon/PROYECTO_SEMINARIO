@@ -72,23 +72,6 @@ public class CrearTarea extends JFrame {
         contentPane.add(nombreTareaTextField);
         nombreTareaTextField.setColumns(10);
 
-//        JLabel proyectoTareaLabel = new JLabel("Proyecto:");
-//        proyectoTareaLabel.setBounds(43, 60, 150, 16);
-//        contentPane.add(proyectoTareaLabel);
-
-//        proyectoTareaComboBox = new JComboBox<>();
-//        proyectoTareaComboBox.setBounds(190, 60, 160, 22);
-//        if (! this.proyectos.isEmpty() ) {
-//        	for (ProyectoDTO proyecto : this.proyectos) {
-//        		if (proyecto.getUsuarioPropietario().getUsername().equals(usuarioPropietario)) {
-//        			proyectoTareaComboBox.addItem(proyecto.getNombre());
-//        		}
-//                
-//            }
-//        }
-        
-//        contentPane.add(proyectoTareaComboBox);
-
         JLabel asignarUsuarioLabel = new JLabel("Asignar Usuario:");
         asignarUsuarioLabel.setBounds(43, 100, 150, 16);
         contentPane.add(asignarUsuarioLabel);
