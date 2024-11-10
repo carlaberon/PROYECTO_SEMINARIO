@@ -397,11 +397,6 @@ public class VentanaTareas extends JFrame {
 	
 	    // Obtiene el model del table
 	    DefaultTableModel modelo = (DefaultTableModel) table.getModel();
-
-	    //***********************************************************************************************************************//
-	    // Obtiene la lista de tareas filtradas por proyecto: PENDIENTE
-	    //List<TareaDTO> tareas = api.obtenerTareasPorProyecto(this.getTitle()); // this.getTitle() retorna el nombre del proyecto
-	    //***********************************************************************************************************************//
 	    
 	    List<TareaDTO> tareas = api.obtenerTareas();
 	    tareas.sort((t1, t2) -> {
