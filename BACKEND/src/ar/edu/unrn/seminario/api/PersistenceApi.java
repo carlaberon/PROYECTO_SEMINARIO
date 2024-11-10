@@ -1,6 +1,7 @@
 package ar.edu.unrn.seminario.api;
 
 import java.time.LocalDate;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +39,7 @@ public class PersistenceApi implements IApi {
 	private Proyecto proyectoActual;
 	private Tarea tareaActual;
 	private TareaDao tareaDao;
+	//private Set<Proyecto> proyectos = new HashSet<>();
 	public PersistenceApi() {
 		rolDao = new RolDAOJDBC();
 		usuarioDao = new UsuarioDAOJDBC();
@@ -56,11 +58,20 @@ public class PersistenceApi implements IApi {
 	public List<TareaDTO> obtenerTareas() throws NotNullException, InvalidDateException, DataEmptyException, TaskQueryException {
 		List<TareaDTO> tareasDTO = new ArrayList<>();
 		List<Tarea> tareas = null;
-		
-		tareas = tareaDao.findByProject(proyectoActual.getId());
-		
-		for (Tarea t : tareas) {  
-			tareasDTO.add(convertirEnTareaDTO(t));
+		try {
+			tareas = tareaDao.findByProject(proyectoActual.getId());
+		} catch (DataEmptyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NotNullException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvalidDateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		    for (Tarea t : tareas) {  
+		        tareasDTO.add(convertirEnTareaDTO(t));
 	    }
 
 	    return tareasDTO;
@@ -128,6 +139,7 @@ public class PersistenceApi implements IApi {
 		tareaDao.create(tarea);
 	}
 
+	
 	@Override
 	public void eliminarTarea(int id) throws TaskNotFoundException {
 		tareaDao.remove(id);
@@ -137,9 +149,16 @@ public class PersistenceApi implements IApi {
 	public List<ProyectoDTO> obtenerProyectos(String username) throws NotNullException, DataEmptyException {
 		List<ProyectoDTO> proyectoDTO = new ArrayList<>();
 		List<Proyecto> proyectos = null;
-
-		proyectos = proyectoDao.findAll(username);
-		
+		try {
+			proyectos = proyectoDao.findAll(username);
+		} catch (DataEmptyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NotNullException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// Asegúrate de que `proyectos` no sea null antes de iterar
 	    if (proyectos != null) {
 	        for (Proyecto p : proyectos) {  
 	            if (p != null) {
@@ -167,6 +186,9 @@ public class PersistenceApi implements IApi {
 	public void modificarProyecto(int idProyecto, String nuevoNombre, String nuevaPrioridad,
 			String nuevaDescripcion) throws NotNullException, DataEmptyException {
 		Proyecto proyectoExistente = proyectoDao.find(idProyecto);
+//	    if (proyectoExistente == null) {
+//	        throw new DataEmptyException("El proyecto no existe."); nunca va a suceder esto
+//	    }
 	    
 		if(!nuevoNombre.isEmpty()) 
 			proyectoExistente.setNombre(nuevoNombre);
@@ -178,13 +200,21 @@ public class PersistenceApi implements IApi {
 		proyectoDao.update(proyectoExistente);
 		}
 		
+
 	@Override
 	public List<TareaDTO> obtenerTareasPorProyecto(int id) throws InvalidDateException, NotNullException, DataEmptyException, TaskQueryException {
 		List<TareaDTO> tareasDTO = new ArrayList<>();
 		List<Tarea> tareas = null;
-			
-		tareas = tareaDao.findByProject(id);
-		for (Tarea t : tareas) {  
+		try {
+			tareas = tareaDao.findByProject(id);
+		} catch (DataEmptyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NotNullException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		    for (Tarea t : tareas) {  
 		        tareasDTO.add(convertirEnTareaDTO(t));
 	    }
 
@@ -202,6 +232,11 @@ public class PersistenceApi implements IApi {
 			if (! usuarioActual.isEmpty()) {
 				this.proyectoActual = proyectoDao.find(id);
 			}
+			else {
+				throw new NullPointerException();
+			}
+			
+		
 	}
 	
 	public void setTareaActual(int idTarea) throws DataEmptyException, NotNullException, InvalidDateException, TaskQueryException {
@@ -217,6 +252,8 @@ public class PersistenceApi implements IApi {
 	    Usuario usuario = usuarioDao.find(nombreUsuario);
 	    if (usuario != null) {
 	        this.usuarioActual = usuario; // Asigna el usuario encontrado
+	    } else {
+	        throw new IllegalArgumentException("Usuario no encontrado: " + nombreUsuario);
 	    }
 	}
 
@@ -235,7 +272,53 @@ public class PersistenceApi implements IApi {
 		tarea.setFin(fin);
 		tareaDao.update(tarea);
 		
+		
+//		if (tareaExistente != null) {
+//			if (nuevoNombre != null && !nuevoNombre.isEmpty()) {
+//				tareaExistente.setNombre(nuevoNombre);
+//			}
+//			
+//		    // Validar y actualizar la prioridad
+//		    if (nuevaPrioridad != null && !nuevaPrioridad.isEmpty()) {
+//		        tareaExistente.setPrioridad(nuevaPrioridad);
+//		    }
+//		    
+//		    // Validar y actualizar el usuario
+//	        if (nombreUsuario != null && !nombreUsuario.isEmpty()) {
+//	            tareaExistente.setUsuario(nombreUsuario);
+//	        }
+//	        
+//	        // Validar y actualizar la descripción
+//	        if (nuevaDescripcion != null && !nuevaDescripcion.isEmpty()) {
+//	            tareaExistente.setDescripcion(nuevaDescripcion);
+//	        }
+//
+//	        // Validar y actualizar la fecha de inicio
+//	        if (inicio != null) {
+//	            tareaExistente.setInicio(inicio);
+//	        }
+//
+//	        // Validar y actualizar la fecha de fin
+//	        if (fin != null) {
+//	            tareaExistente.setFin(fin);
+//	        }
+	        
+//	        if (estado != null) {
+//	        	tareaExistente.setEstado(estado);
+//	        }
+	        
+//	        tareaDao.update(tareaExistente, id);
+//	        System.out.println("Tarea modificada exitosamente.");
+//	    } else {
+//	        System.out.println("No se encontró la tarea para modificar.");
 	    }
+
+	    /*// Lanzar excepción si la tarea no se encontró
+	    if (tareaExistente == null) {
+	        throw new DataEmptyException("No se encontró la tarea con el nombre especificado.");
+	    }*/
+		
+
 	
 	@Override
 	public int obtenerPrioridad(String prioridad) {
@@ -250,8 +333,18 @@ public class PersistenceApi implements IApi {
 	            return 0; // En caso de prioridad desconocida
 	    }
 	}
-	
-	
+	/*@Override
+	public LocalDate convertirDate(Date inicio) {
+		try {
+			LocalDate fechaInicioLocalDate = inicio.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			return fechaInicioLocalDate;	
+		} catch (NullPointerException e) {
+		throw new NotDateNullException("la fecha es vacia");
+			// TODO: handle exception
+		}
+		
+		
+	}*/
 	//ACA PONDRE LOS MODULOS QUE CONSIDERO QUE NO SON NECESARIOS:
 	
 
@@ -324,8 +417,19 @@ public class PersistenceApi implements IApi {
 	}
 	
 	public UsuarioDTO getUsuarioActual() throws NotNullException, DataEmptyException {
-		
+	    
 	    return convertirEnUsuarioDTO(usuarioActual);
 	}
+   /*
+	@Override
+	public LocalDate convertirDate(java.util.Date inicio) {
+		try {
+			LocalDate fechaInicioLocalDate = inicio.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			return fechaInicioLocalDate;	
+		} catch (NullPointerException e) {
+		throw new NotDateNullException("la fecha es vacia");
+			// TODO: handle exception
+		}
+	}*/
 	
 }
