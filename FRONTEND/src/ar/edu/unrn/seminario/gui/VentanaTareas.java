@@ -312,7 +312,7 @@ public class VentanaTareas extends JFrame {
 				            JOptionPane.showMessageDialog(null, "Error: Fecha inválida en la tarea a modificar.", "Error", JOptionPane.ERROR_MESSAGE);
 						}
     	        } else {
-    	            JOptionPane.showMessageDialog(botonEliminar, "Por favor, seleccione una tarea para eliminar.", "Selección de tarea", JOptionPane.WARNING_MESSAGE);
+    	            JOptionPane.showMessageDialog(botonModificar, "Por favor, seleccione una tarea para modificar.", "Selección de tarea", JOptionPane.WARNING_MESSAGE);
     			}
 
     	    }

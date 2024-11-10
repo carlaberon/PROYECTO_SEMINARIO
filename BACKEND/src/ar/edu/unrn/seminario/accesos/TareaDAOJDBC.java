@@ -63,8 +63,6 @@ public class TareaDAOJDBC implements TareaDao{
 
 		
 	}
-		
-
 
 	@Override
 	public void update(Tarea tarea) throws TaskNotUpdatedException {
