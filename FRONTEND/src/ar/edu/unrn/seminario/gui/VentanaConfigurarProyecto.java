@@ -24,7 +24,7 @@ import ar.edu.unrn.seminario.exception.NotNullException;
 public class VentanaConfigurarProyecto extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	List<String> prioridades = Arrays.asList("alta", "media", "baja");
+	List<String> prioridades = Arrays.asList("Alta", "Media", "Baja");
 	private JPanel contentPane;
 	private JTextField textField_Nombre;
 	private JComboBox<String> prioridadComboBox;

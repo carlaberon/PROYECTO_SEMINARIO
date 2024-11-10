@@ -115,6 +115,8 @@ public class Inicio extends JFrame {
 
         //BACK -> DTO -> FRONT
         List<ProyectoDTO> proyectos = api.obtenerProyectos(usuarioActual.getUsername());
+
+
         proyectos.sort((p1, p2) -> {
             int prioridadComparacion = Integer.compare(api.obtenerPrioridad(p1.getPrioridad()), 
                                                        api.obtenerPrioridad(p2.getPrioridad()));
@@ -263,7 +265,6 @@ public class Inicio extends JFrame {
             }
             return p1.getNombre().compareTo(p2.getNombre());
         });
-
 
         for (ProyectoDTO proyecto : proyectos) {
             JButton proyectoButton = new JButton(proyecto.getNombre());
