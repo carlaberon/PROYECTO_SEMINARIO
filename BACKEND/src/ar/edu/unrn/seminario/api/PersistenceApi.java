@@ -237,11 +237,11 @@ public class PersistenceApi implements IApi {
 	@Override
 	public int obtenerPrioridad(String prioridad) {
 	    switch (prioridad) {
-	        case "alta":
+	        case "Alta":
 	            return 1;
-	        case "media":
+	        case "Media":
 	            return 2;
-	        case "baja":
+	        case "Baja":
 	            return 3;
 	        default:
 	            return 0; // En caso de prioridad desconocida

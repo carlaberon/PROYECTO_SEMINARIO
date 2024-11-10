@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.EliminationException;
 import ar.edu.unrn.seminario.exception.NotNullException;
-import ar.edu.unrn.seminario.exception.NotUpdatedException;
+import ar.edu.unrn.seminario.exception.TaskNotUpdatedException;
 import ar.edu.unrn.seminario.exception.InsertionException;
 import ar.edu.unrn.seminario.exception.NotFoundException;
 import ar.edu.unrn.seminario.modelo.Proyecto;
@@ -96,9 +96,9 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 			   
 			        
 			   if (verificacion == 0) 
-			            throw new NotUpdatedException("el proyecto" + proyecto.getNombre());
+			            throw new TaskNotUpdatedException("el proyecto" + proyecto.getNombre());
 			    
-		       } catch (NotUpdatedException e1) {
+		       } catch (TaskNotUpdatedException e1) {
 			   	   JOptionPane.showMessageDialog(null, e1.getMessage() + "no se actualizo.", "Error", JOptionPane.ERROR_MESSAGE);
 			   } catch (SQLException e2) {
 				   JOptionPane.showMessageDialog(null,"Error de SQL: " + e2.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

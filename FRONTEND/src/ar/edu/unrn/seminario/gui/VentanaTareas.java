@@ -301,6 +301,8 @@ public class VentanaTareas extends JFrame {
 						}
 	
 						try {
+							habilitarBotones(false);
+		    	        	table.clearSelection();
 							modificarTarea();
 						} catch (NotNullException e1) {
 				            JOptionPane.showMessageDialog(null, "Error: Hay datos nulos en la tarea a modificar.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -328,6 +330,7 @@ public class VentanaTareas extends JFrame {
 				if (confirmacion == JOptionPane.YES_OPTION) {															
 					try {
 						api.eliminarTarea(idTarea);
+						habilitarBotones(false);
 						((DefaultTableModel) table.getModel()).removeRow(filaSeleccionada);
 	                    JOptionPane.showMessageDialog(botonEliminar, "La tarea ha sido eliminada con éxito.", "Eliminación exitosa", JOptionPane.INFORMATION_MESSAGE);
 					} catch (TaskNotFoundException e1) {

@@ -113,7 +113,7 @@ public class TareaDAOJDBC implements TareaDao{
 						+ "join usuarios u on pm.usuario_miembro = u.usuario\r\n"
 						+ "join usuario_rol ur on ur.nombre_usuario = u.usuario\r\n"
 						+ "join roles r on r.codigo = ur.codigo_rol\r\n"
-						+ "WHERE t.id_proyecto = ? AND t.nombre NOT LIKE '#%' AND u.usuario = p.usuario_propietario");
+						+ "WHERE t.id_proyecto = ? AND t.estado NOT LIKE '#%' AND u.usuario = p.usuario_propietario");
 				statement.setInt(1, id_project);
 				ResultSet rs = statement.executeQuery();
 				while(rs.next()) {
@@ -144,7 +144,7 @@ public class TareaDAOJDBC implements TareaDao{
 	public void remove(int id) throws TaskNotFoundException {
 		try {
 			Connection conn = ConnectionManager.getConnection();
-			PreparedStatement sent = conn.prepareStatement("UPDATE tareas SET nombre = CONCAT('#', nombre) WHERE id = ?");
+			PreparedStatement sent = conn.prepareStatement("UPDATE tareas SET estado = CONCAT('#', estado) WHERE id = ?");
 			sent.setInt(1, id);
 
 			int verificacion = sent.executeUpdate();		
@@ -173,7 +173,7 @@ public class TareaDAOJDBC implements TareaDao{
 					+ "join usuarios u on pm.usuario_miembro = u.usuario\r\n"
 					+ "join usuario_rol ur on ur.nombre_usuario = u.usuario\r\n"
 					+ "join roles r on r.codigo = ur.codigo_rol\r\n"
-					+ "WHERE t.id = ?");
+					+ "WHERE t.id = ? AND t.estado NOT LIKE '#%'");
 			statement.setInt(1, id);
 			
 			ResultSet rs = statement.executeQuery();

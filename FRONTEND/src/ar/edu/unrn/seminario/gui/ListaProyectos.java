@@ -128,18 +128,7 @@ public class ListaProyectos extends JFrame {
 						JOptionPane.YES_NO_OPTION);
 				if (opcionSeleccionada == JOptionPane.YES_OPTION) {
 					int projecId = (int) tabla.getModel().getValueAt(tabla.getSelectedRow(), 0);
-					try {
-						api.eliminarProyecto(projecId);
-					} catch (DataEmptyException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (NotNullException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (InvalidDateException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+					api.eliminarProyecto(projecId);
 					try {
 						actualizarTabla();
 					} catch (NotNullException e1) {
