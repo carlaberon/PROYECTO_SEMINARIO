@@ -180,7 +180,16 @@ public class VentanaTareas extends JFrame {
 		try {
 			
 		List<TareaDTO> tareas = api.obtenerTareasPorProyecto(unproyecto.getId());
-			
+		tareas.sort((t1, t2) -> {
+            int prioridadComparacion = Integer.compare(api.obtenerPrioridad(t1.getPriority()), 
+                                                       api.obtenerPrioridad(t2.getPriority()));
+            if (prioridadComparacion != 0) {
+                return prioridadComparacion;
+            }
+            return t1.getName().compareTo(t2.getName());
+        });
+		
+		
 		modelo.setRowCount(0); // Limpiar el modelo antes de agregar nuevas filas
 		
 		for (TareaDTO t : tareas) {
@@ -395,7 +404,14 @@ public class VentanaTareas extends JFrame {
 	    //***********************************************************************************************************************//
 	    
 	    List<TareaDTO> tareas = api.obtenerTareas();
-	    
+	    tareas.sort((t1, t2) -> {
+            int prioridadComparacion = Integer.compare(api.obtenerPrioridad(t1.getPriority()), 
+                                                       api.obtenerPrioridad(t2.getPriority()));
+            if (prioridadComparacion != 0) {
+                return prioridadComparacion;
+            }
+            return t1.getName().compareTo(t2.getName());
+        });
 	    
 	    modelo.setRowCount(0);
 
