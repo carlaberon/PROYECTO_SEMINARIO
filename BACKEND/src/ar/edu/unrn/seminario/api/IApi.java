@@ -12,7 +12,7 @@ import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.exception.TaskNotCreatedException;
-import ar.edu.unrn.seminario.exception.TaskNotUpdatedException;
+import ar.edu.unrn.seminario.exception.NotUpdatedException;
 //import ar.edu.unrn.seminario.modelo.Evento;
 import ar.edu.unrn.seminario.modelo.Proyecto;
 import ar.edu.unrn.seminario.modelo.Tarea;
@@ -74,7 +74,7 @@ public interface IApi {
 
 	public void setUsuarioActual(String nombreUsuario);	//Setear usuario actual PRUEBAS
 
-	void modificarTarea(int id, String nuevoNombre, String nuevaPrioridad,String nombreUsuario, String estado, String nuevaDescripcion,LocalDate inicio, LocalDate fin)throws NotNullException, DataEmptyException, InvalidDateException, TaskNotUpdatedException;
+	void modificarTarea(int id, String nuevoNombre, String nuevaPrioridad,String nombreUsuario, String estado, String nuevaDescripcion,LocalDate inicio, LocalDate fin)throws NotNullException, DataEmptyException, InvalidDateException, NotUpdatedException;
 	
 	//void crearPlan(String nombre, Proyecto pertenece);
 	//void crearEvento(LocalDateTime fecha, LocalDateTime inicio, LocalDateTime fin, String descripcion);

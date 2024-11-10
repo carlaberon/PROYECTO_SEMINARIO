@@ -13,8 +13,6 @@ public interface ProyectoDao {
 
 	void remove(int id);
 
-	void remove(Proyecto proyecto);
-
 	Proyecto find(int id) throws NotNullException, DataEmptyException;
 
 	List<Proyecto> findAll(String usuario) throws NotNullException, DataEmptyException;

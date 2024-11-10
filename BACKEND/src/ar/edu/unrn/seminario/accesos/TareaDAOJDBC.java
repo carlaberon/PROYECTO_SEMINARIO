@@ -11,7 +11,7 @@ import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.exception.TaskNotCreatedException;
-import ar.edu.unrn.seminario.exception.TaskNotUpdatedException;
+import ar.edu.unrn.seminario.exception.NotUpdatedException;
 import ar.edu.unrn.seminario.modelo.Proyecto;
 import ar.edu.unrn.seminario.modelo.Rol;
 import ar.edu.unrn.seminario.modelo.Tarea;
@@ -63,7 +63,7 @@ public class TareaDAOJDBC implements TareaDao{
 
 
 	@Override
-	public void update(Tarea tarea) throws TaskNotUpdatedException {
+	public void update(Tarea tarea) throws NotUpdatedException {
 		try {
 		   Connection conn = ConnectionManager.getConnection();
 		   PreparedStatement statement = conn.prepareStatement("UPDATE tareas SET nombre = ?, prioridad = ?, usuario = ?, estado = ?, descripcion = ?, fecha_inicio = ?, fecha_fin = ? WHERE id = ? ");
@@ -83,7 +83,7 @@ public class TareaDAOJDBC implements TareaDao{
 		   int verificacion = statement.executeUpdate();
 		        
 		   if (verificacion == 0) {
-			   throw new TaskNotUpdatedException("No se encontro la tarea para actualizar.");
+			   throw new NotUpdatedException("No se encontro la tarea para actualizar.");
 		   }
 		        
 		   } catch (SQLException e) {

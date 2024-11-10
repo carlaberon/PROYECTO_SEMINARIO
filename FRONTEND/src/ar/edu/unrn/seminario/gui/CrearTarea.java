@@ -184,7 +184,7 @@ public class CrearTarea extends JFrame {
                 	
                 	} catch (NullPointerException e) {
                 		
-                		JOptionPane.showMessageDialog(null,e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                		JOptionPane.showMessageDialog(null,"Las fechas no pueden ser nulas.", "Error", JOptionPane.ERROR_MESSAGE);
                 	} catch (DataEmptyException e) {
                 		JOptionPane.showMessageDialog(null,"La tarea debe tener" +" " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 		

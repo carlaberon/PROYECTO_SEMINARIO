@@ -25,7 +25,7 @@ import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
-import ar.edu.unrn.seminario.exception.TaskNotUpdatedException;
+import ar.edu.unrn.seminario.exception.NotUpdatedException;
 import javax.swing.JTextArea;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
@@ -197,7 +197,7 @@ public class ModificarTarea extends JFrame {
 						} catch (InvalidDateException e) {
 							JOptionPane.showMessageDialog(null,"Ingrese fechas válidas: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 				        
-						} catch (TaskNotUpdatedException e) {
+						} catch (NotUpdatedException e) {
 						    JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 						    
 						}
