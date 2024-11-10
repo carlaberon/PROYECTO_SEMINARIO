@@ -55,7 +55,7 @@ public interface IApi {
 	
 	List<ProyectoDTO> obtenerProyectos(String username) throws NotNullException, DataEmptyException;
 		    
-	void eliminarProyecto(int id);
+	public void eliminarProyecto(int id) throws TaskNotFoundException, DataEmptyException, NotNullException, InvalidDateException, TaskQueryException;
 	
 	void modificarProyecto(int idProyecto, String nuevoNombre, String nuevaPrioridad, String nuevaDescripcion)throws NotNullException, DataEmptyException;
 
