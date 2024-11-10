@@ -21,7 +21,9 @@ import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.exception.TaskNotCreatedException;
-import ar.edu.unrn.seminario.exception.NotUpdatedException;
+import ar.edu.unrn.seminario.exception.TaskNotFoundException;
+import ar.edu.unrn.seminario.exception.TaskNotUpdatedException;
+import ar.edu.unrn.seminario.exception.TaskQueryException;
 import ar.edu.unrn.seminario.modelo.Proyecto;
 import ar.edu.unrn.seminario.modelo.Rol;
 import ar.edu.unrn.seminario.modelo.Tarea;
@@ -51,7 +53,7 @@ public class PersistenceApi implements IApi {
 	}
 	
 	@Override
-	public List<TareaDTO> obtenerTareas() throws NotNullException, InvalidDateException, DataEmptyException {
+	public List<TareaDTO> obtenerTareas() throws NotNullException, InvalidDateException, DataEmptyException, TaskQueryException {
 		List<TareaDTO> tareasDTO = new ArrayList<>();
 		List<Tarea> tareas = null;
 		
@@ -127,7 +129,7 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public void eliminarTarea(int id) {
+	public void eliminarTarea(int id) throws TaskNotFoundException {
 		tareaDao.remove(id);
 	}
 
@@ -154,12 +156,8 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public void eliminarProyecto(int id) throws DataEmptyException, NotNullException, InvalidDateException {
+	public void eliminarProyecto(int id) {
 		proyectoDao.remove(id);
-		List<Tarea> tareas = tareaDao.findByProject(id);
-		for (Tarea tarea : tareas) {
-			tareaDao.remove(tarea.getId());
-		}
 	}
 	
 	@Override
@@ -178,7 +176,7 @@ public class PersistenceApi implements IApi {
 		}
 		
 	@Override
-	public List<TareaDTO> obtenerTareasPorProyecto(int id) throws InvalidDateException, NotNullException, DataEmptyException {
+	public List<TareaDTO> obtenerTareasPorProyecto(int id) throws InvalidDateException, NotNullException, DataEmptyException, TaskQueryException {
 		List<TareaDTO> tareasDTO = new ArrayList<>();
 		List<Tarea> tareas = null;
 			
@@ -203,7 +201,7 @@ public class PersistenceApi implements IApi {
 			}
 	}
 	
-	public void setTareaActual(int idTarea) throws DataEmptyException, NotNullException, InvalidDateException {
+	public void setTareaActual(int idTarea) throws DataEmptyException, NotNullException, InvalidDateException, TaskQueryException {
 		this.tareaActual = tareaDao.find(idTarea);
 	}
 	
@@ -220,7 +218,7 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public void modificarTarea(int id, String nuevoNombre, String nuevaPrioridad, String nombreUsuario, String estado, String nuevaDescripcion, LocalDate inicio, LocalDate fin) throws NotNullException, DataEmptyException, InvalidDateException, NotUpdatedException {
+	public void modificarTarea(int id, String nuevoNombre, String nuevaPrioridad, String nombreUsuario, String estado, String nuevaDescripcion, LocalDate inicio, LocalDate fin) throws NotNullException, DataEmptyException, InvalidDateException, TaskNotUpdatedException, TaskQueryException {
 		
 		Tarea tarea = tareaDao.find(id);
 		
@@ -239,11 +237,11 @@ public class PersistenceApi implements IApi {
 	@Override
 	public int obtenerPrioridad(String prioridad) {
 	    switch (prioridad) {
-	        case "Alta":
+	        case "alta":
 	            return 1;
-	        case "Media":
+	        case "media":
 	            return 2;
-	        case "Baja":
+	        case "baja":
 	            return 3;
 	        default:
 	            return 0; // En caso de prioridad desconocida

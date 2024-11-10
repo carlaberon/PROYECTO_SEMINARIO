@@ -25,7 +25,9 @@ import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
-import ar.edu.unrn.seminario.exception.NotUpdatedException;
+import ar.edu.unrn.seminario.exception.TaskNotUpdatedException;
+import ar.edu.unrn.seminario.exception.TaskQueryException;
+
 import javax.swing.JTextArea;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
@@ -37,7 +39,7 @@ public class ModificarTarea extends JFrame {
 	    private JTextField nombreTareaTextField;
 	    private JComboBox<String> proyectoTareaComboBox; // ComboBox para seleccionar proyecto
 	    private JComboBox<String> asignarUsuarioComboBox; // ComboBox para seleccionar usuario
-	    List<String> prioridades = Arrays.asList("Alta", "Media", "Baja");
+	    List<String> prioridades = Arrays.asList("alta", "media", "baja");
 	    private JComboBox<String> prioridadComboBox;
 	    private JTextArea textAreaDescription;
 	    private JDateChooser dateChooserInicio;
@@ -116,7 +118,7 @@ public class ModificarTarea extends JFrame {
 			contentPane.add(prioridadComboBox);
 
 			// Llenar el JComboBox con las claves del mapa de prioridad
-	        for (String prioridad :Arrays.asList("Alta", "Media", "Baja")) {
+	        for (String prioridad :Arrays.asList("alta", "media", "baja")) {
 	            prioridadComboBox.addItem(prioridad);
 	        }
 
@@ -164,11 +166,9 @@ public class ModificarTarea extends JFrame {
 	            	try {
 	  
 	                    int selectedUserIndex = asignarUsuarioComboBox.getSelectedIndex();
-	                    //String nombreActual = nombreTareaLabel.get;
 	                    String nuevoNombreTarea = nombreTareaTextField.getText();
 	                    String prioridadTarea = (String) prioridadComboBox.getSelectedItem();
 	                    UsuarioDTO usuario = usuarios.get(selectedUserIndex);
-	                    //String name = usuario.getUsername();
 	                    String descripcionTarea = textAreaDescription.getText();
 	                    Date fechaInicioDate = dateChooserInicio.getDate();
 	                    Date fechaFinDate = dateChooserFin.getDate();
@@ -177,12 +177,12 @@ public class ModificarTarea extends JFrame {
                         LocalDate fechaInicioLocalDate = fechaInicioDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                         LocalDate fechaFinLocalDate = fechaFinDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();	                        
                    
-	                     api.modificarTarea(tarea.getId(), nuevoNombreTarea, prioridadTarea, usuario.getUsername(), "EN CURSO", descripcionTarea, fechaInicioLocalDate, fechaFinLocalDate);
+	                    api.modificarTarea(tarea.getId(), nuevoNombreTarea, prioridadTarea, usuario.getUsername(), "EN CURSO", descripcionTarea, fechaInicioLocalDate, fechaFinLocalDate);
 	                    
 	                      
-	                       JOptionPane.showMessageDialog(null, "Tarea modificada con éxito!", "Info", JOptionPane.INFORMATION_MESSAGE);
-	                       setVisible(false);
-	                       dispose();
+	                    JOptionPane.showMessageDialog(null, "Tarea modificada con éxito!", "Info", JOptionPane.INFORMATION_MESSAGE);
+	                    setVisible(false);
+	                    dispose();
 	                       
 	                	
 	                	} catch (NullPointerException excepcion) {
@@ -197,17 +197,13 @@ public class ModificarTarea extends JFrame {
 						} catch (InvalidDateException e) {
 							JOptionPane.showMessageDialog(null,"Ingrese fechas válidas: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 				        
-						} catch (NotUpdatedException e) {
+						} catch (TaskNotUpdatedException e) {
 						    JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 						    
-						}
-	                	
-	     
-
-	        
-	            }
-
-				
+						} catch (TaskQueryException e) {
+				            JOptionPane.showMessageDialog(null, "Error al consultar la tarea. Por favor, inténtelo de nuevo.", "Error de consulta", JOptionPane.ERROR_MESSAGE);
+						}	        
+	            }				
 	        });
 
 	        cancelarButton.addActionListener(new ActionListener() {
