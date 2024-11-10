@@ -6,12 +6,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.sound.sampled.EnumControl;
+
 import java.sql.SQLException;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.exception.TaskNotCreatedException;
+import ar.edu.unrn.seminario.exception.TaskNotFoundException;
 import ar.edu.unrn.seminario.exception.TaskNotUpdatedException;
+import ar.edu.unrn.seminario.exception.TaskQueryException;
 import ar.edu.unrn.seminario.modelo.Proyecto;
 import ar.edu.unrn.seminario.modelo.Rol;
 import ar.edu.unrn.seminario.modelo.Tarea;
@@ -44,15 +49,14 @@ public class TareaDAOJDBC implements TareaDao{
 			
 				throw new TaskNotCreatedException("Error: No se pudo crear la tarea en la base de datos.");
 			}
-			System.out.println("Modificando " + cant + " registros");
 		}
 		catch (SQLException e) {
 
 			throw new TaskNotCreatedException("Error al actualizar la base de datos: " + e.getMessage());
 			}
 		catch (Exception e) {
-			System.out.println("Error al insertar un usuario");
-			// TODO: disparar Exception propia
+			
+			throw new TaskNotCreatedException("Error al insertar la tarea: " + e.getMessage());
 		} finally {
 			ConnectionManager.disconnect();
 		}
@@ -82,20 +86,19 @@ public class TareaDAOJDBC implements TareaDao{
 	       
 		   int verificacion = statement.executeUpdate();
 		        
-		   if (verificacion == 0) {
+		   if (verificacion <= 0) {
 			   throw new TaskNotUpdatedException("No se encontro la tarea para actualizar.");
 		   }
 		        
-		   } catch (SQLException e) {
-		       System.out.println("No se pudo actualizar la tarea. " + e.toString());
-		       //TODO hacer exception propia
+		   } catch (SQLException e) { 
+		       throw new TaskNotUpdatedException("No se pudo actualizar la tarea. " + e.toString());
 		   } finally {
 		       ConnectionManager.disconnect();
 		   }
 	}
 	
 	@Override
-	public List<Tarea> findByProject(int id_project) throws DataEmptyException, NotNullException, InvalidDateException {
+	public List<Tarea> findByProject(int id_project) throws DataEmptyException, NotNullException, InvalidDateException, TaskQueryException {
 		List<Tarea>tareas = new ArrayList<Tarea>();
 		Rol unRol = null;
 		Usuario unUsuario = null;
@@ -126,10 +129,9 @@ public class TareaDAOJDBC implements TareaDao{
 				
 			} catch (SQLException e) {
 				System.out.println("Error de mySql\n" + e.toString());
-				// TODO: disparar Exception propia
+				throw new TaskQueryException("Error al realizar la consulta de tareas en la base de datos: " + e.getMessage(), e);
 			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-				// TODO: disparar Exception propia
+				throw new TaskQueryException("Error de argumento invalido en la creacion de tareas: " + e.getMessage(), e);
 			} finally {
 				ConnectionManager.disconnect();
 			}
@@ -139,24 +141,25 @@ public class TareaDAOJDBC implements TareaDao{
 	
 
 	@Override
-	public void remove(int id) {
+	public void remove(int id) throws TaskNotFoundException {
 		try {
 			Connection conn = ConnectionManager.getConnection();
 			PreparedStatement sent = conn.prepareStatement("UPDATE tareas SET nombre = CONCAT('#', nombre) WHERE id = ?");
 			sent.setInt(1, id);
 
 			int verificacion = sent.executeUpdate();		
-			if(verificacion == 1) {
-				System.out.println("Se elimino la tarea.");
+			if(verificacion <= 0) {
+				throw new TaskNotFoundException("No se encontro la tarea a eliminar");
 			}
 		} catch (SQLException e) {
-			System.out.println("No se pudo eliminar la tarea. " + e.toString());
+
+			throw new TaskNotFoundException("No se pudo eliminar la tarea" + e.getMessage(), e);
 		} finally {
 		ConnectionManager.disconnect();
 		}
 	}
 	
-	public Tarea find(int id) throws NotNullException, DataEmptyException, InvalidDateException {
+	public Tarea find(int id) throws NotNullException, DataEmptyException, InvalidDateException, TaskQueryException {
 		Rol unRol = null;
 		Usuario unUsuario = null;
 		Proyecto unProyecto = null;
@@ -181,11 +184,9 @@ public class TareaDAOJDBC implements TareaDao{
 				unaTarea = new Tarea(rs.getInt("id"), rs.getString("nombre"), unProyecto, rs.getString("prioridad"), rs.getString("usuario"), rs.getString("estado"),rs.getString("descripcion"), rs.getDate("fecha_inicio").toLocalDate(), rs.getDate("fecha_fin").toLocalDate());
 			}
 		} catch (SQLException e) {
-			System.out.println("Error de mySql\n" + e.toString());
-			// TODO: disparar Exception propia
+			throw new TaskQueryException("Error al realizar la consulta de tareas en la base de datos: " + e.getMessage(), e);
 		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-			// TODO: disparar Exception propia
+			throw new TaskQueryException("Error de argumento invalido en la creacion de tareas: " + e.getMessage(), e);
 		} finally {
 			ConnectionManager.disconnect();
 		}
