@@ -186,9 +186,7 @@ public class PersistenceApi implements IApi {
 	public void modificarProyecto(int idProyecto, String nuevoNombre, String nuevaPrioridad,
 			String nuevaDescripcion) throws NotNullException, DataEmptyException {
 		Proyecto proyectoExistente = proyectoDao.find(idProyecto);
-//	    if (proyectoExistente == null) {
-//	        throw new DataEmptyException("El proyecto no existe."); nunca va a suceder esto
-//	    }
+
 	    
 		if(!nuevoNombre.isEmpty()) 
 			proyectoExistente.setNombre(nuevoNombre);
@@ -231,12 +229,7 @@ public class PersistenceApi implements IApi {
 			String usuarioActual = getUsuarioActual().getUsername();
 			if (! usuarioActual.isEmpty()) {
 				this.proyectoActual = proyectoDao.find(id);
-			}
-			else {
-				throw new NullPointerException();
-			}
-			
-		
+			}			
 	}
 	
 	public void setTareaActual(int idTarea) throws DataEmptyException, NotNullException, InvalidDateException, TaskQueryException {
@@ -252,9 +245,7 @@ public class PersistenceApi implements IApi {
 	    Usuario usuario = usuarioDao.find(nombreUsuario);
 	    if (usuario != null) {
 	        this.usuarioActual = usuario; // Asigna el usuario encontrado
-	    } else {
-	        throw new IllegalArgumentException("Usuario no encontrado: " + nombreUsuario);
-	    }
+	    } 
 	}
 
 	@Override
@@ -313,9 +304,7 @@ public class PersistenceApi implements IApi {
 //	        System.out.println("No se encontró la tarea para modificar.");
 	    }
 
-	    /*// Lanzar excepción si la tarea no se encontró
-	    if (tareaExistente == null) {
-	        throw new DataEmptyException("No se encontró la tarea con el nombre especificado.");
+	    /*
 	    }*/
 		
 
@@ -335,12 +324,8 @@ public class PersistenceApi implements IApi {
 	}
 	/*@Override
 	public LocalDate convertirDate(Date inicio) {
-		try {
 			LocalDate fechaInicioLocalDate = inicio.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 			return fechaInicioLocalDate;	
-		} catch (NullPointerException e) {
-		throw new NotDateNullException("la fecha es vacia");
-			// TODO: handle exception
 		}
 		
 		
@@ -423,12 +408,9 @@ public class PersistenceApi implements IApi {
    /*
 	@Override
 	public LocalDate convertirDate(java.util.Date inicio) {
-		try {
+
 			LocalDate fechaInicioLocalDate = inicio.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 			return fechaInicioLocalDate;	
-		} catch (NullPointerException e) {
-		throw new NotDateNullException("la fecha es vacia");
-			// TODO: handle exception
 		}
 	}*/
 	
