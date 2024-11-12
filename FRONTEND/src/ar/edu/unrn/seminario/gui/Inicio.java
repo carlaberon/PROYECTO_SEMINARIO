@@ -117,10 +117,14 @@ public class Inicio extends JFrame {
 
         //BACK -> DTO -> FRONT
         List<ProyectoDTO> proyectos = api.obtenerProyectos(usuarioActual.getUsername());
-
-
-        proyectos.sort((p1, p2) -> Integer.compare(api.obtenerPrioridad(p1.getPrioridad()), 
-                api.obtenerPrioridad(p2.getPrioridad())));
+        proyectos.sort((p1, p2) -> {
+            int prioridadComparacion = Integer.compare(api.obtenerPrioridad(p1.getPrioridad()), 
+                                                       api.obtenerPrioridad(p2.getPrioridad()));
+            if (prioridadComparacion != 0) {
+                return prioridadComparacion;
+            }
+            return p1.getNombre().compareTo(p2.getNombre());
+        });
         
         if(!proyectos.isEmpty()) {
         	for (ProyectoDTO proyecto : proyectos) {
@@ -253,11 +257,15 @@ public class Inicio extends JFrame {
         
         List<ProyectoDTO> proyectos = api.obtenerProyectos(usuarioActual.getUsername()); // Obtener los proyectos actualizados
         
-        proyectos.sort((proyecto1, proyecto2) -> {
-            int prioridad1 = api.obtenerPrioridad(proyecto1.getPrioridad());
-            int prioridad2 = api.obtenerPrioridad(proyecto2.getPrioridad());
-            return Integer.compare(prioridad1, prioridad2); 
+        proyectos.sort((p1, p2) -> {
+            int prioridadComparacion = Integer.compare(api.obtenerPrioridad(p1.getPrioridad()), 
+                                                       api.obtenerPrioridad(p2.getPrioridad()));
+            if (prioridadComparacion != 0) {
+                return prioridadComparacion;
+            }
+            return p1.getNombre().compareTo(p2.getNombre());
         });
+
 
         for (ProyectoDTO proyecto : proyectos) {
             JButton proyectoButton = new JButton(proyecto.getNombre());

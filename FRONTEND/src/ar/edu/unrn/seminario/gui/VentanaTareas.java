@@ -39,6 +39,8 @@ import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
+import ar.edu.unrn.seminario.exception.TaskNotFoundException;
+import ar.edu.unrn.seminario.exception.TaskQueryException;
 
 
 public class VentanaTareas extends JFrame {
@@ -53,7 +55,7 @@ public class VentanaTareas extends JFrame {
     private ProyectoDTO unproyecto; //obtener proyecto por medio de la api
 	
 
-    public VentanaTareas(IApi api) throws RuntimeException, InvalidDateException, NotNullException, DataEmptyException{
+    public VentanaTareas(IApi api) throws RuntimeException, InvalidDateException, NotNullException, DataEmptyException, TaskQueryException{
     	this.api = api; 
     	this.usuarioActual = api.getUsuarioActual();
     	this.unproyecto = api.getProyectoActual(); 
@@ -178,7 +180,16 @@ public class VentanaTareas extends JFrame {
 		try {
 			
 		List<TareaDTO> tareas = api.obtenerTareasPorProyecto(unproyecto.getId());
-			
+		tareas.sort((t1, t2) -> {
+            int prioridadComparacion = Integer.compare(api.obtenerPrioridad(t1.getPriority()), 
+                                                       api.obtenerPrioridad(t2.getPriority()));
+            if (prioridadComparacion != 0) {
+                return prioridadComparacion;
+            }
+            return t1.getName().compareTo(t2.getName());
+        });
+		
+		
 		modelo.setRowCount(0); // Limpiar el modelo antes de agregar nuevas filas
 		
 		for (TareaDTO t : tareas) {
@@ -255,14 +266,13 @@ public class VentanaTareas extends JFrame {
     				try {
 						actualizarTabla();
 					} catch (NotNullException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+			            JOptionPane.showMessageDialog(null, "Error: Hay campos que no pueden ser nulos.", "Error de validación", JOptionPane.ERROR_MESSAGE);
 					} catch (InvalidDateException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+			            JOptionPane.showMessageDialog(null, "Error: La fecha ingresada es inválida.", "Error de fecha", JOptionPane.ERROR_MESSAGE);
 					} catch (DataEmptyException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+			            JOptionPane.showMessageDialog(null, "Error: No se encontraron datos en la consulta. Verifica si el proyecto tiene tareas.", "Datos vacíos", JOptionPane.WARNING_MESSAGE);
+					} catch (TaskQueryException e) {
+			            JOptionPane.showMessageDialog(null, "Error al realizar la consulta de tareas en la base de datos: " + e.getMessage(), "Error de base de datos", JOptionPane.ERROR_MESSAGE);
 					}
     			}
     		});
@@ -280,58 +290,67 @@ public class VentanaTareas extends JFrame {
       
       habilitarBotones(false);
       
-      //#las excepciones están mal programadas
       botonModificar.addActionListener(new ActionListener() {
     	    public void actionPerformed(ActionEvent e) {
-    	        int filaSeleccionada = table.getSelectedRow(); 
-    	        int idTarea = (int) table.getValueAt(filaSeleccionada, 0);
-    	        try {
-					api.setTareaActual(idTarea);
-				} catch (DataEmptyException | NotNullException | InvalidDateException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-    	        try {
-					modificarTarea();
-				} catch (NotNullException | DataEmptyException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (InvalidDateException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+    	        int filaSeleccionada = table.getSelectedRow();
+    	        if (filaSeleccionada != -1) {
+	    	        int idTarea = (int) table.getValueAt(filaSeleccionada, 0);
+	
+						try {
+							api.setTareaActual(idTarea);
+						} catch (DataEmptyException e1) {
+							JOptionPane.showMessageDialog(null, "Error: Hay datos vacios. No se puede establecer la tarea actual.", "Error", JOptionPane.ERROR_MESSAGE);
+						} catch (NotNullException e1) {
+							JOptionPane.showMessageDialog(null, "Error: Hay datos nulos. No se puede establecer la tarea actual.", "Error", JOptionPane.ERROR_MESSAGE);
+						} catch (InvalidDateException e1) {
+							JOptionPane.showMessageDialog(null, "Error: Fecha inválida en la tarea seleccionada.", "Error", JOptionPane.ERROR_MESSAGE);
+						} catch (TaskQueryException e1) {
+				            JOptionPane.showMessageDialog(null, "Error al realizar la consulta de tareas: " + e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+	
+						}
+	
+						try {
+							habilitarBotones(false);
+		    	        	table.clearSelection();
+							modificarTarea();
+						} catch (NotNullException e1) {
+				            JOptionPane.showMessageDialog(null, "Error: Hay datos nulos en la tarea a modificar.", "Error", JOptionPane.ERROR_MESSAGE);
+						} catch (DataEmptyException e1) {
+				            JOptionPane.showMessageDialog(null, "Error: Hay datos vacios en la tarea a modificar.", "Error", JOptionPane.ERROR_MESSAGE);
+						} catch (InvalidDateException e1) {
+				            JOptionPane.showMessageDialog(null, "Error: Fecha inválida en la tarea a modificar.", "Error", JOptionPane.ERROR_MESSAGE);
+						}
+    	        } else {
+    	            JOptionPane.showMessageDialog(botonModificar, "Por favor, seleccione una tarea para modificar.", "Selección de tarea", JOptionPane.WARNING_MESSAGE);
+    			}
 
     	    }
     	});
       
       botonEliminar.addActionListener(new ActionListener() {
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			
-			int filaSeleccionada = table.getSelectedRow(); 
-	        int idTarea = (int) table.getValueAt(filaSeleccionada, 0);
-			
-			if (filaSeleccionada != -1) {
-			}
+      
+	  	public void actionPerformed(ActionEvent e) {
+	  		
+	  		int filaSeleccionada = table.getSelectedRow(); 	        
+	  		if (filaSeleccionada != -1) {
+	  			int idTarea = (int) table.getValueAt(filaSeleccionada, 0);
 				
-				int confirmacion = JOptionPane.showConfirmDialog(botonEliminar, "¿Desea eliminar la tarea: " ,"Confirmar Eliminacion", JOptionPane.YES_NO_OPTION);
-				
-				if (confirmacion == JOptionPane.YES_OPTION) {
-					
-					
-					
-					api.eliminarTarea(idTarea);
-					
-					((DefaultTableModel) table.getModel()).removeRow(filaSeleccionada);
-					
+				int confirmacion = JOptionPane.showConfirmDialog(botonEliminar, "¿Desea eliminar la tarea: " ,"Confirmar Eliminacion", JOptionPane.YES_NO_OPTION);				
+				if (confirmacion == JOptionPane.YES_OPTION) {															
+					try {
+						api.eliminarTarea(idTarea);
+						habilitarBotones(false);
+						((DefaultTableModel) table.getModel()).removeRow(filaSeleccionada);
+	                    JOptionPane.showMessageDialog(botonEliminar, "La tarea ha sido eliminada con éxito.", "Eliminación exitosa", JOptionPane.INFORMATION_MESSAGE);
+					} catch (TaskNotFoundException e1) {
+	                    JOptionPane.showMessageDialog(botonEliminar, "No se encontró la tarea a eliminar o no se pudo eliminar debido a un error de base de datos: " + e1.getMessage(), "Error al eliminar", JOptionPane.ERROR_MESSAGE);
+					}										
 				}
-				
-			}
-	
-
-    	  
-      });
+			} else {
+	            JOptionPane.showMessageDialog(botonEliminar, "Por favor, seleccione una tarea para eliminar.", "Selección de tarea", JOptionPane.WARNING_MESSAGE);
+			}				
+		}  	  
+     });
     }
     
     // Método auxiliar para crear paneles con título y diseño consistente
@@ -374,18 +393,20 @@ public class VentanaTareas extends JFrame {
 
 	}
 	
-	void actualizarTabla() throws NotNullException, InvalidDateException, DataEmptyException{
+	void actualizarTabla() throws NotNullException, InvalidDateException, DataEmptyException, TaskQueryException{
 	
 	    // Obtiene el model del table
 	    DefaultTableModel modelo = (DefaultTableModel) table.getModel();
-
-	    //***********************************************************************************************************************//
-	    // Obtiene la lista de tareas filtradas por proyecto: PENDIENTE
-	    //List<TareaDTO> tareas = api.obtenerTareasPorProyecto(this.getTitle()); // this.getTitle() retorna el nombre del proyecto
-	    //***********************************************************************************************************************//
 	    
 	    List<TareaDTO> tareas = api.obtenerTareas();
-	    
+	    tareas.sort((t1, t2) -> {
+            int prioridadComparacion = Integer.compare(api.obtenerPrioridad(t1.getPriority()), 
+                                                       api.obtenerPrioridad(t2.getPriority()));
+            if (prioridadComparacion != 0) {
+                return prioridadComparacion;
+            }
+            return t1.getName().compareTo(t2.getName());
+        });
 	    
 	    modelo.setRowCount(0);
 

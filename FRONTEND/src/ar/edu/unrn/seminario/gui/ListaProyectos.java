@@ -11,7 +11,10 @@ import ar.edu.unrn.seminario.api.PersistenceApi;
 import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
+import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
+import ar.edu.unrn.seminario.exception.TaskNotFoundException;
+import ar.edu.unrn.seminario.exception.TaskQueryException;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -56,6 +59,14 @@ public class ListaProyectos extends JFrame {
 
         proyectos.sort((p1, p2) -> Integer.compare(api.obtenerPrioridad(p1.getPrioridad()), 
                 api.obtenerPrioridad(p2.getPrioridad())));
+        proyectos.sort((p1, p2) -> {
+            int prioridadComparacion = Integer.compare(api.obtenerPrioridad(p1.getPrioridad()), 
+                                                       api.obtenerPrioridad(p2.getPrioridad()));
+            if (prioridadComparacion != 0) {
+                return prioridadComparacion;
+            }
+            return p1.getNombre().compareTo(p2.getNombre());
+        });
 
         if(!proyectos.isEmpty()) {
         	for (ProyectoDTO p : proyectos) {
@@ -127,7 +138,24 @@ public class ListaProyectos extends JFrame {
 						JOptionPane.YES_NO_OPTION);
 				if (opcionSeleccionada == JOptionPane.YES_OPTION) {
 					int projecId = (int) tabla.getModel().getValueAt(tabla.getSelectedRow(), 0);
-					api.eliminarProyecto(projecId);
+					try {
+						api.eliminarProyecto(projecId);
+					} catch (TaskNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (DataEmptyException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (NotNullException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (InvalidDateException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (TaskQueryException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 					try {
 						actualizarTabla();
 					} catch (NotNullException e1) {
@@ -227,23 +255,25 @@ public class ListaProyectos extends JFrame {
     			DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
     			// Obtiene la lista de usuarios a mostrar
     			List<ProyectoDTO> proyectos = api.obtenerProyectos(api.getUsuarioActual().getUsername());
-    			
+    			  proyectos.sort((p1, p2) -> {
+    		            int prioridadComparacion = Integer.compare(api.obtenerPrioridad(p1.getPrioridad()), 
+    		                                                       api.obtenerPrioridad(p2.getPrioridad()));
+    		            if (prioridadComparacion != 0) {
+    		                return prioridadComparacion;
+    		            }
+    		            return p1.getNombre().compareTo(p2.getNombre());
+    		        });
     			// Resetea el model
     			modelo.setRowCount(0);
     			if(!proyectos.isEmpty()) {
     				for (ProyectoDTO p : proyectos) {
     					modelo.addRow(new Object[] {
-    							p.getId(),
     							p.getNombre(), 
     							p.getDescripcion(), 
     							p.isEstado(),
     							p.getPrioridad(), 
     							p.getUsuarioPropietario().getUsername()});
     				}
-    		        // Ocultar la columna ID
-    		        tabla.getColumnModel().getColumn(0).setMinWidth(0);
-    		        tabla.getColumnModel().getColumn(0).setMaxWidth(0);
-    		        tabla.getColumnModel().getColumn(0).setPreferredWidth(0);
     			}
 
     }

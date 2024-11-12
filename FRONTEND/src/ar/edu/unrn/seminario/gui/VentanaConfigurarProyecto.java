@@ -24,7 +24,7 @@ import ar.edu.unrn.seminario.exception.NotNullException;
 public class VentanaConfigurarProyecto extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	List<String> prioridades = Arrays.asList("alta", "media", "baja");
+	List<String> prioridades = Arrays.asList("Alta", "Media", "Baja");
 	private JPanel contentPane;
 	private JTextField textField_Nombre;
 	private JComboBox<String> prioridadComboBox;
@@ -99,7 +99,7 @@ public class VentanaConfigurarProyecto extends JFrame {
 				String prioridadSeleccionada = (String) prioridadComboBox.getSelectedItem();
 				try {
 					
-					if (prioridadSeleccionada.equals(api.getProyectoActual().getPrioridad()) && textField_Nombre.getText().equals(api.getProyectoActual().getNombre()) && textField_Descripcion.getText().equals(api.getProyectoActual().getDescripcion())) {
+					if (prioridadSeleccionada.equals(api.getProyectoActual().getPrioridad())  || (textField_Nombre.getText().equals(api.getProyectoActual().getNombre()) || esDatoVacio(api.getProyectoActual().getNombre())) && (textField_Descripcion.getText().equals(api.getProyectoActual().getDescripcion()) || esDatoVacio(api.getProyectoActual().getDescripcion()))) {
 						JOptionPane.showMessageDialog(null, "No se cambio ningun campo.", "No se realizo ningun cambio!", JOptionPane.QUESTION_MESSAGE);
 		            }
 					else {
@@ -143,7 +143,11 @@ public class VentanaConfigurarProyecto extends JFrame {
 		
 		
 	}
-
+	
+	private boolean esDatoVacio(String dato) {
+		return dato.equals("");
+	}
+	
 	private void mostararDatosActuales(IApi api) {
         try {
             String nombreProyecto = api.getProyectoActual().getNombre();

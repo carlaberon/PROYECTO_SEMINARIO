@@ -34,7 +34,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JCheckBox;
 
 public class CrearProyecto extends JFrame {
-    List<String> prioridades = Arrays.asList("alta", "media", "baja");
+    List<String> prioridades = Arrays.asList("Alta", "Media", "Baja");
 	private JPanel contentPane;
 	private JTextField nombreProyectoTextField;
 	private JComboBox<String> proyectoComboBox;

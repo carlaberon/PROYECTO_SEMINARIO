@@ -31,6 +31,7 @@ public class Tarea {
     	if (esDatoNulo(descripcion))
 			throw new NotNullException("descripcion");
     	
+    	
 		if (esDatoVacio(nombre))
 			throw new DataEmptyException("nombre");
 		if (esDatoVacio(prioridad))
@@ -182,6 +183,10 @@ public class Tarea {
 	}
 
 	private boolean esDatoNulo(String dato) {
+		return dato == null;
+	}
+	
+	private boolean esFechaNula(LocalDate dato) {
 		return dato == null;
 	}
 	

@@ -9,6 +9,7 @@ import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
+import ar.edu.unrn.seminario.exception.TaskQueryException;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -161,15 +162,6 @@ public class VentanaResumen extends JFrame {
             }
         });
 
-//        btnVerMiembros.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                ListaMiembros listaMiembros = new ListaMiembros(api); //MODIFICADO X MI
-//                listaMiembros.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-//                listaMiembros.setVisible(true);  
-//            }
-//        });
-
         miembrosPanel.add(btnMiembro);
         miembrosPanel.add(btnVerMiembros);
         centerPanel1.add(miembrosPanel);
@@ -183,23 +175,21 @@ public class VentanaResumen extends JFrame {
         btnVerTareas.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
             //String nombreProyecto = unproyecto.getNombre(); // Este método obtiene el nombre del proyecto seleccionado
-            VentanaTareas ventanaTareas = null;
 			try {
-				ventanaTareas = new VentanaTareas(api);
-			} catch (RuntimeException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (InvalidDateException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (NotNullException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (DataEmptyException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-            ventanaTareas.setVisible(true);
+				VentanaTareas ventanaTareas = new VentanaTareas(api);
+				ventanaTareas.setVisible(true);
+			} catch (TaskQueryException e1) {
+	            JOptionPane.showMessageDialog(null, "Error al consultar las tareas: " + e1.getMessage(), "Error de consulta", JOptionPane.ERROR_MESSAGE);
+	        } catch (InvalidDateException e1) {
+	            JOptionPane.showMessageDialog(null, "Error: Fecha inválida encontrada en una de las tareas.", "Error de fecha", JOptionPane.ERROR_MESSAGE);
+	        } catch (NotNullException e1) {
+	            JOptionPane.showMessageDialog(null, "Error: Un campo obligatorio está vacío en las tareas.", "Campo obligatorio vacío", JOptionPane.ERROR_MESSAGE);
+	        } catch (DataEmptyException e1) {
+	            JOptionPane.showMessageDialog(null, "Error: No hay datos disponibles para mostrar.", "Datos vacíos", JOptionPane.WARNING_MESSAGE);
+	        } catch (RuntimeException e1) {
+	            JOptionPane.showMessageDialog(null, "Se ha producido un error inesperado: " + e1.getMessage(), "Error inesperado", JOptionPane.ERROR_MESSAGE);
+	        }
+            
         }
     });
         // Agregar el panel principal al contentPane

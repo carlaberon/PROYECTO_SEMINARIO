@@ -40,7 +40,7 @@ public class CrearTarea extends JFrame {
     private JPanel contentPane;
     private JTextField nombreTareaTextField;
     private JComboBox<String> asignarUsuarioComboBox; // ComboBox para seleccionar usuario
-    List<String> prioridades = Arrays.asList("alta", "media", "baja");
+    List<String> prioridades = Arrays.asList("Alta", "Media", "Baja");
     private List<ProyectoDTO> proyectos = new ArrayList<>();
     private List<UsuarioDTO> usuarios = new ArrayList<>();
     private String usuarioPropietario;
@@ -71,23 +71,6 @@ public class CrearTarea extends JFrame {
         nombreTareaTextField.setBounds(190, 50, 160, 22);
         contentPane.add(nombreTareaTextField);
         nombreTareaTextField.setColumns(10);
-
-//        JLabel proyectoTareaLabel = new JLabel("Proyecto:");
-//        proyectoTareaLabel.setBounds(43, 60, 150, 16);
-//        contentPane.add(proyectoTareaLabel);
-
-//        proyectoTareaComboBox = new JComboBox<>();
-//        proyectoTareaComboBox.setBounds(190, 60, 160, 22);
-//        if (! this.proyectos.isEmpty() ) {
-//        	for (ProyectoDTO proyecto : this.proyectos) {
-//        		if (proyecto.getUsuarioPropietario().getUsername().equals(usuarioPropietario)) {
-//        			proyectoTareaComboBox.addItem(proyecto.getNombre());
-//        		}
-//                
-//            }
-//        }
-        
-//        contentPane.add(proyectoTareaComboBox);
 
         JLabel asignarUsuarioLabel = new JLabel("Asignar Usuario:");
         asignarUsuarioLabel.setBounds(43, 100, 150, 16);
@@ -184,7 +167,7 @@ public class CrearTarea extends JFrame {
                 	
                 	} catch (NullPointerException e) {
                 		
-                		JOptionPane.showMessageDialog(null,e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                		JOptionPane.showMessageDialog(null,"Las fechas no pueden ser nulas.", "Error", JOptionPane.ERROR_MESSAGE);
                 	} catch (DataEmptyException e) {
                 		JOptionPane.showMessageDialog(null,"La tarea debe tener" +" " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 		
