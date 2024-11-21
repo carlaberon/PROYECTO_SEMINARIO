@@ -99,7 +99,7 @@ public class VentanaConfigurarProyecto extends JFrame {
 				String prioridadSeleccionada = (String) prioridadComboBox.getSelectedItem();
 				try {
 					
-					if (prioridadSeleccionada.equals(api.getProyectoActual().getPrioridad())  || (textField_Nombre.getText().equals(api.getProyectoActual().getNombre()) || esDatoVacio(api.getProyectoActual().getNombre())) && (textField_Descripcion.getText().equals(api.getProyectoActual().getDescripcion()) || esDatoVacio(api.getProyectoActual().getDescripcion()))) {
+					if (prioridadSeleccionada.equals(api.getProyectoActual().getPrioridad())  && (textField_Nombre.getText().equals(api.getProyectoActual().getNombre()) || esDatoVacio(api.getProyectoActual().getNombre())) && (textField_Descripcion.getText().equals(api.getProyectoActual().getDescripcion()) || esDatoVacio(api.getProyectoActual().getDescripcion()))) {
 						JOptionPane.showMessageDialog(null, "No se cambio ningun campo.", "No se realizo ningun cambio!", JOptionPane.QUESTION_MESSAGE);
 		            }
 					else {
@@ -120,7 +120,7 @@ public class VentanaConfigurarProyecto extends JFrame {
 				} catch (NotNullException e1) {
 		            JOptionPane.showMessageDialog(null, "El campo " + e1.getMessage() + " no puede ser nulo.", "Error", JOptionPane.ERROR_MESSAGE);
 		        } catch (DataEmptyException e2) {
-		            JOptionPane.showMessageDialog(null, "El campo " + e2.getMessage() + "esta vacío.", "Error", JOptionPane.ERROR_MESSAGE);
+		            JOptionPane.showMessageDialog(null, "El campo " + e2.getMessage() + " esta vacío.", "Error", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});

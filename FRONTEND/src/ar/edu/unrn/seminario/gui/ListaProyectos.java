@@ -268,6 +268,7 @@ public class ListaProyectos extends JFrame {
     			if(!proyectos.isEmpty()) {
     				for (ProyectoDTO p : proyectos) {
     					modelo.addRow(new Object[] {
+    							p.getId(),
     							p.getNombre(), 
     							p.getDescripcion(), 
     							p.isEstado(),
