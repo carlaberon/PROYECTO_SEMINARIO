@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -34,7 +36,14 @@ import javax.swing.JRadioButton;
 import javax.swing.JCheckBox;
 
 public class CrearProyecto extends JFrame {
-    List<String> prioridades = Arrays.asList("Alta", "Media", "Baja");
+	
+	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
+//	 descomentar para que tome el idioma ingles (english)
+
+	//ResourceBundle labels = ResourceBundle.getBundle("labels");
+	
+	
+    List<String> prioridades = Arrays.asList(labels.getString("prioridad.alta"),labels.getString("prioridad.media"), labels.getString("prioridad.baja"));
 	private JPanel contentPane;
 	private JTextField nombreProyectoTextField;
 	private JComboBox<String> proyectoComboBox;
@@ -44,7 +53,7 @@ public class CrearProyecto extends JFrame {
 	public CrearProyecto(IApi api) {
 		this.api = api;
 		
-		setTitle("Crear proyecto");
+		setTitle(labels.getString("ventana.crearProyecto"));
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 800, 650);
 		setSize(900,600);
@@ -57,7 +66,7 @@ public class CrearProyecto extends JFrame {
 		contentPane.setLayout(null);
 		setContentPane(contentPane);
 
-		JLabel nombreProyecto = new JLabel("Nombre Proyecto:");
+		JLabel nombreProyecto = new JLabel(labels.getString("menu.nombreProyecto"));
 		nombreProyecto.setForeground(new Color(240, 240, 240));
 		nombreProyecto.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 		nombreProyecto.setBounds(88, 93, 227, 39);
@@ -86,7 +95,7 @@ public class CrearProyecto extends JFrame {
             prioridadComboBox.addItem(prioridad);
         }
 
-		JButton aceptarButton = new JButton("Guardar");
+		JButton aceptarButton = new JButton(labels.getString("boton.guardar"));
 		aceptarButton.setForeground(new Color(229, 212, 237));
 		aceptarButton.setBackground(new Color(89, 65, 169));
 		aceptarButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
@@ -103,23 +112,23 @@ public class CrearProyecto extends JFrame {
 				try {
 					// Verificar si no se seleccionó una prioridad
 		            if (prioridadSeleccionadaNueva == null || prioridadSeleccionadaNueva.isEmpty()) {
-		                throw new DataEmptyException("prioridad");
+		                throw new DataEmptyException(labels.getString("mensaje.prioridad"));
 		            }
 			
 					
 					// Crear un nuevo proyecto
 	                api.crearProyecto(nombreNuevoProyecto, api.getUsuarioActual().getUsername(), "EN CURSO", descripcionNueva, prioridadSeleccionadaNueva);
-	                JOptionPane.showMessageDialog(null, "Proyecto registrado con éxito!", "Info", JOptionPane.INFORMATION_MESSAGE);
+	                JOptionPane.showMessageDialog(null, labels.getString("mensaje.proyectoCreado"), "Info", JOptionPane.INFORMATION_MESSAGE);
 	                setVisible(false);
 	                dispose();
 				} catch (NotNullException ex) {
-		            JOptionPane.showMessageDialog(null, "El campo " + ex.getMessage() + " no puede ser nulo.", "Error", JOptionPane.ERROR_MESSAGE);
+		            JOptionPane.showMessageDialog(null, labels.getString("mensaje.elCampo") + ex.getMessage() + labels.getString("mensaje.null"), "Error", JOptionPane.ERROR_MESSAGE);
 		        } catch (DataEmptyException ex) {
-		            JOptionPane.showMessageDialog(null, "El campo " + ex.getMessage() + " no puede estar vacío.", "Error", JOptionPane.ERROR_MESSAGE);
+		            JOptionPane.showMessageDialog(null, labels.getString("mensaje.elCampo") + ex.getMessage() + labels.getString("mensaje.empty"), "Error", JOptionPane.ERROR_MESSAGE);
 		        }
 			}
 		});
-		JButton cancelarButton = new JButton("Cancelar");
+		JButton cancelarButton = new JButton(labels.getString("boton.cancelar"));
 		cancelarButton.setForeground(new Color(29, 17, 40));
 		cancelarButton.setBackground(new Color(229, 212, 237));
 		cancelarButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
@@ -134,7 +143,7 @@ public class CrearProyecto extends JFrame {
 
 
 
-		JLabel subproyectoLabel = new JLabel("Subproyecto de:");
+		JLabel subproyectoLabel = new JLabel(labels.getString("campo.subproyecto"));
         subproyectoLabel.setForeground(new Color(240, 240, 240));
         subproyectoLabel.setFont(new Font("Segoe UI", Font.PLAIN, 20));
         subproyectoLabel.setBounds(88, 233, 167, 39);
@@ -150,19 +159,19 @@ public class CrearProyecto extends JFrame {
         
 		proyectoComboBox.addItem("");
 	
-		JLabel lblNewLabel = new JLabel("Nuevo Proyecto");
+		JLabel lblNewLabel = new JLabel(labels.getString("campo.nuevoProyecto"));
 		lblNewLabel.setForeground(new Color(29, 17, 40));
 		lblNewLabel.setFont(new Font("Segoe UI", Font.PLAIN, 35));
 		lblNewLabel.setBounds(41, 10, 291, 73);
 		contentPane.add(lblNewLabel);
 		
-		JLabel lblDescripcion = new JLabel("Descripcion:");
+		JLabel lblDescripcion = new JLabel(labels.getString("campo.descripcion"));
 		lblDescripcion.setForeground(UIManager.getColor("Button.background"));
 		lblDescripcion.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 		lblDescripcion.setBounds(88, 142, 227, 39);
 		contentPane.add(lblDescripcion);
 		
-		JLabel lblPrioridad = new JLabel("Prioridad");
+		JLabel lblPrioridad = new JLabel(labels.getString("campo.prioridad"));
 		lblPrioridad.setForeground(UIManager.getColor("Button.background"));
 		lblPrioridad.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 		lblPrioridad.setBounds(88, 191, 227, 39);

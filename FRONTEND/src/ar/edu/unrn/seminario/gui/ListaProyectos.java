@@ -24,6 +24,8 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.Set;
 
 public class ListaProyectos extends JFrame {
@@ -33,10 +35,15 @@ public class ListaProyectos extends JFrame {
 	private JButton volver;
 	
     public ListaProyectos(IApi api) throws NotNullException, DataEmptyException {
+    	
+    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
+//   	 descomentar para que tome el idioma ingles (english)
+
+   	//ResourceBundle labels = ResourceBundle.getBundle("labels");
     	this.api = api;
 
         // Configuración básica de la ventana
-        setTitle("Proyectos Activos");
+        setTitle("");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 800, 400);
         getContentPane().setLayout(new BorderLayout());

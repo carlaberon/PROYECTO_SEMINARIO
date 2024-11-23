@@ -15,6 +15,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.ArrayList;
 
 public class Inicio extends JFrame {
@@ -25,10 +27,17 @@ public class Inicio extends JFrame {
     private UsuarioDTO usuarioActual;
     
     public Inicio(IApi api) throws NotNullException, DataEmptyException {
+    	
+    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
+//		 descomentar para que tome el idioma ingles (english)
+
+		//ResourceBundle labels = ResourceBundle.getBundle("labels");
+    	
     	this.api = api;
     	this.usuarioActual = api.getUsuarioActual();
     	
-        frame = new JFrame("LabProject");
+        frame = new JFrame();
+        frame.setTitle(labels.getString("ventana.inicio"));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 600);
 
@@ -36,7 +45,7 @@ public class Inicio extends JFrame {
         menuBar.setBackground(new Color(138, 102, 204));
         menuBar.setPreferredSize(new Dimension(100, 50));
 
-        JLabel projectName = new JLabel("LabProject");
+        JLabel projectName = new JLabel(labels.getString("menu.proyecto"));
         projectName.setForeground(Color.WHITE);
         projectName.setFont(new Font("Segoe UI", Font.PLAIN, 18));
         menuBar.add(Box.createHorizontalGlue());
@@ -47,9 +56,9 @@ public class Inicio extends JFrame {
         accountMenu.setForeground(Color.WHITE);
         accountMenu.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 
-        JMenuItem logoutItem = new JMenuItem("Cerrar sesión");
-        JMenuItem confItem = new JMenuItem("Configurar Cuenta");
-        JMenuItem verTodosProyectosMenuItem = new JMenuItem("Ver todos los proyectos");
+        JMenuItem logoutItem = new JMenuItem(labels.getString("menu.cerrarSesion"));
+        JMenuItem confItem = new JMenuItem(labels.getString("menu.configurarCuenta"));
+        JMenuItem verTodosProyectosMenuItem = new JMenuItem(labels.getString("menu.verProyectos"));
 
         accountMenu.add(confItem);
         accountMenu.add(logoutItem);
@@ -83,7 +92,7 @@ public class Inicio extends JFrame {
         menuPanel.setPreferredSize(new Dimension(200, 0));
         menuPanel.setBackground(new Color(65, 62, 77));
 
-        String[] menuItems = {"Proyectos", "Actividad", "Calendario"};
+        String[] menuItems = {labels.getString("menu.proyectos"), labels.getString("menu.actividad"),labels.getString("menu.calendario")};
         for (String item : menuItems) {
             JButton menuButton = new JButton(item + " →");
             menuButton.setForeground(Color.WHITE);
@@ -99,7 +108,7 @@ public class Inicio extends JFrame {
 
         JPanel contentPanel = new JPanel();
         contentPanel.setBackground(new Color(45, 45, 45));
-        JLabel welcomeLabel = new JLabel("¡Bienvenido a LabProject!");
+        JLabel welcomeLabel = new JLabel(labels.getString("menu.bienvenida"));
         welcomeLabel.setForeground(Color.WHITE);
         welcomeLabel.setFont(new Font("Segoe UI", Font.PLAIN, 18));
         contentPanel.add(welcomeLabel);
@@ -107,7 +116,7 @@ public class Inicio extends JFrame {
         JPanel rightPanel = new JPanel(new BorderLayout());
         rightPanel.setBackground(new Color(30, 30, 30));
 
-        JLabel proyectosLabel = new JLabel("Proyectos");
+        JLabel proyectosLabel = new JLabel(labels.getString("menu.proyectos"));
         proyectosLabel.setForeground(Color.GRAY);
         proyectosLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 
@@ -169,14 +178,14 @@ public class Inicio extends JFrame {
         proyectosButtonsPanel.setBackground(new Color(30, 30, 30));
         proyectosButtonsPanel.setLayout(new BoxLayout(proyectosButtonsPanel, BoxLayout.Y_AXIS));
         
-        JButton btnNuevoProyecto = new JButton("Proyecto +");
+        JButton btnNuevoProyecto = new JButton(labels.getString("menu.agregarProyecto"));
         btnNuevoProyecto.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		abrirCrearProyecto();
         	}
         });
         
-        JButton btnVerProyectos = new JButton("Ver todos los proyectos");
+        JButton btnVerProyectos = new JButton(labels.getString("menu.verProyectos"));
         btnVerProyectos.addActionListener(e -> {
         	try {
         		abrirListaProyectos();
@@ -189,7 +198,7 @@ public class Inicio extends JFrame {
         	}
         }); // Acción para el botón
         
-        JButton actualizarProyectos = new JButton("Actualizar");
+        JButton actualizarProyectos = new JButton(labels.getString("menu.actualizar"));
         actualizarProyectos.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

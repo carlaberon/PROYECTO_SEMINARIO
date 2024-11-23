@@ -14,6 +14,9 @@ import ar.edu.unrn.seminario.exception.TaskQueryException;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.api.PersistenceApi;
 public class VentanaResumen extends JFrame {
@@ -25,6 +28,11 @@ public class VentanaResumen extends JFrame {
     
     public VentanaResumen(IApi api) throws NotNullException, DataEmptyException {
 
+    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
+//		 descomentar para que tome el idioma ingles (english)
+
+		//ResourceBundle labels = ResourceBundle.getBundle("labels");
+    	
     	this.api = api;
     	this.usuarioActual = api.getUsuarioActual();
     	this.unproyecto = api.getProyectoActual();
@@ -55,7 +63,7 @@ public class VentanaResumen extends JFrame {
 
         menuBar.add(menuProyecto);
 
-        JLabel appName = new JLabel("LabProject");
+        JLabel appName = new JLabel(labels.getString("menu.proyecto"));
         appName.setForeground(Color.WHITE);
         appName.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 
@@ -68,8 +76,8 @@ public class VentanaResumen extends JFrame {
         accountMenu.setForeground(Color.WHITE);
         accountMenu.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 
-        JMenuItem logoutItem = new JMenuItem("Cerrar sesión");
-        JMenuItem confItem = new JMenuItem("Configurar cuenta");
+        JMenuItem logoutItem = new JMenuItem(labels.getString("menu.cerrarSesion"));
+        JMenuItem confItem = new JMenuItem(labels.getString("menu.configurarCuenta"));
         
         accountMenu.add(confItem);
         accountMenu.add(logoutItem);
@@ -95,8 +103,10 @@ public class VentanaResumen extends JFrame {
         menuPanel.setLayout(new GridLayout(7, 1, 10, 10)); // Espacio entre botones
         menuPanel.setPreferredSize(new Dimension(200, 0));
         menuPanel.setBackground(new Color(65, 62, 77));
+        
+ 
 
-        String[] menuItems = {"Resumen", "Progreso", "Plan", "Calendario", "Tareas", "Miembros", "Configuración"};
+        String[] menuItems = {labels.getString("menu.resumen"),labels.getString("menu.progreso"),labels.getString("menu.plan"),labels.getString("menu.calendario"), labels.getString("menu.tareas"), labels.getString("menu.miembros"),labels.getString("menu.configuracion")};
         for (String item : menuItems) {
             JButton menuButton = new JButton(item + " →");
             menuButton.setForeground(Color.WHITE);
@@ -131,25 +141,25 @@ public class VentanaResumen extends JFrame {
         centerPanel1.setBorder(new EmptyBorder(20, 20, 20, 20)); // Margen alrededor del contenido
 
         // Descripción del proyecto
-        JPanel descPanel = createPanel("Descripción del proyecto",unproyecto.getDescripcion());
+        JPanel descPanel = createPanel(labels.getString("menu.descripcionProyecto"),unproyecto.getDescripcion());
         centerPanel1.add(descPanel);
 
         // Estado del proyecto
-        JPanel estadoPanel = createPanel("Estado del proyecto",unproyecto.isEstado());
+        JPanel estadoPanel = createPanel(labels.getString("menu.estadoProyecto"),unproyecto.isEstado());
         centerPanel1.add(estadoPanel);
 
         // Detalles del plan
-        JPanel planPanel = createPanel("Detalles del plan", null);
-        JButton btnPlan = createButton("Plan +", new Color(138, 102, 204));
-        JButton btnVerPlan = createButton("Ver plan", new Color(83, 82, 90));
+        JPanel planPanel = createPanel(labels.getString("menu.detallesPlan"), null);
+        JButton btnPlan = createButton(labels.getString("menu.plan"), new Color(138, 102, 204));
+        JButton btnVerPlan = createButton(labels.getString("menu.verPlan"), new Color(83, 82, 90));
         planPanel.add(btnPlan);
         planPanel.add(btnVerPlan);
         centerPanel1.add(planPanel);
 
         // Miembros del proyecto
-        JPanel miembrosPanel = createPanel("Miembros del proyecto", null);
-        JButton btnMiembro = createButton("Miembro +", new Color(138, 102, 204));
-        JButton btnVerMiembros = createButton("Ver miembros", new Color(83, 82, 90));
+        JPanel miembrosPanel = createPanel(labels.getString("menu.miembrosProyecto"), null);
+        JButton btnMiembro = createButton(labels.getString("menu.agregarMiembro"), new Color(138, 102, 204));
+        JButton btnVerMiembros = createButton(labels.getString("menu.verMiembros"), new Color(83, 82, 90));
         miembrosPanel.add(btnMiembro);
         miembrosPanel.add(btnVerMiembros);
         centerPanel1.add(miembrosPanel);
@@ -166,9 +176,9 @@ public class VentanaResumen extends JFrame {
         miembrosPanel.add(btnVerMiembros);
         centerPanel1.add(miembrosPanel);
         // Tareas
-        JPanel tareasPanel = createPanel("Tareas", null);
-        JButton btnTarea = createButton("Tarea +", new Color(138, 102, 204));
-        JButton btnVerTareas = createButton("Ver detalles", new Color(83, 82, 90));
+        JPanel tareasPanel = createPanel(labels.getString("menu.tareas"), null);
+        JButton btnTarea = createButton(labels.getString("menu.agregarTarea"), new Color(138, 102, 204));
+        JButton btnVerTareas = createButton(labels.getString("menu.verDetalles"), new Color(83, 82, 90));
         tareasPanel.add(btnTarea);
         tareasPanel.add(btnVerTareas);
         centerPanel1.add(tareasPanel);
@@ -179,15 +189,15 @@ public class VentanaResumen extends JFrame {
 				VentanaTareas ventanaTareas = new VentanaTareas(api);
 				ventanaTareas.setVisible(true);
 			} catch (TaskQueryException e1) {
-	            JOptionPane.showMessageDialog(null, "Error al consultar las tareas: " + e1.getMessage(), "Error de consulta", JOptionPane.ERROR_MESSAGE);
+	            JOptionPane.showMessageDialog(null, labels.getString("mensaje.errorConsultaTareas") + e1.getMessage(), labels.getString("mensaje.errorConsulta"), JOptionPane.ERROR_MESSAGE);
 	        } catch (InvalidDateException e1) {
-	            JOptionPane.showMessageDialog(null, "Error: Fecha inválida encontrada en una de las tareas.", "Error de fecha", JOptionPane.ERROR_MESSAGE);
+	            JOptionPane.showMessageDialog(null, labels.getString("mensaje.errorFechaTarea"), labels.getString("mensaje.errorFecha"), JOptionPane.ERROR_MESSAGE);
 	        } catch (NotNullException e1) {
-	            JOptionPane.showMessageDialog(null, "Error: Un campo obligatorio está vacío en las tareas.", "Campo obligatorio vacío", JOptionPane.ERROR_MESSAGE);
+	            JOptionPane.showMessageDialog(null, labels.getString("mensaje.errorCampoTarea"), labels.getString("mensaje.campoObligatorio"), JOptionPane.ERROR_MESSAGE);
 	        } catch (DataEmptyException e1) {
-	            JOptionPane.showMessageDialog(null, "Error: No hay datos disponibles para mostrar.", "Datos vacíos", JOptionPane.WARNING_MESSAGE);
+	            JOptionPane.showMessageDialog(null, labels.getString("mensaje.noHayDatosDisponibles"),labels.getString("mensaje.datosVacios") , JOptionPane.WARNING_MESSAGE);
 	        } catch (RuntimeException e1) {
-	            JOptionPane.showMessageDialog(null, "Se ha producido un error inesperado: " + e1.getMessage(), "Error inesperado", JOptionPane.ERROR_MESSAGE);
+	            JOptionPane.showMessageDialog(null, labels.getString("mensaje.errorInesperado") + e1.getMessage(), labels.getString("mensaje.errorInesperado1"), JOptionPane.ERROR_MESSAGE);
 	        }
             
         }
