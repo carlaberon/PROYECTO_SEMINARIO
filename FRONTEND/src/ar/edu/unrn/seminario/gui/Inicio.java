@@ -28,7 +28,7 @@ public class Inicio extends JFrame {
     
     public Inicio(IApi api) throws NotNullException, DataEmptyException {
     	
-    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
+    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
 //		 descomentar para que tome el idioma ingles (english)
 
 		//ResourceBundle labels = ResourceBundle.getBundle("labels");

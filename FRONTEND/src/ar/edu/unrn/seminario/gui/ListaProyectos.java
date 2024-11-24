@@ -36,7 +36,7 @@ public class ListaProyectos extends JFrame {
 	
     public ListaProyectos(IApi api) throws NotNullException, DataEmptyException {
     	
-    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
+    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
 //   	 descomentar para que tome el idioma ingles (english)
 
    	//ResourceBundle labels = ResourceBundle.getBundle("labels");
@@ -240,22 +240,7 @@ public class ListaProyectos extends JFrame {
             });
         }
 
-        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-            label = (value == null) ? "Expandir" : value.toString();
-            button.setText(label);
-            isPushed = true;
-            return button;
-        }
 
-        public Object getCellEditorValue() {
-            isPushed = false;
-            return label;
-        }
-
-        public boolean stopCellEditing() {
-            isPushed = false;
-            return super.stopCellEditing();
-        }
     }
     public void actualizarTabla() throws NotNullException, DataEmptyException{
     	// Obtiene el model del table
