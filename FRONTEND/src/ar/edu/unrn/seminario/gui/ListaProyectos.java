@@ -43,7 +43,7 @@ public class ListaProyectos extends JFrame {
     	this.api = api;
 
         // Configuración básica de la ventana
-        setTitle("");
+        setTitle(labels.getString("menu.proyectos"));
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 800, 400);
         getContentPane().setLayout(new BorderLayout());
@@ -57,7 +57,7 @@ public class ListaProyectos extends JFrame {
         getContentPane().setBackground(fondoColor);
         
         tabla = new JTable();
-        String[] proyectosTabla = {"Id", "Nombre", "Descripcion", "Estado", "Prioridad", "Propietario"};
+        String[] proyectosTabla = {labels.getString("menu.Id"), labels.getString("menu.nombre"), labels.getString("menu.descripcionProyecto"), labels.getString("menu.estadoProyecto"), labels.getString("mensaje.prioridad"), labels.getString("menu.propietario")};
         
         DefaultTableModel modelo = new DefaultTableModel(new Object[][] {}, proyectosTabla);
         tabla.setModel(modelo);
@@ -125,7 +125,7 @@ public class ListaProyectos extends JFrame {
 
         JPanel panelInferior = new JPanel();
         panelInferior.setBackground(new Color(109, 114, 195)); // Púrpura para el fondo del panel inferior
-        JLabel labelInferior = new JLabel("LabProject - Sistema de Gestión de Proyectos");
+        JLabel labelInferior = new JLabel(labels.getString("menu.sistema"));
         labelInferior.setForeground(Color.WHITE);
         panelInferior.add(labelInferior);
 
@@ -134,14 +134,14 @@ public class ListaProyectos extends JFrame {
         JPanel panelEliminar = new JPanel();
         panelEliminar.setLayout(new FlowLayout(FlowLayout.CENTER));
         
-        eliminarProyecto = createButton("Eliminar", new Color(138, 102, 204));
+        eliminarProyecto = createButton(labels.getString("boton.eliminar"), new Color(138, 102, 204));
         habilitarBotones(false);
         eliminarProyecto.addActionListener(new ActionListener() {
 		
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int opcionSeleccionada = JOptionPane.showConfirmDialog(null,
-						"Estas seguro que queres eliminar el proyecto?", "Confirmar cambio de estado.",
+						labels.getString("mensaje.confirmarEliminacion"), labels.getString("mensaje.eliminarProyecto"),
 						JOptionPane.YES_NO_OPTION);
 				if (opcionSeleccionada == JOptionPane.YES_OPTION) {
 					int projecId = (int) tabla.getModel().getValueAt(tabla.getSelectedRow(), 0);
