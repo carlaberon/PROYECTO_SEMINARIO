@@ -9,6 +9,9 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -52,6 +55,12 @@ public class ModificarTarea extends JFrame {
 	    private IApi api;
 	    public ModificarTarea(IApi api) throws NotNullException, DataEmptyException, InvalidDateException {
 
+	    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
+//			 descomentar para que tome el idioma ingles (english)
+
+			//ResourceBundle labels = ResourceBundle.getBundle("labels");
+	    	
+	    
 	        this.api = api; 
 	        
 	        this.usuarios = api.obtenerUsuarios();
@@ -62,7 +71,7 @@ public class ModificarTarea extends JFrame {
 	        
 	        this.tarea = api.getTareaActual();
 	        
-	        setTitle("MODIFICAR TAREA");
+	        setTitle(labels.getString("menu.modificarTarea"));
 	        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	        setBounds(200, 200, 600, 550);
 	        contentPane = new JPanel();
@@ -70,7 +79,7 @@ public class ModificarTarea extends JFrame {
 	        contentPane.setLayout(null);
 	        setContentPane(contentPane);
 	        
-	        JLabel nombreTareaLabel = new JLabel("Nombre de Tarea:");
+	        JLabel nombreTareaLabel = new JLabel(labels.getString("campo.nombreTarea"));
 	        nombreTareaLabel.setBounds(43, 20, 150, 16);
 	        contentPane.add(nombreTareaLabel);
 
@@ -79,7 +88,7 @@ public class ModificarTarea extends JFrame {
 	        contentPane.add(nombreTareaTextField);
 	        nombreTareaTextField.setColumns(10);
 
-	        JLabel proyectoTareaLabel = new JLabel("Proyecto:");
+	        JLabel proyectoTareaLabel = new JLabel(labels.getString("menu.nombreProyecto"));
 	        proyectoTareaLabel.setBounds(43, 60, 150, 16);
 	        contentPane.add(proyectoTareaLabel);
 
@@ -93,7 +102,7 @@ public class ModificarTarea extends JFrame {
 	        
 	        contentPane.add(proyectoTareaComboBox);
 
-	        JLabel asignarUsuarioLabel = new JLabel("Asignar Usuario:");
+	        JLabel asignarUsuarioLabel = new JLabel(labels.getString("campo.asignarUsuario"));
 	        asignarUsuarioLabel.setBounds(43, 100, 150, 16);
 	        contentPane.add(asignarUsuarioLabel);
 
@@ -108,7 +117,7 @@ public class ModificarTarea extends JFrame {
 	       
 	        contentPane.add(asignarUsuarioComboBox);
 
-	        JLabel prioridadTareaLabel = new JLabel("Prioridad:");
+	        JLabel prioridadTareaLabel = new JLabel(labels.getString("campo.prioridad"));
 	        prioridadTareaLabel.setBounds(43, 140, 150, 16);
 	        contentPane.add(prioridadTareaLabel);
 	        prioridadComboBox = new JComboBox<>();
@@ -118,11 +127,11 @@ public class ModificarTarea extends JFrame {
 			contentPane.add(prioridadComboBox);
 
 			// Llenar el JComboBox con las claves del mapa de prioridad
-	        for (String prioridad :Arrays.asList("Alta", "Media", "Baja")) {
+	        for (String prioridad :Arrays.asList(labels.getString("prioridad.alta"), labels.getString("prioridad.media"), labels.getString("prioridad.baja"))) {
 	            prioridadComboBox.addItem(prioridad);
 	        }
 
-	        JLabel lblDescripcin = new JLabel("Descripción:");
+	        JLabel lblDescripcin = new JLabel(labels.getString("campo.descripcion"));
 	        lblDescripcin.setBounds(43, 291, 150, 16);
 	        contentPane.add(lblDescripcin);
 
@@ -130,19 +139,19 @@ public class ModificarTarea extends JFrame {
 	        textAreaDescription.setBounds(208, 291, 329, 111);
 	        contentPane.add(textAreaDescription);
 
-	        JLabel lblFechaInicio = new JLabel("Fecha inicio:");
+	        JLabel lblFechaInicio = new JLabel(labels.getString("campo.fechaInicio"));
 	        lblFechaInicio.setBounds(43, 183, 150, 16);
 	        contentPane.add(lblFechaInicio);
 
-	        JLabel lblFechaFin = new JLabel("Fecha fin:");
+	        JLabel lblFechaFin = new JLabel(labels.getString("campo.fechaFin"));
 	        lblFechaFin.setBounds(43, 232, 150, 16);
 	        contentPane.add(lblFechaFin);
 
-	        JButton aceptarButton = new JButton("Aceptar");
+	        JButton aceptarButton = new JButton(labels.getString("boton.guardar"));
 	        aceptarButton.setBounds(312, 438, 97, 25);
 	        contentPane.add(aceptarButton);
 
-	        JButton cancelarButton = new JButton("Cancelar");
+	        JButton cancelarButton = new JButton(labels.getString("boton.cancelar"));
 	        cancelarButton.setBounds(440, 438, 97, 25);
 	        contentPane.add(cancelarButton);
 	        

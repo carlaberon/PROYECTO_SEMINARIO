@@ -14,6 +14,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -56,11 +58,17 @@ public class VentanaTareas extends JFrame {
 	
 
     public VentanaTareas(IApi api) throws RuntimeException, InvalidDateException, NotNullException, DataEmptyException, TaskQueryException{
+    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
+//		 descomentar para que tome el idioma ingles (english)
+
+		//ResourceBundle labels = ResourceBundle.getBundle("labels");
+    	
+    	
     	this.api = api; 
     	this.usuarioActual = api.getUsuarioActual();
     	this.unproyecto = api.getProyectoActual(); 
     	
-    	setTitle("TAREAS");
+    	setTitle(labels.getString("menu.tareas"));
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         setBounds(50, 50, 1200, 650);
         
@@ -86,7 +94,7 @@ public class VentanaTareas extends JFrame {
 
         menuBar.add(menuProyecto);
 
-        JLabel appName = new JLabel("LabProject");
+        JLabel appName = new JLabel(labels.getString("menu.proyecto"));
         appName.setForeground(Color.WHITE);
         appName.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 
@@ -99,8 +107,8 @@ public class VentanaTareas extends JFrame {
         accountMenu.setForeground(Color.WHITE);
         accountMenu.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 
-        JMenuItem logoutItem = new JMenuItem("Cerrar sesión");
-        JMenuItem confItem = new JMenuItem("Configurar cuenta");
+        JMenuItem logoutItem = new JMenuItem(labels.getString("menu.cerrarSesion"));
+        JMenuItem confItem = new JMenuItem(labels.getString("menu.configurarCuenta"));
         accountMenu.add(confItem);
         accountMenu.add(logoutItem);
         
@@ -120,7 +128,7 @@ public class VentanaTareas extends JFrame {
         menuPanel.setPreferredSize(new Dimension(200, 0));
         menuPanel.setBackground(new Color(65, 62, 77));
 
-        String[] menuItems = {"Tareas", "Volver"};
+        String[] menuItems = {labels.getString("menu.tareas"), labels.getString("menu.volver")};
         for (String item : menuItems) {
             JButton menuButton = new JButton(item);
             menuButton.setForeground(Color.WHITE);
@@ -175,7 +183,7 @@ public class VentanaTareas extends JFrame {
         table.setShowGrid(true);
 
         // Modelo de la tabla
-		String[] titulos = { "ID","NOMBRE", "PROYECTO", "ESTADO","DESCRIPCION", "ASIGNADO", "PRIORIDAD", "FECHA INICIO", "FECHA FIN" };
+		String[] titulos = { labels.getString("menu.Id"),labels.getString("menu.nombre"),labels.getString("menu.proyecto"),labels.getString("menu.estado"),labels.getString("menu.descripcion"), labels.getString("menu.usuarioAsignado"),labels.getString("mensaje.prioridad"), labels.getString("menu.fechaInicio"), labels.getString("menu.fechaFin") };
 		modelo = new DefaultTableModel(new Object[][] {}, titulos);
 		try {
 			
@@ -207,7 +215,7 @@ public class VentanaTareas extends JFrame {
 		}
 		}
 		catch (NullPointerException exception) {
-			JOptionPane.showMessageDialog(null, "No hay tareas", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, labels.getString("mensaje.noHayTareas"), labels.getString("mensaje.mensaje"), JOptionPane.INFORMATION_MESSAGE);
 		}
 		
 		table.setModel(modelo);
@@ -233,7 +241,7 @@ public class VentanaTareas extends JFrame {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.setOpaque(false);
 
-        JButton btnTarea = createButton("Tarea +", new Color(138, 102, 204));
+        JButton btnTarea = createButton(labels.getString("menu.agregarTarea"), new Color(138, 102, 204));
         btnTarea.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				CrearTarea crearTarea;
@@ -259,7 +267,7 @@ public class VentanaTareas extends JFrame {
         
       //Configuración del botón "Actualizar Tabla" en la esquina superior izquierda
         
-        JButton btnActualizarTabla = createButton("Actualizar", new Color(138, 102, 204));
+        JButton btnActualizarTabla = createButton(labels.getString("menu.actualizar"), new Color(138, 102, 204));
         buttonPanel.add(btnActualizarTabla);
         btnActualizarTabla.addActionListener(new ActionListener() {
     			public void actionPerformed(ActionEvent arg0) {
@@ -281,8 +289,8 @@ public class VentanaTareas extends JFrame {
       JPanel botones = new JPanel(new FlowLayout());
       botones.setOpaque(false);
       
-      botonModificar = createButton("Modificar", new Color(138, 102, 204));
-      botonEliminar = createButton("Eliminar", new Color(138, 102, 204));
+      botonModificar = createButton(labels.getString("boton.modificar"), new Color(138, 102, 204));
+      botonEliminar = createButton(labels.getString("boton.eliminar"), new Color(138, 102, 204));
       botones.add(botonModificar);
       botones.add(botonEliminar);
       descPanel.add(botones, BorderLayout.SOUTH);
