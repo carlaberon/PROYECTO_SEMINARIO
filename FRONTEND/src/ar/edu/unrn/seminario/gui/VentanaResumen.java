@@ -39,7 +39,7 @@ public class VentanaResumen extends JFrame {
     	this.usuarioActual = api.getUsuarioActual();
     	this.unproyecto = api.getProyectoActual();
         
-        setTitle("Resumen");
+        setTitle(labels.getString("menu.resumen"));
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 900, 600);
 

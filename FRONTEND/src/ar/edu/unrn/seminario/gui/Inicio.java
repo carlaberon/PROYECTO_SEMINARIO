@@ -55,29 +55,13 @@ public class Inicio extends JFrame {
 
         JMenuItem logoutItem = new JMenuItem(labels.getString("menu.cerrarSesion"));
         JMenuItem confItem = new JMenuItem(labels.getString("menu.configurarCuenta"));
-        JMenuItem verTodosProyectosMenuItem = new JMenuItem(labels.getString("menu.verProyectos"));
-
+        
         accountMenu.add(confItem);
         accountMenu.add(logoutItem);
-        accountMenu.add(verTodosProyectosMenuItem);
+       
         menuBar.add(accountMenu);
 
         logoutItem.addActionListener(e -> System.exit(0));
-
-        verTodosProyectosMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-					abrirListaProyectos();
-				} catch (NotNullException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (DataEmptyException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} // Abrir la ventana de proyectos desde el menú
-            }
-        });
 
         setJMenuBar(menuBar);
 
