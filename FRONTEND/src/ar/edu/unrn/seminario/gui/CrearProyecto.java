@@ -121,8 +121,7 @@ public class CrearProyecto extends JFrame {
 	                JOptionPane.showMessageDialog(null, labels.getString("mensaje.proyectoCreado"), "Info", JOptionPane.INFORMATION_MESSAGE);
 	                setVisible(false);
 	                dispose();
-	                Inicio inicio = new Inicio(api);
-	                inicio.setVisible(true);
+	                new Inicio(api).setVisible(true);
 				} catch (NotNullException ex) {
 		            JOptionPane.showMessageDialog(null, labels.getString("mensaje.elCampo") + ex.getMessage() + labels.getString("mensaje.null"), "Error", JOptionPane.ERROR_MESSAGE);
 		        } catch (DataEmptyException ex) {
