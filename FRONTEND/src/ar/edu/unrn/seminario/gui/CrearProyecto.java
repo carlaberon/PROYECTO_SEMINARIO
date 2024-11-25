@@ -121,9 +121,8 @@ public class CrearProyecto extends JFrame {
 					// Crear un nuevo proyecto
 	                api.crearProyecto(nombreNuevoProyecto, api.getUsuarioActual().getUsername(), "EN CURSO", descripcionNueva, prioridadSeleccionadaNueva);
 	                JOptionPane.showMessageDialog(null, labels.getString("mensaje.proyectoCreado"), "Info", JOptionPane.INFORMATION_MESSAGE);
-	                setVisible(false);
-	                dispose();
 	                new Inicio(api).setVisible(true);
+	                dispose();
 				} catch (NotNullException ex) {
 		            JOptionPane.showMessageDialog(null, labels.getString("mensaje.elCampo") + ex.getMessage() + labels.getString("mensaje.null"), "Error", JOptionPane.ERROR_MESSAGE);
 		        } catch (DataEmptyException ex) {
@@ -137,7 +136,6 @@ public class CrearProyecto extends JFrame {
 		cancelarButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
 		cancelarButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				setVisible(false);
 				dispose();
 				Inicio inicio;
 				try {

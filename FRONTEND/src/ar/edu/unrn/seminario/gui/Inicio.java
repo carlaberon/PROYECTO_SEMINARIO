@@ -198,29 +198,29 @@ public class Inicio extends JFrame {
         	}
         }); // Acción para el botón
         
-        JButton actualizarProyectos = new JButton(labels.getString("menu.actualizar"));
-        actualizarProyectos.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				try {
-					actualizarProyectos();
-				} catch (NotNullException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (DataEmptyException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-		});
-        formatButton(actualizarProyectos);
+//        JButton actualizarProyectos = new JButton(labels.getString("menu.actualizar"));
+//        actualizarProyectos.addActionListener(new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				try {
+//					actualizarProyectos();
+//				} catch (NotNullException e1) {
+//					// TODO Auto-generated catch block
+//					e1.printStackTrace();
+//				} catch (DataEmptyException e1) {
+//					// TODO Auto-generated catch block
+//					e1.printStackTrace();
+//				}
+//			}
+//		});
+//        formatButton(actualizarProyectos);
         formatButton(btnNuevoProyecto);
         formatButton(btnVerProyectos);
         
         JPanel panelHorizontal = new JPanel();
         panelHorizontal.setLayout(new BoxLayout(panelHorizontal, BoxLayout.Y_AXIS)); // Configuración horizontal
         panelHorizontal.setBackground(new Color(30, 30, 30));
-        panelHorizontal.add(actualizarProyectos);
+//        panelHorizontal.add(actualizarProyectos);
         panelHorizontal.add(btnNuevoProyecto);
        
         proyectosButtonsPanel.add(panelHorizontal);
@@ -260,69 +260,69 @@ public class Inicio extends JFrame {
         ventanaResumen.setVisible(true); // Hacer visible la ventana de resumen
     }
 
-    public void actualizarProyectos() throws NotNullException, DataEmptyException {
-        proyectosListPanel.removeAll(); // Limpiar el panel actual
-        
-        List<ProyectoDTO> proyectos = api.obtenerProyectos(usuarioActual.getUsername()); // Obtener los proyectos actualizados
-        
-        proyectos.sort((p1, p2) -> {
-            int prioridadComparacion = Integer.compare(api.obtenerPrioridad(p1.getPrioridad()), 
-                                                       api.obtenerPrioridad(p2.getPrioridad()));
-            if (prioridadComparacion != 0) {
-                return prioridadComparacion;
-            }
-            return p1.getNombre().compareTo(p2.getNombre());
-        });
+//    public void actualizarProyectos() throws NotNullException, DataEmptyException {
+//        proyectosListPanel.removeAll(); // Limpiar el panel actual
+//        
+//        List<ProyectoDTO> proyectos = api.obtenerProyectos(usuarioActual.getUsername()); // Obtener los proyectos actualizados
+//        
+//        proyectos.sort((p1, p2) -> {
+//            int prioridadComparacion = Integer.compare(api.obtenerPrioridad(p1.getPrioridad()), 
+//                                                       api.obtenerPrioridad(p2.getPrioridad()));
+//            if (prioridadComparacion != 0) {
+//                return prioridadComparacion;
+//            }
+//            return p1.getNombre().compareTo(p2.getNombre());
+//        });
+//
+//
+//        for (ProyectoDTO proyecto : proyectos) {
+//            JButton proyectoButton = new JButton(proyecto.getNombre());
+//            proyectoButton.setForeground(Color.GRAY);
+//            proyectoButton.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+//            
+//            proyectoButton.addActionListener( new ActionListener () {
+//
+//				@Override
+//				public void actionPerformed(ActionEvent e) {
+//
+//
+//						try {
+//							api.setProyectoActual(proyecto.getId());
+//						} catch (NotNullException e1) {
+//							//msj front-end
+//							e1.printStackTrace();
+//						} catch (DataEmptyException e1) {
+//							//msj front-end
+//							e1.printStackTrace();
+//						}
+//		
+//
+//					try {
+//						abrirVentanaResumen();
+//
+//					} catch (NotNullException e1) {
+//						// TODO Auto-generated catch block
+//						e1.printStackTrace();
+//					} catch (DataEmptyException e1) {
+//						// TODO Auto-generated catch block
+//						e1.printStackTrace();
+//					}
+//
+//				}
+//            	
+//            });
+//            
+//            proyectosListPanel.add(proyectoButton);
+//        }
+//        
+//        proyectosListPanel.revalidate(); // Actualizar el panel
+//        proyectosListPanel.repaint();    // Repintar el panel
+//    }
 
 
-        for (ProyectoDTO proyecto : proyectos) {
-            JButton proyectoButton = new JButton(proyecto.getNombre());
-            proyectoButton.setForeground(Color.GRAY);
-            proyectoButton.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-            
-            proyectoButton.addActionListener( new ActionListener () {
-
-				@Override
-				public void actionPerformed(ActionEvent e) {
-
-
-						try {
-							api.setProyectoActual(proyecto.getId());
-						} catch (NotNullException e1) {
-							//msj front-end
-							e1.printStackTrace();
-						} catch (DataEmptyException e1) {
-							//msj front-end
-							e1.printStackTrace();
-						}
-		
-
-					try {
-						abrirVentanaResumen();
-
-					} catch (NotNullException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (DataEmptyException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-
-				}
-            	
-            });
-            
-            proyectosListPanel.add(proyectoButton);
-        }
-        
-        proyectosListPanel.revalidate(); // Actualizar el panel
-        proyectosListPanel.repaint();    // Repintar el panel
-    }
-
-
-	public void proyectoEliminado() throws NotNullException, DataEmptyException {
-		actualizarProyectos(); 
-	}
+//	public void proyectoEliminado() throws NotNullException, DataEmptyException {
+//		actualizarProyectos(); 
+//	}
 
     
 	public static void main(String[] args) throws NotNullException, DataEmptyException, InvalidDateException{

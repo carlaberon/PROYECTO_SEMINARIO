@@ -125,6 +125,7 @@ public class VentanaResumen extends JFrame {
                 menuButton.addActionListener(e -> {
                     // Por ejemplo, podrías abrir un nuevo panel de configuración:
                     abrirPanelConfiguracion();
+                    dispose();
                 });
             }
          // Agregar ActionListener solo al botón de "Volver o Back"
