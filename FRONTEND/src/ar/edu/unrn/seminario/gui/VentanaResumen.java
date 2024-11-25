@@ -108,7 +108,7 @@ public class VentanaResumen extends JFrame {
         
  
 
-        String[] menuItems = {labels.getString("menu.resumen"),labels.getString("menu.progreso"),labels.getString("menu.plan"),labels.getString("menu.calendario"), labels.getString("menu.miembros"), labels.getString("menu.configuracion"),labels.getString("menu.volver")};
+        String[] menuItems = {labels.getString("menu.resumen"),labels.getString("menu.progreso"),labels.getString("menu.plan1"),labels.getString("menu.calendario"), labels.getString("menu.miembros"), labels.getString("menu.configuracion"),labels.getString("menu.volver")};
         for (String item : menuItems) {
             JButton menuButton = new JButton(item + " →");
             menuButton.setForeground(Color.WHITE);

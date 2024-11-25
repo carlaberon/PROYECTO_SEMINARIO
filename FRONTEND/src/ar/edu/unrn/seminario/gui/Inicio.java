@@ -119,7 +119,9 @@ public class Inicio extends JFrame {
         if(!proyectos.isEmpty()) {
         	for (ProyectoDTO proyecto : proyectos) {
         		JButton proyectoButton = new JButton(proyecto.getNombre());
-        		proyectoButton.setForeground(Color.GRAY);
+        		proyectoButton.setForeground(Color.WHITE);
+        		proyectoButton.setBackground(new Color(65, 62, 77));
+//        		proyectoButton.setBorderPainted(false);
         		proyectoButton.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         		
         		proyectoButton.addActionListener( new ActionListener () {

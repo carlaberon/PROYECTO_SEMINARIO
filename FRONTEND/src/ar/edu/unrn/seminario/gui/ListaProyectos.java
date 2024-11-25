@@ -306,7 +306,7 @@ public class ListaProyectos extends JFrame {
  // Método para crear botones con estilo
     private JButton createButton(String text, Color backgroundColor) {
         JButton button = new JButton(text);
-        button.setForeground(Color.WHITE);
+        button.setForeground(new Color(229, 212, 237));
         button.setBackground(backgroundColor);
         button.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         button.setBorderPainted(false);
