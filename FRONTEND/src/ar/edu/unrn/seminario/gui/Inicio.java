@@ -44,14 +44,14 @@ public class Inicio extends JFrame {
 
         JLabel projectName = new JLabel(labels.getString("menu.proyecto"));
         projectName.setForeground(Color.WHITE);
-        projectName.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+        projectName.setFont(new Font("Segoe UI", Font.BOLD, 18));
         menuBar.add(Box.createHorizontalGlue());
         menuBar.add(projectName);
         menuBar.add(Box.createHorizontalGlue());
 
         JMenu accountMenu = new JMenu(usuarioActual.getUsername()); 
         accountMenu.setForeground(Color.WHITE);
-        accountMenu.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        accountMenu.setFont(new Font("Segoe UI", Font.BOLD, 14));
 
         JMenuItem logoutItem = new JMenuItem(labels.getString("menu.cerrarSesion"));
         JMenuItem confItem = new JMenuItem(labels.getString("menu.configurarCuenta"));

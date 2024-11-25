@@ -12,6 +12,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -69,7 +71,7 @@ public class VentanaTareas extends JFrame {
     	this.unproyecto = api.getProyectoActual(); 
     	
     	setTitle(labels.getString("menu.tareas"));
-        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(50, 50, 1200, 650);
         
         contentPane = new JPanel();
@@ -83,7 +85,7 @@ public class VentanaTareas extends JFrame {
 
         JMenu menuProyecto = new JMenu(unproyecto.getNombre());
         menuProyecto.setForeground(Color.WHITE);
-        menuProyecto.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+        menuProyecto.setFont(new Font("Segoe UI", Font.BOLD, 18));
 
         JMenuItem item1 = new JMenuItem("Opción 1");
         JMenuItem item2 = new JMenuItem("Opción 2");
@@ -96,7 +98,7 @@ public class VentanaTareas extends JFrame {
 
         JLabel appName = new JLabel(labels.getString("menu.proyecto"));
         appName.setForeground(Color.WHITE);
-        appName.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+        appName.setFont(new Font("Segoe UI", Font.BOLD, 18));
 
         JPanel centerPanel = new JPanel();
         centerPanel.setOpaque(false);
@@ -105,7 +107,7 @@ public class VentanaTareas extends JFrame {
 
         JMenu accountMenu = new JMenu(usuarioActual.getUsername());
         accountMenu.setForeground(Color.WHITE);
-        accountMenu.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        accountMenu.setFont(new Font("Segoe UI", Font.BOLD, 14));
 
         JMenuItem logoutItem = new JMenuItem(labels.getString("menu.cerrarSesion"));
         JMenuItem confItem = new JMenuItem(labels.getString("menu.configurarCuenta"));
@@ -139,6 +141,22 @@ public class VentanaTareas extends JFrame {
             menuButton.setHorizontalAlignment(SwingConstants.LEFT);
             menuButton.setMargin(new Insets(10, 10, 10, 10));
             menuPanel.add(menuButton);
+            
+         // Agregar ActionListener solo al botón de "Volver o Back"
+            if (item.equals("Volver") || item.equals("Return")) {
+                menuButton.addActionListener(e -> {
+                	try {
+						new VentanaResumen(api).setVisible(true);
+					} catch (NotNullException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (DataEmptyException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+                    dispose();
+                });
+            }
         }
     
         contentPane.add(menuPanel, BorderLayout.WEST);
@@ -359,6 +377,22 @@ public class VentanaTareas extends JFrame {
 			}				
 		}  	  
      });
+      
+      setLocationRelativeTo(null);
+      
+      addWindowListener(new WindowAdapter() { 
+      	public void windowClosing(WindowEvent e) {
+      		try {
+					new VentanaResumen(api).setVisible(true);
+				} catch (NotNullException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (DataEmptyException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+      	}
+		});
     }
     
     // Método auxiliar para crear paneles con título y diseño consistente

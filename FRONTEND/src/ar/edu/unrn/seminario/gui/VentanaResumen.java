@@ -54,7 +54,7 @@ public class VentanaResumen extends JFrame {
 
         JMenu menuProyecto = new JMenu(unproyecto.getNombre());
         menuProyecto.setForeground(Color.WHITE);
-        menuProyecto.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+        menuProyecto.setFont(new Font("Segoe UI", Font.BOLD, 18));
 
         JMenuItem item1 = new JMenuItem("Opción 1");
         JMenuItem item2 = new JMenuItem("Opción 2");
@@ -67,7 +67,7 @@ public class VentanaResumen extends JFrame {
 
         JLabel appName = new JLabel(labels.getString("menu.proyecto"));
         appName.setForeground(Color.WHITE);
-        appName.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+        appName.setFont(new Font("Segoe UI", Font.BOLD, 18));
 
         JPanel centerPanel = new JPanel();
         centerPanel.setOpaque(false);
@@ -76,7 +76,7 @@ public class VentanaResumen extends JFrame {
 
         JMenu accountMenu = new JMenu(usuarioActual.getUsername());
         accountMenu.setForeground(Color.WHITE);
-        accountMenu.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        accountMenu.setFont(new Font("Segoe UI", Font.BOLD, 14));
 
         JMenuItem logoutItem = new JMenuItem(labels.getString("menu.cerrarSesion"));
         JMenuItem confItem = new JMenuItem(labels.getString("menu.configurarCuenta"));
@@ -207,6 +207,7 @@ public class VentanaResumen extends JFrame {
 			try {
 				VentanaTareas ventanaTareas = new VentanaTareas(api);
 				ventanaTareas.setVisible(true);
+				dispose();
 			} catch (TaskQueryException e1) {
 	            JOptionPane.showMessageDialog(null, labels.getString("mensaje.errorConsultaTareas") + e1.getMessage(), labels.getString("mensaje.errorConsulta"), JOptionPane.ERROR_MESSAGE);
 	        } catch (InvalidDateException e1) {

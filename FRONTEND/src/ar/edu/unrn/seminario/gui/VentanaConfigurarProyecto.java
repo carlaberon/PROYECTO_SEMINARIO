@@ -48,13 +48,13 @@ public class VentanaConfigurarProyecto extends JFrame {
 		JLabel lblModificarProyecto = new JLabel("Modificar Proyecto");
 		lblModificarProyecto.setBackground(new Color(240, 240, 240));
 		lblModificarProyecto.setForeground(new Color(29, 17, 40));
-		lblModificarProyecto.setFont(new Font("Segoe UI", Font.PLAIN, 35));
+		lblModificarProyecto.setFont(new Font("Segoe UI Black", Font.BOLD, 35));
 		lblModificarProyecto.setBounds(58, 47, 374, 39);
 		contentPane.add(lblModificarProyecto);
 		
 		JLabel lblNombre = new JLabel("Nombre:");
 		lblNombre.setForeground(new Color(255, 255, 255));
-		lblNombre.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+		lblNombre.setFont(new Font("Segoe UI", Font.BOLD, 18));
 		lblNombre.setBounds(83, 183, 93, 44);
 		contentPane.add(lblNombre);
 		
@@ -65,7 +65,7 @@ public class VentanaConfigurarProyecto extends JFrame {
 		
 		JLabel lblPrioridad = new JLabel("Prioridad:");
 		lblPrioridad.setForeground(Color.WHITE);
-		lblPrioridad.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+		lblPrioridad.setFont(new Font("Segoe UI", Font.BOLD, 18));
 		lblPrioridad.setBounds(83, 237, 93, 44);
 		contentPane.add(lblPrioridad);
 		
@@ -81,8 +81,8 @@ public class VentanaConfigurarProyecto extends JFrame {
 		
 		descripcion = new JLabel("Descripcion:");
 		descripcion.setForeground(Color.WHITE);
-		descripcion.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-		descripcion.setBounds(83, 291, 109, 44);
+		descripcion.setFont(new Font("Segoe UI", Font.BOLD, 18));
+		descripcion.setBounds(83, 291, 123, 44);
 		contentPane.add(descripcion);
 		textField_Descripcion = new JTextField();
 		textField_Descripcion.setColumns(10);
