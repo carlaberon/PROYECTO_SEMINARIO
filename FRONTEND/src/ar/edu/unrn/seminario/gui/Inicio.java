@@ -20,8 +20,6 @@ import java.util.ResourceBundle;
 import java.util.ArrayList;
 
 public class Inicio extends JFrame {
-
-    private JFrame frame;
     private IApi api;
     private JPanel proyectosListPanel;
     private UsuarioDTO usuarioActual;
@@ -36,10 +34,9 @@ public class Inicio extends JFrame {
     	this.api = api;
     	this.usuarioActual = api.getUsuarioActual();
     	
-        frame = new JFrame();
-        frame.setTitle(labels.getString("ventana.inicio"));
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(800, 600);
+        setTitle(labels.getString("ventana.inicio"));
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(800, 600);
 
         JMenuBar menuBar = new JMenuBar();
         menuBar.setBackground(new Color(138, 102, 204));
@@ -82,7 +79,7 @@ public class Inicio extends JFrame {
             }
         });
 
-        frame.setJMenuBar(menuBar);
+        setJMenuBar(menuBar);
 
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBackground(Color.DARK_GRAY);
@@ -104,7 +101,7 @@ public class Inicio extends JFrame {
             menuButton.setMargin(new Insets(10, 10, 10, 10));
             menuPanel.add(menuButton);
         }
-        frame.getContentPane().add(menuPanel, BorderLayout.WEST);
+        getContentPane().add(menuPanel, BorderLayout.WEST);
 
         JPanel contentPanel = new JPanel();
         contentPanel.setBackground(new Color(45, 45, 45));
@@ -182,6 +179,7 @@ public class Inicio extends JFrame {
         btnNuevoProyecto.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		abrirCrearProyecto();
+        		dispose();
         	}
         });
         
@@ -234,9 +232,8 @@ public class Inicio extends JFrame {
         mainPanel.add(contentPanel, BorderLayout.CENTER);
         mainPanel.add(rightPanel, BorderLayout.EAST);
 
-        frame.getContentPane().add(mainPanel);
-
-        frame.setVisible(true);
+        getContentPane().add(mainPanel);
+        setLocationRelativeTo(null); //Centrar frame en la pantalla
     }}
 
     private void formatButton(JButton button) {
@@ -322,7 +319,7 @@ public class Inicio extends JFrame {
 
 
 	public void proyectoEliminado() throws NotNullException, DataEmptyException {
-		actualizarProyectos(); //Cuando se elimina un proyecto activa el metodo actualizarProyectos para actualizar Inicio
+		actualizarProyectos(); 
 	}
 
     
@@ -332,7 +329,8 @@ public class Inicio extends JFrame {
 		UsuarioDTO usuario = api.obtenerUsuario("ldifabio");
 
 		api.setUsuarioActual(usuario.getUsername());
-		new Inicio(api);
+		Inicio inicio = new Inicio(api);
+		inicio.setVisible(true);
 	}
 
 	
