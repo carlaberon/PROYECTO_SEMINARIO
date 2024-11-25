@@ -155,6 +155,7 @@ public class Inicio extends JFrame {
 
 							try {
 								abrirVentanaResumen();
+								dispose();
 							} catch (NotNullException e1) {
 								// TODO Auto-generated catch block
 								e1.printStackTrace();

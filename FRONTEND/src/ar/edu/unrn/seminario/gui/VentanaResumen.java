@@ -14,6 +14,8 @@ import ar.edu.unrn.seminario.exception.TaskQueryException;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -37,8 +39,8 @@ public class VentanaResumen extends JFrame {
     	this.usuarioActual = api.getUsuarioActual();
     	this.unproyecto = api.getProyectoActual();
         
-        setTitle("");
-        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        setTitle("Resumen");
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 900, 600);
 
         
@@ -106,7 +108,7 @@ public class VentanaResumen extends JFrame {
         
  
 
-        String[] menuItems = {labels.getString("menu.resumen"),labels.getString("menu.progreso"),labels.getString("menu.plan"),labels.getString("menu.calendario"), labels.getString("menu.tareas"), labels.getString("menu.miembros"),labels.getString("menu.configuracion")};
+        String[] menuItems = {labels.getString("menu.resumen"),labels.getString("menu.progreso"),labels.getString("menu.plan"),labels.getString("menu.calendario"), labels.getString("menu.miembros"), labels.getString("menu.configuracion"),labels.getString("menu.volver")};
         for (String item : menuItems) {
             JButton menuButton = new JButton(item + " →");
             menuButton.setForeground(Color.WHITE);
@@ -119,12 +121,28 @@ public class VentanaResumen extends JFrame {
             menuPanel.add(menuButton);
 
             // Agregar ActionListener solo al botón de "Configuración"
-            if (item.equals("Configuración")) {
+            if (item.equals("Configuración") || item.equals("Settings")) {
                 menuButton.addActionListener(e -> {
                     // Por ejemplo, podrías abrir un nuevo panel de configuración:
                     abrirPanelConfiguracion();
                 });
             }
+         // Agregar ActionListener solo al botón de "Volver o Back"
+            if (item.equals("Volver") || item.equals("Return")) {
+                menuButton.addActionListener(e -> {
+                	try {
+						new Inicio(api).setVisible(true);
+					} catch (NotNullException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (DataEmptyException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+                    dispose();
+                });
+            }
+           
         }
         
         
@@ -204,6 +222,22 @@ public class VentanaResumen extends JFrame {
     });
         // Agregar el panel principal al contentPane
         contentPane.add(centerPanel1, BorderLayout.CENTER);
+        
+        setLocationRelativeTo(null);
+        
+        addWindowListener(new WindowAdapter() { 
+        	public void windowClosing(WindowEvent e) {
+        		try {
+					new Inicio(api).setVisible(true);
+				} catch (NotNullException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (DataEmptyException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+        	}
+		});
     }
     
     // Método para abrir el panel de configuración

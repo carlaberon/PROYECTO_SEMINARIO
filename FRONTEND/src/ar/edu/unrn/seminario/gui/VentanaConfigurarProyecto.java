@@ -141,7 +141,7 @@ public class VentanaConfigurarProyecto extends JFrame {
 		});
 		contentPane.add(cancelar);
 		
-		
+		setLocationRelativeTo(null);
 	}
 	
 	private boolean esDatoVacio(String dato) {
