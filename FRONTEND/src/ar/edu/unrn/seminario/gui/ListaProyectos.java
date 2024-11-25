@@ -21,6 +21,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -185,6 +187,22 @@ public class ListaProyectos extends JFrame {
         panelCentro.add(panelEliminar,BorderLayout.SOUTH);
         getContentPane().add(panelCentro, BorderLayout.CENTER);
         getContentPane().add(panelInferior, BorderLayout.SOUTH); // Añadir el panel inferior
+        
+        setLocationRelativeTo(null);
+        
+        addWindowListener(new WindowAdapter() {
+        	public void windowClosing(WindowEvent e) {
+        		try {
+					new Inicio(api).setVisible(true);
+				} catch (NotNullException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (DataEmptyException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+        	}
+		});
     }
 
     // Renderer personalizado para celdas con JTextArea (que permita texto multilínea)

@@ -187,6 +187,7 @@ public class Inicio extends JFrame {
         btnVerProyectos.addActionListener(e -> {
         	try {
         		abrirListaProyectos();
+        		dispose();
         	} catch (NotNullException e1) {
         		// TODO Auto-generated catch block
         		e1.printStackTrace();
