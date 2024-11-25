@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -190,7 +192,7 @@ public class ModificarTarea extends JFrame {
 	                    
 	                      
 	                    JOptionPane.showMessageDialog(null, "Tarea modificada con éxito!", "Info", JOptionPane.INFORMATION_MESSAGE);
-	                    setVisible(false);
+	                    new VentanaTareas(api).setVisible(true);
 	                    dispose();
 	                       
 	                	
@@ -217,11 +219,51 @@ public class ModificarTarea extends JFrame {
 
 	        cancelarButton.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent e) {
-	                setVisible(false);
+	            	try {
+						new VentanaTareas(api).setVisible(true);
+					} catch (RuntimeException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (InvalidDateException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (NotNullException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (DataEmptyException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (TaskQueryException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 	                dispose();
 	            }
 	        });
 	        
+	        setLocationRelativeTo(null);
+	        addWindowListener(new WindowAdapter() { 
+	          	public void windowClosing(WindowEvent e) {
+	          		try {
+						new VentanaTareas(api).setVisible(true);
+					} catch (RuntimeException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (InvalidDateException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (NotNullException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (DataEmptyException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (TaskQueryException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+	          	}
+	    	});
 	    }
 	  /*  public static void main(String[] args) throws NotNullException, DataEmptyException, InvalidDateException{
 			
