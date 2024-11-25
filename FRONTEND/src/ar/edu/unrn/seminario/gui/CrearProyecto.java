@@ -121,6 +121,8 @@ public class CrearProyecto extends JFrame {
 	                JOptionPane.showMessageDialog(null, labels.getString("mensaje.proyectoCreado"), "Info", JOptionPane.INFORMATION_MESSAGE);
 	                setVisible(false);
 	                dispose();
+	                Inicio inicio = new Inicio(api);
+	                inicio.setVisible(true);
 				} catch (NotNullException ex) {
 		            JOptionPane.showMessageDialog(null, labels.getString("mensaje.elCampo") + ex.getMessage() + labels.getString("mensaje.null"), "Error", JOptionPane.ERROR_MESSAGE);
 		        } catch (DataEmptyException ex) {
@@ -136,6 +138,18 @@ public class CrearProyecto extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
 				dispose();
+				Inicio inicio;
+				try {
+					inicio = new Inicio(api);
+					inicio.setVisible(true);
+				} catch (NotNullException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (DataEmptyException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+               
 			}
 		});
 		cancelarButton.setBounds(568, 398, 147, 27);
@@ -176,6 +190,7 @@ public class CrearProyecto extends JFrame {
 		lblPrioridad.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 		lblPrioridad.setBounds(88, 191, 227, 39);
 		contentPane.add(lblPrioridad);		
+		setLocationRelativeTo(null); //Centrar frame en la pantalla
 	}
 	
     /*public static void main(String[] args) throws NotNullException, DataEmptyException, InvalidDateException{
