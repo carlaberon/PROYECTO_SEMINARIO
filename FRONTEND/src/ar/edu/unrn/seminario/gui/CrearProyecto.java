@@ -2,6 +2,8 @@ package ar.edu.unrn.seminario.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -190,6 +192,19 @@ public class CrearProyecto extends JFrame {
 		lblPrioridad.setBounds(88, 191, 227, 39);
 		contentPane.add(lblPrioridad);		
 		setLocationRelativeTo(null); //Centrar frame en la pantalla
+		addWindowListener(new WindowAdapter() { //Cuando el usuario cierra el frame abre devuelta Inicio
+        	public void windowClosing(WindowEvent e) {
+        		try {
+					new Inicio(api).setVisible(true);
+				} catch (NotNullException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (DataEmptyException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+        	}
+		});
 	}
 	
     /*public static void main(String[] args) throws NotNullException, DataEmptyException, InvalidDateException{
