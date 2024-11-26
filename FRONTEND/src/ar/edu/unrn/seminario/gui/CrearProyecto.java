@@ -69,8 +69,8 @@ public class CrearProyecto extends JFrame {
 		setContentPane(contentPane);
 
 		JLabel nombreProyecto = new JLabel(labels.getString("menu.nombreProyecto"));
-		nombreProyecto.setForeground(new Color(240, 240, 240));
-		nombreProyecto.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+		nombreProyecto.setForeground(new Color(255, 255, 255));
+		nombreProyecto.setFont(new Font("Segoe UI", Font.BOLD, 17));
 		nombreProyecto.setBounds(88, 93, 227, 39);
 		contentPane.add(nombreProyecto);
 
@@ -121,9 +121,8 @@ public class CrearProyecto extends JFrame {
 					// Crear un nuevo proyecto
 	                api.crearProyecto(nombreNuevoProyecto, api.getUsuarioActual().getUsername(), "EN CURSO", descripcionNueva, prioridadSeleccionadaNueva);
 	                JOptionPane.showMessageDialog(null, labels.getString("mensaje.proyectoCreado"), "Info", JOptionPane.INFORMATION_MESSAGE);
-	                setVisible(false);
-	                dispose();
 	                new Inicio(api).setVisible(true);
+	                dispose();
 				} catch (NotNullException ex) {
 		            JOptionPane.showMessageDialog(null, labels.getString("mensaje.elCampo") + ex.getMessage() + labels.getString("mensaje.null"), "Error", JOptionPane.ERROR_MESSAGE);
 		        } catch (DataEmptyException ex) {
@@ -137,12 +136,9 @@ public class CrearProyecto extends JFrame {
 		cancelarButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
 		cancelarButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				setVisible(false);
 				dispose();
-				Inicio inicio;
 				try {
-					inicio = new Inicio(api);
-					inicio.setVisible(true);
+					new Inicio(api).setVisible(true);;
 				} catch (NotNullException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -159,8 +155,8 @@ public class CrearProyecto extends JFrame {
 
 
 		JLabel subproyectoLabel = new JLabel(labels.getString("campo.subproyecto"));
-        subproyectoLabel.setForeground(new Color(240, 240, 240));
-        subproyectoLabel.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+		subproyectoLabel.setForeground(new Color(255, 255, 255));
+		subproyectoLabel.setFont(new Font("Segoe UI", Font.BOLD, 17));
         subproyectoLabel.setBounds(88, 233, 167, 39);
         contentPane.add(subproyectoLabel);
 
@@ -175,20 +171,21 @@ public class CrearProyecto extends JFrame {
 		proyectoComboBox.addItem("");
 	
 		JLabel lblNewLabel = new JLabel(labels.getString("campo.nuevoProyecto"));
+		lblNewLabel.setBackground(new Color(240, 240, 240));
 		lblNewLabel.setForeground(new Color(29, 17, 40));
-		lblNewLabel.setFont(new Font("Segoe UI", Font.PLAIN, 35));
+		lblNewLabel.setFont(new Font("Segoe UI Black", Font.BOLD, 35));
 		lblNewLabel.setBounds(41, 10, 291, 73);
 		contentPane.add(lblNewLabel);
 		
 		JLabel lblDescripcion = new JLabel(labels.getString("campo.descripcion"));
-		lblDescripcion.setForeground(UIManager.getColor("Button.background"));
-		lblDescripcion.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+		lblDescripcion.setForeground(new Color(255, 255, 255));
+		lblDescripcion.setFont(new Font("Segoe UI", Font.BOLD, 17));
 		lblDescripcion.setBounds(88, 142, 227, 39);
 		contentPane.add(lblDescripcion);
 		
 		JLabel lblPrioridad = new JLabel(labels.getString("campo.prioridad"));
-		lblPrioridad.setForeground(UIManager.getColor("Button.background"));
-		lblPrioridad.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+		lblPrioridad.setForeground(new Color(255, 255, 255));
+		lblPrioridad.setFont(new Font("Segoe UI", Font.BOLD, 17));
 		lblPrioridad.setBounds(88, 191, 227, 39);
 		contentPane.add(lblPrioridad);		
 		setLocationRelativeTo(null); //Centrar frame en la pantalla
