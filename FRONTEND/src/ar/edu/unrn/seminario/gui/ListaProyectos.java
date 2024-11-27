@@ -242,19 +242,4 @@ public class ListaProyectos extends JFrame {
 	private void habilitarBotones(boolean b) {
 		eliminarProyecto.setEnabled(b);
 	}
-
-
-//    public static void main(String args[]) throws NotNullException, DataEmptyException {
-//    	IApi api = new PersistenceApi();
-//		api.setUsuarioActual("ldifabio");
-//		
-//		api.setProyectoActual("proyecto fenix");
-//	
-//    	ListaProyectos ventana = new ListaProyectos (api);
-//    	
-//    	ventana.setVisible(true);
-//    	
-//    }
-
-	
 }

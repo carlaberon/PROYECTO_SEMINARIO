@@ -134,7 +134,7 @@ public class InvitarMiembro extends JFrame {
 			proyectoComboBox.addItem(usuario.getNombre());
 		} */
 
-		
+		setLocationRelativeTo(null);
 	}
 	   public static void main(String[] args) {
 	 
