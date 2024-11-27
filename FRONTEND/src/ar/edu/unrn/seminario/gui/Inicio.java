@@ -9,31 +9,24 @@ import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
-import ar.edu.unrn.seminario.dto.RolDTO;
-
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import java.util.ArrayList;
 
 public class Inicio extends JFrame {
     private IApi api;
     private JPanel proyectosListPanel;
     private UsuarioDTO usuarioActual;
-    
-    public Inicio(IApi api) throws NotNullException, DataEmptyException {
-    	
-    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
-//		 descomentar para que tome el idioma ingles (english)
 
-		//ResourceBundle labels = ResourceBundle.getBundle("labels");
-    	
-    	this.api = api;
-    	this.usuarioActual = api.getUsuarioActual();
-    	
+    public Inicio(IApi api) throws NotNullException, DataEmptyException {
+
+        ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
+
+        this.api = api;
+        this.usuarioActual = api.getUsuarioActual();
+
         setTitle(labels.getString("ventana.inicio"));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 600);
@@ -49,16 +42,16 @@ public class Inicio extends JFrame {
         menuBar.add(projectName);
         menuBar.add(Box.createHorizontalGlue());
 
-        JMenu accountMenu = new JMenu(usuarioActual.getUsername()); 
+        JMenu accountMenu = new JMenu(usuarioActual.getUsername());
         accountMenu.setForeground(Color.WHITE);
         accountMenu.setFont(new Font("Segoe UI", Font.BOLD, 14));
 
         JMenuItem logoutItem = new JMenuItem(labels.getString("menu.cerrarSesion"));
         JMenuItem confItem = new JMenuItem(labels.getString("menu.configurarCuenta"));
-        
+
         accountMenu.add(confItem);
         accountMenu.add(logoutItem);
-       
+
         menuBar.add(accountMenu);
 
         logoutItem.addActionListener(e -> System.exit(0));
@@ -73,7 +66,7 @@ public class Inicio extends JFrame {
         menuPanel.setPreferredSize(new Dimension(200, 0));
         menuPanel.setBackground(new Color(65, 62, 77));
 
-        String[] menuItems = {labels.getString("menu.proyectos"), labels.getString("menu.actividad"),labels.getString("menu.calendario")};
+        String[] menuItems = {labels.getString("menu.proyectos"), labels.getString("menu.actividad"), labels.getString("menu.calendario")};
         for (String item : menuItems) {
             JButton menuButton = new JButton(item + " →");
             menuButton.setForeground(Color.WHITE);
@@ -105,8 +98,9 @@ public class Inicio extends JFrame {
         proyectosListPanel.setLayout(new BoxLayout(proyectosListPanel, BoxLayout.Y_AXIS));
         proyectosListPanel.setBackground(new Color(30, 30, 30));
 
-        //BACK -> DTO -> FRONT
         List<ProyectoDTO> proyectos = api.obtenerProyectos(usuarioActual.getUsername());
+        proyectos.sort((p1, p2) -> Integer.compare(api.obtenerPrioridad(p1.getPrioridad()), 
+                api.obtenerPrioridad(p2.getPrioridad())));
         proyectos.sort((p1, p2) -> {
             int prioridadComparacion = Integer.compare(api.obtenerPrioridad(p1.getPrioridad()), 
                                                        api.obtenerPrioridad(p2.getPrioridad()));
@@ -115,103 +109,55 @@ public class Inicio extends JFrame {
             }
             return p1.getNombre().compareTo(p2.getNombre());
         });
-        
-        if(!proyectos.isEmpty()) {
-        	for (ProyectoDTO proyecto : proyectos) {
-        		JButton proyectoButton = new JButton(proyecto.getNombre());
-        		proyectoButton.setForeground(Color.WHITE);
-        		proyectoButton.setBackground(new Color(65, 62, 77));
-//        		proyectoButton.setBorderPainted(false);
-        		proyectoButton.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        		
-        		proyectoButton.addActionListener( new ActionListener () {
+        //STREAM MIS MODIFICACIONES
+        proyectos.stream().map(proyecto -> {
+            JButton proyectoButton = new JButton(proyecto.getNombre());
+            proyectoButton.setForeground(Color.WHITE);
+            proyectoButton.setBackground(new Color(65, 62, 77));
+            proyectoButton.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 
-        			@Override
-        			public void actionPerformed(ActionEvent e) {
-
-							try {
-								api.setProyectoActual(proyecto.getId());
-							} catch (NotNullException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							} catch (DataEmptyException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							}
-
-							try {
-								abrirVentanaResumen();
-								dispose();
-							} catch (NotNullException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							} catch (DataEmptyException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							}
-        			}
-        					
+            proyectoButton.addActionListener(e -> {
+                try {
+                    api.setProyectoActual(proyecto.getId());
+                    abrirVentanaResumen();
+                    dispose();
+                } catch (NotNullException | DataEmptyException ex) {
+                    ex.printStackTrace();
+                }
             });
-            
-            proyectosListPanel.add(proyectoButton);
-           
-            
-        }
+            return proyectoButton;
+        }).forEach(proyectosListPanel::add);
 
         JPanel proyectosButtonsPanel = new JPanel();
         proyectosButtonsPanel.setBackground(new Color(30, 30, 30));
         proyectosButtonsPanel.setLayout(new BoxLayout(proyectosButtonsPanel, BoxLayout.Y_AXIS));
-        
+
         JButton btnNuevoProyecto = new JButton(labels.getString("menu.agregarProyecto"));
-        btnNuevoProyecto.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        		abrirCrearProyecto();
-        		dispose();
-        	}
+        btnNuevoProyecto.addActionListener(e -> {
+            abrirCrearProyecto();
+            dispose();
         });
-        
+
         JButton btnVerProyectos = new JButton(labels.getString("menu.verProyectos"));
         btnVerProyectos.addActionListener(e -> {
-        	try {
-        		abrirListaProyectos();
-        		dispose();
-        	} catch (NotNullException e1) {
-        		// TODO Auto-generated catch block
-        		e1.printStackTrace();
-        	} catch (DataEmptyException e1) {
-        		// TODO Auto-generated catch block
-        		e1.printStackTrace();
-        	}
-        }); // Acción para el botón
-        
-//        JButton actualizarProyectos = new JButton(labels.getString("menu.actualizar"));
-//        actualizarProyectos.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				try {
-//					actualizarProyectos();
-//				} catch (NotNullException e1) {
-//					// TODO Auto-generated catch block
-//					e1.printStackTrace();
-//				} catch (DataEmptyException e1) {
-//					// TODO Auto-generated catch block
-//					e1.printStackTrace();
-//				}
-//			}
-//		});
-//        formatButton(actualizarProyectos);
+            try {
+                abrirListaProyectos();
+                dispose();
+            } catch (NotNullException | DataEmptyException ex) {
+                ex.printStackTrace();
+            }
+        });
+
         formatButton(btnNuevoProyecto);
         formatButton(btnVerProyectos);
-        
+
         JPanel panelHorizontal = new JPanel();
-        panelHorizontal.setLayout(new BoxLayout(panelHorizontal, BoxLayout.Y_AXIS)); // Configuración horizontal
+        panelHorizontal.setLayout(new BoxLayout(panelHorizontal, BoxLayout.Y_AXIS));
         panelHorizontal.setBackground(new Color(30, 30, 30));
-//        panelHorizontal.add(actualizarProyectos);
         panelHorizontal.add(btnNuevoProyecto);
-       
+
         proyectosButtonsPanel.add(panelHorizontal);
         proyectosButtonsPanel.add(btnVerProyectos);
-        
 
         rightPanel.add(proyectosLabel, BorderLayout.NORTH);
         rightPanel.add(proyectosListPanel, BorderLayout.CENTER);
@@ -221,8 +167,8 @@ public class Inicio extends JFrame {
         mainPanel.add(rightPanel, BorderLayout.EAST);
 
         getContentPane().add(mainPanel);
-        setLocationRelativeTo(null); //Centrar frame en la pantalla
-    }}
+        setLocationRelativeTo(null); // Centrar frame en la pantalla
+    }
 
     private void formatButton(JButton button) {
         button.setForeground(Color.WHITE);

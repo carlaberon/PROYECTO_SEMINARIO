@@ -4,12 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.ResourceBundle;
 
 import javax.swing.JButton;
@@ -22,20 +19,12 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import ar.edu.unrn.seminario.api.IApi;
-import ar.edu.unrn.seminario.api.PersistenceApi;
-import ar.edu.unrn.seminario.dto.ProyectoDTO;
-import ar.edu.unrn.seminario.dto.UsuarioDTO;
+
 import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
-import ar.edu.unrn.seminario.exception.InvalidDateException;
 
-import javax.swing.JTextPane;
-import javax.swing.JTree;
 import java.awt.Font;
 import java.awt.Color;
-import javax.swing.UIManager;
-import javax.swing.JRadioButton;
-import javax.swing.JCheckBox;
 
 public class CrearProyecto extends JFrame {
 	
@@ -103,8 +92,7 @@ public class CrearProyecto extends JFrame {
 		aceptarButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
 		aceptarButton.setBounds(395, 398, 147, 27);
 		contentPane.add(aceptarButton);
-		aceptarButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		aceptarButton.addActionListener(e -> {
 				String nombreNuevoProyecto = nombreProyectoTextField.getText();
 				String descripcionNueva = descripcionTextField.getText();
                 String prioridadSeleccionadaNueva = (String) prioridadComboBox.getSelectedItem();
@@ -129,13 +117,12 @@ public class CrearProyecto extends JFrame {
 		            JOptionPane.showMessageDialog(null, labels.getString("mensaje.elCampo") + ex.getMessage() + labels.getString("mensaje.empty"), "Error", JOptionPane.ERROR_MESSAGE);
 		        }
 			}
-		});
+		);
 		JButton cancelarButton = new JButton(labels.getString("boton.cancelar"));
 		cancelarButton.setForeground(new Color(29, 17, 40));
 		cancelarButton.setBackground(new Color(229, 212, 237));
 		cancelarButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
-		cancelarButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		cancelarButton.addActionListener(e -> {
 				dispose();
 				try {
 					new Inicio(api).setVisible(true);;
@@ -148,7 +135,7 @@ public class CrearProyecto extends JFrame {
 				}
                
 			}
-		});
+		);
 		cancelarButton.setBounds(568, 398, 147, 27);
 		contentPane.add(cancelarButton);
 
