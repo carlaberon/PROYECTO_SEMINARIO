@@ -103,8 +103,8 @@ public class CrearProyecto extends JFrame {
 		aceptarButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
 		aceptarButton.setBounds(395, 398, 147, 27);
 		contentPane.add(aceptarButton);
-		aceptarButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		aceptarButton.addActionListener(e -> {
+			
 				String nombreNuevoProyecto = nombreProyectoTextField.getText();
 				String descripcionNueva = descripcionTextField.getText();
                 String prioridadSeleccionadaNueva = (String) prioridadComboBox.getSelectedItem();
@@ -129,13 +129,12 @@ public class CrearProyecto extends JFrame {
 		            JOptionPane.showMessageDialog(null, labels.getString("mensaje.elCampo") + ex.getMessage() + labels.getString("mensaje.empty"), "Error", JOptionPane.ERROR_MESSAGE);
 		        }
 			}
-		});
+		);
 		JButton cancelarButton = new JButton(labels.getString("boton.cancelar"));
 		cancelarButton.setForeground(new Color(29, 17, 40));
 		cancelarButton.setBackground(new Color(229, 212, 237));
 		cancelarButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
-		cancelarButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		cancelarButton.addActionListener(e -> {
 				dispose();
 				try {
 					new Inicio(api).setVisible(true);;
@@ -148,7 +147,7 @@ public class CrearProyecto extends JFrame {
 				}
                
 			}
-		});
+		);
 		cancelarButton.setBounds(568, 398, 147, 27);
 		contentPane.add(cancelarButton);
 

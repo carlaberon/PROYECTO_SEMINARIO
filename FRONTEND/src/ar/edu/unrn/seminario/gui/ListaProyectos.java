@@ -4,12 +4,9 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
 
 import ar.edu.unrn.seminario.api.IApi;
-import ar.edu.unrn.seminario.api.PersistenceApi;
 import ar.edu.unrn.seminario.dto.ProyectoDTO;
-import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
@@ -23,12 +20,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import java.util.Set;
+
 
 public class ListaProyectos extends JFrame {
 	private IApi api;
@@ -138,47 +133,22 @@ public class ListaProyectos extends JFrame {
         
         eliminarProyecto = createButton(labels.getString("boton.eliminar"), new Color(138, 102, 204));
         habilitarBotones(false);
-        eliminarProyecto.addActionListener(new ActionListener() {
-		
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				int opcionSeleccionada = JOptionPane.showConfirmDialog(null,
-						labels.getString("mensaje.confirmarEliminacion"), labels.getString("mensaje.eliminarProyecto"),
-						JOptionPane.YES_NO_OPTION);
-				if (opcionSeleccionada == JOptionPane.YES_OPTION) {
-					int projecId = (int) tabla.getModel().getValueAt(tabla.getSelectedRow(), 0);
-					try {
-						api.eliminarProyecto(projecId);
-					} catch (TaskNotFoundException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (DataEmptyException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (NotNullException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (InvalidDateException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (TaskQueryException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					try {
-						actualizarTabla();
-					} catch (NotNullException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (DataEmptyException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					habilitarBotones(false);
-				}
-				
-			}
-		});
+        eliminarProyecto.addActionListener(e -> {
+            int opcionSeleccionada = JOptionPane.showConfirmDialog(null,
+                    labels.getString("mensaje.confirmarEliminacion"), labels.getString("mensaje.eliminarProyecto"),
+                    JOptionPane.YES_NO_OPTION);
+            if (opcionSeleccionada == JOptionPane.YES_OPTION) {
+                int projecId = (int) tabla.getModel().getValueAt(tabla.getSelectedRow(), 0);
+                try {
+                    api.eliminarProyecto(projecId);
+                    actualizarTabla();
+                } catch (TaskNotFoundException | DataEmptyException | NotNullException | InvalidDateException
+                         | TaskQueryException e1) {
+                    e1.printStackTrace();
+                }
+                habilitarBotones(false);
+            }
+        });
         panelEliminar.add(eliminarProyecto);
         JScrollPane scrollPane = new JScrollPane(tabla);
         scrollPane.getViewport().setBackground(fondoColor); // Establecer el fondo del viewport
@@ -229,37 +199,6 @@ public class ListaProyectos extends JFrame {
             return this;
         }
     }
-
-    // Editor para manejar la acción del botón "Expandir"
-    class ButtonEditor extends DefaultCellEditor {
-        protected JButton button;
-        private String label;
-        private boolean isPushed;
-        private JTable table;
-
-        public ButtonEditor(JCheckBox checkBox, JTable table) {
-            super(checkBox);
-            this.table = table;
-            button = new JButton();
-            button.setOpaque(true);
-            button.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    fireEditingStopped();
-                    int row = table.getSelectedRow();
-
-                    // Obtener el tamaño preferido de la celda de la columna de descripción
-                    JTextArea textArea = (JTextArea) table.getCellRenderer(row, 2)
-                            .getTableCellRendererComponent(table, table.getValueAt(row, 2), false, false, row, 2);
-                    int preferredHeight = textArea.getPreferredSize().height;
-
-                    // Establecer la altura de la fila en función del tamaño preferido
-                    table.setRowHeight(row, preferredHeight > 30 ? preferredHeight : 30);
-                }
-            });
-        }
-
-
-    }
     public void actualizarTabla() throws NotNullException, DataEmptyException{
     	// Obtiene el model del table
     			DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
@@ -303,19 +242,4 @@ public class ListaProyectos extends JFrame {
 	private void habilitarBotones(boolean b) {
 		eliminarProyecto.setEnabled(b);
 	}
-
-
-//    public static void main(String args[]) throws NotNullException, DataEmptyException {
-//    	IApi api = new PersistenceApi();
-//		api.setUsuarioActual("ldifabio");
-//		
-//		api.setProyectoActual("proyecto fenix");
-//	
-//    	ListaProyectos ventana = new ListaProyectos (api);
-//    	
-//    	ventana.setVisible(true);
-//    	
-//    }
-
-	
 }
