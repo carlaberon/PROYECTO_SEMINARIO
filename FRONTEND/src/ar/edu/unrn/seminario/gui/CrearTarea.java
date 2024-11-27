@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -28,6 +30,7 @@ import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.exception.TaskNotCreatedException;
+import ar.edu.unrn.seminario.exception.TaskQueryException;
 
 import javax.swing.JTextArea;
 import javax.swing.JSpinner;
@@ -161,7 +164,15 @@ public class CrearTarea extends JFrame {
                     api.registrarTarea(nombreTarea, api.getProyectoActual().getId(),prioridadTarea,usuario.getUsername(),"EN CURSO", descripcionTarea, fechaInicioLocalDate, fechaFinLocalDate);
                       
                     JOptionPane.showMessageDialog(null, "Tarea creada con éxito!", "Info", JOptionPane.INFORMATION_MESSAGE);
-                    setVisible(false);
+                    try {
+						new VentanaTareas(api).setVisible(true);
+					} catch (RuntimeException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (TaskQueryException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
                     dispose();
                        
                 	
@@ -192,10 +203,51 @@ public class CrearTarea extends JFrame {
 
         cancelarButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                setVisible(false);
+            	try {
+					new VentanaTareas(api).setVisible(true);
+				} catch (RuntimeException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (InvalidDateException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (NotNullException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (DataEmptyException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (TaskQueryException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
                 dispose();
             }
         });
+        
+        setLocationRelativeTo(null);
+        addWindowListener(new WindowAdapter() { 
+          	public void windowClosing(WindowEvent e) {
+          		try {
+					new VentanaTareas(api).setVisible(true);
+				} catch (RuntimeException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (InvalidDateException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (NotNullException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (DataEmptyException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (TaskQueryException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+          	}
+    	});
     }
    /*public static void main (String[] args) throws NotNullException, DataEmptyException {
     	

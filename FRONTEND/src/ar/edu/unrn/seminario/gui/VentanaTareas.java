@@ -12,6 +12,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -69,7 +71,7 @@ public class VentanaTareas extends JFrame {
     	this.unproyecto = api.getProyectoActual(); 
     	
     	setTitle(labels.getString("menu.tareas"));
-        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(50, 50, 1200, 650);
         
         contentPane = new JPanel();
@@ -83,7 +85,7 @@ public class VentanaTareas extends JFrame {
 
         JMenu menuProyecto = new JMenu(unproyecto.getNombre());
         menuProyecto.setForeground(Color.WHITE);
-        menuProyecto.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+        menuProyecto.setFont(new Font("Segoe UI", Font.BOLD, 18));
 
         JMenuItem item1 = new JMenuItem("Opción 1");
         JMenuItem item2 = new JMenuItem("Opción 2");
@@ -96,7 +98,7 @@ public class VentanaTareas extends JFrame {
 
         JLabel appName = new JLabel(labels.getString("menu.proyecto"));
         appName.setForeground(Color.WHITE);
-        appName.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+        appName.setFont(new Font("Segoe UI", Font.BOLD, 18));
 
         JPanel centerPanel = new JPanel();
         centerPanel.setOpaque(false);
@@ -105,7 +107,7 @@ public class VentanaTareas extends JFrame {
 
         JMenu accountMenu = new JMenu(usuarioActual.getUsername());
         accountMenu.setForeground(Color.WHITE);
-        accountMenu.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        accountMenu.setFont(new Font("Segoe UI", Font.BOLD, 14));
 
         JMenuItem logoutItem = new JMenuItem(labels.getString("menu.cerrarSesion"));
         JMenuItem confItem = new JMenuItem(labels.getString("menu.configurarCuenta"));
@@ -139,6 +141,22 @@ public class VentanaTareas extends JFrame {
             menuButton.setHorizontalAlignment(SwingConstants.LEFT);
             menuButton.setMargin(new Insets(10, 10, 10, 10));
             menuPanel.add(menuButton);
+            
+         // Agregar ActionListener solo al botón de "Volver o Back"
+            if (item.equals("Volver") || item.equals("Return")) {
+                menuButton.addActionListener(e -> {
+                	try {
+						new VentanaResumen(api).setVisible(true);
+					} catch (NotNullException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (DataEmptyException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+                    dispose();
+                });
+            }
         }
     
         contentPane.add(menuPanel, BorderLayout.WEST);
@@ -247,8 +265,8 @@ public class VentanaTareas extends JFrame {
 				CrearTarea crearTarea;
 				try {
 					crearTarea = new CrearTarea(api);
-					crearTarea.setLocationRelativeTo(null);
 					crearTarea.setVisible(true);
+					dispose();
 				} catch (NotNullException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -265,25 +283,25 @@ public class VentanaTareas extends JFrame {
         descPanel.add(buttonPanel, BorderLayout.NORTH); // Coloca el botón en el norte (arriba)
         centerPanel1.add(descPanel);
         
-      //Configuración del botón "Actualizar Tabla" en la esquina superior izquierda
-        
-        JButton btnActualizarTabla = createButton(labels.getString("menu.actualizar"), new Color(138, 102, 204));
-        buttonPanel.add(btnActualizarTabla);
-        btnActualizarTabla.addActionListener(new ActionListener() {
-    			public void actionPerformed(ActionEvent arg0) {
-    				try {
-						actualizarTabla();
-					} catch (NotNullException e) {
-			            JOptionPane.showMessageDialog(null, "Error: Hay campos que no pueden ser nulos.", "Error de validación", JOptionPane.ERROR_MESSAGE);
-					} catch (InvalidDateException e) {
-			            JOptionPane.showMessageDialog(null, "Error: La fecha ingresada es inválida.", "Error de fecha", JOptionPane.ERROR_MESSAGE);
-					} catch (DataEmptyException e) {
-			            JOptionPane.showMessageDialog(null, "Error: No se encontraron datos en la consulta. Verifica si el proyecto tiene tareas.", "Datos vacíos", JOptionPane.WARNING_MESSAGE);
-					} catch (TaskQueryException e) {
-			            JOptionPane.showMessageDialog(null, "Error al realizar la consulta de tareas en la base de datos: " + e.getMessage(), "Error de base de datos", JOptionPane.ERROR_MESSAGE);
-					}
-    			}
-    		});
+//      //Configuración del botón "Actualizar Tabla" en la esquina superior izquierda
+//        
+//        JButton btnActualizarTabla = createButton(labels.getString("menu.actualizar"), new Color(138, 102, 204));
+//        buttonPanel.add(btnActualizarTabla);
+//        btnActualizarTabla.addActionListener(new ActionListener() {
+//    			public void actionPerformed(ActionEvent arg0) {
+//    				try {
+//						actualizarTabla();
+//					} catch (NotNullException e) {
+//			            JOptionPane.showMessageDialog(null, "Error: Hay campos que no pueden ser nulos.", "Error de validación", JOptionPane.ERROR_MESSAGE);
+//					} catch (InvalidDateException e) {
+//			            JOptionPane.showMessageDialog(null, "Error: La fecha ingresada es inválida.", "Error de fecha", JOptionPane.ERROR_MESSAGE);
+//					} catch (DataEmptyException e) {
+//			            JOptionPane.showMessageDialog(null, "Error: No se encontraron datos en la consulta. Verifica si el proyecto tiene tareas.", "Datos vacíos", JOptionPane.WARNING_MESSAGE);
+//					} catch (TaskQueryException e) {
+//			            JOptionPane.showMessageDialog(null, "Error al realizar la consulta de tareas en la base de datos: " + e.getMessage(), "Error de base de datos", JOptionPane.ERROR_MESSAGE);
+//					}
+//    			}
+//    		});
         
        //Configuración de los botones "Modificar" y "Eliminar" tarea
       JPanel botones = new JPanel(new FlowLayout());
@@ -321,6 +339,7 @@ public class VentanaTareas extends JFrame {
 							habilitarBotones(false);
 		    	        	table.clearSelection();
 							modificarTarea();
+							dispose();
 						} catch (NotNullException e1) {
 				            JOptionPane.showMessageDialog(null, "Error: Hay datos nulos en la tarea a modificar.", "Error", JOptionPane.ERROR_MESSAGE);
 						} catch (DataEmptyException e1) {
@@ -359,6 +378,22 @@ public class VentanaTareas extends JFrame {
 			}				
 		}  	  
      });
+      
+      setLocationRelativeTo(null);
+      
+      addWindowListener(new WindowAdapter() { 
+      	public void windowClosing(WindowEvent e) {
+      		try {
+					new VentanaResumen(api).setVisible(true);
+				} catch (NotNullException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (DataEmptyException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+      	}
+	 });
     }
     
     // Método auxiliar para crear paneles con título y diseño consistente
@@ -401,43 +436,43 @@ public class VentanaTareas extends JFrame {
 
 	}
 	
-	void actualizarTabla() throws NotNullException, InvalidDateException, DataEmptyException, TaskQueryException{
-	
-	    // Obtiene el model del table
-	    DefaultTableModel modelo = (DefaultTableModel) table.getModel();
-	    
-	    List<TareaDTO> tareas = api.obtenerTareas();
-	    tareas.sort((t1, t2) -> {
-            int prioridadComparacion = Integer.compare(api.obtenerPrioridad(t1.getPriority()), 
-                                                       api.obtenerPrioridad(t2.getPriority()));
-            if (prioridadComparacion != 0) {
-                return prioridadComparacion;
-            }
-            return t1.getName().compareTo(t2.getName());
-        });
-	    
-	    modelo.setRowCount(0);
-
-	    // Agrega las tareas en el modelo
-		for (TareaDTO t : tareas) {
-		    modelo.addRow(new Object[] {
-		        t.getId(),
-		        t.getName(),
-		        unproyecto.getNombre(),
-		        t.getEstado(), // Modifica el estado a una cadena legible
-		        t.getDescription(),
-		        t.getUser(),
-		        t.getPriority(), 
-		        t.getInicio(),
-		        t.getFin()
-		    });
-		}
-		// Ocultar la columna ID
-        table.getColumnModel().getColumn(0).setMinWidth(0);
-        table.getColumnModel().getColumn(0).setMaxWidth(0);
-        table.getColumnModel().getColumn(0).setPreferredWidth(0);
-
-	}
+//	void actualizarTabla() throws NotNullException, InvalidDateException, DataEmptyException, TaskQueryException{
+//	
+//	    // Obtiene el model del table
+//	    DefaultTableModel modelo = (DefaultTableModel) table.getModel();
+//	    
+//	    List<TareaDTO> tareas = api.obtenerTareas();
+//	    tareas.sort((t1, t2) -> {
+//            int prioridadComparacion = Integer.compare(api.obtenerPrioridad(t1.getPriority()), 
+//                                                       api.obtenerPrioridad(t2.getPriority()));
+//            if (prioridadComparacion != 0) {
+//                return prioridadComparacion;
+//            }
+//            return t1.getName().compareTo(t2.getName());
+//        });
+//	    
+//	    modelo.setRowCount(0);
+//
+//	    // Agrega las tareas en el modelo
+//		for (TareaDTO t : tareas) {
+//		    modelo.addRow(new Object[] {
+//		        t.getId(),
+//		        t.getName(),
+//		        unproyecto.getNombre(),
+//		        t.getEstado(), // Modifica el estado a una cadena legible
+//		        t.getDescription(),
+//		        t.getUser(),
+//		        t.getPriority(), 
+//		        t.getInicio(),
+//		        t.getFin()
+//		    });
+//		}
+//		// Ocultar la columna ID
+//        table.getColumnModel().getColumn(0).setMinWidth(0);
+//        table.getColumnModel().getColumn(0).setMaxWidth(0);
+//        table.getColumnModel().getColumn(0).setPreferredWidth(0);
+//
+//	}
 	//api.setTareaActual->id
 	//api.getTareaActual<-id
 	void modificarTarea() throws NotNullException, DataEmptyException, InvalidDateException {
