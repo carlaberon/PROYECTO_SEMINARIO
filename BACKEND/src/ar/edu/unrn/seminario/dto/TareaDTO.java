@@ -17,30 +17,30 @@ public class TareaDTO {
     private LocalDate inicio; 
     private LocalDate fin;
     
-    public TareaDTO(int id, String name, ProyectoDTO project,String priority, String user, String estado, String descripcion, LocalDate inicio, LocalDate fin) throws NotNullException, InvalidDateException, DataEmptyException {
+    public TareaDTO(int id, String name, ProyectoDTO project,String priority, String user, String estado, String descripcion, LocalDate inicio, LocalDate fin) {
     	super();
     	
-    	if (esDatoNulo(name))
-			throw new NotNullException("nombre");
-    	if (esDatoNulo(priority))
-			throw new NotNullException("prioridad");
-    	if (esDatoNulo(user))
-			throw new NotNullException("usuario asignado");
-    	if (esDatoNulo(descripcion))
-			throw new NotNullException("descripcion");
-    	
-		if (esDatoVacio(name))
-			throw new DataEmptyException("nombre");
-		if (esDatoVacio(priority))
-			throw new DataEmptyException("prioridad");
-		if (esDatoVacio(user))
-			throw new DataEmptyException("usuario asignado");
-		if (esDatoVacio(descripcion))
-			throw new DataEmptyException("descripcion");
-    	
-		 if (fin.isBefore(inicio)) {
-				throw new InvalidDateException("La fecha de inicio debe ser anterior a la fecha de finalizacion");
-			}
+//    	if (esDatoNulo(name))
+//			throw new NotNullException("nombre");
+//    	if (esDatoNulo(priority))
+//			throw new NotNullException("prioridad");
+//    	if (esDatoNulo(user))
+//			throw new NotNullException("usuario asignado");
+//    	if (esDatoNulo(descripcion))
+//			throw new NotNullException("descripcion");
+//    	
+//		if (esDatoVacio(name))
+//			throw new DataEmptyException("nombre");
+//		if (esDatoVacio(priority))
+//			throw new DataEmptyException("prioridad");
+//		if (esDatoVacio(user))
+//			throw new DataEmptyException("usuario asignado");
+//		if (esDatoVacio(descripcion))
+//			throw new DataEmptyException("descripcion");
+//    	
+//		 if (fin.isBefore(inicio)) {
+//				throw new InvalidDateException("La fecha de inicio debe ser anterior a la fecha de finalizacion");
+//			}
     	
 		this.id = id;
         this.name = name;
@@ -60,12 +60,12 @@ public class TareaDTO {
         return name;
     }
 
-    public void setName(String name) throws NotNullException, DataEmptyException {
-    	if (esDatoNulo(name))
-			throw new NotNullException("nombre");
-    	
-		if (esDatoVacio(name))
-			throw new DataEmptyException("nombre");
+    public void setName(String name) {
+//    	if (esDatoNulo(name))
+//			throw new NotNullException("nombre");
+//    	
+//		if (esDatoVacio(name))
+//			throw new DataEmptyException("nombre");
        
 		this.name = name;
     }
@@ -74,12 +74,12 @@ public class TareaDTO {
         return priority;
     }
 
-    public void setPriority(String priority) throws NotNullException, DataEmptyException {
-    	if (esDatoNulo(priority))
-			throw new NotNullException("prioridad");
-    	
-		if (esDatoVacio(priority))
-			throw new DataEmptyException("prioridad");
+    public void setPriority(String priority) {
+//    	if (esDatoNulo(priority))
+//			throw new NotNullException("prioridad");
+//    	
+//		if (esDatoVacio(priority))
+//			throw new DataEmptyException("prioridad");
         this.priority = priority;
     }
 
@@ -87,12 +87,12 @@ public class TareaDTO {
         return user;
     }
 
-    public void setUser(String user) throws NotNullException, DataEmptyException {
-    	if (esDatoNulo(user))
-			throw new NotNullException("usuario");
-    	
-		if (esDatoVacio(user))
-			throw new DataEmptyException("usuario");
+    public void setUser(String user) {
+//    	if (esDatoNulo(user))
+//			throw new NotNullException("usuario");
+//    	
+//		if (esDatoVacio(user))
+//			throw new DataEmptyException("usuario");
         this.user = user;
     }
 
@@ -129,13 +129,13 @@ public class TareaDTO {
         this.fin = fin;
     }
 
-	private boolean esDatoVacio(String dato) {
-		return dato.equals("");
-	}
-
-	private boolean esDatoNulo(String dato) {
-		return dato == null;
-	}
+//	private boolean esDatoVacio(String dato) {
+//		return dato.equals("");
+//	}
+//
+//	private boolean esDatoNulo(String dato) {
+//		return dato == null;
+//	}
 
 	public int getId() {
 		return id;
