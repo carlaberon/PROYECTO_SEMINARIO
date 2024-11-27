@@ -50,7 +50,7 @@ public class PersistenceApi implements IApi {
 	@Override
 	public void registrarUsuario(String username, String password, String email, String nombre, Integer codigoRol) {
 		Rol rol = rolDao.find(codigoRol);
-		Usuario usuario = new Usuario(username, password, nombre, email, rol);
+		Usuario usuario = new Usuario(username, password, nombre, email);
 		this.usuarioDao.create(usuario);
 	}
 	
@@ -341,7 +341,6 @@ public class PersistenceApi implements IApi {
 			            usuario.getContrasena(),
 			            usuario.getNombre(),
 			            usuario.getEmail(),
-			            convertirEnRolDTO(usuario.getRol()), // Asegúrate de que este método existe y convierte el Rol a RolDTO
 			            usuario.isActivo()
 			        );
 			        return userDTO; // Retorna el UsuarioDTO
@@ -382,7 +381,7 @@ public class PersistenceApi implements IApi {
 
 	private UsuarioDTO convertirEnUsuarioDTO(Usuario usuario)  {
 		UsuarioDTO usuarioDto = new UsuarioDTO(usuario.getUsername(), usuario.getContrasena(), usuario.getNombre(), 
-				usuario.getEmail(), convertirEnRolDTO(usuario.getRol()), usuario.isActivo());
+				usuario.getEmail(), usuario.isActivo());
 		return usuarioDto;
 	}
 	

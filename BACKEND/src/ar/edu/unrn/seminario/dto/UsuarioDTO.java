@@ -13,7 +13,7 @@ public class UsuarioDTO {
 	private boolean activo;
 
 
-	public UsuarioDTO(String username, String password, String nombre, String email, RolDTO rol2, boolean activo) {
+	public UsuarioDTO(String username, String password, String nombre, String email, boolean activo) {
 //    	if (esDatoNulo(username))
 //			throw new NotNullException("nombre de usuario");
 //    	if (esDatoNulo(password))
@@ -36,7 +36,6 @@ public class UsuarioDTO {
 		this.password = password;
 		this.nombre = nombre;
 		this.email = email;
-		this.rol = rol2;
 		this.activo = activo;
 	
 	}	
@@ -92,14 +91,6 @@ public class UsuarioDTO {
 //    	if (esDatoVacio(email))
 //			throw new NotNullException("email");
 		this.email = email;
-	}
-
-	public RolDTO getRol() {
-		return rol;
-	}
-
-	public void setRol(RolDTO rol) {
-		this.rol = rol;
 	}
 
 	public boolean isActivo() {

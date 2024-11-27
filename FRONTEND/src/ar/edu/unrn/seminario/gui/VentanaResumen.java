@@ -185,7 +185,7 @@ public class VentanaResumen extends JFrame {
         btnMiembro.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                InvitarMiembro invitarMiembro = new InvitarMiembro();  // Crear una nueva instancia de la clase InvitarMiembro
+                InvitarMiembro invitarMiembro = new InvitarMiembro(api);  // Crear una nueva instancia de la clase InvitarMiembro
                 invitarMiembro.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 invitarMiembro.setVisible(true);  // Mostrar la ventana de InvitarMiembro
             }
