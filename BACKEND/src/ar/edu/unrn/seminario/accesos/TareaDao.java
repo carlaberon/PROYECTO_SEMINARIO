@@ -21,5 +21,5 @@ public interface TareaDao {
 	
 	void remove(int id) throws TaskNotFoundException;
 	
-	public Tarea find(int id) throws DataEmptyException, NotNullException, InvalidDateException, TaskQueryException;
+	public Tarea find(int id) throws DataEmptyException, NotNullException, InvalidDateException;
 }

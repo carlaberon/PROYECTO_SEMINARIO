@@ -58,22 +58,12 @@ public class PersistenceApi implements IApi {
 	public List<TareaDTO> obtenerTareas() throws NotNullException, InvalidDateException, DataEmptyException, TaskQueryException {
 		List<TareaDTO> tareasDTO = new ArrayList<>();
 		List<Tarea> tareas = null;
-		try {
-			tareas = tareaDao.findByProject(proyectoActual.getId());
-		} catch (DataEmptyException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NotNullException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvalidDateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		    for (Tarea t : tareas) {  
-		        tareasDTO.add(convertirEnTareaDTO(t));
-	    }
 
+		tareas = tareaDao.findByProject(proyectoActual.getId());
+		
+		for (Tarea t : tareas) {  
+			tareasDTO.add(convertirEnTareaDTO(t));
+		}
 	    return tareasDTO;
 	}
 	
@@ -202,19 +192,11 @@ public class PersistenceApi implements IApi {
 	public List<TareaDTO> obtenerTareasPorProyecto(int id) throws InvalidDateException, NotNullException, DataEmptyException, TaskQueryException {
 		List<TareaDTO> tareasDTO = new ArrayList<>();
 		List<Tarea> tareas = null;
-		try {
-			tareas = tareaDao.findByProject(id);
-		} catch (DataEmptyException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NotNullException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		    for (Tarea t : tareas) {  
-		        tareasDTO.add(convertirEnTareaDTO(t));
-	    }
+		tareas = tareaDao.findByProject(id);
 
+		for (Tarea t : tareas) {  
+			tareasDTO.add(convertirEnTareaDTO(t));
+	    }
 	    return tareasDTO;
 	}
 	
@@ -231,7 +213,7 @@ public class PersistenceApi implements IApi {
 			}			
 	}
 	
-	public void setTareaActual(int idTarea) throws DataEmptyException, NotNullException, InvalidDateException, TaskQueryException {
+	public void setTareaActual(int idTarea) throws DataEmptyException, NotNullException, InvalidDateException {
 		this.tareaActual = tareaDao.find(idTarea);
 	}
 	
