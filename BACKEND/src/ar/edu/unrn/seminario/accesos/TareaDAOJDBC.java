@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.sound.sampled.EnumControl;
+import javax.swing.JOptionPane;
 
 import java.sql.SQLException;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
@@ -157,7 +158,7 @@ public class TareaDAOJDBC implements TareaDao{
 		}
 	}
 	
-	public Tarea find(int id) throws NotNullException, DataEmptyException, InvalidDateException, TaskQueryException {
+	public Tarea find(int id) throws NotNullException, DataEmptyException, InvalidDateException {
 		Rol unRol = null;
 		Usuario unUsuario = null;
 		Proyecto unProyecto = null;
@@ -175,16 +176,18 @@ public class TareaDAOJDBC implements TareaDao{
 			statement.setInt(1, id);
 			
 			ResultSet rs = statement.executeQuery();
-			while(rs.next()) {
+			if(rs.next()) {
 				unRol = new Rol(rs.getInt("r.codigo"), rs.getString("r.nombre"), rs.getBoolean("r.activo"));
 				unUsuario = new Usuario(rs.getString("u.usuario"), rs.getString("u.contrasena"), rs.getString("u.nombre"), rs.getString("u.email"), unRol, rs.getBoolean("u.activo"));
 				unProyecto = new Proyecto(rs.getInt("p.id"), rs.getString("p.nombre"), unUsuario, rs.getString("estado"), rs.getString("p.descripcion"), rs.getString("p.prioridad"));
 				unaTarea = new Tarea(rs.getInt("id"), rs.getString("nombre"), unProyecto, rs.getString("prioridad"), rs.getString("usuario"), rs.getString("estado"),rs.getString("descripcion"), rs.getDate("fecha_inicio").toLocalDate(), rs.getDate("fecha_fin").toLocalDate());
+			}else {
+				 JOptionPane.showMessageDialog(null, "No se encontró la tarea con ID: " + id, "Error", JOptionPane.ERROR_MESSAGE);
 			}
 		} catch (SQLException e) {
-			throw new TaskQueryException("Error al realizar la consulta de tareas en la base de datos: " + e.getMessage(), e);
+			JOptionPane.showMessageDialog(null, "Error de SQL al consultar la tarea: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		} catch (IllegalArgumentException e) {
-			throw new TaskQueryException("Error de argumento invalido en la creacion de tareas: " + e.getMessage(), e);
+			JOptionPane.showMessageDialog(null, "Error en los argumentos de la tarea: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		} finally {
 			ConnectionManager.disconnect();
 		}

@@ -68,7 +68,7 @@ public interface IApi {
 
 	public void setProyectoActual(int id) throws NotNullException, DataEmptyException;	//Setear proyecto actual PRUEBAS
 	
-	public void setTareaActual(int idTarea) throws DataEmptyException, NotNullException, InvalidDateException, TaskQueryException;
+	public void setTareaActual(int idTarea) throws DataEmptyException, NotNullException, InvalidDateException;
 	
 	public TareaDTO getTareaActual() throws NotNullException, DataEmptyException, InvalidDateException;
 	

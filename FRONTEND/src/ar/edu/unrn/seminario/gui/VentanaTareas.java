@@ -59,7 +59,7 @@ public class VentanaTareas extends JFrame {
     private ProyectoDTO unproyecto; //obtener proyecto por medio de la api
 	
 
-    public VentanaTareas(IApi api) throws RuntimeException, InvalidDateException, NotNullException, DataEmptyException, TaskQueryException{
+    public VentanaTareas(IApi api) throws RuntimeException, NotNullException, DataEmptyException, InvalidDateException, TaskQueryException{
     	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
 //		 descomentar para que tome el idioma ingles (english)
 
@@ -322,31 +322,38 @@ public class VentanaTareas extends JFrame {
     	        if (filaSeleccionada != -1) {
 	    	        int idTarea = (int) table.getValueAt(filaSeleccionada, 0);
 	
-						try {
-							api.setTareaActual(idTarea);
-						} catch (DataEmptyException e1) {
-							JOptionPane.showMessageDialog(null, "Error: Hay datos vacios. No se puede establecer la tarea actual.", "Error", JOptionPane.ERROR_MESSAGE);
-						} catch (NotNullException e1) {
-							JOptionPane.showMessageDialog(null, "Error: Hay datos nulos. No se puede establecer la tarea actual.", "Error", JOptionPane.ERROR_MESSAGE);
-						} catch (InvalidDateException e1) {
-							JOptionPane.showMessageDialog(null, "Error: Fecha inválida en la tarea seleccionada.", "Error", JOptionPane.ERROR_MESSAGE);
-						} catch (TaskQueryException e1) {
-				            JOptionPane.showMessageDialog(null, "Error al realizar la consulta de tareas: " + e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-	
-						}
-	
-						try {
+						
+
+								try {
+									api.setTareaActual(idTarea);
+								} catch (DataEmptyException e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								} catch (NotNullException e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								} catch (InvalidDateException e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								}
+
+						
 							habilitarBotones(false);
 		    	        	table.clearSelection();
-							modificarTarea();
+							try {
+								modificarTarea();
+							} catch (NotNullException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							} catch (DataEmptyException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							} catch (InvalidDateException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
 							dispose();
-						} catch (NotNullException e1) {
-				            JOptionPane.showMessageDialog(null, "Error: Hay datos nulos en la tarea a modificar.", "Error", JOptionPane.ERROR_MESSAGE);
-						} catch (DataEmptyException e1) {
-				            JOptionPane.showMessageDialog(null, "Error: Hay datos vacios en la tarea a modificar.", "Error", JOptionPane.ERROR_MESSAGE);
-						} catch (InvalidDateException e1) {
-				            JOptionPane.showMessageDialog(null, "Error: Fecha inválida en la tarea a modificar.", "Error", JOptionPane.ERROR_MESSAGE);
-						}
+						
     	        } else {
     	            JOptionPane.showMessageDialog(botonModificar, "Por favor, seleccione una tarea para modificar.", "Selección de tarea", JOptionPane.WARNING_MESSAGE);
     			}
