@@ -380,18 +380,18 @@ public class PersistenceApi implements IApi {
 	}
 
 
-	private UsuarioDTO convertirEnUsuarioDTO(Usuario usuario) throws NotNullException, DataEmptyException {
+	private UsuarioDTO convertirEnUsuarioDTO(Usuario usuario)  {
 		UsuarioDTO usuarioDto = new UsuarioDTO(usuario.getUsername(), usuario.getContrasena(), usuario.getNombre(), 
 				usuario.getEmail(), convertirEnRolDTO(usuario.getRol()), usuario.isActivo());
 		return usuarioDto;
 	}
 	
-	private TareaDTO convertirEnTareaDTO(Tarea tarea) throws NotNullException, InvalidDateException, DataEmptyException {
+	private TareaDTO convertirEnTareaDTO(Tarea tarea) {
 		TareaDTO tareaDto = new TareaDTO(tarea.getId(), tarea.getNombre(), convertirEnProyectoDTO(tarea.getProyecto()), tarea.getPrioridad(), tarea.getUsuario(), tarea.getEstado(), tarea.getDescripcion(), tarea.getInicio(), tarea.getFin());
 		return tareaDto;
 	}
 	
-	private ProyectoDTO convertirEnProyectoDTO(Proyecto proyecto) throws NotNullException, DataEmptyException {
+	private ProyectoDTO convertirEnProyectoDTO(Proyecto proyecto) {
 		ProyectoDTO proyectoDto = null;
 		if(proyecto != null)
 			proyectoDto = new ProyectoDTO(proyecto.getId(),proyecto.getNombre(), convertirEnUsuarioDTO(proyecto.getUsuarioPropietario()), proyecto.getEstado(), proyecto.getPrioridad(), proyecto.getDescripcion());
@@ -400,7 +400,7 @@ public class PersistenceApi implements IApi {
 		return proyectoDto;
 	}
 	
-	public UsuarioDTO getUsuarioActual() throws NotNullException, DataEmptyException {
+	public UsuarioDTO getUsuarioActual() {
 	    
 	    return convertirEnUsuarioDTO(usuarioActual);
 	}
