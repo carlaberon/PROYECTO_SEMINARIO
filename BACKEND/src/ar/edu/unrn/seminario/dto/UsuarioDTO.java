@@ -9,7 +9,6 @@ public class UsuarioDTO {
 	private String password;
 	private String nombre;
 	private String email;
-	private RolDTO rol;
 	private boolean activo;
 
 
