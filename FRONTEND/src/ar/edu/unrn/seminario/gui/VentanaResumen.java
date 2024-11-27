@@ -30,7 +30,7 @@ public class VentanaResumen extends JFrame {
     
     public VentanaResumen(IApi api) throws NotNullException, DataEmptyException {
 
-    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
+    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
 //		 descomentar para que tome el idioma ingles (english)
 
 		//ResourceBundle labels = ResourceBundle.getBundle("labels");
