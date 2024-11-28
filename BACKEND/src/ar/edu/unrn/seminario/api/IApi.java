@@ -78,6 +78,7 @@ public interface IApi {
 
 	void modificarTarea(int id, String nuevoNombre, String nuevaPrioridad,String nombreUsuario, String estado, String nuevaDescripcion,LocalDate inicio, LocalDate fin)throws NotNullException, DataEmptyException, InvalidDateException, TaskNotUpdatedException, TaskQueryException;
 	
+	public RolDTO getRol(String username, int idProyecto);
 	//void crearPlan(String nombre, Proyecto pertenece);
 	//void crearEvento(LocalDateTime fecha, LocalDateTime inicio, LocalDateTime fin, String descripcion);
 	//List<EventoDTO> obtenerEventos();

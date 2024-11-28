@@ -49,9 +49,9 @@ public class PersistenceApi implements IApi {
 
 	@Override
 	public void registrarUsuario(String username, String password, String email, String nombre, Integer codigoRol) {
-		Rol rol = rolDao.find(codigoRol);
+		/*Rol rol = rolDao.find(codigoRol);
 		Usuario usuario = new Usuario(username, password, nombre, email);
-		this.usuarioDao.create(usuario);
+		this.usuarioDao.create(usuario);*/
 	}
 	
 	@Override
@@ -101,9 +101,10 @@ public class PersistenceApi implements IApi {
 
 	@Override
 	public RolDTO obtenerRolPorCodigo(Integer codigo) {
-		Rol rol = rolDao.find(codigo);
+		/*//Rol rol = rolDao.find(codigo);
 		RolDTO rolDTO = new RolDTO(rol.getCodigo(), rol.getNombre(), rol.isActivo());
-		return rolDTO;
+		return rolDTO;*/
+		return null;
 	}
 	@Override
 	public void crearProyecto(String nombre, String string, String estado, String descripcion, String prioridad)
@@ -201,7 +202,7 @@ public class PersistenceApi implements IApi {
 	}
 	
 	@Override
-	public ProyectoDTO getProyectoActual() throws NotNullException, DataEmptyException {
+	public ProyectoDTO getProyectoActual() {
 		return convertirEnProyectoDTO(proyectoActual);
 	}
 
@@ -384,6 +385,14 @@ public class PersistenceApi implements IApi {
 	public UsuarioDTO getUsuarioActual() {
 	    
 	    return convertirEnUsuarioDTO(usuarioActual);
+	}
+	
+	public RolDTO getRol(String username, int idProyecto) {
+		Rol rol = rolDao.find(username, idProyecto);
+		if (rol != null) {
+			return convertirEnRolDTO(rol);
+		}
+		return null;
 	}
    /*
 	@Override

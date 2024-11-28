@@ -124,8 +124,14 @@ public class VentanaResumen extends JFrame {
             if (item.equals("Configuración") || item.equals("Settings")) {
                 menuButton.addActionListener(e -> {
                     // Por ejemplo, podrías abrir un nuevo panel de configuración:
-                    abrirPanelConfiguracion();
-                    dispose();
+                    if(api.getRol(usuarioActual.getUsername(), unproyecto.getId()).getNombre().equals("Admin")) {
+                    	abrirPanelConfiguracion();
+                    	dispose();
+                    } else {
+        	            JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.error"), JOptionPane.ERROR_MESSAGE);
+
+					}
+                    
                 });
             }
          // Agregar ActionListener solo al botón de "Volver o Back"

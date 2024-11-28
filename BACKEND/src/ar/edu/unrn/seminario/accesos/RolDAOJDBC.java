@@ -45,17 +45,20 @@ public class RolDAOJDBC implements RolDao {
 	}
 
 	@Override
-	public Rol find(Integer codigo) {
+	public Rol find(String username, int id_proyecto) {
 		Rol rol = null;
 		try {
 			Connection conn = ConnectionManager.getConnection();
 			PreparedStatement statement = conn
-					.prepareStatement("SELECT r.codigo, r.nombre " + " FROM roles r " + " WHERE r.codigo = ?");
+					.prepareStatement("SELECT r.codigo, r.nombre, r.activo\r\n"
+							+ "FROM roles r JOIN proyectos_usuarios_roles pur ON r.codigo = pur.codigo_rol\r\n"
+							+ "WHERE pur.nombre_usuario = ? AND pur.id_proyecto = ?");
 
-			statement.setInt(1, codigo);
+			statement.setString(1, username);
+			statement.setInt(2, id_proyecto);
 			ResultSet rs = statement.executeQuery();
 			if (rs.next()) {
-				rol = new Rol(rs.getInt("codigo"), rs.getString("nombre"));
+				rol = new Rol(rs.getInt("r.codigo"), rs.getString("r.nombre"), rs.getBoolean("r.activo"));
 			}
 
 		} catch (SQLException e) {

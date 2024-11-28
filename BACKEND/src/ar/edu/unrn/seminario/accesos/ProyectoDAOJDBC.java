@@ -137,8 +137,8 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 			Connection conn = ConnectionManager.getConnection();
 			PreparedStatement statement = conn.prepareStatement("SELECT p.id, p.nombre, p.usuario_propietario, p.estado, p.descripcion, p.prioridad, u.usuario, u.contrasena, u.nombre, u.email, u.activo\r\n" 
 					+ "FROM proyectos p\r\n"
-					+ "JOIN proyectos_miembros pm ON p.id = pm.id_proyecto\r\n"
-					+ "JOIN usuarios u ON pm.usuario_miembro = u.usuario\r\n"
+					+ "JOIN proyectos_usuarios_roles pur ON p.id = pur.id_proyecto\r\n"
+					+ "JOIN usuarios u ON pur.nombre_usuario = u.usuario\r\n"
 					+ "WHERE p.id = ? and p.estado NOT LIKE '#%' AND p.usuario_propietario = u.usuario\r\n");
 			statement.setInt(1, id);
 			
@@ -172,12 +172,12 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 				Connection conn = ConnectionManager.getConnection();
 				PreparedStatement statement = conn.prepareStatement("SELECT p.id, p.nombre, p.usuario_propietario, p.estado, p.descripcion, p.prioridad, u.usuario, u.contrasena, u.nombre, u.email, u.activo\r\n" 
 						+ "FROM proyectos p\r\n"
-						+ "JOIN proyectos_miembros pm ON p.id = pm.id_proyecto\r\n"
-						+ "JOIN usuarios u ON pm.usuario_miembro = u.usuario\r\n"
-						+ "WHERE p.estado NOT LIKE '#%' AND p.usuario_propietario = ? and u.usuario = ? \r\n");
+						+ "JOIN proyectos_usuarios_roles pur ON p.id = pur.id_proyecto\r\n"
+						+ "JOIN usuarios u ON pur.nombre_usuario = u.usuario\r\n"
+						+ "WHERE p.estado NOT LIKE '#%' AND pur.nombre_usuario = ?\r\n");
 				
 				statement.setString(1, usuario);
-				statement.setString(2, usuario);
+				//statement.setString(2, usuario);
 				ResultSet rs = statement.executeQuery();
 				while(rs.next()) {
 					Usuario usuarioPropietario = new Usuario(rs.getString("u.usuario"), rs.getString("u.contrasena"), rs.getString("u.nombre"), rs.getString("u.email"));

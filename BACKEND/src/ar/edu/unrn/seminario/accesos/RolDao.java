@@ -13,7 +13,7 @@ public interface RolDao {
 
 	void remove(Rol rol);
 
-	Rol find(Integer codigo);
+	Rol find(String username, int id_proyecto);
 
 	List<Rol> findAll();
 
