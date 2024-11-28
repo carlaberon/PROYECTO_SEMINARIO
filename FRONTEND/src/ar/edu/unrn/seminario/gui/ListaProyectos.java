@@ -32,7 +32,6 @@ public class ListaProyectos extends JFrame {
 	private JButton eliminarProyecto;
 	private JButton volver;
 	private UsuarioDTO usuarioActual; //obtener usuario actual por medio de la api
-    private ProyectoDTO unproyecto; //obtener proyecto por medio de la api
 	
     public ListaProyectos(IApi api) throws NotNullException, DataEmptyException {
     	
@@ -42,7 +41,6 @@ public class ListaProyectos extends JFrame {
    	//ResourceBundle labels = ResourceBundle.getBundle("labels");
     	this.api = api;
     	this.usuarioActual = api.getUsuarioActual();
-    	this.unproyecto = api.getProyectoActual();
 
         // Configuración básica de la ventana
         setTitle(labels.getString("menu.proyectos"));
@@ -135,15 +133,15 @@ public class ListaProyectos extends JFrame {
         
         eliminarProyecto = createButton(labels.getString("boton.eliminar"), new Color(138, 102, 204));
         
-        habilitarBotones(false);
         
         eliminarProyecto.addActionListener(e -> {
-        		if (api.getRol(usuarioActual.getUsername(), unproyecto.getId()).getNombre().equals("Admin")) {
-					int opcionSeleccionada = JOptionPane.showConfirmDialog(null,
-				            labels.getString("mensaje.confirmarEliminacion"), labels.getString("mensaje.eliminarProyecto"),
-				            JOptionPane.YES_NO_OPTION);
-				    if (opcionSeleccionada == JOptionPane.YES_OPTION) {
+	        	habilitarBotones(false);
+				int opcionSeleccionada = JOptionPane.showConfirmDialog(null,
+				           labels.getString("mensaje.confirmarEliminacion"), labels.getString("mensaje.eliminarProyecto"),
+				           JOptionPane.YES_NO_OPTION);
+				if (opcionSeleccionada == JOptionPane.YES_OPTION) {
 				        int projecId = (int) tabla.getModel().getValueAt(tabla.getSelectedRow(), 0);
+				        if (api.getRol(usuarioActual.getUsername(), projecId).getNombre().equals("Admin")) {
 				        try {
 				            api.eliminarProyecto(projecId);
 				            actualizarTabla();
@@ -152,11 +150,10 @@ public class ListaProyectos extends JFrame {
 				            e1.printStackTrace();
 				        }
 				        habilitarBotones(false);
-				    }
 				}else {
-    	            JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.error"), JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.error"), JOptionPane.ERROR_MESSAGE);	
 				}
-            
+				}
         });
         panelEliminar.add(eliminarProyecto);
         JScrollPane scrollPane = new JScrollPane(tabla);
