@@ -48,12 +48,10 @@ public class ModificarTarea extends JFrame {
 	    private JTextArea textAreaDescription;
 	    private JDateChooser dateChooserInicio;
 	    private JDateChooser dateChooserFin;
-//	    private List<ProyectoDTO> proyectos = new ArrayList<>();
 	    private List<UsuarioDTO> usuarios = new ArrayList<>();
-//	    private ProyectoDTO unproyecto;
 	    private TareaDTO tarea;
-
 	    private IApi api;
+	    
 	    public ModificarTarea(IApi api) throws NotNullException, DataEmptyException, InvalidDateException {
 
 	    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
@@ -63,13 +61,7 @@ public class ModificarTarea extends JFrame {
 	    	
 	    
 	        this.api = api; 
-	        
 	        this.usuarios = api.obtenerUsuarios();
-	        
-//	        this.proyectos = api.obtenerProyectos(api.getUsuarioActual().getUsername());
-	        
-//	        this.unproyecto= api.getProyectoActual();
-	        
 	        this.tarea = api.getTareaActual();
 	        
 	        setTitle(labels.getString("menu.modificarTarea"));
@@ -88,16 +80,6 @@ public class ModificarTarea extends JFrame {
 	        nombreTareaTextField.setBounds(190, 64, 160, 22);
 	        contentPane.add(nombreTareaTextField);
 	        nombreTareaTextField.setColumns(10);
-
-//	        proyectoTareaComboBox = new JComboBox<>();
-//	        proyectoTareaComboBox.setBounds(190, 60, 160, 22);
-//	        if (! this.proyectos.isEmpty() ) {
-//	        	for (ProyectoDTO proyecto : this.proyectos) {
-//	                proyectoTareaComboBox.addItem(proyecto.getNombre());
-//	            }
-//	        }
-//	        
-//	        contentPane.add(proyectoTareaComboBox);
 
 	        JLabel asignarUsuarioLabel = new JLabel(labels.getString("campo.asignarUsuario"));
 	        asignarUsuarioLabel.setBounds(43, 100, 150, 16);
