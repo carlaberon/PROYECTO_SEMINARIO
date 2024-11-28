@@ -99,25 +99,21 @@ public class TareaDAOJDBC implements TareaDao{
 	@Override
 	public List<Tarea> findByProject(int id_project) throws DataEmptyException, NotNullException, InvalidDateException, TaskQueryException {
 		List<Tarea>tareas = new ArrayList<Tarea>();
-		Rol unRol = null;
 		Usuario unUsuario = null;
 		Proyecto unProyecto = null;
 		Tarea unaTarea = null;
 			
 			try {
 				Connection conn = ConnectionManager.getConnection();
-				PreparedStatement statement = conn.prepareStatement("SELECT t.id, t.nombre, t.prioridad, t.usuario, t.estado, t.descripcion, t.fecha_inicio, t.fecha_fin, p.id, p.nombre, p.usuario_propietario, p.estado, p.descripcion, p.prioridad, u.usuario, u.contrasena, u.nombre, u.email, u.activo, u.rol, r.codigo, r.nombre, r.activo\r\n"
+				PreparedStatement statement = conn.prepareStatement("SELECT t.id, t.nombre, t.prioridad, t.usuario, t.estado, t.descripcion, t.fecha_inicio, t.fecha_fin, p.id, p.nombre, p.usuario_propietario, p.estado, p.descripcion, p.prioridad, u.usuario, u.contrasena, u.nombre, u.email, u.activo\r\n"
 						+ "FROM tareas t join proyectos p on t.id_proyecto = p.id\r\n"
 						+ "join proyectos_miembros pm on pm.id_proyecto = p.id\r\n"
 						+ "join usuarios u on pm.usuario_miembro = u.usuario\r\n"
-						+ "join usuario_rol ur on ur.nombre_usuario = u.usuario\r\n"
-						+ "join roles r on r.codigo = ur.codigo_rol\r\n"
 						+ "WHERE t.id_proyecto = ? AND t.estado NOT LIKE '#%' AND u.usuario = p.usuario_propietario");
 				statement.setInt(1, id_project);
 				ResultSet rs = statement.executeQuery();
 				while(rs.next()) {
-					unRol = new Rol(rs.getInt("r.codigo"), rs.getString("r.nombre"), rs.getBoolean("r.activo"));
-					unUsuario = new Usuario(rs.getString("u.usuario"), rs.getString("u.contrasena"), rs.getString("u.nombre"), rs.getString("u.email"), unRol, rs.getBoolean("u.activo"));
+					unUsuario = new Usuario(rs.getString("u.usuario"), rs.getString("u.contrasena"), rs.getString("u.nombre"), rs.getString("u.email"), rs.getBoolean("u.activo"));
 					unProyecto = new Proyecto(rs.getInt("p.id"), rs.getString("p.nombre"), unUsuario, rs.getString("estado"), rs.getString("p.descripcion"), rs.getString("p.prioridad"));
 					unaTarea = new Tarea(rs.getInt("t.id"), rs.getString("t.nombre"), unProyecto,rs.getString("t.prioridad"), rs.getString("t.usuario"), rs.getString("t.estado"),
 							rs.getString("t.descripcion"), rs.getDate("t.fecha_inicio").toLocalDate(), rs.getDate("t.fecha_fin").toLocalDate());
@@ -158,27 +154,26 @@ public class TareaDAOJDBC implements TareaDao{
 		}
 	}
 	
+
 	public Tarea find(int id) throws NotNullException, DataEmptyException, InvalidDateException {
-		Rol unRol = null;
+
 		Usuario unUsuario = null;
 		Proyecto unProyecto = null;
 		Tarea unaTarea = null;
 		
 		try {
 			Connection conn = ConnectionManager.getConnection();
-			PreparedStatement statement = conn.prepareStatement("SELECT t.id, t.nombre, t.prioridad, t.usuario, t.estado, t.descripcion, t.fecha_inicio, t.fecha_fin, p.id, p.nombre, p.usuario_propietario, p.estado, p.descripcion, p.prioridad, u.usuario, u.contrasena, u.nombre, u.email, u.activo, u.rol, r.codigo, r.nombre, r.activo\r\n"
+			PreparedStatement statement = conn.prepareStatement("SELECT t.id, t.nombre, t.prioridad, t.usuario, t.estado, t.descripcion, t.fecha_inicio, t.fecha_fin, p.id, p.nombre, p.usuario_propietario, p.estado, p.descripcion, p.prioridad, u.usuario, u.contrasena, u.nombre, u.email, u.activo\r\n"
 					+ "FROM tareas t join proyectos p on t.id_proyecto = p.id\r\n"
 					+ "join proyectos_miembros pm on pm.id_proyecto = p.id\r\n"
 					+ "join usuarios u on pm.usuario_miembro = u.usuario\r\n"
-					+ "join usuario_rol ur on ur.nombre_usuario = u.usuario\r\n"
-					+ "join roles r on r.codigo = ur.codigo_rol\r\n"
 					+ "WHERE t.id = ? AND t.estado NOT LIKE '#%'");
 			statement.setInt(1, id);
 			
 			ResultSet rs = statement.executeQuery();
+
 			if(rs.next()) {
-				unRol = new Rol(rs.getInt("r.codigo"), rs.getString("r.nombre"), rs.getBoolean("r.activo"));
-				unUsuario = new Usuario(rs.getString("u.usuario"), rs.getString("u.contrasena"), rs.getString("u.nombre"), rs.getString("u.email"), unRol, rs.getBoolean("u.activo"));
+				unUsuario = new Usuario(rs.getString("u.usuario"), rs.getString("u.contrasena"), rs.getString("u.nombre"), rs.getString("u.email"), rs.getBoolean("u.activo"));
 				unProyecto = new Proyecto(rs.getInt("p.id"), rs.getString("p.nombre"), unUsuario, rs.getString("estado"), rs.getString("p.descripcion"), rs.getString("p.prioridad"));
 				unaTarea = new Tarea(rs.getInt("id"), rs.getString("nombre"), unProyecto, rs.getString("prioridad"), rs.getString("usuario"), rs.getString("estado"),rs.getString("descripcion"), rs.getDate("fecha_inicio").toLocalDate(), rs.getDate("fecha_fin").toLocalDate());
 			}else {

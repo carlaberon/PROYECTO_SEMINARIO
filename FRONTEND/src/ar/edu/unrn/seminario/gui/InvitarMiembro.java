@@ -28,6 +28,8 @@ public class InvitarMiembro extends JFrame {
 
 	private JPanel contentPane;
 	private JComboBox rolesComboBox;
+	private JTextField usernameInvitado;
+	private IApi api;
 
 	/*
 	private List<RolDTO> roles = new ArrayList<>(); //crear el RolDTO, crear clase Rol
@@ -37,7 +39,7 @@ public class InvitarMiembro extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public InvitarMiembro(/* IApi api */) {
+	public InvitarMiembro(IApi api) {
 		/*
 		// Obtengo los usuarios
 		this.usuarios = api.obtenerUsuarios(); 
@@ -47,7 +49,7 @@ public class InvitarMiembro extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 400);
 		getContentPane().setLayout(null);
-		
+		this.api = api;
 		contentPane = new JPanel();
 		contentPane.setFont(new Font("Segoe UI", Font.PLAIN, 10));
 		contentPane.setBackground(new Color(81, 79, 89));
@@ -62,16 +64,15 @@ public class InvitarMiembro extends JFrame {
 		contentPane.add(nombreProyecto);
 
 
-		JButton aceptarButton = new JButton("Agregar");
-		aceptarButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
+		JButton invitarButton = new JButton("Invitar");
+		invitarButton.addActionListener(e -> {
+			
 		});
-		aceptarButton.setForeground(new Color(229, 212, 237));
-		aceptarButton.setBackground(new Color(89, 65, 169));
-		aceptarButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
+		invitarButton.setForeground(new Color(229, 212, 237));
+		invitarButton.setBackground(new Color(89, 65, 169));
+		invitarButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
 	
-		aceptarButton.addActionListener(new ActionListener() {
+		invitarButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			/*
 				 Agregar un miembro 
@@ -87,8 +88,8 @@ public class InvitarMiembro extends JFrame {
 			}
 		}); 
 
-		aceptarButton.setBounds(514, 279, 147, 27);
-		contentPane.add(aceptarButton);
+		invitarButton.setBounds(514, 279, 147, 27);
+		contentPane.add(invitarButton);
 
 
 
@@ -103,7 +104,7 @@ public class InvitarMiembro extends JFrame {
 		rolesComboBox = new JComboBox();
 		rolesComboBox.setForeground(new Color(29, 17, 40));
 		rolesComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 10));
-		rolesComboBox.setBounds(381, 194, 280, 25);
+		rolesComboBox.setBounds(381, 195, 280, 27);
 		contentPane.add(rolesComboBox);
 		rolesComboBox.addItem("");
 		rolesComboBox.addItem("rol_colaborador");
@@ -120,14 +121,10 @@ public class InvitarMiembro extends JFrame {
 		lblNewLabel.setBounds(35, 47, 291, 73);
 		contentPane.add(lblNewLabel);
 		
-		JComboBox usuariosComboBox = new JComboBox();
-		usuariosComboBox.setForeground(new Color(29, 17, 40));
-		usuariosComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 10));
-		usuariosComboBox.setBounds(70, 194, 256, 25);
-		contentPane.add(usuariosComboBox);
-		usuariosComboBox.addItem("");
-		usuariosComboBox.addItem("usuario_A");
-		usuariosComboBox.addItem("usuario_B");
+		usernameInvitado = new JTextField();
+		usernameInvitado.setBounds(70, 195, 268, 27);
+		contentPane.add(usernameInvitado);
+		usernameInvitado.setColumns(10);
 
 		/*
 		for (UsuarioDTO usuario : this.usuarios) {
@@ -136,9 +133,8 @@ public class InvitarMiembro extends JFrame {
 
 		setLocationRelativeTo(null);
 	}
-	   public static void main(String[] args) {
-	 
-	        InvitarMiembro frame = new InvitarMiembro();
-	        frame.setVisible(true);
-	    }
+//	   public static void main(String[] args) {
+//	        InvitarMiembro frame = new InvitarMiembro();
+//	        frame.setVisible(true);
+//	    }
 }

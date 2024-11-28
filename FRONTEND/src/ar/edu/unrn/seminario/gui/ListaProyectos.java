@@ -106,10 +106,6 @@ public class ListaProyectos extends JFrame {
         tabla.getTableHeader().setForeground(Color.WHITE);
         tabla.setBackground(fondoColor);
         tabla.setRowHeight(30);
-
-
-        // Hacer que la columna de descripción permita texto multilínea
-        tabla.getColumnModel().getColumn(2).setCellRenderer(new JTextAreaRenderer());
         
         tabla.addMouseListener(new MouseAdapter() {
 			@Override
@@ -175,30 +171,7 @@ public class ListaProyectos extends JFrame {
 		});
     }
 
-    // Renderer personalizado para celdas con JTextArea (que permita texto multilínea)
-    class JTextAreaRenderer extends JTextArea implements TableCellRenderer {
-        public JTextAreaRenderer() {
-            setLineWrap(true); // Permite que el texto salte a la siguiente línea
-            setWrapStyleWord(true); // Ajusta a palabras completas
-        }
-
-        @Override
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            setText(value != null ? value.toString() : "");
-            setSize(table.getColumnModel().getColumn(column).getWidth(), getPreferredSize().height);
-
-            if (isSelected) {
-                setBackground(table.getSelectionBackground());
-                setForeground(table.getSelectionForeground());
-            } else {
-                setBackground(table.getBackground());
-                setForeground(table.getForeground());
-                setForeground(Color.WHITE); // Texto en blanco
-                setBackground(new Color(48, 48, 48));
-            }
-            return this;
-        }
-    }
+    
     public void actualizarTabla() throws NotNullException, DataEmptyException{
     	// Obtiene el model del table
     			DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
