@@ -63,16 +63,14 @@ public class InvitarMiembro extends JFrame {
 
 
 		JButton aceptarButton = new JButton("Agregar");
-		aceptarButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		aceptarButton.addActionListener(e -> {
 			}
-		});
+		);
 		aceptarButton.setForeground(new Color(229, 212, 237));
 		aceptarButton.setBackground(new Color(89, 65, 169));
 		aceptarButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
 	
-		aceptarButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		aceptarButton.addActionListener(e -> {
 			/*
 				 Agregar un miembro 
 				RolDTO rol = roles.get(rolComboBox.getSelectedIndex()); 
@@ -85,7 +83,7 @@ public class InvitarMiembro extends JFrame {
 					dispose();
 				
 			}
-		}); 
+		); 
 
 		aceptarButton.setBounds(514, 279, 147, 27);
 		contentPane.add(aceptarButton);

@@ -2,8 +2,6 @@ package ar.edu.unrn.seminario.gui;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Arrays;
@@ -95,10 +93,7 @@ public class VentanaConfigurarProyecto extends JFrame {
 		aceptar.setForeground(new Color(255, 255, 255));
 		aceptar.setBackground(new Color(89, 65, 169));
 		aceptar.setBounds(452, 573, 147, 27);
-		aceptar.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
+		aceptar.addActionListener(e -> {
 				String prioridadSeleccionada = (String) prioridadComboBox.getSelectedItem();
 				try {
 					
@@ -114,7 +109,7 @@ public class VentanaConfigurarProyecto extends JFrame {
 					if (opcionSeleccionada == JOptionPane.YES_OPTION) {
 						api.modificarProyecto(api.getProyectoActual().getId(), textField_Nombre.getText(), prioridadSeleccionada, textField_Descripcion.getText());
 						JOptionPane.showMessageDialog(null, "Modificacion realizada con exito!", "Info", JOptionPane.INFORMATION_MESSAGE);
-						api.setProyectoActual(api.getProyectoActual().getId()); //Para ver cambios en frame Resumen
+						api.setProyectoActual(api.getProyectoActual().getId()); 
 						new VentanaResumen(api).setVisible(true);
 						dispose();
 					}
@@ -126,7 +121,7 @@ public class VentanaConfigurarProyecto extends JFrame {
 		            JOptionPane.showMessageDialog(null, "El campo " + e2.getMessage() + " esta vacío.", "Error", JOptionPane.ERROR_MESSAGE);
 				}
 			}
-		});
+		);
 		contentPane.add(aceptar);
 		
 		cancelar = new JButton("Cancelar");
@@ -134,10 +129,7 @@ public class VentanaConfigurarProyecto extends JFrame {
 		cancelar.setForeground(new Color(29, 17, 40));
 		cancelar.setBackground(new Color(229, 212, 237));
 		cancelar.setBounds(627, 573, 147, 27);
-		cancelar.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
+		cancelar.addActionListener(e -> {
 				try {
 					new VentanaResumen(api).setVisible(true);
 				} catch (NotNullException e1) {
@@ -149,7 +141,7 @@ public class VentanaConfigurarProyecto extends JFrame {
 				} 
 				dispose();
 			}
-		});
+		);
 		contentPane.add(cancelar);
 		
 		setLocationRelativeTo(null);
@@ -169,10 +161,6 @@ public class VentanaConfigurarProyecto extends JFrame {
 		});
 	}
 	
-	private boolean esDatoVacio(String dato) {
-		return dato.equals("");
-	}
-	
 	private void mostararDatosActuales(IApi api) {
         try {
             String nombreProyecto = api.getProyectoActual().getNombre();
@@ -185,13 +173,4 @@ public class VentanaConfigurarProyecto extends JFrame {
             JOptionPane.showMessageDialog(null, "Error al cargar los datos del proyecto.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-	/*public static void main(String[] args) throws NotNullException, DataEmptyException, InvalidDateException{
-	
-	IApi api = new PersistenceApi();
-	//UsuarioDTO usuario = api.obtenerUsuario("Gabriel");
-	api.setUsuarioActual("Gabriel");
-	api.setProyectoActual("proyecto fenix");
-	VentanaConfigurarProyecto crearProyectoFrame = new VentanaConfigurarProyecto(api);
-	crearProyectoFrame.setVisible(true);
-}*/
 }

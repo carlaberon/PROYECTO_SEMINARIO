@@ -98,9 +98,7 @@ public class CrearTarea extends JFrame {
 		prioridadComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 10));
 		prioridadComboBox.setBounds(190, 133, 160, 25);
 		contentPane.add(prioridadComboBox);
-		
 
-		// Llenar el JComboBox con las claves del mapa de prioridad
         for (String prioridad : prioridades) {
             prioridadComboBox.addItem(prioridad);
         }
@@ -143,9 +141,7 @@ public class CrearTarea extends JFrame {
         contentPane.repaint();
 
         
-        aceptarButton.addActionListener(new ActionListener() { 
-            public void actionPerformed(ActionEvent arg0) {
-             
+        aceptarButton.addActionListener(ev -> {
             	try {
                     int selectedUserIndex = asignarUsuarioComboBox.getSelectedIndex();
                     String nombreTarea = nombreTareaTextField.getText();
@@ -194,15 +190,11 @@ public class CrearTarea extends JFrame {
 						JOptionPane.showMessageDialog(null, "No se pudo crear la tarea. Por favor, revise los datos ingresados y vuelva a intentarlo.", "Error al crear tarea", JOptionPane.ERROR_MESSAGE);
 
 					}
-                	
-     
 
-        
             }
-        });
+        );
 
-        cancelarButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+        cancelarButton.addActionListener(e -> {
             	try {
 					new VentanaTareas(api).setVisible(true);
 				} catch (RuntimeException e1) {
@@ -223,7 +215,7 @@ public class CrearTarea extends JFrame {
 				}
                 dispose();
             }
-        });
+        );
         
         setLocationRelativeTo(null);
         addWindowListener(new WindowAdapter() { 
@@ -249,14 +241,5 @@ public class CrearTarea extends JFrame {
           	}
     	});
     }
-   /*public static void main (String[] args) throws NotNullException, DataEmptyException {
-    	
-    	IApi api = new PersistenceApi();
-    	api.setUsuarioActual("ldifabio");
-    	api.setProyectoActual(1);
-
-    	CrearTarea ventana = new CrearTarea(api);
-    	ventana.setVisible(true);
-    }*/
 }
 

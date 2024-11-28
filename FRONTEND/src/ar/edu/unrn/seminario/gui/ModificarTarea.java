@@ -23,7 +23,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import ar.edu.unrn.seminario.api.IApi;
-import ar.edu.unrn.seminario.api.PersistenceApi;
 import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.TareaDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
@@ -34,8 +33,6 @@ import ar.edu.unrn.seminario.exception.TaskNotUpdatedException;
 import ar.edu.unrn.seminario.exception.TaskQueryException;
 
 import javax.swing.JTextArea;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerDateModel;
 import java.util.Date;
 import com.toedter.calendar.JDateChooser;
 
@@ -53,7 +50,6 @@ public class ModificarTarea extends JFrame {
 	    private List<UsuarioDTO> usuarios = new ArrayList<>();
 	    private ProyectoDTO unproyecto;
 	    private TareaDTO tarea;
-
 	    private IApi api;
 	    public ModificarTarea(IApi api) throws NotNullException, DataEmptyException, InvalidDateException {
 
@@ -128,7 +124,6 @@ public class ModificarTarea extends JFrame {
 			prioridadComboBox.setBounds(190, 133, 160, 25);
 			contentPane.add(prioridadComboBox);
 
-			// Llenar el JComboBox con las claves del mapa de prioridad
 	        for (String prioridad :Arrays.asList(labels.getString("prioridad.alta"), labels.getString("prioridad.media"), labels.getString("prioridad.baja"))) {
 	            prioridadComboBox.addItem(prioridad);
 	        }
@@ -171,9 +166,7 @@ public class ModificarTarea extends JFrame {
 
 	        cargarDatosTarea();
 	        
-	        aceptarButton.addActionListener(new ActionListener() { 
-	            public void actionPerformed(ActionEvent arg0) {
-	             
+	        aceptarButton.addActionListener(e -> {
 	            	try {
 	  
 	                    int selectedUserIndex = asignarUsuarioComboBox.getSelectedIndex();
@@ -199,26 +192,25 @@ public class ModificarTarea extends JFrame {
 	                	} catch (NullPointerException excepcion) {
 	                		
 	                		JOptionPane.showMessageDialog(null,"Completar los campos de fecha", "Error", JOptionPane.ERROR_MESSAGE);
-	                	} catch (DataEmptyException e) {
-	                		JOptionPane.showMessageDialog(null,"La tarea debe tener" +" " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+	                	} catch (DataEmptyException e1) {
+	                		JOptionPane.showMessageDialog(null,"La tarea debe tener" +" " + e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 	                		
-						} catch (NotNullException e) {
-							JOptionPane.showMessageDialog(null,"La tarea debe tener" +" " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+						} catch (NotNullException e1) {
+							JOptionPane.showMessageDialog(null,"La tarea debe tener" +" " + e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 							
-						} catch (InvalidDateException e) {
-							JOptionPane.showMessageDialog(null,"Ingrese fechas válidas: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+						} catch (InvalidDateException e1) {
+							JOptionPane.showMessageDialog(null,"Ingrese fechas válidas: " + e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 				        
-						} catch (TaskNotUpdatedException e) {
-						    JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+						} catch (TaskNotUpdatedException e1) {
+						    JOptionPane.showMessageDialog(null, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 						    
-						} catch (TaskQueryException e) {
+						} catch (TaskQueryException e1) {
 				            JOptionPane.showMessageDialog(null, "Error al consultar la tarea. Por favor, inténtelo de nuevo.", "Error de consulta", JOptionPane.ERROR_MESSAGE);
 						}	        
 	            }				
-	        });
+	        );
 
-	        cancelarButton.addActionListener(new ActionListener() {
-	            public void actionPerformed(ActionEvent e) {
+	        cancelarButton.addActionListener(e -> {
 	            	try {
 						new VentanaTareas(api).setVisible(true);
 					} catch (RuntimeException e1) {
@@ -239,7 +231,7 @@ public class ModificarTarea extends JFrame {
 					}
 	                dispose();
 	            }
-	        });
+	        );
 	        
 	        setLocationRelativeTo(null);
 	        addWindowListener(new WindowAdapter() { 
@@ -265,14 +257,6 @@ public class ModificarTarea extends JFrame {
 	          	}
 	    	});
 	    }
-	  /*  public static void main(String[] args) throws NotNullException, DataEmptyException, InvalidDateException{
-			
-			IApi api = new PersistenceApi();
-			UsuarioDTO usuario = api.obtenerUsuario("ldifabio");
-			api.setUsuarioActual(usuario.getUsername());
-			ModificarTarea modificarTareaFrame = new ModificarTarea(api, "Contar votos");
-			modificarTareaFrame.setVisible(true);
-		}*/
 
 	    private void cargarDatosTarea() {
             nombreTareaTextField.setText(tarea.getName());
