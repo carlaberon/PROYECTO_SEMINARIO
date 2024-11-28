@@ -31,8 +31,6 @@ public class ListaProyectos extends JFrame {
 	private JTable tabla;
 	private JButton eliminarProyecto;
 	private JButton volver;
-	private UsuarioDTO usuarioActual; //obtener usuario actual por medio de la api
-    private ProyectoDTO unproyecto; //obtener proyecto por medio de la api
 	
     public ListaProyectos(IApi api) throws NotNullException, DataEmptyException {
     	
@@ -41,8 +39,6 @@ public class ListaProyectos extends JFrame {
 
    	//ResourceBundle labels = ResourceBundle.getBundle("labels");
     	this.api = api;
-    	this.usuarioActual = api.getUsuarioActual();
-    	this.unproyecto = api.getProyectoActual();
 
         // Configuración básica de la ventana
         setTitle(labels.getString("menu.proyectos"));
@@ -113,6 +109,7 @@ public class ListaProyectos extends JFrame {
         tabla.setRowHeight(30);
         
         tabla.addMouseListener(new MouseAdapter() {
+        	
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 
@@ -138,25 +135,20 @@ public class ListaProyectos extends JFrame {
         habilitarBotones(false);
         
         eliminarProyecto.addActionListener(e -> {
-        		if (api.getRol(usuarioActual.getUsername(), unproyecto.getId()).getNombre().equals("Admin")) {
-					int opcionSeleccionada = JOptionPane.showConfirmDialog(null,
-				            labels.getString("mensaje.confirmarEliminacion"), labels.getString("mensaje.eliminarProyecto"),
-				            JOptionPane.YES_NO_OPTION);
-				    if (opcionSeleccionada == JOptionPane.YES_OPTION) {
-				        int projecId = (int) tabla.getModel().getValueAt(tabla.getSelectedRow(), 0);
-				        try {
-				            api.eliminarProyecto(projecId);
-				            actualizarTabla();
-				        } catch (TaskNotFoundException | DataEmptyException | NotNullException | InvalidDateException
-				                 | TaskQueryException e1) {
-				            e1.printStackTrace();
-				        }
-				        habilitarBotones(false);
-				    }
-				}else {
-    	            JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.error"), JOptionPane.ERROR_MESSAGE);
-				}
-            
+            int opcionSeleccionada = JOptionPane.showConfirmDialog(null,
+                    labels.getString("mensaje.confirmarEliminacion"), labels.getString("mensaje.eliminarProyecto"),
+                    JOptionPane.YES_NO_OPTION);
+            if (opcionSeleccionada == JOptionPane.YES_OPTION) {
+                int projecId = (int) tabla.getModel().getValueAt(tabla.getSelectedRow(), 0);
+                try {
+                    api.eliminarProyecto(projecId);
+                    actualizarTabla();
+                } catch (TaskNotFoundException | DataEmptyException | NotNullException | InvalidDateException
+                         | TaskQueryException e1) {
+                    e1.printStackTrace();
+                }
+                habilitarBotones(false);
+            }
         });
         panelEliminar.add(eliminarProyecto);
         JScrollPane scrollPane = new JScrollPane(tabla);
