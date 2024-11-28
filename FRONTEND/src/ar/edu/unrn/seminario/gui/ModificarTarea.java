@@ -81,17 +81,13 @@ public class ModificarTarea extends JFrame {
 	        setContentPane(contentPane);
 	        
 	        JLabel nombreTareaLabel = new JLabel(labels.getString("campo.nombreTarea"));
-	        nombreTareaLabel.setBounds(43, 20, 150, 16);
+	        nombreTareaLabel.setBounds(43, 67, 150, 16);
 	        contentPane.add(nombreTareaLabel);
 
 	        nombreTareaTextField = new JTextField();
-	        nombreTareaTextField.setBounds(190, 20, 160, 22);
+	        nombreTareaTextField.setBounds(190, 64, 160, 22);
 	        contentPane.add(nombreTareaTextField);
 	        nombreTareaTextField.setColumns(10);
-
-	        JLabel proyectoTareaLabel = new JLabel(labels.getString("menu.nombreProyecto"));
-	        proyectoTareaLabel.setBounds(43, 60, 150, 16);
-	        contentPane.add(proyectoTareaLabel);
 
 //	        proyectoTareaComboBox = new JComboBox<>();
 //	        proyectoTareaComboBox.setBounds(190, 60, 160, 22);
