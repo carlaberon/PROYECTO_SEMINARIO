@@ -3,7 +3,6 @@ package ar.edu.unrn.seminario.modelo;
 public class Rol {
 	private Integer codigo;
 	private String nombre;
-	private String descripcion;
 	private boolean activo;
 	
 	public Rol() {
@@ -70,13 +69,6 @@ public class Rol {
 		return "Rol [codigo=" + codigo + ", nombre=" + nombre + ", activo=" + "]";
 	}
 
-	public String getDescripcion() {
-		return descripcion;
-	}
-
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
-	}
 
 	public boolean isActivo() {
 		return activo;

@@ -245,50 +245,8 @@ public class PersistenceApi implements IApi {
 		tareaDao.update(tarea);
 		
 		
-//		if (tareaExistente != null) {
-//			if (nuevoNombre != null && !nuevoNombre.isEmpty()) {
-//				tareaExistente.setNombre(nuevoNombre);
-//			}
-//			
-//		    // Validar y actualizar la prioridad
-//		    if (nuevaPrioridad != null && !nuevaPrioridad.isEmpty()) {
-//		        tareaExistente.setPrioridad(nuevaPrioridad);
-//		    }
-//		    
-//		    // Validar y actualizar el usuario
-//	        if (nombreUsuario != null && !nombreUsuario.isEmpty()) {
-//	            tareaExistente.setUsuario(nombreUsuario);
-//	        }
-//	        
-//	        // Validar y actualizar la descripción
-//	        if (nuevaDescripcion != null && !nuevaDescripcion.isEmpty()) {
-//	            tareaExistente.setDescripcion(nuevaDescripcion);
-//	        }
-//
-//	        // Validar y actualizar la fecha de inicio
-//	        if (inicio != null) {
-//	            tareaExistente.setInicio(inicio);
-//	        }
-//
-//	        // Validar y actualizar la fecha de fin
-//	        if (fin != null) {
-//	            tareaExistente.setFin(fin);
-//	        }
-	        
-//	        if (estado != null) {
-//	        	tareaExistente.setEstado(estado);
-//	        }
-	        
-//	        tareaDao.update(tareaExistente, id);
-//	        System.out.println("Tarea modificada exitosamente.");
-//	    } else {
-//	        System.out.println("No se encontró la tarea para modificar.");
+
 	    }
-
-	    /*
-	    }*/
-		
-
 	
 	@Override
 	public int obtenerPrioridad(String prioridad) {
@@ -303,16 +261,6 @@ public class PersistenceApi implements IApi {
 	            return 0; // En caso de prioridad desconocida
 	    }
 	}
-	/*@Override
-	public LocalDate convertirDate(Date inicio) {
-			LocalDate fechaInicioLocalDate = inicio.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-			return fechaInicioLocalDate;	
-		}
-		
-		
-	}*/
-	//ACA PONDRE LOS MODULOS QUE CONSIDERO QUE NO SON NECESARIOS:
-	
 
 	@Override
 	public UsuarioDTO obtenerUsuario(String username) throws NotNullException, DataEmptyException {
@@ -393,14 +341,7 @@ public class PersistenceApi implements IApi {
 		}
 		return null;
 	}
-   /*
-	@Override
-	public LocalDate convertirDate(java.util.Date inicio) {
-
-			LocalDate fechaInicioLocalDate = inicio.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-			return fechaInicioLocalDate;	
-		}
-	}*/
+   
 	
 	public void invitarMiembro(String username, int idProyecto, int codigoRol) {
 		proyectoDao.update(username, idProyecto, codigoRol);

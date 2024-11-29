@@ -40,16 +40,6 @@ public class InvitarMiembro extends JFrame {
 	private List<RolDTO> roles = new ArrayList<>(); 
 	private IApi api;
 
-	/*
-	private List<RolDTO> roles = new ArrayList<>(); //crear el RolDTO, crear clase Rol
-
-	private List<UsuarioDTO> usuarios = new ArrayList<>(); //crear el UsuarioDTO, crear clase usuario
-	*/
-	/**
-	 * Create the frame.
-	 * @throws DataEmptyException 
-	 * @throws NotNullException 
-	 */
 	public InvitarMiembro(IApi api) throws NotNullException, DataEmptyException {
 		
 		this.roles = api.obtenerRoles();
@@ -84,16 +74,6 @@ public class InvitarMiembro extends JFrame {
 	
 		invitarButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-			/*
-				 Agregar un miembro 
-				RolDTO rol = roles.get(rolComboBox.getSelectedIndex()); 
-				UsuarioDTO usuario = usuarios.get(usuarioComboBox.getSelectedIndex());
-			
-					api.invitarMiembro(String username, int idProyecto, int codigoRol)
-					api.agregarMiembroProyecto(nombreProyectoTextField .getText(), proyecto.getCodigo(), usuario, rol);
-			*/
-					
-					
 					try {
 						String nombreUsuario = (String)asignarUsuarioComboBox.getSelectedItem();
 						int id_proyecto;
@@ -162,12 +142,6 @@ public class InvitarMiembro extends JFrame {
         }
        
         contentPane.add(asignarUsuarioComboBox);
-
-		/*
-		for (UsuarioDTO usuario : this.usuarios) {
-			proyectoComboBox.addItem(usuario.getNombre());
-		} */
-
 		setLocationRelativeTo(null);
 	}
 	public int obtenerCodigoRol(String nombreRol) {
