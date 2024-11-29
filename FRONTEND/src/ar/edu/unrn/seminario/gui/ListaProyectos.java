@@ -7,6 +7,7 @@ import javax.swing.table.TableCellRenderer;
 
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.ProyectoDTO;
+import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
@@ -30,6 +31,7 @@ public class ListaProyectos extends JFrame {
 	private JTable tabla;
 	private JButton eliminarProyecto;
 	private JButton volver;
+	private UsuarioDTO usuarioActual; //obtener usuario actual por medio de la api
 	
     public ListaProyectos(IApi api) throws NotNullException, DataEmptyException {
     	
@@ -38,6 +40,7 @@ public class ListaProyectos extends JFrame {
 
    	//ResourceBundle labels = ResourceBundle.getBundle("labels");
     	this.api = api;
+    	this.usuarioActual = api.getUsuarioActual();
 
         // Configuración básica de la ventana
         setTitle(labels.getString("menu.proyectos"));
@@ -106,16 +109,13 @@ public class ListaProyectos extends JFrame {
         tabla.getTableHeader().setForeground(Color.WHITE);
         tabla.setBackground(fondoColor);
         tabla.setRowHeight(30);
-
-
-        // Hacer que la columna de descripción permita texto multilínea
-        tabla.getColumnModel().getColumn(2).setCellRenderer(new JTextAreaRenderer());
         
         tabla.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				// Habilitar botones
-				habilitarBotones(true);
+
+					// Habilitar botones
+					habilitarBotones(true);
 
 			}
 		});
@@ -132,22 +132,28 @@ public class ListaProyectos extends JFrame {
         panelEliminar.setLayout(new FlowLayout(FlowLayout.CENTER));
         
         eliminarProyecto = createButton(labels.getString("boton.eliminar"), new Color(138, 102, 204));
-        habilitarBotones(false);
+        
+        
         eliminarProyecto.addActionListener(e -> {
-            int opcionSeleccionada = JOptionPane.showConfirmDialog(null,
-                    labels.getString("mensaje.confirmarEliminacion"), labels.getString("mensaje.eliminarProyecto"),
-                    JOptionPane.YES_NO_OPTION);
-            if (opcionSeleccionada == JOptionPane.YES_OPTION) {
-                int projecId = (int) tabla.getModel().getValueAt(tabla.getSelectedRow(), 0);
-                try {
-                    api.eliminarProyecto(projecId);
-                    actualizarTabla();
-                } catch (TaskNotFoundException | DataEmptyException | NotNullException | InvalidDateException
-                         | TaskQueryException e1) {
-                    e1.printStackTrace();
-                }
-                habilitarBotones(false);
-            }
+	        	habilitarBotones(false);
+				int opcionSeleccionada = JOptionPane.showConfirmDialog(null,
+				           labels.getString("mensaje.confirmarEliminacion"), labels.getString("mensaje.eliminarProyecto"),
+				           JOptionPane.YES_NO_OPTION);
+				if (opcionSeleccionada == JOptionPane.YES_OPTION) {
+				        int projecId = (int) tabla.getModel().getValueAt(tabla.getSelectedRow(), 0);
+				        if (api.getRol(usuarioActual.getUsername(), projecId).getNombre().equals("Admin")) {
+				        try {
+				            api.eliminarProyecto(projecId);
+				            actualizarTabla();
+				        } catch (TaskNotFoundException | DataEmptyException | NotNullException | InvalidDateException
+				                 | TaskQueryException e1) {
+				            e1.printStackTrace();
+				        }
+				        habilitarBotones(false);
+				}else {
+					JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.error"), JOptionPane.ERROR_MESSAGE);	
+				}
+				}
         });
         panelEliminar.add(eliminarProyecto);
         JScrollPane scrollPane = new JScrollPane(tabla);
@@ -175,30 +181,7 @@ public class ListaProyectos extends JFrame {
 		});
     }
 
-    // Renderer personalizado para celdas con JTextArea (que permita texto multilínea)
-    class JTextAreaRenderer extends JTextArea implements TableCellRenderer {
-        public JTextAreaRenderer() {
-            setLineWrap(true); // Permite que el texto salte a la siguiente línea
-            setWrapStyleWord(true); // Ajusta a palabras completas
-        }
-
-        @Override
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            setText(value != null ? value.toString() : "");
-            setSize(table.getColumnModel().getColumn(column).getWidth(), getPreferredSize().height);
-
-            if (isSelected) {
-                setBackground(table.getSelectionBackground());
-                setForeground(table.getSelectionForeground());
-            } else {
-                setBackground(table.getBackground());
-                setForeground(table.getForeground());
-                setForeground(Color.WHITE); // Texto en blanco
-                setBackground(new Color(48, 48, 48));
-            }
-            return this;
-        }
-    }
+    
     public void actualizarTabla() throws NotNullException, DataEmptyException{
     	// Obtiene el model del table
     			DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();

@@ -1,8 +1,7 @@
 package ar.edu.unrn.seminario.dto;
 
 
-import ar.edu.unrn.seminario.exception.DataEmptyException;
-import ar.edu.unrn.seminario.exception.NotNullException;
+
 
 
 public class ProyectoDTO {

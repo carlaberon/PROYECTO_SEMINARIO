@@ -56,23 +56,23 @@ public class CrearProyecto extends JFrame {
 		JLabel nombreProyecto = new JLabel(labels.getString("menu.nombreProyecto"));
 		nombreProyecto.setForeground(new Color(255, 255, 255));
 		nombreProyecto.setFont(new Font("Segoe UI", Font.BOLD, 17));
-		nombreProyecto.setBounds(88, 93, 227, 39);
+		nombreProyecto.setBounds(88, 165, 227, 39);
 		contentPane.add(nombreProyecto);
 
 		nombreProyectoTextField = new JTextField();
-		nombreProyectoTextField.setBounds(325, 105, 390, 25);
+		nombreProyectoTextField.setBounds(325, 175, 390, 25);
 		contentPane.add(nombreProyectoTextField);
 		nombreProyectoTextField.setColumns(10);
 		
 		descripcionTextField = new JTextField();
 		descripcionTextField.setColumns(10);
-		descripcionTextField.setBounds(325, 157, 390, 25);
+		descripcionTextField.setBounds(325, 225, 390, 25);
 		contentPane.add(descripcionTextField);
 		
 		JComboBox<String> prioridadComboBox = new JComboBox<>();
 		prioridadComboBox.setForeground(new Color(29, 17, 40));
 		prioridadComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 10));
-		prioridadComboBox.setBounds(325, 205, 390, 25);
+		prioridadComboBox.setBounds(325, 274, 390, 25);
 		contentPane.add(prioridadComboBox);
 		
         for (String prioridad : prioridades) {
@@ -130,41 +130,23 @@ public class CrearProyecto extends JFrame {
 		cancelarButton.setBounds(568, 398, 147, 27);
 		contentPane.add(cancelarButton);
 
-
-
-		JLabel subproyectoLabel = new JLabel(labels.getString("campo.subproyecto"));
-		subproyectoLabel.setForeground(new Color(255, 255, 255));
-		subproyectoLabel.setFont(new Font("Segoe UI", Font.BOLD, 17));
-        subproyectoLabel.setBounds(88, 233, 167, 39);
-        contentPane.add(subproyectoLabel);
-
-
-
-        proyectoComboBox = new JComboBox<>();
-        proyectoComboBox.setForeground(new Color(29, 17, 40));
-        proyectoComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 10));
-        proyectoComboBox.setBounds(325, 245, 390, 25);
-        contentPane.add(proyectoComboBox);
-        
-		proyectoComboBox.addItem("");
-	
 		JLabel lblNewLabel = new JLabel(labels.getString("campo.nuevoProyecto"));
 		lblNewLabel.setBackground(new Color(240, 240, 240));
 		lblNewLabel.setForeground(new Color(29, 17, 40));
 		lblNewLabel.setFont(new Font("Segoe UI Black", Font.BOLD, 35));
-		lblNewLabel.setBounds(41, 10, 291, 73);
+		lblNewLabel.setBounds(39, 36, 291, 73);
 		contentPane.add(lblNewLabel);
 		
 		JLabel lblDescripcion = new JLabel(labels.getString("campo.descripcion"));
 		lblDescripcion.setForeground(new Color(255, 255, 255));
 		lblDescripcion.setFont(new Font("Segoe UI", Font.BOLD, 17));
-		lblDescripcion.setBounds(88, 142, 227, 39);
+		lblDescripcion.setBounds(88, 215, 227, 39);
 		contentPane.add(lblDescripcion);
 		
 		JLabel lblPrioridad = new JLabel(labels.getString("campo.prioridad"));
 		lblPrioridad.setForeground(new Color(255, 255, 255));
 		lblPrioridad.setFont(new Font("Segoe UI", Font.BOLD, 17));
-		lblPrioridad.setBounds(88, 191, 227, 39);
+		lblPrioridad.setBounds(88, 264, 227, 39);
 		contentPane.add(lblPrioridad);		
 		setLocationRelativeTo(null); //Centrar frame en la pantalla
 		addWindowListener(new WindowAdapter() { //Cuando el usuario cierra el frame abre devuelta Inicio

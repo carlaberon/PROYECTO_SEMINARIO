@@ -135,12 +135,10 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 		Proyecto encontrarProyecto = null;
 		try {
 			Connection conn = ConnectionManager.getConnection();
-			PreparedStatement statement = conn.prepareStatement("SELECT p.id, p.nombre, p.usuario_propietario, p.estado, p.descripcion, p.prioridad, u.usuario, u.contrasena, u.nombre, u.email, u.activo, u.rol, r.codigo, r.nombre, r.activo\r\n" 
+			PreparedStatement statement = conn.prepareStatement("SELECT p.id, p.nombre, p.usuario_propietario, p.estado, p.descripcion, p.prioridad, u.usuario, u.contrasena, u.nombre, u.email, u.activo\r\n" 
 					+ "FROM proyectos p\r\n"
-					+ "JOIN proyectos_miembros pm ON p.id = pm.id_proyecto\r\n"
-					+ "JOIN usuarios u ON pm.usuario_miembro = u.usuario\r\n"
-					+ "JOIN usuario_rol ur ON u.rol = ur.codigo_rol\r\n"
-					+ "JOIN roles r ON ur.codigo_rol = r.codigo\r\n"
+					+ "JOIN proyectos_usuarios_roles pur ON p.id = pur.id_proyecto\r\n"
+					+ "JOIN usuarios u ON pur.nombre_usuario = u.usuario\r\n"
 					+ "WHERE p.id = ? and p.estado NOT LIKE '#%' AND p.usuario_propietario = u.usuario\r\n");
 			statement.setInt(1, id);
 			
@@ -152,8 +150,7 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 	        }
 	        
 	        // Si se encuentra una fila se crea el objeto Proyecto por completo
-			Rol unRol = new Rol(rs.getInt("r.codigo"), rs.getString("r.nombre"), rs.getBoolean("r.activo"));
-			Usuario usuarioPropietario = new Usuario(rs.getString("u.usuario"), rs.getString("u.contrasena"), rs.getString("u.nombre"), rs.getString("u.email"), unRol, rs.getBoolean("u.activo"));
+			Usuario usuarioPropietario = new Usuario(rs.getString("u.usuario"), rs.getString("u.contrasena"), rs.getString("u.nombre"), rs.getString("u.email"), rs.getBoolean("u.activo"));
 			encontrarProyecto = new Proyecto(rs.getInt("p.id"),rs.getString("p.nombre"), usuarioPropietario, rs.getString("estado"), rs.getString("p.descripcion"), rs.getString("p.prioridad"));
 				
 		} catch(NotFoundException e1) {
@@ -173,20 +170,17 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 			
 			try {
 				Connection conn = ConnectionManager.getConnection();
-				PreparedStatement statement = conn.prepareStatement("SELECT p.id, p.nombre, p.usuario_propietario, p.estado, p.descripcion, p.prioridad, u.usuario, u.contrasena, u.nombre, u.email, u.activo, u.rol, r.codigo, r.nombre, r.activo\r\n" 
+				PreparedStatement statement = conn.prepareStatement("SELECT p.id, p.nombre, p.usuario_propietario, p.estado, p.descripcion, p.prioridad, u.usuario, u.contrasena, u.nombre, u.email, u.activo\r\n" 
 						+ "FROM proyectos p\r\n"
-						+ "JOIN proyectos_miembros pm ON p.id = pm.id_proyecto\r\n"
-						+ "JOIN usuarios u ON pm.usuario_miembro = u.usuario\r\n"
-						+ "JOIN usuario_rol ur ON u.rol = ur.codigo_rol\r\n"
-						+ "JOIN roles r ON ur.codigo_rol = r.codigo\r\n"
-						+ "WHERE p.estado NOT LIKE '#%' AND p.usuario_propietario = ? and u.usuario = ? \r\n");
+						+ "JOIN proyectos_usuarios_roles pur ON p.id = pur.id_proyecto\r\n"
+						+ "JOIN usuarios u ON pur.nombre_usuario = u.usuario\r\n"
+						+ "WHERE p.estado NOT LIKE '#%' AND pur.nombre_usuario = ?\r\n");
 				
 				statement.setString(1, usuario);
-				statement.setString(2, usuario);
+				//statement.setString(2, usuario);
 				ResultSet rs = statement.executeQuery();
 				while(rs.next()) {
-					Rol unRol = new Rol(rs.getInt("r.codigo"), rs.getString("r.nombre"), rs.getBoolean("r.activo"));
-					Usuario usuarioPropietario = new Usuario(rs.getString("u.usuario"), rs.getString("u.contrasena"), rs.getString("u.nombre"), rs.getString("u.email"), unRol, rs.getBoolean("u.activo"));
+					Usuario usuarioPropietario = new Usuario(rs.getString("u.usuario"), rs.getString("u.contrasena"), rs.getString("u.nombre"), rs.getString("u.email"));
 					unProyecto = new Proyecto(rs.getInt("p.id"), rs.getString("p.nombre"), usuarioPropietario, rs.getString("estado"), rs.getString("p.descripcion"), rs.getString("p.prioridad"));
 					
 					proyectos.add(unProyecto);

@@ -12,11 +12,10 @@ public class Usuario{
 	private String contrasena;
 	private String nombre;
 	private String email;
-	private Rol rol;
 	private Boolean activo;
 
 	
-	public Usuario(String usuario, String contrasena, String nombre, String email, Rol rol, Boolean activo) throws NotNullException, DataEmptyException {
+	public Usuario(String usuario, String contrasena, String nombre, String email, Boolean activo) throws NotNullException, DataEmptyException {
 
     	if (esDatoNulo(usuario))
 			throw new NotNullException("usuario");
@@ -40,16 +39,14 @@ public class Usuario{
 		this.contrasena = contrasena;
 		this.nombre = nombre;
 		this.email = email;
-		this.rol = rol;
 		this.activo = activo;
 	}
 	
-	public Usuario(String username, String password, String nombre, String email, Rol rol) {
+	public Usuario(String username, String password, String nombre, String email) {
         this.username = username;
         this.contrasena = password;
         this.nombre = nombre;
         this.email = email;
-        this.rol = rol;
         this.activo = true;  // Puedes ajustar este valor según sea necesario
     }
 
@@ -104,14 +101,6 @@ public class Usuario{
 		if (esDatoVacio(email))
 			throw new DataEmptyException("email");
 		this.email = email;
-	}
-
-	public Rol getRol() {
-		return rol;
-	}
-
-	public void setRol(Rol rol) {
-		this.rol = rol;
 	}
 
 	public boolean isActivo() {
@@ -174,7 +163,6 @@ public class Usuario{
                ", contrasena='" + contrasena + '\'' +
                ", nombre='" + nombre + '\'' +
                ", email='" + email + '\'' +
-               ", rol=" + rol +
                ", activo=" + activo +
                '}';
     }
