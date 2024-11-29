@@ -44,19 +44,16 @@ public class CrearTarea extends JFrame {
     private JTextField nombreTareaTextField;
     private JComboBox<String> asignarUsuarioComboBox; // ComboBox para seleccionar usuario
     List<String> prioridades = Arrays.asList("Alta", "Media", "Baja");
-    private List<ProyectoDTO> proyectos = new ArrayList<>();
     private List<UsuarioDTO> usuarios = new ArrayList<>();
-    private String usuarioPropietario;
+
     
     private IApi api;
     
     public CrearTarea(IApi api) throws NotNullException, DataEmptyException {
  
         this.api = api; 
-        this.usuarioPropietario = api.getUsuarioActual().getUsername();
-        this.usuarios = api.obtenerUsuarios(); 
-        //OBTENER NOMBRE DEL USUARIO ACTUAL
-        this.proyectos = api.obtenerProyectos(api.getUsuarioActual().getUsername());
+        this.usuarios = api.obtenerUsuarios();
+        
 
         setTitle("Crear Tarea");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

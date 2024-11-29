@@ -107,8 +107,8 @@ public class TareaDAOJDBC implements TareaDao{
 				Connection conn = ConnectionManager.getConnection();
 				PreparedStatement statement = conn.prepareStatement("SELECT t.id, t.nombre, t.prioridad, t.usuario, t.estado, t.descripcion, t.fecha_inicio, t.fecha_fin, p.id, p.nombre, p.usuario_propietario, p.estado, p.descripcion, p.prioridad, u.usuario, u.contrasena, u.nombre, u.email, u.activo\r\n"
 						+ "FROM tareas t join proyectos p on t.id_proyecto = p.id\r\n"
-						+ "join proyectos_miembros pm on pm.id_proyecto = p.id\r\n"
-						+ "join usuarios u on pm.usuario_miembro = u.usuario\r\n"
+						+ "JOIN proyectos_usuarios_roles pur on pur.id_proyecto = p.id\r\n"
+						+ "join usuarios u on pur.nombre_usuario = u.usuario\r\n"
 						+ "WHERE t.id_proyecto = ? AND t.estado NOT LIKE '#%' AND u.usuario = p.usuario_propietario");
 				statement.setInt(1, id_project);
 				ResultSet rs = statement.executeQuery();
@@ -165,8 +165,8 @@ public class TareaDAOJDBC implements TareaDao{
 			Connection conn = ConnectionManager.getConnection();
 			PreparedStatement statement = conn.prepareStatement("SELECT t.id, t.nombre, t.prioridad, t.usuario, t.estado, t.descripcion, t.fecha_inicio, t.fecha_fin, p.id, p.nombre, p.usuario_propietario, p.estado, p.descripcion, p.prioridad, u.usuario, u.contrasena, u.nombre, u.email, u.activo\r\n"
 					+ "FROM tareas t join proyectos p on t.id_proyecto = p.id\r\n"
-					+ "join proyectos_miembros pm on pm.id_proyecto = p.id\r\n"
-					+ "join usuarios u on pm.usuario_miembro = u.usuario\r\n"
+					+ "JOIN proyectos_usuarios_roles pur on pur.id_proyecto = p.id\r\n"
+					+ "join usuarios u on pur.nombre_usuario = u.usuario\r\n"
 					+ "WHERE t.id = ? AND t.estado NOT LIKE '#%'");
 			statement.setInt(1, id);
 			
@@ -176,6 +176,7 @@ public class TareaDAOJDBC implements TareaDao{
 				unUsuario = new Usuario(rs.getString("u.usuario"), rs.getString("u.contrasena"), rs.getString("u.nombre"), rs.getString("u.email"), rs.getBoolean("u.activo"));
 				unProyecto = new Proyecto(rs.getInt("p.id"), rs.getString("p.nombre"), unUsuario, rs.getString("estado"), rs.getString("p.descripcion"), rs.getString("p.prioridad"));
 				unaTarea = new Tarea(rs.getInt("id"), rs.getString("nombre"), unProyecto, rs.getString("prioridad"), rs.getString("usuario"), rs.getString("estado"),rs.getString("descripcion"), rs.getDate("fecha_inicio").toLocalDate(), rs.getDate("fecha_fin").toLocalDate());
+				System.out.println(unaTarea);
 			}else {
 				 JOptionPane.showMessageDialog(null, "No se encontró la tarea con ID: " + id, "Error", JOptionPane.ERROR_MESSAGE);
 			}

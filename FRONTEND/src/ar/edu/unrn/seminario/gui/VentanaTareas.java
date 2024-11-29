@@ -38,6 +38,7 @@ import javax.swing.table.DefaultTableModel;
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.api.PersistenceApi;
 import ar.edu.unrn.seminario.dto.ProyectoDTO;
+import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.TareaDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
@@ -57,6 +58,7 @@ public class VentanaTareas extends JFrame {
 	JButton botonEliminar;
 	private UsuarioDTO usuarioActual; //obtener usuario actual por medio de la api
     private ProyectoDTO unproyecto; //obtener proyecto por medio de la api
+    private RolDTO rolActual;
 	
 
     public VentanaTareas(IApi api) throws RuntimeException, NotNullException, DataEmptyException, InvalidDateException, TaskQueryException{
@@ -68,7 +70,8 @@ public class VentanaTareas extends JFrame {
     	
     	this.api = api; 
     	this.usuarioActual = api.getUsuarioActual();
-    	this.unproyecto = api.getProyectoActual(); 
+    	this.unproyecto = api.getProyectoActual();
+    	this.rolActual = api.getRol(usuarioActual.getUsername(), unproyecto.getId());
     	
     	setTitle(labels.getString("menu.tareas"));
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -262,6 +265,7 @@ public class VentanaTareas extends JFrame {
         JButton btnTarea = createButton(labels.getString("menu.agregarTarea"), new Color(138, 102, 204));
         btnTarea.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				if(!(rolActual.getNombre().equals("Observador"))) {
 				CrearTarea crearTarea;
 				try {
 					crearTarea = new CrearTarea(api);
@@ -275,7 +279,9 @@ public class VentanaTareas extends JFrame {
 					e.printStackTrace();
 				}
 				
-	
+				}else {
+					JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.error"), JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 
@@ -319,56 +325,36 @@ public class VentanaTareas extends JFrame {
       botonModificar.addActionListener(new ActionListener() {
     	    public void actionPerformed(ActionEvent e) {
     	        int filaSeleccionada = table.getSelectedRow();
-    	        if (filaSeleccionada != -1) {
 	    	        int idTarea = (int) table.getValueAt(filaSeleccionada, 0);
-	
-						
-
+	    	        if(!(rolActual.getNombre().equals("Observador"))) {
 								try {
 									api.setTareaActual(idTarea);
-								} catch (DataEmptyException e1) {
+									modificarTarea();
+								} catch (NotNullException e1) {
 									// TODO Auto-generated catch block
 									e1.printStackTrace();
-								} catch (NotNullException e1) {
+								} catch (DataEmptyException e1) {
 									// TODO Auto-generated catch block
 									e1.printStackTrace();
 								} catch (InvalidDateException e1) {
 									// TODO Auto-generated catch block
 									e1.printStackTrace();
 								}
-
-						
-							habilitarBotones(false);
-		    	        	table.clearSelection();
-							try {
-								modificarTarea();
-							} catch (NotNullException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							} catch (DataEmptyException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							} catch (InvalidDateException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							}
-							dispose();
-						
-    	        } else {
-    	            JOptionPane.showMessageDialog(botonModificar, "Por favor, seleccione una tarea para modificar.", "Selección de tarea", JOptionPane.WARNING_MESSAGE);
-    			}
-
+								dispose();
+    	    	}else {
+    	    		JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.error"), JOptionPane.ERROR_MESSAGE);
+    	    	}
+	    	    habilitarBotones(false);
+	    	    table.clearSelection();
     	    }
     	});
       
       botonEliminar.addActionListener(new ActionListener() {
       
 	  	public void actionPerformed(ActionEvent e) {
-	  		
+	  		if(!(rolActual.getNombre().equals("Observador"))) {
 	  		int filaSeleccionada = table.getSelectedRow(); 	        
-	  		if (filaSeleccionada != -1) {
 	  			int idTarea = (int) table.getValueAt(filaSeleccionada, 0);
-				
 				int confirmacion = JOptionPane.showConfirmDialog(botonEliminar, "¿Desea eliminar la tarea: " ,"Confirmar Eliminacion", JOptionPane.YES_NO_OPTION);				
 				if (confirmacion == JOptionPane.YES_OPTION) {															
 					try {
@@ -380,9 +366,11 @@ public class VentanaTareas extends JFrame {
 	                    JOptionPane.showMessageDialog(botonEliminar, "No se encontró la tarea a eliminar o no se pudo eliminar debido a un error de base de datos: " + e1.getMessage(), "Error al eliminar", JOptionPane.ERROR_MESSAGE);
 					}										
 				}
-			} else {
-	            JOptionPane.showMessageDialog(botonEliminar, "Por favor, seleccione una tarea para eliminar.", "Selección de tarea", JOptionPane.WARNING_MESSAGE);
-			}				
+	  		}else {
+	  			JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.error"), JOptionPane.ERROR_MESSAGE);
+	    	}
+    	    habilitarBotones(false);
+    	    table.clearSelection();
 		}  	  
      });
       

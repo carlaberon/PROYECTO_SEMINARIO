@@ -169,10 +169,6 @@ public class VentanaConfigurarProyecto extends JFrame {
 		});
 	}
 	
-	private boolean esDatoVacio(String dato) {
-		return dato.equals("");
-	}
-	
 	private void mostararDatosActuales(IApi api) {
         try {
             String nombreProyecto = api.getProyectoActual().getNombre();
