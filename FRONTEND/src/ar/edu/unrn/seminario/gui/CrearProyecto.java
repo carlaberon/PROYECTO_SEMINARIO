@@ -1,15 +1,9 @@
 package ar.edu.unrn.seminario.gui;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.ResourceBundle;
 
 import javax.swing.JButton;
@@ -22,20 +16,11 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import ar.edu.unrn.seminario.api.IApi;
-import ar.edu.unrn.seminario.api.PersistenceApi;
-import ar.edu.unrn.seminario.dto.ProyectoDTO;
-import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
-import ar.edu.unrn.seminario.exception.InvalidDateException;
 
-import javax.swing.JTextPane;
-import javax.swing.JTree;
 import java.awt.Font;
 import java.awt.Color;
-import javax.swing.UIManager;
-import javax.swing.JRadioButton;
-import javax.swing.JCheckBox;
 
 public class CrearProyecto extends JFrame {
 	
@@ -90,9 +75,6 @@ public class CrearProyecto extends JFrame {
 		prioridadComboBox.setBounds(325, 274, 390, 25);
 		contentPane.add(prioridadComboBox);
 		
-	
-
-		// Llenar el JComboBox con las claves del mapa de prioridad
         for (String prioridad : prioridades) {
             prioridadComboBox.addItem(prioridad);
         }
@@ -104,12 +86,9 @@ public class CrearProyecto extends JFrame {
 		aceptarButton.setBounds(395, 398, 147, 27);
 		contentPane.add(aceptarButton);
 		aceptarButton.addActionListener(e -> {
-			
 				String nombreNuevoProyecto = nombreProyectoTextField.getText();
 				String descripcionNueva = descripcionTextField.getText();
                 String prioridadSeleccionadaNueva = (String) prioridadComboBox.getSelectedItem();
-                
-                
 
 				try {
 					// Verificar si no se seleccionó una prioridad
@@ -184,13 +163,4 @@ public class CrearProyecto extends JFrame {
         	}
 		});
 	}
-	
-    /*public static void main(String[] args) throws NotNullException, DataEmptyException, InvalidDateException{
-		
-		IApi api = new PersistenceApi();
-		UsuarioDTO usuario = api.obtenerUsuario("ldifabio");
-		api.setUsuarioActual(usuario.getUsername());
-		CrearProyecto crearProyectoFrame = new CrearProyecto(api);
-		crearProyectoFrame.setVisible(true);
-	}*/
 }

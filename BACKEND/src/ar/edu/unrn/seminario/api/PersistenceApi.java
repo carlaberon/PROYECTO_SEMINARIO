@@ -205,7 +205,6 @@ public class PersistenceApi implements IApi {
 	public ProyectoDTO getProyectoActual() {
 		return convertirEnProyectoDTO(proyectoActual);
 	}
-
 	@Override
 	public void setProyectoActual(int id) throws NotNullException, DataEmptyException {
 			String usuarioActual = getUsuarioActual().getUsername();
