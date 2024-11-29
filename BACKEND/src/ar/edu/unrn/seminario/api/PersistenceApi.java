@@ -402,4 +402,10 @@ public class PersistenceApi implements IApi {
 		}
 	}*/
 	
+	public void invitarMiembro(String username, int idProyecto, int codigoRol) {
+		proyectoDao.update(username, idProyecto, codigoRol);
+	}
+
+
+
 }

@@ -10,6 +10,8 @@ public interface ProyectoDao {
 	void create(Proyecto proyecto);
 
 	void update(Proyecto proyecto);
+	
+	void update(String username, int idProyecto, int codigoRol);
 
 	void remove(int id);
 

@@ -191,9 +191,22 @@ public class VentanaResumen extends JFrame {
         btnMiembro.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                InvitarMiembro invitarMiembro = new InvitarMiembro(api);  // Crear una nueva instancia de la clase InvitarMiembro
-                invitarMiembro.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                invitarMiembro.setVisible(true);  // Mostrar la ventana de InvitarMiembro
+            	
+                if(api.getRol(usuarioActual.getUsername(), unproyecto.getId()).getNombre().equals("Admin")) {
+                	try {
+    					
+    					InvitarMiembro invitarMiembro = new InvitarMiembro(api);
+    					invitarMiembro.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    	                invitarMiembro.setVisible(true);  // Mostrar la ventana de InvitarMiembro
+    				} catch (NotNullException | DataEmptyException e1) {
+    					// TODO Auto-generated catch block
+    					e1.printStackTrace();
+    				}
+                } else {
+    	            JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.error"), JOptionPane.ERROR_MESSAGE);
+
+                }
+                
             }
         });
 
