@@ -51,10 +51,11 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 
 	                // Insertar el usuario propietario como miembro en `proyectos_miembros`
 	                PreparedStatement memberStatement = conn.prepareStatement(
-	                    "INSERT INTO `proyectos_miembros` (`id_proyecto`, `usuario_miembro`) VALUES (?, ?)"
+	                		"INSERT INTO `proyectos_usuarios_roles` (`codigo_rol`,`nombre_usuario`,`id_proyecto`) " + "VALUES(1, ?, ?)"
 	                );
-	                memberStatement.setInt(1, proyectoId);
-	                memberStatement.setString(2, proyecto.getUsuarioPropietario().getUsername());
+	              
+	                memberStatement.setString(1, proyecto.getUsuarioPropietario().getUsername());
+	                memberStatement.setInt(2, proyectoId);
 	                
 	                int miembroInsertado = memberStatement.executeUpdate();
 	                if(miembroInsertado == 0) {
@@ -198,6 +199,34 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 			}
 			return proyectos;
 	}
+
+	@Override
+	public void update(String username, int idProyecto, int codigoRol) {
+		try {
+			   Connection conn = ConnectionManager.getConnection();
+			   PreparedStatement statement = conn.prepareStatement("INSERT INTO `proyectos_usuarios_roles` (`codigo_rol`,`nombre_usuario`,`id_proyecto`) " + "VALUES(?, ?, ?)" );
+			        
+			   // Establecer los valores de los nuevos datos del proyecto
+			   statement.setInt(1, codigoRol);
+			   statement.setString(2, username);
+			   statement.setInt(3, idProyecto);
+			   
+	  
+			   int verificacion = statement.executeUpdate();
+			   
+			        
+			   if (verificacion == 0) 
+			            throw new NotUpdateException("No se pudo realizar la invitación a: " + username);
+			    
+		       } catch (NotUpdateException e1) {
+			   	   JOptionPane.showMessageDialog(null, e1.getMessage() + "no se realizo la invitación.", "Error", JOptionPane.ERROR_MESSAGE);
+			   } catch (SQLException e2) {
+				   JOptionPane.showMessageDialog(null,"Error de SQL: " + e2.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+			   } finally {
+			       ConnectionManager.disconnect();
+			   }
+	}
 	
 }
+
 
