@@ -98,7 +98,7 @@ public class InvitarMiembro extends JFrame {
 					JOptionPane.showMessageDialog(null, e1.getMessage(), labels.getString("mensaje.errorPermisos"), JOptionPane.ERROR_MESSAGE);
 				} catch (NotNullException | DataEmptyException e2) {
 					// TODO Auto-generated catch block
-					e2.printStackTrace();
+					JOptionPane.showMessageDialog(null, e2.getMessage(), labels.getString("mensaje.campoObligatorio"), JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		}); 

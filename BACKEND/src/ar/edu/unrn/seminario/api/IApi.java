@@ -68,7 +68,7 @@ public interface IApi {
 	void crearProyecto(String nombre, String string, String estado, String descripcion, String prioridad)
 			throws NotNullException, DataEmptyException;
 	
-	public void invitarMiembro(String username, int idProyecto, int codigoRol);
+	public void invitarMiembro(String username, int idProyecto, int codigoRol) throws DataEmptyException;
 	
 	public List<UsuarioDTO> obtenerMiembrosDeUnProyecto(int proyectoId);
 	

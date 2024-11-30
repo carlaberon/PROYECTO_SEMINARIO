@@ -342,7 +342,10 @@ public class PersistenceApi implements IApi {
 	}
    
 	
-	public void invitarMiembro(String username, int idProyecto, int codigoRol) {
+	public void invitarMiembro(String username, int idProyecto, int codigoRol) throws DataEmptyException {
+		if(username.isEmpty() || codigoRol == 0) {
+			throw new DataEmptyException("No pueden haber campos vacios!");
+		}
 		proyectoDao.update(username, idProyecto, codigoRol);
 	}
 
