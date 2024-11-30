@@ -204,7 +204,7 @@ public class VentanaTareas extends JFrame {
         table.setShowGrid(true);
 
         // Modelo de la tabla
-		String[] titulos = { labels.getString("menu.Id"),labels.getString("menu.nombre"),labels.getString("menu.proyecto"),labels.getString("menu.estado"),labels.getString("menu.descripcion"), labels.getString("menu.usuarioAsignado"),labels.getString("mensaje.prioridad"), labels.getString("menu.fechaInicio"), labels.getString("menu.fechaFin") };
+		String[] titulos = { labels.getString("menu.Id"),labels.getString("menu.nombreTabla"),labels.getString("menu.proyecto"),labels.getString("menu.estado"),labels.getString("menu.descripcion"), labels.getString("menu.usuarioAsignado"),labels.getString("mensaje.prioridad"), labels.getString("menu.fechaInicio"), labels.getString("menu.fechaFin") };
 		modelo = new DefaultTableModel(new Object[][] {}, titulos);
 		try {
 			

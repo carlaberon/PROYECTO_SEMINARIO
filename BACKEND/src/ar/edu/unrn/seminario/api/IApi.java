@@ -77,15 +77,15 @@ public interface IApi {
 	//Metodos para proposito general
 	public void setTareaActual(int idTarea) throws DataEmptyException, NotNullException, InvalidDateException;
 	
-	public TareaDTO getTareaActual() throws NotNullException, DataEmptyException, InvalidDateException;
+	public TareaDTO getTareaActual();
 	
-	public UsuarioDTO getUsuarioActual() throws NotNullException, DataEmptyException; //Recuperar usuario actual PRUEBAS
+	public UsuarioDTO getUsuarioActual(); //Recuperar usuario actual PRUEBAS
 	
 	public void setUsuarioActual(String nombreUsuario);	//Setear usuario actual PRUEBAS
 	
 	public int obtenerPrioridad(String prioridad);
 	
-	public ProyectoDTO getProyectoActual() throws NotNullException, DataEmptyException;//Recuperar proyecto actual	PRUEBAS
+	public ProyectoDTO getProyectoActual();//Recuperar proyecto actual	PRUEBAS
 	
 	public void setProyectoActual(int id) throws NotNullException, DataEmptyException;	//Setear proyecto actual PRUEBAS
 	
