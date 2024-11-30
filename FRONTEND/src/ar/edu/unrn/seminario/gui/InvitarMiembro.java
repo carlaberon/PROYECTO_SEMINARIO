@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -20,6 +22,7 @@ import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.NotNullException;
+import ar.edu.unrn.seminario.exception.UserIsAlreadyMember;
 
 import javax.swing.JTextPane;
 import javax.swing.JTree;
@@ -41,15 +44,16 @@ public class InvitarMiembro extends JFrame {
 	private IApi api;
 
 	public InvitarMiembro(IApi api) throws NotNullException, DataEmptyException {
+		ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
 		
 		this.roles = api.obtenerRoles();
 	
-		setTitle("");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setTitle(labels.getString("ventana.invitarMiembro"));
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 800, 400);
 		getContentPane().setLayout(null);
 		this.api = api;
-		this.usuarios = api.obtenerUsuarios();
+		this.usuarios = api.obtenerUsuarios(api.getUsuarioActual().getUsername());
 		contentPane = new JPanel();
 		contentPane.setFont(new Font("Segoe UI", Font.PLAIN, 10));
 		contentPane.setBackground(new Color(81, 79, 89));
@@ -57,14 +61,14 @@ public class InvitarMiembro extends JFrame {
 		contentPane.setLayout(null);
 		setContentPane(contentPane);
 
-		JLabel nombreProyecto = new JLabel("Agregar usuarios existentes*:");
+		JLabel nombreProyecto = new JLabel(labels.getString("label.ingresarUsuarioInvitado"));
 		nombreProyecto.setForeground(new Color(240, 240, 240));
-		nombreProyecto.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+		nombreProyecto.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		nombreProyecto.setBounds(70, 145, 256, 39);
 		contentPane.add(nombreProyecto);
 
 
-		JButton invitarButton = new JButton("Invitar");
+		JButton invitarButton = new JButton(labels.getString("boton.invitarMiembro"));
 		invitarButton.addActionListener(e -> {
 			
 		});
@@ -74,25 +78,28 @@ public class InvitarMiembro extends JFrame {
 	
 		invitarButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-					try {
-						String nombreUsuario = (String)asignarUsuarioComboBox.getSelectedItem();
-						int id_proyecto;
-						id_proyecto = api.getProyectoActual().getId();
-						String nombre_rol = (String)asignarRolComboBox.getSelectedItem();
+				String nombreUsuario = (String)asignarUsuarioComboBox.getSelectedItem();
+				try {
+					if(api.existeMiembro(nombreUsuario,api.getProyectoActual().getId()) == 0) {
+							int id_proyecto;
+							id_proyecto = api.getProyectoActual().getId();
+							String nombre_rol = (String)asignarRolComboBox.getSelectedItem();
 						
-						int codigo_rol = obtenerCodigoRol(nombre_rol);
+							int codigo_rol = obtenerCodigoRol(nombre_rol);
 						
-						api.invitarMiembro(nombreUsuario,id_proyecto,codigo_rol);
-					} catch (NotNullException | DataEmptyException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+							api.invitarMiembro(nombreUsuario,id_proyecto,codigo_rol);
 				
 					
-					JOptionPane.showMessageDialog(null, "Miembro agregado con exito!", "Info", JOptionPane.INFORMATION_MESSAGE);
-					setVisible(false);
-					dispose();
-				
+							JOptionPane.showMessageDialog(null, "Miembro agregado con exito!", "Info", JOptionPane.INFORMATION_MESSAGE);
+							setVisible(false);
+							dispose();
+					}
+				} catch(UserIsAlreadyMember e1) {
+					JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), labels.getString("mensaje.errorYaEsMiembro"), JOptionPane.ERROR_MESSAGE);
+				} catch (NotNullException | DataEmptyException e2) {
+					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(null, labels.getString(e2.getMessage()), labels.getString("mensaje.campoObligatorio"), JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		}); 
 
@@ -101,9 +108,9 @@ public class InvitarMiembro extends JFrame {
 
 
 
-		JLabel rolLabel = new JLabel("Asignar rol a nuevos miembros:");
+		JLabel rolLabel = new JLabel(labels.getString("label.asignarUnRol"));
 		rolLabel.setForeground(new Color(240, 240, 240));
-		rolLabel.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+		rolLabel.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		rolLabel.setBounds(381, 145, 329, 39);
 		contentPane.add(rolLabel);
 
@@ -123,16 +130,17 @@ public class InvitarMiembro extends JFrame {
 	     contentPane.add(asignarRolComboBox);
 		
 		
-		JLabel lblNewLabel = new JLabel("Miembros");
+		JLabel lblNewLabel = new JLabel(labels.getString("label.invitarUnMiembro"));
 		lblNewLabel.setForeground(new Color(29, 17, 40));
-		lblNewLabel.setFont(new Font("Segoe UI", Font.PLAIN, 35));
-		lblNewLabel.setBounds(35, 47, 291, 73);
+		lblNewLabel.setFont(new Font("Segoe UI Black", Font.BOLD, 35));
+		lblNewLabel.setBounds(35, 47, 404, 73);
 		contentPane.add(lblNewLabel);
 		
 
 
         asignarUsuarioComboBox = new JComboBox<>();
         asignarUsuarioComboBox.setBounds(70, 195, 268, 27);
+        
         
        asignarUsuarioComboBox.addItem("");
         if ( ! this.usuarios.isEmpty()) {
@@ -142,8 +150,11 @@ public class InvitarMiembro extends JFrame {
         }
        
         contentPane.add(asignarUsuarioComboBox);
+        
+        
 		setLocationRelativeTo(null);
 	}
+	
 	public int obtenerCodigoRol(String nombreRol) {
 		int codigo=0; 
 		for (RolDTO rolDTO : roles) {
@@ -154,6 +165,7 @@ public class InvitarMiembro extends JFrame {
 		}
 		return codigo;
 	}
+	
 //	   public static void main(String[] args) {
 //	        InvitarMiembro frame = new InvitarMiembro();
 //	        frame.setVisible(true);

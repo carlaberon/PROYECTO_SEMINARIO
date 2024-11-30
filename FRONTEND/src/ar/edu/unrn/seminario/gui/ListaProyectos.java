@@ -150,7 +150,7 @@ public class ListaProyectos extends JFrame {
 				        }
 				        habilitarBotones(false);
 				}else {
-					JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.error"), JOptionPane.ERROR_MESSAGE);	
+					JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.ERROR_MESSAGE);	
 				}
 				}
         });

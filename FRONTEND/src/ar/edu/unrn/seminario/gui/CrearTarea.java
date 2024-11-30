@@ -52,7 +52,7 @@ public class CrearTarea extends JFrame {
     public CrearTarea(IApi api) throws NotNullException, DataEmptyException {
  
         this.api = api; 
-        this.usuarios = api.obtenerUsuarios();
+        this.usuarios = api.obtenerUsuarios(api.getUsuarioActual().getUsername());
         
 
         setTitle("Crear Tarea");

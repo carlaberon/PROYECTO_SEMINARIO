@@ -226,6 +226,38 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 			       ConnectionManager.disconnect();
 			   }
 	}
+
+	@Override
+	public List<Usuario> findAllMembers(int proyectoId) {
+		List<Usuario> miembros = new ArrayList<Usuario>();
+		try {
+			Connection conn = ConnectionManager.getConnection();
+			PreparedStatement statement = conn.prepareStatement("SELECT u.usuario, u.contrasena, u.nombre, u.email, u.activo\r\n" 
+					+ "FROM usuarios u\r\n"
+					+ "JOIN proyectos_usuarios_roles pur ON pur.nombre_usuario = u.usuario\r\n"
+					+ "WHERE pur.id_proyecto = ?\r\n");
+			
+			statement.setInt(1, proyectoId);
+			//statement.setString(2, usuario);
+			ResultSet rs = statement.executeQuery();
+			while(rs.next()) {
+				Usuario miembro = new Usuario(rs.getString("u.usuario"), rs.getString("u.contrasena"), rs.getString("u.nombre"), rs.getString("u.email"));
+				
+				miembros.add(miembro);
+			}
+			
+			if (miembros.isEmpty()) {
+	            throw new NotFoundException("El proyecto no tiene miembros.");
+	        }
+		} catch(NotFoundException e1) {
+			JOptionPane.showMessageDialog(null, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+		} catch (SQLException e2) {
+			JOptionPane.showMessageDialog(null,"Error de SQL: " + e2.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+		} finally {
+			ConnectionManager.disconnect();
+		}
+		return miembros;
+	}
 	
 }
 
