@@ -31,15 +31,13 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 			conn = ConnectionManager.getConnection();
 			
 			statement = conn
-					.prepareStatement("INSERT INTO `proyectos` (`nombre`,`usuario_propietario`,`estado`,`descripcion`, `prioridad`,`proyecto`) " + "VALUES(?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+					.prepareStatement("INSERT INTO `proyectos` (`nombre`,`usuario_propietario`,`estado`,`descripcion`, `prioridad`) " + "VALUES(?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 			
 			statement.setString(1, proyecto.getNombre());
 			statement.setObject(2, proyecto.getUsuarioPropietario().getUsername());
 			statement.setString(3, proyecto.getEstado());
 			statement.setString(4, proyecto.getDescripcion());
 			statement.setString(5, proyecto.getPrioridad());
-			statement.setNull(6, java.sql.Types.VARCHAR);
-			
 			
 			int cant = statement.executeUpdate();
 		
@@ -187,11 +185,11 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 					proyectos.add(unProyecto);
 				}
 				
-				if (proyectos.isEmpty()) {
-		            throw new NotFoundException("No se encontraron proyectos para el usuario: ");
-		        }
-			} catch(NotFoundException e1) {
-				JOptionPane.showMessageDialog(null, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+//				if (proyectos.isEmpty()) {
+//		            throw new NotFoundException("No se encontraron proyectos para el usuario: ");
+//		        }
+//			} catch(NotFoundException e1) {
+//				JOptionPane.showMessageDialog(null, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 			} catch (SQLException e2) {
 				JOptionPane.showMessageDialog(null,"Error de SQL: " + e2.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 			} finally {

@@ -24,11 +24,10 @@ import java.awt.Color;
 
 public class CrearProyecto extends JFrame {
 	
-	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
+	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
 //	 descomentar para que tome el idioma ingles (english)
 
 	//ResourceBundle labels = ResourceBundle.getBundle("labels");
-	
 	
     List<String> prioridades = Arrays.asList(labels.getString("prioridad.alta"),labels.getString("prioridad.media"), labels.getString("prioridad.baja"));
 	private JPanel contentPane;
@@ -74,7 +73,7 @@ public class CrearProyecto extends JFrame {
 		prioridadComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 10));
 		prioridadComboBox.setBounds(325, 274, 390, 25);
 		contentPane.add(prioridadComboBox);
-		
+		prioridadComboBox.addItem("");
         for (String prioridad : prioridades) {
             prioridadComboBox.addItem(prioridad);
         }
@@ -91,21 +90,15 @@ public class CrearProyecto extends JFrame {
                 String prioridadSeleccionadaNueva = (String) prioridadComboBox.getSelectedItem();
 
 				try {
-					// Verificar si no se seleccionó una prioridad
-		            if (prioridadSeleccionadaNueva == null || prioridadSeleccionadaNueva.isEmpty()) {
-		                throw new DataEmptyException(labels.getString("mensaje.prioridad"));
-		            }
-			
-					
 					// Crear un nuevo proyecto
 	                api.crearProyecto(nombreNuevoProyecto, api.getUsuarioActual().getUsername(), "EN CURSO", descripcionNueva, prioridadSeleccionadaNueva);
 	                JOptionPane.showMessageDialog(null, labels.getString("mensaje.proyectoCreado"), "Info", JOptionPane.INFORMATION_MESSAGE);
 	                new Inicio(api).setVisible(true);
 	                dispose();
-				} catch (NotNullException ex) {
-		            JOptionPane.showMessageDialog(null, labels.getString("mensaje.elCampo") + ex.getMessage() + labels.getString("mensaje.null"), "Error", JOptionPane.ERROR_MESSAGE);
-		        } catch (DataEmptyException ex) {
-		            JOptionPane.showMessageDialog(null, labels.getString("mensaje.elCampo") + ex.getMessage() + labels.getString("mensaje.empty"), "Error", JOptionPane.ERROR_MESSAGE);
+				} catch (NotNullException e1) {
+		            JOptionPane.showMessageDialog(null, labels.getString("mensaje.elCampo") + labels.getString(e1.getMessage()) + labels.getString("mensaje.null"), "Error", JOptionPane.ERROR_MESSAGE);
+		        } catch (DataEmptyException e2) {
+		            JOptionPane.showMessageDialog(null, labels.getString("mensaje.elCampo") + labels.getString(e2.getMessage()) + labels.getString("mensaje.empty"), "Error", JOptionPane.ERROR_MESSAGE);
 		        }
 			}
 		);

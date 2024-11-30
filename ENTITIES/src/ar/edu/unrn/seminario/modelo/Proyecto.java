@@ -20,24 +20,24 @@ public class Proyecto {
     public Proyecto(int id, String nombre, Usuario usuarioPropietario, String estado, String descripcion, String prioridad) throws NotNullException, DataEmptyException{
     	    // Validar que los campos no sean nulos
     	    if (esDatoNulo(nombre)) {
-    	        throw new NotNullException("nombre");
+    	        throw new NotNullException("validacion.nombre");
     	    }
     	    if (esDatoNulo(descripcion)) {
-    	        throw new NotNullException("descripcion");
+    	        throw new NotNullException("validacion.descripcion");
     	    }
     	    if (esDatoNulo(prioridad)) {
-    	        throw new NotNullException("prioridad");
+    	        throw new NotNullException("validacion.prioridad");
     	    }
 
     	    // Validar que los campos no estén vacíos
     	    if (esDatoVacio(nombre)) {
-    	        throw new DataEmptyException("nombre");
+    	        throw new DataEmptyException("validacion.nombre");
     	    }
     	    if (esDatoVacio(descripcion)) {
-    	        throw new DataEmptyException("descripcion");
+    	        throw new DataEmptyException("validacion.descripcion");
     	    }
     	    if (esDatoVacio(prioridad)) {
-    	        throw new DataEmptyException("prioridad");
+    	        throw new DataEmptyException("validacion.prioridad");
     	    }
     	
     	this.id = id;

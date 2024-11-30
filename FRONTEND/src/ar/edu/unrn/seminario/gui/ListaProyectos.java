@@ -57,7 +57,7 @@ public class ListaProyectos extends JFrame {
         getContentPane().setBackground(fondoColor);
         
         tabla = new JTable();
-        String[] proyectosTabla = {labels.getString("menu.Id"), labels.getString("menu.nombre"), labels.getString("menu.descripcionProyecto"), labels.getString("menu.estadoProyecto"), labels.getString("mensaje.prioridad"), labels.getString("menu.propietario")};
+        String[] proyectosTabla = {labels.getString("menu.Id"), labels.getString("menu.nombreTabla"), labels.getString("menu.descripcionProyecto"), labels.getString("menu.estadoProyecto"), labels.getString("mensaje.prioridad"), labels.getString("menu.propietario")};
         
         DefaultTableModel modelo = new DefaultTableModel(new Object[][] {}, proyectosTabla);
         tabla.setModel(modelo);

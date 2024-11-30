@@ -139,15 +139,7 @@ public class PersistenceApi implements IApi {
 	public List<ProyectoDTO> obtenerProyectos(String username) throws NotNullException, DataEmptyException {
 		List<ProyectoDTO> proyectoDTO = new ArrayList<>();
 		List<Proyecto> proyectos = null;
-		try {
 			proyectos = proyectoDao.findAll(username);
-		} catch (DataEmptyException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NotNullException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		// Asegúrate de que `proyectos` no sea null antes de iterar
 	    if (proyectos != null) {
 	        for (Proyecto p : proyectos) {  
@@ -216,7 +208,7 @@ public class PersistenceApi implements IApi {
 		this.tareaActual = tareaDao.find(idTarea);
 	}
 	
-	public TareaDTO getTareaActual() throws NotNullException, DataEmptyException, InvalidDateException {
+	public TareaDTO getTareaActual() {
 		return convertirEnTareaDTO(tareaActual);
 	}
 
@@ -328,8 +320,7 @@ public class PersistenceApi implements IApi {
 		return proyectoDto;
 	}
 	
-	public UsuarioDTO getUsuarioActual() {
-	    
+	public UsuarioDTO getUsuarioActual() { 
 	    return convertirEnUsuarioDTO(usuarioActual);
 	}
 	

@@ -96,9 +96,9 @@ public class InvitarMiembro extends JFrame {
 					}
 				} catch(UserIsAlreadyMember e1) {
 					JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), labels.getString("mensaje.errorYaEsMiembro"), JOptionPane.ERROR_MESSAGE);
-				} catch (NotNullException | DataEmptyException e2) {
+				} catch (DataEmptyException e2) {
 					// TODO Auto-generated catch block
-					JOptionPane.showMessageDialog(null, labels.getString(e2.getMessage()), labels.getString("mensaje.campoObligatorio"), JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, labels.getString(e2.getMessage()), labels.getString("mensaje.errorInvitarMiembro"), JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		}); 
