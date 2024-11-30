@@ -344,7 +344,7 @@ public class PersistenceApi implements IApi {
 	
 	public void invitarMiembro(String username, int idProyecto, int codigoRol) throws DataEmptyException {
 		if(username.isEmpty() || codigoRol == 0) {
-			throw new DataEmptyException("No pueden haber campos vacios!");
+			throw new DataEmptyException("mensaje.campoObligatorio");
 		}
 		proyectoDao.update(username, idProyecto, codigoRol);
 	}
@@ -360,7 +360,7 @@ public class PersistenceApi implements IApi {
 	public int existeMiembro(String username, int idProyecto) throws UserIsAlreadyMember {
 	    List<UsuarioDTO> miembrosDTO = obtenerMiembrosDeUnProyecto(idProyecto);
 	    if (miembrosDTO.stream().anyMatch(miembro -> username.equals(miembro.getUsername()))) {
-	        throw new UserIsAlreadyMember("mensaje.errorYaEsMiembro");
+	        throw new UserIsAlreadyMember("mensaje.esMiembro");
 	    }
 	    return 0; // No existe
 	}
