@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -20,6 +22,7 @@ import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.NotNullException;
+import ar.edu.unrn.seminario.exception.UserIsAlreadyMember;
 
 import javax.swing.JTextPane;
 import javax.swing.JTree;
@@ -41,6 +44,7 @@ public class InvitarMiembro extends JFrame {
 	private IApi api;
 
 	public InvitarMiembro(IApi api) throws NotNullException, DataEmptyException {
+		ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
 		
 		this.roles = api.obtenerRoles();
 	
@@ -49,7 +53,7 @@ public class InvitarMiembro extends JFrame {
 		setBounds(100, 100, 800, 400);
 		getContentPane().setLayout(null);
 		this.api = api;
-		this.usuarios = api.obtenerUsuarios();
+		this.usuarios = api.obtenerUsuarios(api.getUsuarioActual().getUsername());
 		contentPane = new JPanel();
 		contentPane.setFont(new Font("Segoe UI", Font.PLAIN, 10));
 		contentPane.setBackground(new Color(81, 79, 89));
@@ -75,24 +79,27 @@ public class InvitarMiembro extends JFrame {
 		invitarButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String nombreUsuario = (String)asignarUsuarioComboBox.getSelectedItem();
-					try {
-						int id_proyecto;
-						id_proyecto = api.getProyectoActual().getId();
-						String nombre_rol = (String)asignarRolComboBox.getSelectedItem();
+				try {
+					if(api.existeMiembro(nombreUsuario,api.getProyectoActual().getId()) == 0) {
+							int id_proyecto;
+							id_proyecto = api.getProyectoActual().getId();
+							String nombre_rol = (String)asignarRolComboBox.getSelectedItem();
 						
-						int codigo_rol = obtenerCodigoRol(nombre_rol);
+							int codigo_rol = obtenerCodigoRol(nombre_rol);
 						
-						api.invitarMiembro(nombreUsuario,id_proyecto,codigo_rol);
-					} catch (NotNullException | DataEmptyException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+							api.invitarMiembro(nombreUsuario,id_proyecto,codigo_rol);
 				
 					
-					JOptionPane.showMessageDialog(null, "Miembro agregado con exito!", "Info", JOptionPane.INFORMATION_MESSAGE);
-					setVisible(false);
-					dispose();
-				
+							JOptionPane.showMessageDialog(null, "Miembro agregado con exito!", "Info", JOptionPane.INFORMATION_MESSAGE);
+							setVisible(false);
+							dispose();
+					}
+				} catch(UserIsAlreadyMember e1) {
+					JOptionPane.showMessageDialog(null, e1.getMessage(), labels.getString("mensaje.errorPermisos"), JOptionPane.ERROR_MESSAGE);
+				} catch (NotNullException | DataEmptyException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
 			}
 		}); 
 

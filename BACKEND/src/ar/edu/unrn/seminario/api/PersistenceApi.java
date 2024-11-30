@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.stream.Collectors;
 
 import ar.edu.unrn.seminario.accesos.RolDAOJDBC;
 import ar.edu.unrn.seminario.accesos.RolDao;
@@ -69,23 +69,21 @@ public class PersistenceApi implements IApi {
 	}
 	
 	@Override
-	public List<UsuarioDTO> obtenerUsuarios() throws NotNullException, DataEmptyException {
-		List<UsuarioDTO> dtos = new ArrayList<>();
-		List<Usuario> usuarios = usuarioDao.findAll();
-		for (Usuario u : usuarios) {
-			dtos.add(convertirEnUsuarioDTO(u));
-		}
-		return dtos;
+	public List<UsuarioDTO> obtenerUsuarios(String username) throws NotNullException, DataEmptyException {
+	    List<Usuario> usuarios = usuarioDao.findAll();
+
+	    // Filtra los usuarios cuyo username no coincida con el proporcionado y conviértelos a UsuarioDTO
+	    return usuarios.stream()
+	                   .filter(u -> !username.equals(u.getUsername())) // Excluir el usuario actual
+	                   .map(this::convertirEnUsuarioDTO)              // Convertir a UsuarioDTO
+	                   .collect(Collectors.toList());                // Recoger como una lista
 	}
 	
 	@Override
 	public List<RolDTO> obtenerRoles() {
-		List<Rol> roles = rolDao.findAll();
-		List<RolDTO> rolesDTO = new ArrayList<>(0);
-		for (Rol rol : roles) {
-			rolesDTO.add(new RolDTO(rol.getCodigo(), rol.getNombre(), rol.isActivo()));
-		}
-		return rolesDTO;
+	    return rolDao.findAll().stream()
+	                 .map(this::convertirEnRolDTO)
+	                 .collect(Collectors.toList());
 	}
 
 	@Override
@@ -350,26 +348,18 @@ public class PersistenceApi implements IApi {
 
 	@Override
 	public List<UsuarioDTO> obtenerMiembrosDeUnProyecto(int proyectoId) {
-		List<Usuario> miembros = proyectoDao.findAllMembers(proyectoId);
-		List<UsuarioDTO> miembrosDTO = new ArrayList<UsuarioDTO>();
-		for (Usuario usuario : miembros) {
-			miembrosDTO.add(convertirEnUsuarioDTO(usuario));
-		}
-		
-		return miembrosDTO;
+	    return proyectoDao.findAllMembers(proyectoId).stream()
+	                      .map(this::convertirEnUsuarioDTO) // Convierte cada Usuario a UsuarioDTO
+	                      .collect(Collectors.toList());   // Recoge el resultado como una lista
 	}
 
 	@Override
 	public int existeMiembro(String username, int idProyecto) throws UserIsAlreadyMember {
-		int existe = 0; //indica que NO existe
-		List<UsuarioDTO> miembrosDTO = obtenerMiembrosDeUnProyecto(idProyecto);
-		for (UsuarioDTO miembro : miembrosDTO) {
-			if(username.equals(miembro.getUsername())){
-				existe = 1;
-				throw new UserIsAlreadyMember("El usuario ya es miembro del proyecto.");
-			}
-		}
-		return existe;
+	    List<UsuarioDTO> miembrosDTO = obtenerMiembrosDeUnProyecto(idProyecto);
+	    if (miembrosDTO.stream().anyMatch(miembro -> username.equals(miembro.getUsername()))) {
+	        throw new UserIsAlreadyMember("El usuario ya es miembro del proyecto.");
+	    }
+	    return 0; // No existe
 	}
 
 

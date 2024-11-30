@@ -28,7 +28,7 @@ public interface IApi {
 
 	void activarUsuario(String username); // recuperar el objeto Usuario, implementar el comportamiento de estado.
 	
-	List<UsuarioDTO> obtenerUsuarios() throws NotNullException, DataEmptyException; // recuperar todos los usuarios
+	List<UsuarioDTO> obtenerUsuarios(String username) throws NotNullException, DataEmptyException; // recuperar todos los usuarios
 	
 	void desactivarUsuario(String username); // recuperar el objeto Usuario, implementar el comportamiento de estado.
 	

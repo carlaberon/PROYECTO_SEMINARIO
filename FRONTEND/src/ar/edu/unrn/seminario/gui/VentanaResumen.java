@@ -128,7 +128,7 @@ public class VentanaResumen extends JFrame {
                     	abrirPanelConfiguracion();
                     	dispose();
                     } else {
-        	            JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.error"), JOptionPane.ERROR_MESSAGE);
+        	            JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.ERROR_MESSAGE);
 
 					}
                     
@@ -203,7 +203,7 @@ public class VentanaResumen extends JFrame {
     					e1.printStackTrace();
     				}
                 } else {
-    	            JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.error"), JOptionPane.ERROR_MESSAGE);
+    	            JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.ERROR_MESSAGE);
 
                 }
                 

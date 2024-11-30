@@ -58,7 +58,7 @@ public class ModificarTarea extends JFrame {
 	    	
 	    
 	        this.api = api; 
-	        this.usuarios = api.obtenerUsuarios();
+	        this.usuarios = api.obtenerUsuarios(api.getUsuarioActual().getUsername());
 	        this.tarea = api.getTareaActual();
 	        
 	        setTitle(labels.getString("menu.modificarTarea"));

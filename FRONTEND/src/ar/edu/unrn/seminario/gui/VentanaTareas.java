@@ -280,7 +280,7 @@ public class VentanaTareas extends JFrame {
 				}
 				
 				}else {
-					JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.error"), JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
@@ -288,26 +288,6 @@ public class VentanaTareas extends JFrame {
         buttonPanel.add(btnTarea);
         descPanel.add(buttonPanel, BorderLayout.NORTH); // Coloca el botón en el norte (arriba)
         centerPanel1.add(descPanel);
-        
-//      //Configuración del botón "Actualizar Tabla" en la esquina superior izquierda
-//        
-//        JButton btnActualizarTabla = createButton(labels.getString("menu.actualizar"), new Color(138, 102, 204));
-//        buttonPanel.add(btnActualizarTabla);
-//        btnActualizarTabla.addActionListener(new ActionListener() {
-//    			public void actionPerformed(ActionEvent arg0) {
-//    				try {
-//						actualizarTabla();
-//					} catch (NotNullException e) {
-//			            JOptionPane.showMessageDialog(null, "Error: Hay campos que no pueden ser nulos.", "Error de validación", JOptionPane.ERROR_MESSAGE);
-//					} catch (InvalidDateException e) {
-//			            JOptionPane.showMessageDialog(null, "Error: La fecha ingresada es inválida.", "Error de fecha", JOptionPane.ERROR_MESSAGE);
-//					} catch (DataEmptyException e) {
-//			            JOptionPane.showMessageDialog(null, "Error: No se encontraron datos en la consulta. Verifica si el proyecto tiene tareas.", "Datos vacíos", JOptionPane.WARNING_MESSAGE);
-//					} catch (TaskQueryException e) {
-//			            JOptionPane.showMessageDialog(null, "Error al realizar la consulta de tareas en la base de datos: " + e.getMessage(), "Error de base de datos", JOptionPane.ERROR_MESSAGE);
-//					}
-//    			}
-//    		});
         
        //Configuración de los botones "Modificar" y "Eliminar" tarea
       JPanel botones = new JPanel(new FlowLayout());
@@ -342,7 +322,7 @@ public class VentanaTareas extends JFrame {
 								}
 								dispose();
     	    	}else {
-    	    		JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.error"), JOptionPane.ERROR_MESSAGE);
+    	    		JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.ERROR_MESSAGE);
     	    	}
 	    	    habilitarBotones(false);
 	    	    table.clearSelection();
@@ -367,7 +347,7 @@ public class VentanaTareas extends JFrame {
 					}										
 				}
 	  		}else {
-	  			JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.error"), JOptionPane.ERROR_MESSAGE);
+	  			JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.ERROR_MESSAGE);
 	    	}
     	    habilitarBotones(false);
     	    table.clearSelection();
@@ -431,45 +411,6 @@ public class VentanaTareas extends JFrame {
 
 	}
 	
-//	void actualizarTabla() throws NotNullException, InvalidDateException, DataEmptyException, TaskQueryException{
-//	
-//	    // Obtiene el model del table
-//	    DefaultTableModel modelo = (DefaultTableModel) table.getModel();
-//	    
-//	    List<TareaDTO> tareas = api.obtenerTareas();
-//	    tareas.sort((t1, t2) -> {
-//            int prioridadComparacion = Integer.compare(api.obtenerPrioridad(t1.getPriority()), 
-//                                                       api.obtenerPrioridad(t2.getPriority()));
-//            if (prioridadComparacion != 0) {
-//                return prioridadComparacion;
-//            }
-//            return t1.getName().compareTo(t2.getName());
-//        });
-//	    
-//	    modelo.setRowCount(0);
-//
-//	    // Agrega las tareas en el modelo
-//		for (TareaDTO t : tareas) {
-//		    modelo.addRow(new Object[] {
-//		        t.getId(),
-//		        t.getName(),
-//		        unproyecto.getNombre(),
-//		        t.getEstado(), // Modifica el estado a una cadena legible
-//		        t.getDescription(),
-//		        t.getUser(),
-//		        t.getPriority(), 
-//		        t.getInicio(),
-//		        t.getFin()
-//		    });
-//		}
-//		// Ocultar la columna ID
-//        table.getColumnModel().getColumn(0).setMinWidth(0);
-//        table.getColumnModel().getColumn(0).setMaxWidth(0);
-//        table.getColumnModel().getColumn(0).setPreferredWidth(0);
-//
-//	}
-	//api.setTareaActual->id
-	//api.getTareaActual<-id
 	void modificarTarea() throws NotNullException, DataEmptyException, InvalidDateException {
 	 ModificarTarea modificatarea = new ModificarTarea(api);
 	 modificatarea.setVisible(true);
