@@ -51,7 +51,6 @@ public class ListaProyectos extends JFrame {
         // Configurar colores y fuente
         Color fondoColor = new Color(48, 48, 48); // Color de fondo oscuro
         Color tituloColor = new Color(109, 114, 195); // Púrpura para los títulos
-        Color nombreProyectoColor = new Color(109, 114, 195); // Púrpura para nombres de proyecto
         Font fuente = new Font("Segoe UI", Font.PLAIN, 11);
 
         getContentPane().setBackground(fondoColor);

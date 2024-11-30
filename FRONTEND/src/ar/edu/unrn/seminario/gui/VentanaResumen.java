@@ -19,8 +19,6 @@ import java.awt.event.WindowEvent;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import ar.edu.unrn.seminario.api.IApi;
-import ar.edu.unrn.seminario.api.PersistenceApi;
 public class VentanaResumen extends JFrame {
 
     private JPanel contentPane;
@@ -85,15 +83,7 @@ public class VentanaResumen extends JFrame {
         accountMenu.add(logoutItem);
         
         
-        logoutItem.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				System.exit(0);
-			}
-        	
-        });
+        logoutItem.addActionListener(e -> System.exit(0));
 
         menuBar.add(accountMenu);
 
@@ -188,9 +178,7 @@ public class VentanaResumen extends JFrame {
         miembrosPanel.add(btnMiembro);
         miembrosPanel.add(btnVerMiembros);
         centerPanel1.add(miembrosPanel);
-        btnMiembro.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        btnMiembro.addActionListener(e -> {
             	
                 if(api.getRol(usuarioActual.getUsername(), unproyecto.getId()).getNombre().equals("Admin")) {
                 	try {
@@ -201,6 +189,7 @@ public class VentanaResumen extends JFrame {
     				} catch (NotNullException | DataEmptyException e1) {
     					// TODO Auto-generated catch block
     					e1.printStackTrace();
+    					
     				}
                 } else {
     	            JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.error"), JOptionPane.ERROR_MESSAGE);
@@ -208,7 +197,7 @@ public class VentanaResumen extends JFrame {
                 }
                 
             }
-        });
+        );
 
         miembrosPanel.add(btnMiembro);
         miembrosPanel.add(btnVerMiembros);
@@ -220,8 +209,7 @@ public class VentanaResumen extends JFrame {
         tareasPanel.add(btnTarea);
         tareasPanel.add(btnVerTareas);
         centerPanel1.add(tareasPanel);
-        btnVerTareas.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
+        btnVerTareas.addActionListener(e -> {
             //String nombreProyecto = unproyecto.getNombre(); // Este método obtiene el nombre del proyecto seleccionado
 			try {
 				VentanaTareas ventanaTareas = new VentanaTareas(api);
@@ -240,7 +228,7 @@ public class VentanaResumen extends JFrame {
 	        }
             
         }
-    });
+    );
         // Agregar el panel principal al contentPane
         contentPane.add(centerPanel1, BorderLayout.CENTER);
         
