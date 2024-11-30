@@ -360,7 +360,7 @@ public class PersistenceApi implements IApi {
 	public int existeMiembro(String username, int idProyecto) throws UserIsAlreadyMember {
 	    List<UsuarioDTO> miembrosDTO = obtenerMiembrosDeUnProyecto(idProyecto);
 	    if (miembrosDTO.stream().anyMatch(miembro -> username.equals(miembro.getUsername()))) {
-	        throw new UserIsAlreadyMember("El usuario ya es miembro del proyecto.");
+	        throw new UserIsAlreadyMember("mensaje.errorYaEsMiembro");
 	    }
 	    return 0; // No existe
 	}

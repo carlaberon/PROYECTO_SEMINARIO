@@ -124,7 +124,7 @@ public class VentanaResumen extends JFrame {
             if (item.equals("Configuración") || item.equals("Settings")) {
                 menuButton.addActionListener(e -> {
                     // Por ejemplo, podrías abrir un nuevo panel de configuración:
-                    if(api.getRol(usuarioActual.getUsername(), unproyecto.getId()).getNombre().equals("Admin")) {
+                    if(api.getRol(usuarioActual.getUsername(), unproyecto.getId()).getNombre().equals("Administrador")) {
                     	abrirPanelConfiguracion();
                     	dispose();
                     } else {
@@ -192,7 +192,7 @@ public class VentanaResumen extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
             	
-                if(api.getRol(usuarioActual.getUsername(), unproyecto.getId()).getNombre().equals("Admin")) {
+                if(api.getRol(usuarioActual.getUsername(), unproyecto.getId()).getNombre().equals("Administrador")) {
                 	try {
     					
     					InvitarMiembro invitarMiembro = new InvitarMiembro(api);
