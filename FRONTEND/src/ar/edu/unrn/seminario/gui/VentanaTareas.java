@@ -1,7 +1,6 @@
 package ar.edu.unrn.seminario.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Button;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -14,7 +13,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -36,7 +34,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import ar.edu.unrn.seminario.api.IApi;
-import ar.edu.unrn.seminario.api.PersistenceApi;
 import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.TareaDTO;
@@ -117,12 +114,7 @@ public class VentanaTareas extends JFrame {
         accountMenu.add(confItem);
         accountMenu.add(logoutItem);
         
-        logoutItem.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
-			}
-        });
+        logoutItem.addActionListener(e -> System.exit(0));
 
         menuBar.add(accountMenu);
         this.setJMenuBar(menuBar);
@@ -263,8 +255,7 @@ public class VentanaTareas extends JFrame {
         buttonPanel.setOpaque(false);
 
         JButton btnTarea = createButton(labels.getString("menu.agregarTarea"), new Color(138, 102, 204));
-        btnTarea.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+        btnTarea.addActionListener(ev -> {
 				if(!(rolActual.getNombre().equals("Observador"))) {
 				CrearTarea crearTarea;
 				try {
@@ -283,7 +274,7 @@ public class VentanaTareas extends JFrame {
 					JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.ERROR_MESSAGE);
 				}
 			}
-		});
+		);
 
         buttonPanel.add(btnTarea);
         descPanel.add(buttonPanel, BorderLayout.NORTH); // Coloca el botón en el norte (arriba)
@@ -302,8 +293,7 @@ public class VentanaTareas extends JFrame {
       
       habilitarBotones(false);
       
-      botonModificar.addActionListener(new ActionListener() {
-    	    public void actionPerformed(ActionEvent e) {
+      botonModificar.addActionListener(e -> {
     	        int filaSeleccionada = table.getSelectedRow();
 	    	        int idTarea = (int) table.getValueAt(filaSeleccionada, 0);
 	    	        if(!(rolActual.getNombre().equals("Observador"))) {
@@ -327,11 +317,9 @@ public class VentanaTareas extends JFrame {
 	    	    habilitarBotones(false);
 	    	    table.clearSelection();
     	    }
-    	});
+    	);
       
-      botonEliminar.addActionListener(new ActionListener() {
-      
-	  	public void actionPerformed(ActionEvent e) {
+      botonEliminar.addActionListener(e -> {
 	  		if(!(rolActual.getNombre().equals("Observador"))) {
 	  		int filaSeleccionada = table.getSelectedRow(); 	        
 	  			int idTarea = (int) table.getValueAt(filaSeleccionada, 0);
@@ -352,7 +340,7 @@ public class VentanaTareas extends JFrame {
     	    habilitarBotones(false);
     	    table.clearSelection();
 		}  	  
-     });
+     );
       
       setLocationRelativeTo(null);
       
