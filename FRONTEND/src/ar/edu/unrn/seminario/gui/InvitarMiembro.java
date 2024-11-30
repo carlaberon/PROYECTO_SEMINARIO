@@ -74,8 +74,8 @@ public class InvitarMiembro extends JFrame {
 	
 		invitarButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				String nombreUsuario = (String)asignarUsuarioComboBox.getSelectedItem();
 					try {
-						String nombreUsuario = (String)asignarUsuarioComboBox.getSelectedItem();
 						int id_proyecto;
 						id_proyecto = api.getProyectoActual().getId();
 						String nombre_rol = (String)asignarRolComboBox.getSelectedItem();
@@ -144,6 +144,7 @@ public class InvitarMiembro extends JFrame {
         contentPane.add(asignarUsuarioComboBox);
 		setLocationRelativeTo(null);
 	}
+	
 	public int obtenerCodigoRol(String nombreRol) {
 		int codigo=0; 
 		for (RolDTO rolDTO : roles) {
@@ -154,6 +155,8 @@ public class InvitarMiembro extends JFrame {
 		}
 		return codigo;
 	}
+	
+	
 //	   public static void main(String[] args) {
 //	        InvitarMiembro frame = new InvitarMiembro();
 //	        frame.setVisible(true);

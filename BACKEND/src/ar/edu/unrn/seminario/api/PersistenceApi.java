@@ -25,6 +25,7 @@ import ar.edu.unrn.seminario.exception.TaskNotCreatedException;
 import ar.edu.unrn.seminario.exception.TaskNotFoundException;
 import ar.edu.unrn.seminario.exception.TaskNotUpdatedException;
 import ar.edu.unrn.seminario.exception.TaskQueryException;
+import ar.edu.unrn.seminario.exception.UserIsAlreadyMember;
 import ar.edu.unrn.seminario.modelo.Proyecto;
 import ar.edu.unrn.seminario.modelo.Rol;
 import ar.edu.unrn.seminario.modelo.Tarea;
@@ -76,7 +77,7 @@ public class PersistenceApi implements IApi {
 		}
 		return dtos;
 	}
-
+	
 	@Override
 	public List<RolDTO> obtenerRoles() {
 		List<Rol> roles = rolDao.findAll();
@@ -347,6 +348,29 @@ public class PersistenceApi implements IApi {
 		proyectoDao.update(username, idProyecto, codigoRol);
 	}
 
+	@Override
+	public List<UsuarioDTO> obtenerMiembrosDeUnProyecto(int proyectoId) {
+		List<Usuario> miembros = proyectoDao.findAllMembers(proyectoId);
+		List<UsuarioDTO> miembrosDTO = new ArrayList<UsuarioDTO>();
+		for (Usuario usuario : miembros) {
+			miembrosDTO.add(convertirEnUsuarioDTO(usuario));
+		}
+		
+		return miembrosDTO;
+	}
+
+	@Override
+	public int existeMiembro(String username, int idProyecto) throws UserIsAlreadyMember {
+		int existe = 0; //indica que NO existe
+		List<UsuarioDTO> miembrosDTO = obtenerMiembrosDeUnProyecto(idProyecto);
+		for (UsuarioDTO miembro : miembrosDTO) {
+			if(username.equals(miembro.getUsername())){
+				existe = 1;
+				throw new UserIsAlreadyMember("El usuario ya es miembro del proyecto.");
+			}
+		}
+		return existe;
+	}
 
 
 }
