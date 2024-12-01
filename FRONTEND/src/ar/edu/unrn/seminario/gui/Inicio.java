@@ -8,9 +8,7 @@ import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.NotNullException;
-import ar.edu.unrn.seminario.exception.InvalidDateException;
 import java.awt.*;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -183,18 +181,18 @@ public class Inicio extends JFrame {
     }
 
     private void abrirCrearProyecto() {
-    	CrearProyecto crearProyecto = new CrearProyecto(api); // Crear una instancia de ListaProyectos
-        crearProyecto.setVisible(true); // Hacer visible la ventana de proyectos
+    	CrearProyecto crearProyecto = new CrearProyecto(api); 
+        crearProyecto.setVisible(true);
     }
     
     private void abrirListaProyectos() {
-        ListaProyectos listaProyectos = new ListaProyectos(api); // Crear una instancia de ListaProyectos
-        listaProyectos.setVisible(true); // Hacer visible la ventana de proyectos
+        ListaProyectos listaProyectos = new ListaProyectos(api);
+        listaProyectos.setVisible(true); 
     }
 
     private void abrirVentanaResumen() {
-        VentanaResumen ventanaResumen = new VentanaResumen(api); // Crear una instancia de VentanaResumen
-        ventanaResumen.setVisible(true); // Hacer visible la ventana de resumen
+        VentanaResumen ventanaResumen = new VentanaResumen(api); 
+        ventanaResumen.setVisible(true); 
     }
 
     

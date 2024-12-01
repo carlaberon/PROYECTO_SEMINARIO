@@ -32,7 +32,6 @@ public class CrearProyecto extends JFrame {
     List<String> prioridades = Arrays.asList(labels.getString("prioridad.alta"),labels.getString("prioridad.media"), labels.getString("prioridad.baja"));
 	private JPanel contentPane;
 	private JTextField nombreProyectoTextField;
-	private JComboBox<String> proyectoComboBox;
 	private IApi api;
 	private JTextField descripcionTextField;
 	

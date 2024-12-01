@@ -23,14 +23,11 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import ar.edu.unrn.seminario.api.IApi;
-import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.TareaDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
-import ar.edu.unrn.seminario.exception.TaskNotUpdatedException;
-import ar.edu.unrn.seminario.exception.TaskQueryException;
 
 import javax.swing.JTextArea;
 import java.util.Date;
@@ -55,8 +52,6 @@ public class ModificarTarea extends JFrame {
 //			 descomentar para que tome el idioma ingles (english)
 
 			//ResourceBundle labels = ResourceBundle.getBundle("labels");
-	    	
-	    
 	        this.api = api; 
 	        this.usuarios = api.obtenerUsuarios(api.getUsuarioActual().getUsername());
 	        this.tarea = api.getTareaActual();
@@ -135,9 +130,7 @@ public class ModificarTarea extends JFrame {
 	        contentPane.add(dateChooserInicio);
 	        
 	        dateChooserFin = new JDateChooser();
-	        dateChooserFin.getCalendarButton().addActionListener(new ActionListener() {
-	        	public void actionPerformed(ActionEvent e) {
-	        	}
+	        dateChooserFin.getCalendarButton().addActionListener(e -> {
 	        });
 	        dateChooserFin.setBounds(190, 232, 160, 19);
 	        contentPane.add(dateChooserFin);

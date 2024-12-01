@@ -14,11 +14,9 @@ import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.EliminationException;
 import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.exception.NotUpdateException;
-import ar.edu.unrn.seminario.exception.TaskNotUpdatedException;
 import ar.edu.unrn.seminario.exception.InsertionException;
 import ar.edu.unrn.seminario.exception.NotFoundException;
 import ar.edu.unrn.seminario.modelo.Proyecto;
-import ar.edu.unrn.seminario.modelo.Rol;
 import ar.edu.unrn.seminario.modelo.Usuario;
 
 public class ProyectoDAOJDBC implements ProyectoDao{

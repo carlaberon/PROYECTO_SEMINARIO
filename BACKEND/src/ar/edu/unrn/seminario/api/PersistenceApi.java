@@ -1,11 +1,9 @@
 package ar.edu.unrn.seminario.api;
 
 import java.time.LocalDate;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import ar.edu.unrn.seminario.accesos.RolDAOJDBC;
 import ar.edu.unrn.seminario.accesos.RolDao;
 import ar.edu.unrn.seminario.accesos.TareaDAOJDBC;
@@ -21,10 +19,6 @@ import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
-import ar.edu.unrn.seminario.exception.TaskNotCreatedException;
-import ar.edu.unrn.seminario.exception.TaskNotFoundException;
-import ar.edu.unrn.seminario.exception.TaskNotUpdatedException;
-import ar.edu.unrn.seminario.exception.TaskQueryException;
 import ar.edu.unrn.seminario.exception.UserIsAlreadyMember;
 import ar.edu.unrn.seminario.modelo.Proyecto;
 import ar.edu.unrn.seminario.modelo.Rol;
@@ -40,32 +34,19 @@ public class PersistenceApi implements IApi {
 	private Proyecto proyectoActual;
 	private Tarea tareaActual;
 	private TareaDao tareaDao;
-	//private Set<Proyecto> proyectos = new HashSet<>();
 	public PersistenceApi() {
 		rolDao = new RolDAOJDBC();
 		usuarioDao = new UsuarioDAOJDBC();
 		proyectoDao = new ProyectoDAOJDBC();
 		tareaDao = new TareaDAOJDBC();
 	}
-
-	@Override
-	public void registrarUsuario(String username, String password, String email, String nombre, Integer codigoRol) {
-		/*Rol rol = rolDao.find(codigoRol);
-		Usuario usuario = new Usuario(username, password, nombre, email);
-		this.usuarioDao.create(usuario);*/
-	}
 	
 	@Override
 	public List<TareaDTO> obtenerTareas() throws NotNullException, InvalidDateException, DataEmptyException {
-		List<TareaDTO> tareasDTO = new ArrayList<>();
-		List<Tarea> tareas = null;
-
-		tareas = tareaDao.findByProject(proyectoActual.getId());
-		
-		for (Tarea t : tareas) {  
-			tareasDTO.add(convertirEnTareaDTO(t));
-		}
-	    return tareasDTO;
+	    List<Tarea> tareas = tareaDao.findByProject(proyectoActual.getId());
+	    return tareas.stream()
+	            .map(this::convertirEnTareaDTO) 
+	            .collect(Collectors.toList());  
 	}
 	
 	@Override
@@ -81,30 +62,9 @@ public class PersistenceApi implements IApi {
 	
 	@Override
 	public List<RolDTO> obtenerRoles() {
-	    return rolDao.findAll().stream()
-	                 .map(this::convertirEnRolDTO)
-	                 .collect(Collectors.toList());
+	    return rolDao.findAll().stream().map(this::convertirEnRolDTO).collect(Collectors.toList());
 	}
 
-	@Override
-	public List<RolDTO> obtenerRolesActivos() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void guardarRol(Integer codigo, String descripcion, boolean estado) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public RolDTO obtenerRolPorCodigo(Integer codigo) {
-		/*//Rol rol = rolDao.find(codigo);
-		RolDTO rolDTO = new RolDTO(rol.getCodigo(), rol.getNombre(), rol.isActivo());
-		return rolDTO;*/
-		return null;
-	}
 	@Override
 	public void crearProyecto(String nombre, String string, String estado, String descripcion, String prioridad)
 			throws NotNullException, DataEmptyException {
@@ -135,27 +95,11 @@ public class PersistenceApi implements IApi {
 		tareaDao.remove(id);
 	}
 
+
 	@Override
 	public List<ProyectoDTO> obtenerProyectos(String username) throws NotNullException, DataEmptyException {
-		List<ProyectoDTO> proyectoDTO = new ArrayList<>();
-		List<Proyecto> proyectos = null;
-			proyectos = proyectoDao.findAll(username);
-		// Asegúrate de que `proyectos` no sea null antes de iterar
-	    if (proyectos != null) {
-	        for (Proyecto p : proyectos) {  
-	            if (p != null) {
-	            	ProyectoDTO dto = convertirEnProyectoDTO(p);
-	  
-	                if (dto != null) { // Solo agregar si dto no es nulo
-	                    proyectoDTO.add(dto);
-	                }
-	            }
-	        }
-	    }
-
-	    return proyectoDTO;
+	    return proyectoDao.findAll(username).stream().map(this::convertirEnProyectoDTO).collect(Collectors.toList());
 	}
-
 	@Override
 	public void eliminarProyecto(int id) throws DataEmptyException, NotNullException, InvalidDateException  {
 		proyectoDao.remove(id);
@@ -216,7 +160,7 @@ public class PersistenceApi implements IApi {
 	public void setUsuarioActual(String nombreUsuario) {
 	    Usuario usuario = usuarioDao.find(nombreUsuario);
 	    if (usuario != null) {
-	        this.usuarioActual = usuario; // Asigna el usuario encontrado
+	        this.usuarioActual = usuario; 
 	    } 
 	}
 
@@ -234,9 +178,6 @@ public class PersistenceApi implements IApi {
 		tarea.setInicio(inicio);
 		tarea.setFin(fin);
 		tareaDao.update(tarea);
-		
-		
-
 	    }
 	
 	@Override
@@ -249,7 +190,7 @@ public class PersistenceApi implements IApi {
 	        case "Baja":
 	            return 3;
 	        default:
-	            return 0; // En caso de prioridad desconocida
+	            return 0; 
 	    }
 	}
 
@@ -270,6 +211,31 @@ public class PersistenceApi implements IApi {
 			    return null; // Retorna null si no se encuentra el usuario
 			}
 
+	@Override
+	public void registrarUsuario(String username, String password, String email, String nombre, Integer codigoRol) {
+		/*Rol rol = rolDao.find(codigoRol);
+		Usuario usuario = new Usuario(username, password, nombre, email);
+		this.usuarioDao.create(usuario);*/
+	}
+	@Override
+	public List<RolDTO> obtenerRolesActivos() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void guardarRol(Integer codigo, String descripcion, boolean estado) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public RolDTO obtenerRolPorCodigo(Integer codigo) {
+		/*//Rol rol = rolDao.find(codigo);
+		RolDTO rolDTO = new RolDTO(rol.getCodigo(), rol.getNombre(), rol.isActivo());
+		return rolDTO;*/
+		return null;
+	}
 	@Override
 	public void eliminarUsuario(String username) {
 		usuarioDao.remove(username);
@@ -332,7 +298,7 @@ public class PersistenceApi implements IApi {
 		return null;
 	}
    
-	
+	@Override
 	public void invitarMiembro(String username, int idProyecto, int codigoRol) throws DataEmptyException {
 		if(username.isEmpty() || codigoRol == 0) {
 			throw new DataEmptyException("mensaje.campoObligatorio");

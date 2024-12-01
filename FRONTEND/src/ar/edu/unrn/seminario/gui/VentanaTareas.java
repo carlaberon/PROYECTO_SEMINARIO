@@ -34,9 +34,7 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
-
 import ar.edu.unrn.seminario.api.IApi;
-import ar.edu.unrn.seminario.api.PersistenceApi;
 import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.TareaDTO;
@@ -44,8 +42,7 @@ import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
-import ar.edu.unrn.seminario.exception.TaskNotFoundException;
-import ar.edu.unrn.seminario.exception.TaskQueryException;
+
 
 
 public class VentanaTareas extends JFrame {
@@ -117,13 +114,7 @@ public class VentanaTareas extends JFrame {
         accountMenu.add(confItem);
         accountMenu.add(logoutItem);
         
-        logoutItem.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
-			}
-        });
-
+        logoutItem.addActionListener(e -> System.exit(0));
         menuBar.add(accountMenu);
         this.setJMenuBar(menuBar);
         
@@ -298,8 +289,7 @@ public class VentanaTareas extends JFrame {
       
       habilitarBotones(false);
       
-      botonModificar.addActionListener(new ActionListener() {
-    	    public void actionPerformed(ActionEvent e) {
+      botonModificar.addActionListener(e -> {
     	        int filaSeleccionada = table.getSelectedRow();
 	    	        int idTarea = (int) table.getValueAt(filaSeleccionada, 0);
 	    	        if(!(rolActual.getNombre().equals("Observador"))) {
@@ -323,11 +313,9 @@ public class VentanaTareas extends JFrame {
 	    	    habilitarBotones(false);
 	    	    table.clearSelection();
     	    }
-    	});
+    	);
       
-      botonEliminar.addActionListener(new ActionListener() {
-      
-	  	public void actionPerformed(ActionEvent e) {
+      botonEliminar.addActionListener(e -> {
 	  		if(!(rolActual.getNombre().equals("Observador"))) {
 	  		int filaSeleccionada = table.getSelectedRow(); 	        
 	  			int idTarea = (int) table.getValueAt(filaSeleccionada, 0);
@@ -346,7 +334,7 @@ public class VentanaTareas extends JFrame {
     	    habilitarBotones(false);
     	    table.clearSelection();
 		}  	  
-     });
+     );
       
       setLocationRelativeTo(null);
       

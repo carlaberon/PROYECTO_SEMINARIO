@@ -30,7 +30,6 @@ public class ListaProyectos extends JFrame {
 	private IApi api;
 	private JTable tabla;
 	private JButton eliminarProyecto;
-	private JButton volver;
 	private UsuarioDTO usuarioActual; //obtener usuario actual por medio de la api
 	
     public ListaProyectos(IApi api)  {
@@ -121,8 +120,6 @@ public class ListaProyectos extends JFrame {
         tabla.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-
-					// Habilitar botones
 					habilitarBotones(true);
 
 			}
@@ -189,7 +186,6 @@ public class ListaProyectos extends JFrame {
 		});
         
     }
-
     
     public void actualizarTabla() throws NotNullException, DataEmptyException{
     	// Obtiene el model del table

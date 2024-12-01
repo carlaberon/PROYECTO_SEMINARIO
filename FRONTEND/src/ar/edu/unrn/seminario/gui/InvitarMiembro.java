@@ -21,22 +21,14 @@ import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
-import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.exception.UserIsAlreadyMember;
 
-import javax.swing.JTextPane;
-import javax.swing.JTree;
 import java.awt.Font;
 import java.awt.Color;
-import javax.swing.UIManager;
-import javax.swing.JRadioButton;
-import javax.swing.JCheckBox;
 
 public class InvitarMiembro extends JFrame {
 
 	private JPanel contentPane;
-	private JComboBox rolesComboBox;
-	private JTextField usernameInvitado;
 	private JComboBox<String> asignarUsuarioComboBox;
 	private JComboBox<String> asignarRolComboBox = new JComboBox<>();
 	private List<UsuarioDTO> usuarios = new ArrayList<>();
@@ -76,8 +68,7 @@ public class InvitarMiembro extends JFrame {
 		invitarButton.setBackground(new Color(89, 65, 169));
 		invitarButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
 	
-		invitarButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		invitarButton.addActionListener(e -> {
 				String nombreUsuario = (String)asignarUsuarioComboBox.getSelectedItem();
 				try {
 					if(api.existeMiembro(nombreUsuario,api.getProyectoActual().getId()) == 0) {
@@ -101,7 +92,7 @@ public class InvitarMiembro extends JFrame {
 					JOptionPane.showMessageDialog(null, labels.getString(e2.getMessage()), labels.getString("mensaje.errorInvitarMiembro"), JOptionPane.ERROR_MESSAGE);
 				}
 			}
-		}); 
+		); 
 
 		invitarButton.setBounds(514, 279, 147, 27);
 		contentPane.add(invitarButton);
@@ -165,9 +156,4 @@ public class InvitarMiembro extends JFrame {
 		}
 		return codigo;
 	}
-	
-//	   public static void main(String[] args) {
-//	        InvitarMiembro frame = new InvitarMiembro();
-//	        frame.setVisible(true);
-//	    }
 }
