@@ -30,10 +30,9 @@ public class ListaProyectos extends JFrame {
 	private IApi api;
 	private JTable tabla;
 	private JButton eliminarProyecto;
-	private JButton volver;
 	private UsuarioDTO usuarioActual; //obtener usuario actual por medio de la api
 	
-    public ListaProyectos(IApi api) throws NotNullException, DataEmptyException {
+    public ListaProyectos(IApi api)  {
     	
     	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
 //   	 descomentar para que tome el idioma ingles (english)
@@ -51,18 +50,19 @@ public class ListaProyectos extends JFrame {
         // Configurar colores y fuente
         Color fondoColor = new Color(48, 48, 48); // Color de fondo oscuro
         Color tituloColor = new Color(109, 114, 195); // Púrpura para los títulos
-        Color nombreProyectoColor = new Color(109, 114, 195); // Púrpura para nombres de proyecto
         Font fuente = new Font("Segoe UI", Font.PLAIN, 11);
 
         getContentPane().setBackground(fondoColor);
         
         tabla = new JTable();
-        String[] proyectosTabla = {labels.getString("menu.Id"), labels.getString("menu.nombre"), labels.getString("menu.descripcionProyecto"), labels.getString("menu.estadoProyecto"), labels.getString("mensaje.prioridad"), labels.getString("menu.propietario")};
+        String[] proyectosTabla = {labels.getString("menu.Id"), labels.getString("menu.nombreTabla"), labels.getString("menu.descripcionProyecto"), labels.getString("menu.estadoProyecto"), labels.getString("mensaje.prioridad"), labels.getString("menu.propietario")};
         
         DefaultTableModel modelo = new DefaultTableModel(new Object[][] {}, proyectosTabla);
         tabla.setModel(modelo);
         
-        List<ProyectoDTO> proyectos = api.obtenerProyectos(api.getUsuarioActual().getUsername());
+        List<ProyectoDTO> proyectos;
+		try {
+			proyectos = api.obtenerProyectos(api.getUsuarioActual().getUsername());
 
         proyectos.sort((p1, p2) -> Integer.compare(api.obtenerPrioridad(p1.getPrioridad()), 
                 api.obtenerPrioridad(p2.getPrioridad())));
@@ -86,6 +86,13 @@ public class ListaProyectos extends JFrame {
         				p.getUsuarioPropietario().getUsername()});
         	}
         }
+		} catch (NotNullException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (DataEmptyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
      
         // Ocultar la columna ID
         tabla.getColumnModel().getColumn(0).setMinWidth(0);
@@ -113,8 +120,6 @@ public class ListaProyectos extends JFrame {
         tabla.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-
-					// Habilitar botones
 					habilitarBotones(true);
 
 			}
@@ -142,16 +147,24 @@ public class ListaProyectos extends JFrame {
 				if (opcionSeleccionada == JOptionPane.YES_OPTION) {
 				        int projecId = (int) tabla.getModel().getValueAt(tabla.getSelectedRow(), 0);
 				        if (api.getRol(usuarioActual.getUsername(), projecId).getNombre().equals("Admin")) {
-				        try {
-				            api.eliminarProyecto(projecId);
-				            actualizarTabla();
-				        } catch (TaskNotFoundException | DataEmptyException | NotNullException | InvalidDateException
-				                 | TaskQueryException e1) {
-				            e1.printStackTrace();
-				        }
+				        
+				            try {
+								api.eliminarProyecto(projecId);
+								actualizarTabla();
+							} catch (DataEmptyException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							} catch (NotNullException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							} catch (InvalidDateException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+				        
 				        habilitarBotones(false);
 				}else {
-					JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.error"), JOptionPane.ERROR_MESSAGE);	
+					JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.ERROR_MESSAGE);	
 				}
 				}
         });
@@ -168,19 +181,11 @@ public class ListaProyectos extends JFrame {
         
         addWindowListener(new WindowAdapter() {
         	public void windowClosing(WindowEvent e) {
-        		try {
-					new Inicio(api).setVisible(true);
-				} catch (NotNullException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (DataEmptyException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+        		new Inicio(api).setVisible(true);
         	}
 		});
+        
     }
-
     
     public void actualizarTabla() throws NotNullException, DataEmptyException{
     	// Obtiene el model del table

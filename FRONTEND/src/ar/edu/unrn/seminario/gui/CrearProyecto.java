@@ -24,16 +24,14 @@ import java.awt.Color;
 
 public class CrearProyecto extends JFrame {
 	
-	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
+	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
 //	 descomentar para que tome el idioma ingles (english)
 
 	//ResourceBundle labels = ResourceBundle.getBundle("labels");
 	
-	
     List<String> prioridades = Arrays.asList(labels.getString("prioridad.alta"),labels.getString("prioridad.media"), labels.getString("prioridad.baja"));
 	private JPanel contentPane;
 	private JTextField nombreProyectoTextField;
-	private JComboBox<String> proyectoComboBox;
 	private IApi api;
 	private JTextField descripcionTextField;
 	
@@ -74,7 +72,7 @@ public class CrearProyecto extends JFrame {
 		prioridadComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 10));
 		prioridadComboBox.setBounds(325, 274, 390, 25);
 		contentPane.add(prioridadComboBox);
-		
+		prioridadComboBox.addItem("");
         for (String prioridad : prioridades) {
             prioridadComboBox.addItem(prioridad);
         }
@@ -91,21 +89,15 @@ public class CrearProyecto extends JFrame {
                 String prioridadSeleccionadaNueva = (String) prioridadComboBox.getSelectedItem();
 
 				try {
-					// Verificar si no se seleccionó una prioridad
-		            if (prioridadSeleccionadaNueva == null || prioridadSeleccionadaNueva.isEmpty()) {
-		                throw new DataEmptyException(labels.getString("mensaje.prioridad"));
-		            }
-			
-					
 					// Crear un nuevo proyecto
 	                api.crearProyecto(nombreNuevoProyecto, api.getUsuarioActual().getUsername(), "EN CURSO", descripcionNueva, prioridadSeleccionadaNueva);
 	                JOptionPane.showMessageDialog(null, labels.getString("mensaje.proyectoCreado"), "Info", JOptionPane.INFORMATION_MESSAGE);
 	                new Inicio(api).setVisible(true);
 	                dispose();
-				} catch (NotNullException ex) {
-		            JOptionPane.showMessageDialog(null, labels.getString("mensaje.elCampo") + ex.getMessage() + labels.getString("mensaje.null"), "Error", JOptionPane.ERROR_MESSAGE);
-		        } catch (DataEmptyException ex) {
-		            JOptionPane.showMessageDialog(null, labels.getString("mensaje.elCampo") + ex.getMessage() + labels.getString("mensaje.empty"), "Error", JOptionPane.ERROR_MESSAGE);
+				} catch (NotNullException e1) {
+		            JOptionPane.showMessageDialog(null, labels.getString("mensaje.elCampo") + labels.getString(e1.getMessage()) + labels.getString("mensaje.null"), "Error", JOptionPane.ERROR_MESSAGE);
+		        } catch (DataEmptyException e2) {
+		            JOptionPane.showMessageDialog(null, labels.getString("mensaje.elCampo") + labels.getString(e2.getMessage()) + labels.getString("mensaje.empty"), "Error", JOptionPane.ERROR_MESSAGE);
 		        }
 			}
 		);
@@ -114,17 +106,8 @@ public class CrearProyecto extends JFrame {
 		cancelarButton.setBackground(new Color(229, 212, 237));
 		cancelarButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
 		cancelarButton.addActionListener(e -> {
+				new Inicio(api).setVisible(true);;
 				dispose();
-				try {
-					new Inicio(api).setVisible(true);;
-				} catch (NotNullException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (DataEmptyException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-               
 			}
 		);
 		cancelarButton.setBounds(568, 398, 147, 27);
@@ -149,17 +132,10 @@ public class CrearProyecto extends JFrame {
 		lblPrioridad.setBounds(88, 264, 227, 39);
 		contentPane.add(lblPrioridad);		
 		setLocationRelativeTo(null); //Centrar frame en la pantalla
+		
 		addWindowListener(new WindowAdapter() { //Cuando el usuario cierra el frame abre devuelta Inicio
         	public void windowClosing(WindowEvent e) {
-        		try {
-					new Inicio(api).setVisible(true);
-				} catch (NotNullException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (DataEmptyException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+        		new Inicio(api).setVisible(true);
         	}
 		});
 	}

@@ -13,13 +13,13 @@ import ar.edu.unrn.seminario.modelo.Tarea;
 
 public interface TareaDao {
 
-	void create(Tarea tarea) throws TaskNotCreatedException;
+	void create(Tarea tarea);
 	
-	public List<Tarea> findByProject(int id_project) throws DataEmptyException, NotNullException, InvalidDateException, TaskQueryException;
+	public List<Tarea> findByProject(int id_project) throws DataEmptyException, NotNullException, InvalidDateException;
 
-	void update(Tarea tarea) throws TaskNotUpdatedException;
+	void update(Tarea tarea);
 	
-	void remove(int id) throws TaskNotFoundException;
+	void remove(int id);
 	
-	public Tarea find(int id) throws DataEmptyException, NotNullException, InvalidDateException;
+	public Tarea find(int idTarea) throws DataEmptyException, NotNullException, InvalidDateException;
 }

@@ -34,9 +34,7 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
-
 import ar.edu.unrn.seminario.api.IApi;
-import ar.edu.unrn.seminario.api.PersistenceApi;
 import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.TareaDTO;
@@ -44,8 +42,7 @@ import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
-import ar.edu.unrn.seminario.exception.TaskNotFoundException;
-import ar.edu.unrn.seminario.exception.TaskQueryException;
+
 
 
 public class VentanaTareas extends JFrame {
@@ -61,7 +58,7 @@ public class VentanaTareas extends JFrame {
     private RolDTO rolActual;
 	
 
-    public VentanaTareas(IApi api) throws RuntimeException, NotNullException, DataEmptyException, InvalidDateException, TaskQueryException{
+    public VentanaTareas(IApi api) {
     	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
 //		 descomentar para que tome el idioma ingles (english)
 
@@ -117,13 +114,7 @@ public class VentanaTareas extends JFrame {
         accountMenu.add(confItem);
         accountMenu.add(logoutItem);
         
-        logoutItem.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
-			}
-        });
-
+        logoutItem.addActionListener(e -> System.exit(0));
         menuBar.add(accountMenu);
         this.setJMenuBar(menuBar);
         
@@ -148,15 +139,7 @@ public class VentanaTareas extends JFrame {
          // Agregar ActionListener solo al botón de "Volver o Back"
             if (item.equals("Volver") || item.equals("Return")) {
                 menuButton.addActionListener(e -> {
-                	try {
-						new VentanaResumen(api).setVisible(true);
-					} catch (NotNullException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (DataEmptyException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+                	new VentanaResumen(api).setVisible(true);
                     dispose();
                 });
             }
@@ -204,11 +187,13 @@ public class VentanaTareas extends JFrame {
         table.setShowGrid(true);
 
         // Modelo de la tabla
-		String[] titulos = { labels.getString("menu.Id"),labels.getString("menu.nombre"),labels.getString("menu.proyecto"),labels.getString("menu.estado"),labels.getString("menu.descripcion"), labels.getString("menu.usuarioAsignado"),labels.getString("mensaje.prioridad"), labels.getString("menu.fechaInicio"), labels.getString("menu.fechaFin") };
+		String[] titulos = { labels.getString("menu.Id"),labels.getString("menu.nombreTabla"),labels.getString("menu.proyecto"),labels.getString("menu.estado"),labels.getString("menu.descripcion"), labels.getString("menu.usuarioAsignado"),labels.getString("mensaje.prioridad"), labels.getString("menu.fechaInicio"), labels.getString("menu.fechaFin") };
 		modelo = new DefaultTableModel(new Object[][] {}, titulos);
-		try {
+		
 			
-		List<TareaDTO> tareas = api.obtenerTareasPorProyecto(unproyecto.getId());
+		List<TareaDTO> tareas;
+		try {
+			tareas = api.obtenerTareasPorProyecto(unproyecto.getId());
 		tareas.sort((t1, t2) -> {
             int prioridadComparacion = Integer.compare(api.obtenerPrioridad(t1.getPriority()), 
                                                        api.obtenerPrioridad(t2.getPriority()));
@@ -234,10 +219,19 @@ public class VentanaTareas extends JFrame {
 		        t.getFin()
 		    });
 		}
+		
+		} catch (InvalidDateException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace(); //Tratar mejor la excepcion
+		} catch (NotNullException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (DataEmptyException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
-		catch (NullPointerException exception) {
-			JOptionPane.showMessageDialog(null, labels.getString("mensaje.noHayTareas"), labels.getString("mensaje.mensaje"), JOptionPane.INFORMATION_MESSAGE);
-		}
+		
+		
 		
 		table.setModel(modelo);
 		scrollPane.setViewportView(table);
@@ -265,22 +259,15 @@ public class VentanaTareas extends JFrame {
         JButton btnTarea = createButton(labels.getString("menu.agregarTarea"), new Color(138, 102, 204));
         btnTarea.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
 				if(!(rolActual.getNombre().equals("Observador"))) {
-				CrearTarea crearTarea;
-				try {
+					CrearTarea crearTarea;
 					crearTarea = new CrearTarea(api);
 					crearTarea.setVisible(true);
 					dispose();
-				} catch (NotNullException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (DataEmptyException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
 				
 				}else {
-					JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.error"), JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
@@ -288,26 +275,6 @@ public class VentanaTareas extends JFrame {
         buttonPanel.add(btnTarea);
         descPanel.add(buttonPanel, BorderLayout.NORTH); // Coloca el botón en el norte (arriba)
         centerPanel1.add(descPanel);
-        
-//      //Configuración del botón "Actualizar Tabla" en la esquina superior izquierda
-//        
-//        JButton btnActualizarTabla = createButton(labels.getString("menu.actualizar"), new Color(138, 102, 204));
-//        buttonPanel.add(btnActualizarTabla);
-//        btnActualizarTabla.addActionListener(new ActionListener() {
-//    			public void actionPerformed(ActionEvent arg0) {
-//    				try {
-//						actualizarTabla();
-//					} catch (NotNullException e) {
-//			            JOptionPane.showMessageDialog(null, "Error: Hay campos que no pueden ser nulos.", "Error de validación", JOptionPane.ERROR_MESSAGE);
-//					} catch (InvalidDateException e) {
-//			            JOptionPane.showMessageDialog(null, "Error: La fecha ingresada es inválida.", "Error de fecha", JOptionPane.ERROR_MESSAGE);
-//					} catch (DataEmptyException e) {
-//			            JOptionPane.showMessageDialog(null, "Error: No se encontraron datos en la consulta. Verifica si el proyecto tiene tareas.", "Datos vacíos", JOptionPane.WARNING_MESSAGE);
-//					} catch (TaskQueryException e) {
-//			            JOptionPane.showMessageDialog(null, "Error al realizar la consulta de tareas en la base de datos: " + e.getMessage(), "Error de base de datos", JOptionPane.ERROR_MESSAGE);
-//					}
-//    			}
-//    		});
         
        //Configuración de los botones "Modificar" y "Eliminar" tarea
       JPanel botones = new JPanel(new FlowLayout());
@@ -322,8 +289,7 @@ public class VentanaTareas extends JFrame {
       
       habilitarBotones(false);
       
-      botonModificar.addActionListener(new ActionListener() {
-    	    public void actionPerformed(ActionEvent e) {
+      botonModificar.addActionListener(e -> {
     	        int filaSeleccionada = table.getSelectedRow();
 	    	        int idTarea = (int) table.getValueAt(filaSeleccionada, 0);
 	    	        if(!(rolActual.getNombre().equals("Observador"))) {
@@ -332,7 +298,7 @@ public class VentanaTareas extends JFrame {
 									modificarTarea();
 								} catch (NotNullException e1) {
 									// TODO Auto-generated catch block
-									e1.printStackTrace();
+									e1.printStackTrace(); //Tratar mejor la excepcion
 								} catch (DataEmptyException e1) {
 									// TODO Auto-generated catch block
 									e1.printStackTrace();
@@ -342,51 +308,39 @@ public class VentanaTareas extends JFrame {
 								}
 								dispose();
     	    	}else {
-    	    		JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.error"), JOptionPane.ERROR_MESSAGE);
+    	    		JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.ERROR_MESSAGE);
     	    	}
 	    	    habilitarBotones(false);
 	    	    table.clearSelection();
     	    }
-    	});
+    	);
       
-      botonEliminar.addActionListener(new ActionListener() {
-      
-	  	public void actionPerformed(ActionEvent e) {
+      botonEliminar.addActionListener(e -> {
 	  		if(!(rolActual.getNombre().equals("Observador"))) {
 	  		int filaSeleccionada = table.getSelectedRow(); 	        
 	  			int idTarea = (int) table.getValueAt(filaSeleccionada, 0);
 				int confirmacion = JOptionPane.showConfirmDialog(botonEliminar, "¿Desea eliminar la tarea: " ,"Confirmar Eliminacion", JOptionPane.YES_NO_OPTION);				
-				if (confirmacion == JOptionPane.YES_OPTION) {															
-					try {
+				if (confirmacion == JOptionPane.YES_OPTION) {		
+					
 						api.eliminarTarea(idTarea);
 						habilitarBotones(false);
 						((DefaultTableModel) table.getModel()).removeRow(filaSeleccionada);
-	                    JOptionPane.showMessageDialog(botonEliminar, "La tarea ha sido eliminada con éxito.", "Eliminación exitosa", JOptionPane.INFORMATION_MESSAGE);
-					} catch (TaskNotFoundException e1) {
-	                    JOptionPane.showMessageDialog(botonEliminar, "No se encontró la tarea a eliminar o no se pudo eliminar debido a un error de base de datos: " + e1.getMessage(), "Error al eliminar", JOptionPane.ERROR_MESSAGE);
-					}										
+	                    JOptionPane.showMessageDialog(botonEliminar, "La tarea ha sido eliminada con éxito.", "Eliminación exitosa", JOptionPane.INFORMATION_MESSAGE);		
+	                    
 				}
 	  		}else {
-	  			JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.error"), JOptionPane.ERROR_MESSAGE);
+	  			JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.ERROR_MESSAGE);
 	    	}
     	    habilitarBotones(false);
     	    table.clearSelection();
 		}  	  
-     });
+     );
       
       setLocationRelativeTo(null);
       
       addWindowListener(new WindowAdapter() { 
       	public void windowClosing(WindowEvent e) {
-      		try {
-					new VentanaResumen(api).setVisible(true);
-				} catch (NotNullException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (DataEmptyException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+      		new VentanaResumen(api).setVisible(true);
       	}
 	 });
     }
@@ -431,46 +385,7 @@ public class VentanaTareas extends JFrame {
 
 	}
 	
-//	void actualizarTabla() throws NotNullException, InvalidDateException, DataEmptyException, TaskQueryException{
-//	
-//	    // Obtiene el model del table
-//	    DefaultTableModel modelo = (DefaultTableModel) table.getModel();
-//	    
-//	    List<TareaDTO> tareas = api.obtenerTareas();
-//	    tareas.sort((t1, t2) -> {
-//            int prioridadComparacion = Integer.compare(api.obtenerPrioridad(t1.getPriority()), 
-//                                                       api.obtenerPrioridad(t2.getPriority()));
-//            if (prioridadComparacion != 0) {
-//                return prioridadComparacion;
-//            }
-//            return t1.getName().compareTo(t2.getName());
-//        });
-//	    
-//	    modelo.setRowCount(0);
-//
-//	    // Agrega las tareas en el modelo
-//		for (TareaDTO t : tareas) {
-//		    modelo.addRow(new Object[] {
-//		        t.getId(),
-//		        t.getName(),
-//		        unproyecto.getNombre(),
-//		        t.getEstado(), // Modifica el estado a una cadena legible
-//		        t.getDescription(),
-//		        t.getUser(),
-//		        t.getPriority(), 
-//		        t.getInicio(),
-//		        t.getFin()
-//		    });
-//		}
-//		// Ocultar la columna ID
-//        table.getColumnModel().getColumn(0).setMinWidth(0);
-//        table.getColumnModel().getColumn(0).setMaxWidth(0);
-//        table.getColumnModel().getColumn(0).setPreferredWidth(0);
-//
-//	}
-	//api.setTareaActual->id
-	//api.getTareaActual<-id
-	void modificarTarea() throws NotNullException, DataEmptyException, InvalidDateException {
+	void modificarTarea() {
 	 ModificarTarea modificatarea = new ModificarTarea(api);
 	 modificatarea.setVisible(true);
     }
