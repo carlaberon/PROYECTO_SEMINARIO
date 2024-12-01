@@ -61,7 +61,7 @@ public class VentanaTareas extends JFrame {
     private RolDTO rolActual;
 	
 
-    public VentanaTareas(IApi api) throws RuntimeException, NotNullException, DataEmptyException, InvalidDateException, TaskQueryException{
+    public VentanaTareas(IApi api) {
     	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
 //		 descomentar para que tome el idioma ingles (english)
 
@@ -148,15 +148,7 @@ public class VentanaTareas extends JFrame {
          // Agregar ActionListener solo al botón de "Volver o Back"
             if (item.equals("Volver") || item.equals("Return")) {
                 menuButton.addActionListener(e -> {
-                	try {
-						new VentanaResumen(api).setVisible(true);
-					} catch (NotNullException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (DataEmptyException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+                	new VentanaResumen(api).setVisible(true);
                     dispose();
                 });
             }
@@ -206,9 +198,11 @@ public class VentanaTareas extends JFrame {
         // Modelo de la tabla
 		String[] titulos = { labels.getString("menu.Id"),labels.getString("menu.nombreTabla"),labels.getString("menu.proyecto"),labels.getString("menu.estado"),labels.getString("menu.descripcion"), labels.getString("menu.usuarioAsignado"),labels.getString("mensaje.prioridad"), labels.getString("menu.fechaInicio"), labels.getString("menu.fechaFin") };
 		modelo = new DefaultTableModel(new Object[][] {}, titulos);
-		try {
+		
 			
-		List<TareaDTO> tareas = api.obtenerTareasPorProyecto(unproyecto.getId());
+		List<TareaDTO> tareas;
+		try {
+			tareas = api.obtenerTareasPorProyecto(unproyecto.getId());
 		tareas.sort((t1, t2) -> {
             int prioridadComparacion = Integer.compare(api.obtenerPrioridad(t1.getPriority()), 
                                                        api.obtenerPrioridad(t2.getPriority()));
@@ -234,10 +228,19 @@ public class VentanaTareas extends JFrame {
 		        t.getFin()
 		    });
 		}
+		
+		} catch (InvalidDateException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace(); //Tratar mejor la excepcion
+		} catch (NotNullException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (DataEmptyException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
-		catch (NullPointerException exception) {
-			JOptionPane.showMessageDialog(null, labels.getString("mensaje.noHayTareas"), labels.getString("mensaje.mensaje"), JOptionPane.INFORMATION_MESSAGE);
-		}
+		
+		
 		
 		table.setModel(modelo);
 		scrollPane.setViewportView(table);
@@ -265,19 +268,12 @@ public class VentanaTareas extends JFrame {
         JButton btnTarea = createButton(labels.getString("menu.agregarTarea"), new Color(138, 102, 204));
         btnTarea.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
 				if(!(rolActual.getNombre().equals("Observador"))) {
-				CrearTarea crearTarea;
-				try {
+					CrearTarea crearTarea;
 					crearTarea = new CrearTarea(api);
 					crearTarea.setVisible(true);
 					dispose();
-				} catch (NotNullException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (DataEmptyException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
 				
 				}else {
 					JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.ERROR_MESSAGE);
@@ -312,7 +308,7 @@ public class VentanaTareas extends JFrame {
 									modificarTarea();
 								} catch (NotNullException e1) {
 									// TODO Auto-generated catch block
-									e1.printStackTrace();
+									e1.printStackTrace(); //Tratar mejor la excepcion
 								} catch (DataEmptyException e1) {
 									// TODO Auto-generated catch block
 									e1.printStackTrace();
@@ -336,15 +332,13 @@ public class VentanaTareas extends JFrame {
 	  		int filaSeleccionada = table.getSelectedRow(); 	        
 	  			int idTarea = (int) table.getValueAt(filaSeleccionada, 0);
 				int confirmacion = JOptionPane.showConfirmDialog(botonEliminar, "¿Desea eliminar la tarea: " ,"Confirmar Eliminacion", JOptionPane.YES_NO_OPTION);				
-				if (confirmacion == JOptionPane.YES_OPTION) {															
-					try {
+				if (confirmacion == JOptionPane.YES_OPTION) {		
+					
 						api.eliminarTarea(idTarea);
 						habilitarBotones(false);
 						((DefaultTableModel) table.getModel()).removeRow(filaSeleccionada);
-	                    JOptionPane.showMessageDialog(botonEliminar, "La tarea ha sido eliminada con éxito.", "Eliminación exitosa", JOptionPane.INFORMATION_MESSAGE);
-					} catch (TaskNotFoundException e1) {
-	                    JOptionPane.showMessageDialog(botonEliminar, "No se encontró la tarea a eliminar o no se pudo eliminar debido a un error de base de datos: " + e1.getMessage(), "Error al eliminar", JOptionPane.ERROR_MESSAGE);
-					}										
+	                    JOptionPane.showMessageDialog(botonEliminar, "La tarea ha sido eliminada con éxito.", "Eliminación exitosa", JOptionPane.INFORMATION_MESSAGE);		
+	                    
 				}
 	  		}else {
 	  			JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.ERROR_MESSAGE);
@@ -358,15 +352,7 @@ public class VentanaTareas extends JFrame {
       
       addWindowListener(new WindowAdapter() { 
       	public void windowClosing(WindowEvent e) {
-      		try {
-					new VentanaResumen(api).setVisible(true);
-				} catch (NotNullException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (DataEmptyException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+      		new VentanaResumen(api).setVisible(true);
       	}
 	 });
     }
@@ -411,7 +397,7 @@ public class VentanaTareas extends JFrame {
 
 	}
 	
-	void modificarTarea() throws NotNullException, DataEmptyException, InvalidDateException {
+	void modificarTarea() {
 	 ModificarTarea modificatarea = new ModificarTarea(api);
 	 modificatarea.setVisible(true);
     }

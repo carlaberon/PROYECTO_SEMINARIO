@@ -49,7 +49,7 @@ public class CrearTarea extends JFrame {
     
     private IApi api;
     
-    public CrearTarea(IApi api) throws NotNullException, DataEmptyException {
+    public CrearTarea(IApi api) {
  
         this.api = api; 
         this.usuarios = api.obtenerUsuarios(api.getUsuarioActual().getUsername());
@@ -162,10 +162,7 @@ public class CrearTarea extends JFrame {
 					} catch (RuntimeException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
-					} catch (TaskQueryException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					} 
                     dispose();
                        
                 	
@@ -182,34 +179,13 @@ public class CrearTarea extends JFrame {
 					} catch (InvalidDateException e) {
 
 						JOptionPane.showMessageDialog(null,"Ingrese fechas válidas: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-					} catch (TaskNotCreatedException e) {
-						
-						JOptionPane.showMessageDialog(null, "No se pudo crear la tarea. Por favor, revise los datos ingresados y vuelva a intentarlo.", "Error al crear tarea", JOptionPane.ERROR_MESSAGE);
-
-					}
+					} 
 
             }
         );
 
         cancelarButton.addActionListener(e -> {
-            	try {
-					new VentanaTareas(api).setVisible(true);
-				} catch (RuntimeException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (InvalidDateException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (NotNullException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (DataEmptyException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (TaskQueryException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				new VentanaTareas(api).setVisible(true);
                 dispose();
             }
         );
@@ -217,24 +193,7 @@ public class CrearTarea extends JFrame {
         setLocationRelativeTo(null);
         addWindowListener(new WindowAdapter() { 
           	public void windowClosing(WindowEvent e) {
-          		try {
-					new VentanaTareas(api).setVisible(true);
-				} catch (RuntimeException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (InvalidDateException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (NotNullException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (DataEmptyException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (TaskQueryException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+          		new VentanaTareas(api).setVisible(true);
           	}
     	});
     }

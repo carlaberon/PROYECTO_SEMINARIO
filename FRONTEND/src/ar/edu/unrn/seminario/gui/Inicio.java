@@ -20,10 +20,10 @@ public class Inicio extends JFrame {
     private JPanel proyectosListPanel;
     private UsuarioDTO usuarioActual;
 
-    public Inicio(IApi api) throws NotNullException, DataEmptyException {
+    public Inicio(IApi api) {
 
         ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
-
+        
         this.api = api;
         this.usuarioActual = api.getUsuarioActual();
 
@@ -98,7 +98,9 @@ public class Inicio extends JFrame {
         proyectosListPanel.setLayout(new BoxLayout(proyectosListPanel, BoxLayout.Y_AXIS));
         proyectosListPanel.setBackground(new Color(30, 30, 30));
 
-        List<ProyectoDTO> proyectos = api.obtenerProyectos(usuarioActual.getUsername());
+        List<ProyectoDTO> proyectos;
+		try {
+			proyectos = api.obtenerProyectos(usuarioActual.getUsername());
         proyectos.sort((p1, p2) -> Integer.compare(api.obtenerPrioridad(p1.getPrioridad()), 
                 api.obtenerPrioridad(p2.getPrioridad())));
         proyectos.sort((p1, p2) -> {
@@ -122,12 +124,19 @@ public class Inicio extends JFrame {
                     abrirVentanaResumen();
                     dispose();
                 } catch (NotNullException | DataEmptyException ex) {
-                    ex.printStackTrace();
+                    ex.printStackTrace(); //Tratar mejor la excepcion
                 }
             });
             return proyectoButton;
         }).forEach(proyectosListPanel::add);
 
+		} catch (NotNullException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (DataEmptyException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
         JPanel proyectosButtonsPanel = new JPanel();
         proyectosButtonsPanel.setBackground(new Color(30, 30, 30));
         proyectosButtonsPanel.setLayout(new BoxLayout(proyectosButtonsPanel, BoxLayout.Y_AXIS));
@@ -140,12 +149,8 @@ public class Inicio extends JFrame {
 
         JButton btnVerProyectos = new JButton(labels.getString("menu.verProyectos"));
         btnVerProyectos.addActionListener(e -> {
-            try {
-                abrirListaProyectos();
-                dispose();
-            } catch (NotNullException | DataEmptyException ex) {
-                ex.printStackTrace();
-            }
+        	abrirListaProyectos();
+        	dispose();
         });
 
         formatButton(btnNuevoProyecto);
@@ -182,18 +187,18 @@ public class Inicio extends JFrame {
         crearProyecto.setVisible(true); // Hacer visible la ventana de proyectos
     }
     
-    private void abrirListaProyectos() throws NotNullException, DataEmptyException {
+    private void abrirListaProyectos() {
         ListaProyectos listaProyectos = new ListaProyectos(api); // Crear una instancia de ListaProyectos
         listaProyectos.setVisible(true); // Hacer visible la ventana de proyectos
     }
 
-    private void abrirVentanaResumen() throws NotNullException, DataEmptyException {
+    private void abrirVentanaResumen() {
         VentanaResumen ventanaResumen = new VentanaResumen(api); // Crear una instancia de VentanaResumen
         ventanaResumen.setVisible(true); // Hacer visible la ventana de resumen
     }
 
     
-	public static void main(String[] args) throws NotNullException, DataEmptyException, InvalidDateException{
+	public static void main(String[] args)  {
 		
 		IApi api = new PersistenceApi();
 		UsuarioDTO usuario = api.obtenerUsuario("juan123");

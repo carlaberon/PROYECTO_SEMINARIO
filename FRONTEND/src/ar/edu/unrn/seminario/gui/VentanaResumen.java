@@ -28,7 +28,7 @@ public class VentanaResumen extends JFrame {
     private UsuarioDTO usuarioActual; //obtener usuario actual por medio de la api
     private ProyectoDTO unproyecto; //obtener proyecto por medio de la api
     
-    public VentanaResumen(IApi api) throws NotNullException, DataEmptyException {
+    public VentanaResumen(IApi api) {
 
     	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
 //		 descomentar para que tome el idioma ingles (english)
@@ -137,15 +137,7 @@ public class VentanaResumen extends JFrame {
          // Agregar ActionListener solo al botón de "Volver o Back"
             if (item.equals("Volver") || item.equals("Return")) {
                 menuButton.addActionListener(e -> {
-                	try {
-						new Inicio(api).setVisible(true);
-					} catch (NotNullException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (DataEmptyException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+                	new Inicio(api).setVisible(true);
                     dispose();
                 });
             }
@@ -193,20 +185,13 @@ public class VentanaResumen extends JFrame {
             public void actionPerformed(ActionEvent e) {
             	
                 if(api.getRol(usuarioActual.getUsername(), unproyecto.getId()).getNombre().equals("Administrador")) {
-                	try {
-    					
     					InvitarMiembro invitarMiembro = new InvitarMiembro(api);
     					invitarMiembro.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     	                invitarMiembro.setVisible(true);  // Mostrar la ventana de InvitarMiembro
-    				} catch (NotNullException | DataEmptyException e1) {
-    					// TODO Auto-generated catch block
-    					e1.printStackTrace();
-    				}
                 } else {
     	            JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.ERROR_MESSAGE);
 
                 }
-                
             }
         });
 
@@ -227,15 +212,7 @@ public class VentanaResumen extends JFrame {
 				VentanaTareas ventanaTareas = new VentanaTareas(api);
 				ventanaTareas.setVisible(true);
 				dispose();
-			} catch (TaskQueryException e1) {
-	            JOptionPane.showMessageDialog(null, labels.getString("mensaje.errorConsultaTareas") + e1.getMessage(), labels.getString("mensaje.errorConsulta"), JOptionPane.ERROR_MESSAGE);
-	        } catch (InvalidDateException e1) {
-	            JOptionPane.showMessageDialog(null, labels.getString("mensaje.errorFechaTarea"), labels.getString("mensaje.errorFecha"), JOptionPane.ERROR_MESSAGE);
-	        } catch (NotNullException e1) {
-	            JOptionPane.showMessageDialog(null, labels.getString("mensaje.errorCampoTarea"), labels.getString("mensaje.campoObligatorio"), JOptionPane.ERROR_MESSAGE);
-	        } catch (DataEmptyException e1) {
-	            JOptionPane.showMessageDialog(null, labels.getString("mensaje.noHayDatosDisponibles"),labels.getString("mensaje.datosVacios") , JOptionPane.WARNING_MESSAGE);
-	        } catch (RuntimeException e1) {
+			} catch (RuntimeException e1) {
 	            JOptionPane.showMessageDialog(null, labels.getString("mensaje.errorInesperado") + e1.getMessage(), labels.getString("mensaje.errorInesperado1"), JOptionPane.ERROR_MESSAGE);
 	        }
             
@@ -248,15 +225,7 @@ public class VentanaResumen extends JFrame {
         
         addWindowListener(new WindowAdapter() { 
         	public void windowClosing(WindowEvent e) {
-        		try {
-					new Inicio(api).setVisible(true);
-				} catch (NotNullException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (DataEmptyException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+        		new Inicio(api).setVisible(true);
         	}
 		});
     }

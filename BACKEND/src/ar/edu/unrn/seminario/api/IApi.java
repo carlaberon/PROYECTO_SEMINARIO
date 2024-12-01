@@ -22,13 +22,13 @@ public interface IApi {
 	//Metodos para los usuarios
 	void registrarUsuario(String username, String password, String email, String nombre, Integer rol);
 
-	UsuarioDTO obtenerUsuario(String username) throws NotNullException, DataEmptyException;
+	UsuarioDTO obtenerUsuario(String username);
 
 	void eliminarUsuario(String username);
 
 	void activarUsuario(String username); // recuperar el objeto Usuario, implementar el comportamiento de estado.
 	
-	List<UsuarioDTO> obtenerUsuarios(String username) throws NotNullException, DataEmptyException; // recuperar todos los usuarios
+	List<UsuarioDTO> obtenerUsuarios(String username); // recuperar todos los usuarios
 	
 	void desactivarUsuario(String username); // recuperar el objeto Usuario, implementar el comportamiento de estado.
 	
@@ -48,25 +48,24 @@ public interface IApi {
 	void desactivarRol(Integer codigo); // recuperar el objeto Rol, imp
 	
 	//Metodos para las Tareas
-	public void registrarTarea(String name,int id_proyecto, String priority, String user, String estado, String descripcion, LocalDate inicio, LocalDate fin) throws DataEmptyException, NotNullException, InvalidDateException, TaskNotCreatedException;
+	public void registrarTarea(String name,int id_proyecto, String priority, String user, String estado, String descripcion, LocalDate inicio, LocalDate fin) throws DataEmptyException, NotNullException, InvalidDateException;
 	
-	List<TareaDTO> obtenerTareas() throws NotNullException, InvalidDateException, DataEmptyException, TaskQueryException;
+	List<TareaDTO> obtenerTareas() throws NotNullException, InvalidDateException, DataEmptyException;
 	
-	public void eliminarTarea(int idTarea) throws TaskNotFoundException;
+	public void eliminarTarea(int idTarea);
 	
-	void modificarTarea(int id, String nuevoNombre, String nuevaPrioridad,String nombreUsuario, String estado, String nuevaDescripcion,LocalDate inicio, LocalDate fin)throws NotNullException, DataEmptyException, InvalidDateException, TaskNotUpdatedException, TaskQueryException;
+	void modificarTarea(int id, String nuevoNombre, String nuevaPrioridad,String nombreUsuario, String estado, String nuevaDescripcion,LocalDate inicio, LocalDate fin)throws NotNullException, DataEmptyException, InvalidDateException;
 	
 	//Metodos para los proyectos
 	List<ProyectoDTO> obtenerProyectos(String username) throws NotNullException, DataEmptyException;
 		    
-	public void eliminarProyecto(int id) throws TaskNotFoundException, DataEmptyException, NotNullException, InvalidDateException, TaskQueryException;
+	public void eliminarProyecto(int id) throws DataEmptyException, NotNullException, InvalidDateException;
 	
-	void modificarProyecto(int idProyecto, String nuevoNombre, String nuevaPrioridad, String nuevaDescripcion)throws NotNullException, DataEmptyException;
+	void modificarProyecto(int idProyecto, String nuevoNombre, String nuevaPrioridad, String nuevaDescripcion) throws NotNullException, DataEmptyException;
 
-	List<TareaDTO> obtenerTareasPorProyecto(int id_project) throws InvalidDateException, NotNullException, DataEmptyException, TaskQueryException;
+	List<TareaDTO> obtenerTareasPorProyecto(int id_project) throws InvalidDateException, NotNullException, DataEmptyException;
 	
-	void crearProyecto(String nombre, String string, String estado, String descripcion, String prioridad)
-			throws NotNullException, DataEmptyException;
+	void crearProyecto(String nombre, String string, String estado, String descripcion, String prioridad) throws NotNullException, DataEmptyException;
 	
 	public void invitarMiembro(String username, int idProyecto, int codigoRol) throws DataEmptyException;
 	

@@ -130,15 +130,7 @@ public class VentanaConfigurarProyecto extends JFrame {
 		cancelar.setBackground(new Color(229, 212, 237));
 		cancelar.setBounds(627, 573, 147, 27);
 		cancelar.addActionListener(e -> {
-				try {
-					new VentanaResumen(api).setVisible(true);
-				} catch (NotNullException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (DataEmptyException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} 
+				new VentanaResumen(api).setVisible(true);
 				dispose();
 			}
 		);
@@ -148,15 +140,7 @@ public class VentanaConfigurarProyecto extends JFrame {
 		
 		addWindowListener(new WindowAdapter() { 
         	public void windowClosing(WindowEvent e) {
-        		try {
-					new VentanaResumen(api).setVisible(true);
-				} catch (NotNullException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (DataEmptyException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+        		new VentanaResumen(api).setVisible(true);
         	}
 		});
 	}
