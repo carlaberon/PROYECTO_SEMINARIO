@@ -49,7 +49,7 @@ public class ModificarTarea extends JFrame {
 	    private TareaDTO tarea;
 	    private IApi api;
 	    
-	    public ModificarTarea(IApi api) throws NotNullException, DataEmptyException, InvalidDateException {
+	    public ModificarTarea(IApi api) {
 
 	    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
 //			 descomentar para que tome el idioma ingles (english)
@@ -178,13 +178,7 @@ public class ModificarTarea extends JFrame {
 							
 						} catch (InvalidDateException e1) {
 							JOptionPane.showMessageDialog(null,"Ingrese fechas válidas: " + e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-				        
-						} catch (TaskNotUpdatedException e1) {
-						    JOptionPane.showMessageDialog(null, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-						    
-						} catch (TaskQueryException e1) {
-				            JOptionPane.showMessageDialog(null, "Error al consultar la tarea. Por favor, inténtelo de nuevo.", "Error de consulta", JOptionPane.ERROR_MESSAGE);
-						}	        
+						} 	        
 	            }				
 	        );
 
@@ -194,19 +188,7 @@ public class ModificarTarea extends JFrame {
 					} catch (RuntimeException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
-					} catch (InvalidDateException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (NotNullException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (DataEmptyException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (TaskQueryException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+					} 
 	                dispose();
 	            }
 	        );
@@ -219,19 +201,7 @@ public class ModificarTarea extends JFrame {
 					} catch (RuntimeException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
-					} catch (InvalidDateException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (NotNullException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (DataEmptyException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (TaskQueryException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+					} 
 	          	}
 	    	});
 	    }

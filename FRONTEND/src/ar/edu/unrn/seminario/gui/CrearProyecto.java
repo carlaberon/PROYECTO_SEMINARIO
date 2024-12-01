@@ -107,17 +107,8 @@ public class CrearProyecto extends JFrame {
 		cancelarButton.setBackground(new Color(229, 212, 237));
 		cancelarButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
 		cancelarButton.addActionListener(e -> {
+				new Inicio(api).setVisible(true);;
 				dispose();
-				try {
-					new Inicio(api).setVisible(true);;
-				} catch (NotNullException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (DataEmptyException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-               
 			}
 		);
 		cancelarButton.setBounds(568, 398, 147, 27);
@@ -142,17 +133,10 @@ public class CrearProyecto extends JFrame {
 		lblPrioridad.setBounds(88, 264, 227, 39);
 		contentPane.add(lblPrioridad);		
 		setLocationRelativeTo(null); //Centrar frame en la pantalla
+		
 		addWindowListener(new WindowAdapter() { //Cuando el usuario cierra el frame abre devuelta Inicio
         	public void windowClosing(WindowEvent e) {
-        		try {
-					new Inicio(api).setVisible(true);
-				} catch (NotNullException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (DataEmptyException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+        		new Inicio(api).setVisible(true);
         	}
 		});
 	}

@@ -56,7 +56,7 @@ public class PersistenceApi implements IApi {
 	}
 	
 	@Override
-	public List<TareaDTO> obtenerTareas() throws NotNullException, InvalidDateException, DataEmptyException, TaskQueryException {
+	public List<TareaDTO> obtenerTareas() throws NotNullException, InvalidDateException, DataEmptyException {
 		List<TareaDTO> tareasDTO = new ArrayList<>();
 		List<Tarea> tareas = null;
 
@@ -69,7 +69,7 @@ public class PersistenceApi implements IApi {
 	}
 	
 	@Override
-	public List<UsuarioDTO> obtenerUsuarios(String username) throws NotNullException, DataEmptyException {
+	public List<UsuarioDTO> obtenerUsuarios(String username) {
 	    List<Usuario> usuarios = usuarioDao.findAll();
 
 	    // Filtra los usuarios cuyo username no coincida con el proporcionado y conviértelos a UsuarioDTO
@@ -123,7 +123,7 @@ public class PersistenceApi implements IApi {
 	@Override
 	public void registrarTarea(String name,int id_proyecto, String priority, String user, String estado,
 			String descripcion, LocalDate inicio, LocalDate fin)
-			throws DataEmptyException, NotNullException, InvalidDateException, TaskNotCreatedException {
+			throws DataEmptyException, NotNullException, InvalidDateException {
 		
 		Tarea tarea = new Tarea(0, name, proyectoDao.find(id_proyecto), priority, user, estado, descripcion, inicio, fin);
 		tareaDao.create(tarea);
@@ -131,7 +131,7 @@ public class PersistenceApi implements IApi {
 
 	
 	@Override
-	public void eliminarTarea(int id) throws TaskNotFoundException {
+	public void eliminarTarea(int id) {
 		tareaDao.remove(id);
 	}
 
@@ -157,7 +157,7 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public void eliminarProyecto(int id) throws TaskNotFoundException, DataEmptyException, NotNullException, InvalidDateException, TaskQueryException {
+	public void eliminarProyecto(int id) throws DataEmptyException, NotNullException, InvalidDateException  {
 		proyectoDao.remove(id);
 		List<Tarea> tareas = tareaDao.findByProject(id);
 		for (Tarea tareas1 : tareas) {
@@ -181,7 +181,7 @@ public class PersistenceApi implements IApi {
 		
 
 	@Override
-	public List<TareaDTO> obtenerTareasPorProyecto(int id) throws InvalidDateException, NotNullException, DataEmptyException, TaskQueryException {
+	public List<TareaDTO> obtenerTareasPorProyecto(int id) throws DataEmptyException, NotNullException, InvalidDateException  {
 		List<TareaDTO> tareasDTO = new ArrayList<>();
 		List<Tarea> tareas = null;
 		tareas = tareaDao.findByProject(id);
@@ -221,7 +221,7 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public void modificarTarea(int id, String nuevoNombre, String nuevaPrioridad, String nombreUsuario, String estado, String nuevaDescripcion, LocalDate inicio, LocalDate fin) throws NotNullException, DataEmptyException, InvalidDateException, TaskNotUpdatedException, TaskQueryException {
+	public void modificarTarea(int id, String nuevoNombre, String nuevaPrioridad, String nombreUsuario, String estado, String nuevaDescripcion, LocalDate inicio, LocalDate fin) throws NotNullException, DataEmptyException, InvalidDateException {
 		
 		Tarea tarea = tareaDao.find(id);
 		
@@ -254,7 +254,7 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public UsuarioDTO obtenerUsuario(String username) throws NotNullException, DataEmptyException {
+	public UsuarioDTO obtenerUsuario(String username) {
 		Usuario usuario = usuarioDao.find(username);
 		if (usuario != null){
 			 UsuarioDTO userDTO = new UsuarioDTO(

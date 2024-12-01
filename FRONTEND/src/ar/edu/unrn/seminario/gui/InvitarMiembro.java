@@ -43,7 +43,7 @@ public class InvitarMiembro extends JFrame {
 	private List<RolDTO> roles = new ArrayList<>(); 
 	private IApi api;
 
-	public InvitarMiembro(IApi api) throws NotNullException, DataEmptyException {
+	public InvitarMiembro(IApi api)  {
 		ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
 		
 		this.roles = api.obtenerRoles();
