@@ -152,7 +152,6 @@ public class CrearTarea extends JFrame {
                     new VentanaTareas(api).setVisible(true);
 					dispose();
                        
-                	
                 	} catch (NullPointerException e) {
                 		JOptionPane.showMessageDialog(null,"Las fechas no pueden ser nulas.", "Error", JOptionPane.ERROR_MESSAGE);
                 	} catch (DataEmptyException e) {

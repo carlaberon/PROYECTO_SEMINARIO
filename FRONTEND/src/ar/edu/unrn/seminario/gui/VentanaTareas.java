@@ -135,7 +135,6 @@ public class VentanaTareas extends JFrame {
             menuButton.setHorizontalAlignment(SwingConstants.LEFT);
             menuButton.setMargin(new Insets(10, 10, 10, 10));
             menuPanel.add(menuButton);
-            
          // Agregar ActionListener solo al botón de "Volver o Back"
             if (item.equals("Volver") || item.equals("Return")) {
                 menuButton.addActionListener(e -> {
@@ -366,8 +365,6 @@ public class VentanaTareas extends JFrame {
 
         return panel;
     }
-    
-    // Método para crear botones con estilo
     private JButton createButton(String text, Color backgroundColor) {
         JButton button = new JButton(text);
         button.setForeground(Color.WHITE);
@@ -389,22 +386,6 @@ public class VentanaTareas extends JFrame {
 	 ModificarTarea modificatarea = new ModificarTarea(api);
 	 modificatarea.setVisible(true);
     }
-	
-	/*public static void main(String []args) throws NotNullException, DataEmptyException, RuntimeException, InvalidDateException {
-		
-		IApi api = new PersistenceApi();
-		//prueba
-		api.setUsuarioActual("ldifabio");
-	
-		api.setProyectoActual(1);
-
-		VentanaTareas ventana = new VentanaTareas(api);
-		
-		ventana.setVisible(true);
-		
-		
-	}*/
-
 }
 
 
