@@ -98,7 +98,7 @@ public class InvitarMiembro extends JFrame {
 					JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), labels.getString("mensaje.errorYaEsMiembro"), JOptionPane.ERROR_MESSAGE);
 				} catch (DataEmptyException e2) {
 					// TODO Auto-generated catch block
-					JOptionPane.showMessageDialog(null, labels.getString(e2.getMessage()), labels.getString("mensaje.errorInvitarMiembro"), JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, labels.getString(e2.getMessage()), labels.getString("titulo.optionpaneInviteMember"), JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		}); 

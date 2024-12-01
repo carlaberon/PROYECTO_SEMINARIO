@@ -13,6 +13,9 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -50,7 +53,7 @@ public class CrearTarea extends JFrame {
     private IApi api;
     
     public CrearTarea(IApi api) {
- 
+    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
         this.api = api; 
         this.usuarios = api.obtenerUsuarios(api.getUsuarioActual().getUsername());
         

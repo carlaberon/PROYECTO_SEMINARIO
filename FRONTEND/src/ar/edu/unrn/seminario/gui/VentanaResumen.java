@@ -65,7 +65,7 @@ public class VentanaResumen extends JFrame {
 
         menuBar.add(menuProyecto);
 
-        JLabel appName = new JLabel(labels.getString("menu.proyecto"));
+        JLabel appName = new JLabel(labels.getString("menu.proyecto1"));
         appName.setForeground(Color.WHITE);
         appName.setFont(new Font("Segoe UI", Font.BOLD, 18));
 
