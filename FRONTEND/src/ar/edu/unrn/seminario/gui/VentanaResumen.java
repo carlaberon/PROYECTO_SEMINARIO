@@ -190,7 +190,6 @@ public class VentanaResumen extends JFrame {
     	                invitarMiembro.setVisible(true);  // Mostrar la ventana de InvitarMiembro
                 } else {
     	            JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.ERROR_MESSAGE);
-
                 }
             }
         });
@@ -207,15 +206,9 @@ public class VentanaResumen extends JFrame {
         centerPanel1.add(tareasPanel);
         btnVerTareas.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
-            //String nombreProyecto = unproyecto.getNombre(); // Este método obtiene el nombre del proyecto seleccionado
-			try {
-				VentanaTareas ventanaTareas = new VentanaTareas(api);
-				ventanaTareas.setVisible(true);
-				dispose();
-			} catch (RuntimeException e1) {
-	            JOptionPane.showMessageDialog(null, labels.getString("mensaje.errorInesperado") + e1.getMessage(), labels.getString("mensaje.errorInesperado1"), JOptionPane.ERROR_MESSAGE);
-	        }
-            
+			VentanaTareas ventanaTareas = new VentanaTareas(api);
+			ventanaTareas.setVisible(true);
+			dispose();
         }
     });
         // Agregar el panel principal al contentPane
@@ -271,6 +264,7 @@ public class VentanaResumen extends JFrame {
         button.setPreferredSize(new Dimension(200, 40));
         return button;
     }
+    
 //    public static void main(String []args) throws NotNullException, DataEmptyException, RuntimeException, InvalidDateException {
 //		IApi api = new PersistenceApi();
 //		//prueba

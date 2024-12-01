@@ -90,7 +90,7 @@ public class ListaProyectos extends JFrame {
         }
 		} catch (NotNullException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e.printStackTrace(); //Tratar mejor la excepcion
 		} catch (DataEmptyException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -157,7 +157,7 @@ public class ListaProyectos extends JFrame {
 								actualizarTabla();
 							} catch (DataEmptyException e1) {
 								// TODO Auto-generated catch block
-								e1.printStackTrace();
+								e1.printStackTrace(); //Tratar mejor la excepcion
 							} catch (NotNullException e1) {
 								// TODO Auto-generated catch block
 								e1.printStackTrace();
@@ -192,11 +192,13 @@ public class ListaProyectos extends JFrame {
     }
 
     
-    public void actualizarTabla() throws NotNullException, DataEmptyException{
+    public void actualizarTabla() {
     	// Obtiene el model del table
     			DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
     			// Obtiene la lista de usuarios a mostrar
-    			List<ProyectoDTO> proyectos = api.obtenerProyectos(api.getUsuarioActual().getUsername());
+    			List<ProyectoDTO> proyectos;
+				try {
+					proyectos = api.obtenerProyectos(api.getUsuarioActual().getUsername());
     			  proyectos.sort((p1, p2) -> {
     		            int prioridadComparacion = Integer.compare(api.obtenerPrioridad(p1.getPrioridad()), 
     		                                                       api.obtenerPrioridad(p2.getPrioridad()));
@@ -219,6 +221,13 @@ public class ListaProyectos extends JFrame {
     				}
     			}
 
+				} catch (NotNullException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace(); //Tratar mejor la excepcion
+				} catch (DataEmptyException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
     }
  // Método para crear botones con estilo
     private JButton createButton(String text, Color backgroundColor) {

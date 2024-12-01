@@ -132,7 +132,7 @@ public class Inicio extends JFrame {
 
 		} catch (NotNullException e1) {
 			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			e1.printStackTrace(); //Tratar mejor la excepcion
 		} catch (DataEmptyException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
