@@ -9,6 +9,9 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -38,7 +41,7 @@ public class CrearTarea extends JFrame {
     private IApi api;
     
     public CrearTarea(IApi api) {
- 
+    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
         this.api = api; 
         this.usuarios = api.obtenerUsuarios(api.getUsuarioActual().getUsername());
         
@@ -145,30 +148,20 @@ public class CrearTarea extends JFrame {
                     api.registrarTarea(nombreTarea, api.getProyectoActual().getId(),prioridadTarea,usuario.getUsername(),"EN CURSO", descripcionTarea, fechaInicioLocalDate, fechaFinLocalDate);
                       
                     JOptionPane.showMessageDialog(null, "Tarea creada con éxito!", "Info", JOptionPane.INFORMATION_MESSAGE);
-                    try {
-						new VentanaTareas(api).setVisible(true);
-					} catch (RuntimeException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} 
-                    dispose();
+					
+                    new VentanaTareas(api).setVisible(true);
+					dispose();
                        
                 	
                 	} catch (NullPointerException e) {
-                		
                 		JOptionPane.showMessageDialog(null,"Las fechas no pueden ser nulas.", "Error", JOptionPane.ERROR_MESSAGE);
                 	} catch (DataEmptyException e) {
                 		JOptionPane.showMessageDialog(null,"La tarea debe tener" +" " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                		
 					} catch (NotNullException e) {
-						
 						JOptionPane.showMessageDialog(null,"La tarea debe tener" +" " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-						
 					} catch (InvalidDateException e) {
-
 						JOptionPane.showMessageDialog(null,"Ingrese fechas válidas: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 					} 
-
             }
         );
 

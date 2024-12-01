@@ -176,12 +176,7 @@ public class ModificarTarea extends JFrame {
 	        );
 
 	        cancelarButton.addActionListener(e -> {
-	            	try {
-						new VentanaTareas(api).setVisible(true);
-					} catch (RuntimeException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} 
+					new VentanaTareas(api).setVisible(true);
 	                dispose();
 	            }
 	        );
@@ -189,12 +184,7 @@ public class ModificarTarea extends JFrame {
 	        setLocationRelativeTo(null);
 	        addWindowListener(new WindowAdapter() { 
 	          	public void windowClosing(WindowEvent e) {
-	          		try {
-						new VentanaTareas(api).setVisible(true);
-					} catch (RuntimeException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} 
+	          		new VentanaTareas(api).setVisible(true);
 	          	}
 	    	});
 	    }

@@ -1,20 +1,32 @@
 package ar.edu.unrn.seminario.gui;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
+import ar.edu.unrn.seminario.exception.DataEmptyException;
+import ar.edu.unrn.seminario.exception.InvalidDateException;
+import ar.edu.unrn.seminario.exception.NotNullException;
+import ar.edu.unrn.seminario.exception.TaskQueryException;
+
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
+import ar.edu.unrn.seminario.api.IApi;
+import ar.edu.unrn.seminario.api.PersistenceApi;
 public class VentanaResumen extends JFrame {
 
     private JPanel contentPane;
     private IApi api;
-    private UsuarioDTO usuarioActual; 
-    private ProyectoDTO unproyecto;
+    private UsuarioDTO usuarioActual; //obtener usuario actual por medio de la api
+    private ProyectoDTO unproyecto; //obtener proyecto por medio de la api
     
     public VentanaResumen(IApi api) {
 
@@ -53,7 +65,7 @@ public class VentanaResumen extends JFrame {
 
         menuBar.add(menuProyecto);
 
-        JLabel appName = new JLabel(labels.getString("menu.proyecto"));
+        JLabel appName = new JLabel(labels.getString("menu.proyecto1"));
         appName.setForeground(Color.WHITE);
         appName.setFont(new Font("Segoe UI", Font.BOLD, 18));
 
@@ -73,7 +85,15 @@ public class VentanaResumen extends JFrame {
         accountMenu.add(logoutItem);
         
         
-        logoutItem.addActionListener(e -> System.exit(0));
+        logoutItem.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				System.exit(0);
+			}
+        	
+        });
 
         menuBar.add(accountMenu);
 
@@ -160,17 +180,19 @@ public class VentanaResumen extends JFrame {
         miembrosPanel.add(btnMiembro);
         miembrosPanel.add(btnVerMiembros);
         centerPanel1.add(miembrosPanel);
-        btnMiembro.addActionListener(e -> {
+        btnMiembro.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	
                 if(api.getRol(usuarioActual.getUsername(), unproyecto.getId()).getNombre().equals("Administrador")) {
     					InvitarMiembro invitarMiembro = new InvitarMiembro(api);
     					invitarMiembro.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     	                invitarMiembro.setVisible(true);  // Mostrar la ventana de InvitarMiembro
                 } else {
     	            JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.ERROR_MESSAGE);
-
                 }
             }
-        );
+        });
 
         miembrosPanel.add(btnMiembro);
         miembrosPanel.add(btnVerMiembros);
@@ -182,17 +204,13 @@ public class VentanaResumen extends JFrame {
         tareasPanel.add(btnTarea);
         tareasPanel.add(btnVerTareas);
         centerPanel1.add(tareasPanel);
-        btnVerTareas.addActionListener(e -> {
-			try {
-				VentanaTareas ventanaTareas = new VentanaTareas(api);
-				ventanaTareas.setVisible(true);
-				dispose();
-			} catch (RuntimeException e1) {
-	            JOptionPane.showMessageDialog(null, labels.getString("mensaje.errorInesperado") + e1.getMessage(), labels.getString("mensaje.errorInesperado1"), JOptionPane.ERROR_MESSAGE);
-	        }
-            
+        btnVerTareas.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+			VentanaTareas ventanaTareas = new VentanaTareas(api);
+			ventanaTareas.setVisible(true);
+			dispose();
         }
-    );
+    });
         // Agregar el panel principal al contentPane
         contentPane.add(centerPanel1, BorderLayout.CENTER);
         
@@ -204,8 +222,11 @@ public class VentanaResumen extends JFrame {
         	}
 		});
     }
-
+    
+    // Método para abrir el panel de configuración
     private void abrirPanelConfiguracion() {
+        // Lógica para mostrar el panel de configuración
+        // Puedes implementar esto como desees
         VentanaConfigurarProyecto ventanaConfig = new VentanaConfigurarProyecto(api);
         ventanaConfig.setVisible(true);
     }
@@ -232,6 +253,7 @@ public class VentanaResumen extends JFrame {
         return panel;
     }
 
+    // Método para crear botones con estilo
     private JButton createButton(String text, Color backgroundColor) {
         JButton button = new JButton(text);
         button.setForeground(Color.WHITE);
@@ -242,6 +264,21 @@ public class VentanaResumen extends JFrame {
         button.setPreferredSize(new Dimension(200, 40));
         return button;
     }
+    
+//    public static void main(String []args) throws NotNullException, DataEmptyException, RuntimeException, InvalidDateException {
+//		IApi api = new PersistenceApi();
+//		//prueba
+//		UsuarioDTO usuario = api.obtenerUsuario("ldifabio");
+//		api.setUsuarioActual(usuario.getUsername());
+//	
+//		api.setProyectoActual("Aplicacion de votos");
+//
+//		VentanaResumen ventana = new VentanaResumen(api);
+//		
+//		ventana.setVisible(true);
+//		
+//		
+//	}
 
 }
 
