@@ -123,17 +123,9 @@ public class PersistenceApi implements IApi {
 		proyectoDao.update(proyectoExistente);
 		}
 		
-
 	@Override
-	public List<TareaDTO> obtenerTareasPorProyecto(int id) throws DataEmptyException, NotNullException, InvalidDateException  {
-		List<TareaDTO> tareasDTO = new ArrayList<>();
-		List<Tarea> tareas = null;
-		tareas = tareaDao.findByProject(id);
-
-		for (Tarea t : tareas) {  
-			tareasDTO.add(convertirEnTareaDTO(t));
-	    }
-	    return tareasDTO;
+	public List<TareaDTO> obtenerTareasPorProyecto(int id) throws DataEmptyException, NotNullException, InvalidDateException {
+	    return tareaDao.findByProject(id).stream().map(this::convertirEnTareaDTO).collect(Collectors.toList()); 
 	}
 	
 	@Override
@@ -281,7 +273,7 @@ public class PersistenceApi implements IApi {
 		ProyectoDTO proyectoDto = null;
 		if(proyecto != null)
 			proyectoDto = new ProyectoDTO(proyecto.getId(),proyecto.getNombre(), convertirEnUsuarioDTO(proyecto.getUsuarioPropietario()), proyecto.getEstado(), proyecto.getPrioridad(), proyecto.getDescripcion());
-			
+
 		proyectoDto.setId(proyecto.getId());
 		return proyectoDto;
 	}

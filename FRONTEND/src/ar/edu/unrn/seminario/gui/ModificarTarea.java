@@ -78,12 +78,7 @@ public class ModificarTarea extends JFrame {
 	        asignarUsuarioComboBox = new JComboBox<>();
 	        asignarUsuarioComboBox.setBounds(190, 100, 160, 22);
 	        
-	        if ( ! this.usuarios.isEmpty()) {
-	        	 for (UsuarioDTO usuario : this.usuarios) {
-	                 asignarUsuarioComboBox.addItem(usuario.getUsername());
-	             }
-	        }
-	       
+	        this.usuarios.stream().map(UsuarioDTO::getUsername).forEach(asignarUsuarioComboBox::addItem);
 	        contentPane.add(asignarUsuarioComboBox);
 
 	        JLabel prioridadTareaLabel = new JLabel(labels.getString("campo.prioridad"));
