@@ -1,5 +1,6 @@
 package ar.edu.unrn.seminario.modelo;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -8,11 +9,11 @@ import ar.edu.unrn.seminario.exception.NotNullException;
 
 public class Notificacion {
 	private String descripcion;
-	private LocalDateTime fecha;
+	private LocalDate fecha;
 
 	
 	
-	public Notificacion(String nombreProyecto) throws NotNullException, DataEmptyException {
+	public Notificacion(String nombreProyecto,LocalDate fechaGenerada) throws NotNullException, DataEmptyException {
 		
   	    if (esDatoNulo(nombreProyecto)) {
 	    	throw new NotNullException("menu.nombreProyecto");
@@ -23,7 +24,7 @@ public class Notificacion {
 	    }
 	    
 	    this.descripcion = "Te invitaron al proyecto: " + nombreProyecto;
-		setFecha();
+		this.fecha = fechaGenerada;
 	}
 
 
@@ -35,12 +36,12 @@ public class Notificacion {
 		this.descripcion = descripcion;
 	}
 
-	public LocalDateTime getFecha() {
+	public LocalDate getFecha() {
 		return fecha;
 	}
 
-	public void setFecha() {
-		this.fecha = fecha.now();
+	public void setFecha(LocalDate fecha) {
+		this.fecha = fecha;
 	}
 	
 

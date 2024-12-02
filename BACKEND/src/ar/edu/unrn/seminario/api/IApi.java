@@ -2,6 +2,8 @@ package ar.edu.unrn.seminario.api;
 
 import java.time.LocalDate;
 import java.util.List;
+
+import ar.edu.unrn.seminario.dto.NotificacionDTO;
 import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.TareaDTO;
@@ -66,6 +68,10 @@ public interface IApi {
 	public List<UsuarioDTO> obtenerMiembrosDeUnProyecto(int proyectoId);
 	
 	public int existeMiembro(String username, int idProyecto) throws UserIsAlreadyMember;
+	
+	public void crearNotificacion(String nombreProyecto,int idProyecto, String username,LocalDate fecha) throws NotNullException, DataEmptyException;
+	
+	public List<NotificacionDTO> obtenerNotificaciones(String username) throws NotNullException, DataEmptyException;
 	
 	//Metodos para proposito general
 	public void setTareaActual(int idTarea) throws DataEmptyException, NotNullException, InvalidDateException;

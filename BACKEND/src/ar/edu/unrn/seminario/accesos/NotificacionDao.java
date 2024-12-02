@@ -1,5 +1,15 @@
 package ar.edu.unrn.seminario.accesos;
 
-public class NotificacionDao {
+import java.util.List;
 
+import ar.edu.unrn.seminario.exception.DataEmptyException;
+import ar.edu.unrn.seminario.exception.NotNullException;
+import ar.edu.unrn.seminario.modelo.Notificacion;
+
+
+public interface NotificacionDao {
+	
+	void create(Notificacion notificacion, String username, int idProyecto);
+	
+	List<Notificacion> findAll(String username) throws NotNullException, DataEmptyException;
 }
