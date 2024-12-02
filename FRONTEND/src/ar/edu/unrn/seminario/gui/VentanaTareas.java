@@ -1,7 +1,6 @@
 package ar.edu.unrn.seminario.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Button;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -14,11 +13,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
-
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -43,8 +40,6 @@ import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
 
-
-
 public class VentanaTareas extends JFrame {
 
     private JPanel contentPane;
@@ -53,13 +48,11 @@ public class VentanaTareas extends JFrame {
 	private IApi api;
 	JButton botonModificar;
 	JButton botonEliminar;
-	private UsuarioDTO usuarioActual; //obtener usuario actual por medio de la api
-    private ProyectoDTO unproyecto; //obtener proyecto por medio de la api
+	private UsuarioDTO usuarioActual;
+    private ProyectoDTO unproyecto; 
     private RolDTO rolActual;
-	
-
     public VentanaTareas(IApi api) {
-    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
+    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
 //		 descomentar para que tome el idioma ingles (english)
 
 		//ResourceBundle labels = ResourceBundle.getBundle("labels");
@@ -77,8 +70,7 @@ public class VentanaTareas extends JFrame {
         contentPane = new JPanel();
         contentPane.setLayout(new BorderLayout());
         setContentPane(contentPane);
-        
-        // Configuración del menú superior
+
         JMenuBar menuBar = new JMenuBar();
         menuBar.setBackground(new Color(138, 102, 204));
         menuBar.setPreferredSize(new Dimension(100, 50));
@@ -96,7 +88,7 @@ public class VentanaTareas extends JFrame {
 
         menuBar.add(menuProyecto);
 
-        JLabel appName = new JLabel(labels.getString("menu.proyecto"));
+        JLabel appName = new JLabel(labels.getString("menu.proyecto1"));
         appName.setForeground(Color.WHITE);
         appName.setFont(new Font("Segoe UI", Font.BOLD, 18));
 
@@ -135,7 +127,6 @@ public class VentanaTareas extends JFrame {
             menuButton.setHorizontalAlignment(SwingConstants.LEFT);
             menuButton.setMargin(new Insets(10, 10, 10, 10));
             menuPanel.add(menuButton);
-            
          // Agregar ActionListener solo al botón de "Volver o Back"
             if (item.equals("Volver") || item.equals("Return")) {
                 menuButton.addActionListener(e -> {
@@ -257,8 +248,7 @@ public class VentanaTareas extends JFrame {
         buttonPanel.setOpaque(false);
 
         JButton btnTarea = createButton(labels.getString("menu.agregarTarea"), new Color(138, 102, 204));
-        btnTarea.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+        btnTarea.addActionListener(e -> {
 				
 				if(!(rolActual.getNombre().equals("Observador"))) {
 					CrearTarea crearTarea;
@@ -270,8 +260,7 @@ public class VentanaTareas extends JFrame {
 					JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.ERROR_MESSAGE);
 				}
 			}
-		});
-
+		);
         buttonPanel.add(btnTarea);
         descPanel.add(buttonPanel, BorderLayout.NORTH); // Coloca el botón en el norte (arriba)
         centerPanel1.add(descPanel);
@@ -285,7 +274,6 @@ public class VentanaTareas extends JFrame {
       botones.add(botonModificar);
       botones.add(botonEliminar);
       descPanel.add(botones, BorderLayout.SOUTH);
-      
       
       habilitarBotones(false);
       
@@ -319,13 +307,13 @@ public class VentanaTareas extends JFrame {
 	  		if(!(rolActual.getNombre().equals("Observador"))) {
 	  		int filaSeleccionada = table.getSelectedRow(); 	        
 	  			int idTarea = (int) table.getValueAt(filaSeleccionada, 0);
-				int confirmacion = JOptionPane.showConfirmDialog(botonEliminar, "¿Desea eliminar la tarea: " ,"Confirmar Eliminacion", JOptionPane.YES_NO_OPTION);				
+				int confirmacion = JOptionPane.showConfirmDialog(null, labels.getString("mensaje.preguntaDeEliminar"),labels.getString("titulo.optionPanePreguntaEliminacion"), JOptionPane.YES_NO_OPTION);				
 				if (confirmacion == JOptionPane.YES_OPTION) {		
 					
 						api.eliminarTarea(idTarea);
 						habilitarBotones(false);
 						((DefaultTableModel) table.getModel()).removeRow(filaSeleccionada);
-	                    JOptionPane.showMessageDialog(botonEliminar, "La tarea ha sido eliminada con éxito.", "Eliminación exitosa", JOptionPane.INFORMATION_MESSAGE);		
+	                    JOptionPane.showMessageDialog(null, labels.getString("mensaje.eliminacionExitosa"), labels.getString("titulo.optionPaneEliminacion"), JOptionPane.INFORMATION_MESSAGE);		
 	                    
 				}
 	  		}else {
@@ -366,8 +354,6 @@ public class VentanaTareas extends JFrame {
 
         return panel;
     }
-    
-    // Método para crear botones con estilo
     private JButton createButton(String text, Color backgroundColor) {
         JButton button = new JButton(text);
         button.setForeground(Color.WHITE);
@@ -389,22 +375,6 @@ public class VentanaTareas extends JFrame {
 	 ModificarTarea modificatarea = new ModificarTarea(api);
 	 modificatarea.setVisible(true);
     }
-	
-	/*public static void main(String []args) throws NotNullException, DataEmptyException, RuntimeException, InvalidDateException {
-		
-		IApi api = new PersistenceApi();
-		//prueba
-		api.setUsuarioActual("ldifabio");
-	
-		api.setProyectoActual(1);
-
-		VentanaTareas ventana = new VentanaTareas(api);
-		
-		ventana.setVisible(true);
-		
-		
-	}*/
-
 }
 
 

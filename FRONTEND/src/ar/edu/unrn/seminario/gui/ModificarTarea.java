@@ -2,8 +2,6 @@ package ar.edu.unrn.seminario.gui;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.time.LocalDate;
@@ -80,12 +78,7 @@ public class ModificarTarea extends JFrame {
 	        asignarUsuarioComboBox = new JComboBox<>();
 	        asignarUsuarioComboBox.setBounds(190, 100, 160, 22);
 	        
-	        if ( ! this.usuarios.isEmpty()) {
-	        	 for (UsuarioDTO usuario : this.usuarios) {
-	                 asignarUsuarioComboBox.addItem(usuario.getUsername());
-	             }
-	        }
-	       
+	        this.usuarios.stream().map(UsuarioDTO::getUsername).forEach(asignarUsuarioComboBox::addItem);
 	        contentPane.add(asignarUsuarioComboBox);
 
 	        JLabel prioridadTareaLabel = new JLabel(labels.getString("campo.prioridad"));
@@ -176,12 +169,7 @@ public class ModificarTarea extends JFrame {
 	        );
 
 	        cancelarButton.addActionListener(e -> {
-	            	try {
-						new VentanaTareas(api).setVisible(true);
-					} catch (RuntimeException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} 
+					new VentanaTareas(api).setVisible(true);
 	                dispose();
 	            }
 	        );
@@ -189,12 +177,7 @@ public class ModificarTarea extends JFrame {
 	        setLocationRelativeTo(null);
 	        addWindowListener(new WindowAdapter() { 
 	          	public void windowClosing(WindowEvent e) {
-	          		try {
-						new VentanaTareas(api).setVisible(true);
-					} catch (RuntimeException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} 
+	          		new VentanaTareas(api).setVisible(true);
 	          	}
 	    	});
 	    }

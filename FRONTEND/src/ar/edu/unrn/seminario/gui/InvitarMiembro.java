@@ -1,28 +1,21 @@
 package ar.edu.unrn.seminario.gui;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
-
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.UserIsAlreadyMember;
-
 import java.awt.Font;
 import java.awt.Color;
 
@@ -89,7 +82,7 @@ public class InvitarMiembro extends JFrame {
 					JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), labels.getString("mensaje.errorYaEsMiembro"), JOptionPane.ERROR_MESSAGE);
 				} catch (DataEmptyException e2) {
 					// TODO Auto-generated catch block
-					JOptionPane.showMessageDialog(null, labels.getString(e2.getMessage()), labels.getString("mensaje.errorInvitarMiembro"), JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, labels.getString(e2.getMessage()), labels.getString("titulo.optionpaneInviteMember"), JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		); 
@@ -134,13 +127,8 @@ public class InvitarMiembro extends JFrame {
         
         
        asignarUsuarioComboBox.addItem("");
-        if ( ! this.usuarios.isEmpty()) {
-        	 for (UsuarioDTO usuario : this.usuarios) {
-                 asignarUsuarioComboBox.addItem(usuario.getUsername());
-             }
-        }
-       
-        contentPane.add(asignarUsuarioComboBox);
+       this.usuarios.stream().map(UsuarioDTO::getUsername).forEach(asignarUsuarioComboBox::addItem);
+       contentPane.add(asignarUsuarioComboBox);
         
         
 		setLocationRelativeTo(null);

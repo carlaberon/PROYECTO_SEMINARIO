@@ -3,20 +3,13 @@ package ar.edu.unrn.seminario.gui;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
-
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
-import ar.edu.unrn.seminario.exception.TaskNotFoundException;
-import ar.edu.unrn.seminario.exception.TaskQueryException;
-
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -30,7 +23,7 @@ public class ListaProyectos extends JFrame {
 	private IApi api;
 	private JTable tabla;
 	private JButton eliminarProyecto;
-	private UsuarioDTO usuarioActual; //obtener usuario actual por medio de la api
+	private UsuarioDTO usuarioActual; 
 	
     public ListaProyectos(IApi api)  {
     	
@@ -40,14 +33,11 @@ public class ListaProyectos extends JFrame {
    	//ResourceBundle labels = ResourceBundle.getBundle("labels");
     	this.api = api;
     	this.usuarioActual = api.getUsuarioActual();
-
-        // Configuración básica de la ventana
         setTitle(labels.getString("menu.proyectos"));
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 800, 400);
         getContentPane().setLayout(new BorderLayout());
 
-        // Configurar colores y fuente
         Color fondoColor = new Color(48, 48, 48); // Color de fondo oscuro
         Color tituloColor = new Color(109, 114, 195); // Púrpura para los títulos
         Font fuente = new Font("Segoe UI", Font.PLAIN, 11);
@@ -88,7 +78,7 @@ public class ListaProyectos extends JFrame {
         }
 		} catch (NotNullException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e.printStackTrace(); //Tratar mejor la excepcion
 		} catch (DataEmptyException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -153,7 +143,7 @@ public class ListaProyectos extends JFrame {
 								actualizarTabla();
 							} catch (DataEmptyException e1) {
 								// TODO Auto-generated catch block
-								e1.printStackTrace();
+								e1.printStackTrace(); //Tratar mejor la excepcion
 							} catch (NotNullException e1) {
 								// TODO Auto-generated catch block
 								e1.printStackTrace();
@@ -187,11 +177,13 @@ public class ListaProyectos extends JFrame {
         
     }
     
-    public void actualizarTabla() throws NotNullException, DataEmptyException{
+    public void actualizarTabla() {
     	// Obtiene el model del table
     			DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
     			// Obtiene la lista de usuarios a mostrar
-    			List<ProyectoDTO> proyectos = api.obtenerProyectos(api.getUsuarioActual().getUsername());
+    			List<ProyectoDTO> proyectos;
+				try {
+					proyectos = api.obtenerProyectos(api.getUsuarioActual().getUsername());
     			  proyectos.sort((p1, p2) -> {
     		            int prioridadComparacion = Integer.compare(api.obtenerPrioridad(p1.getPrioridad()), 
     		                                                       api.obtenerPrioridad(p2.getPrioridad()));
@@ -214,6 +206,13 @@ public class ListaProyectos extends JFrame {
     				}
     			}
 
+				} catch (NotNullException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace(); //Tratar mejor la excepcion
+				} catch (DataEmptyException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
     }
  // Método para crear botones con estilo
     private JButton createButton(String text, Color backgroundColor) {
