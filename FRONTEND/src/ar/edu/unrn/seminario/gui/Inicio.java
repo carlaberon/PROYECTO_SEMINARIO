@@ -243,7 +243,7 @@ public class Inicio extends JFrame {
 	public static void main(String[] args)  {
 		
 		IApi api = new PersistenceApi();
-		UsuarioDTO usuario = api.obtenerUsuario("juan123");
+		UsuarioDTO usuario = api.obtenerUsuario("ldifabio");
 
 		api.setUsuarioActual(usuario.getUsername());
 		Inicio inicio = new Inicio(api);
