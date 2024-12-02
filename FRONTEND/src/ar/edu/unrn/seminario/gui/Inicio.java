@@ -33,7 +33,7 @@ public class Inicio extends JFrame {
         menuBar.setBackground(new Color(138, 102, 204));
         menuBar.setPreferredSize(new Dimension(100, 50));
 
-        JLabel projectName = new JLabel(labels.getString("menu.proyecto"));
+        JLabel projectName = new JLabel(labels.getString("menu.bienvenida"));
         projectName.setForeground(Color.WHITE);
         projectName.setFont(new Font("Segoe UI", Font.BOLD, 18));
         menuBar.add(Box.createHorizontalGlue());
@@ -84,17 +84,18 @@ public class Inicio extends JFrame {
         welcomeLabel.setForeground(Color.WHITE);
         welcomeLabel.setFont(new Font("Segoe UI", Font.PLAIN, 18));
         contentPanel.add(welcomeLabel);
+        
 
-        JPanel rightPanel = new JPanel(new BorderLayout());
-        rightPanel.setBackground(new Color(30, 30, 30));
+        JPanel rightPanel = new JPanel(new BorderLayout(6,6));
+        rightPanel.setBackground(new Color(65, 62, 77));
 
         JLabel proyectosLabel = new JLabel(labels.getString("menu.proyectos"));
-        proyectosLabel.setForeground(Color.GRAY);
+        proyectosLabel.setForeground(Color.WHITE);
         proyectosLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-
+        
         proyectosListPanel = new JPanel();
-        proyectosListPanel.setLayout(new BoxLayout(proyectosListPanel, BoxLayout.Y_AXIS));
-        proyectosListPanel.setBackground(new Color(30, 30, 30));
+        proyectosListPanel.setLayout(new GridLayout(10,1,6,6));
+        proyectosListPanel.setBackground(new Color(65, 62, 77));
 
         List<ProyectoDTO> proyectos;
 		try {
@@ -136,7 +137,7 @@ public class Inicio extends JFrame {
 			e1.printStackTrace();
 		}
         JPanel proyectosButtonsPanel = new JPanel();
-        proyectosButtonsPanel.setBackground(new Color(30, 30, 30));
+        proyectosButtonsPanel.setBackground(new Color(65, 62, 77));
         proyectosButtonsPanel.setLayout(new BoxLayout(proyectosButtonsPanel, BoxLayout.Y_AXIS));
 
         JButton btnNuevoProyecto = new JButton(labels.getString("menu.agregarProyecto"));
@@ -161,12 +162,35 @@ public class Inicio extends JFrame {
 
         proyectosButtonsPanel.add(panelHorizontal);
         proyectosButtonsPanel.add(btnVerProyectos);
+        
+
+        JPanel panelNotificaciones = new JPanel();
+        panelNotificaciones.setLayout(new BoxLayout(panelNotificaciones, BoxLayout.Y_AXIS)); // Cambiar a BoxLayout para tamaño dinámico
+        panelNotificaciones.setBackground(new Color(48, 48, 48));
+
+        // Agregar el panelNotificaciones a un JScrollPane
+        JScrollPane scroll = new JScrollPane(panelNotificaciones);
+        scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED); // Scroll vertical solo si es necesario
+        scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); // Desactivar scroll horizontal
+        scroll.getVerticalScrollBar().setUnitIncrement(16); // Ajustar velocidad de scroll
+        scroll.setBorder(null);
+        scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+       
+        
+        for (int i = 0; i < 30; i++) {
+            JPanel panelPrueba1 = createPanel("Notificacion " + (i + 1), "Descripcion");
+            panelPrueba1.setMaximumSize(new Dimension(Integer.MAX_VALUE, 60)); // Permitir que ocupe todo el ancho disponible
+            panelPrueba1.setAlignmentX(Component.LEFT_ALIGNMENT); // Alinear al inicio del eje X
+            panelNotificaciones.add(panelPrueba1);
+            panelNotificaciones.add(Box.createVerticalStrut(10)); // Espacio entre notificaciones
+        }
 
         rightPanel.add(proyectosLabel, BorderLayout.NORTH);
         rightPanel.add(proyectosListPanel, BorderLayout.CENTER);
         rightPanel.add(proyectosButtonsPanel, BorderLayout.SOUTH);
-
+        
         mainPanel.add(contentPanel, BorderLayout.CENTER);
+        mainPanel.add(scroll,BorderLayout.CENTER);
         mainPanel.add(rightPanel, BorderLayout.EAST);
 
         getContentPane().add(mainPanel);
@@ -194,7 +218,27 @@ public class Inicio extends JFrame {
         VentanaResumen ventanaResumen = new VentanaResumen(api); 
         ventanaResumen.setVisible(true); 
     }
+    
+    private JPanel createPanel(String title, String subtitle) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBackground(new Color(53, 52, 60));
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Margen interno
 
+        JLabel label = new JLabel(title);
+        label.setForeground(Color.WHITE);
+        label.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        panel.add(label);
+
+        if (subtitle != null) {
+            JLabel subLabel = new JLabel(subtitle);
+            subLabel.setForeground(Color.GRAY);
+            subLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+            panel.add(subLabel);
+        }
+
+        return panel;
+    }
     
 	public static void main(String[] args)  {
 		
