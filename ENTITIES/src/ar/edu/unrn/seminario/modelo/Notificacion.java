@@ -3,27 +3,29 @@ package ar.edu.unrn.seminario.modelo;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import ar.edu.unrn.seminario.exception.DataEmptyException;
+import ar.edu.unrn.seminario.exception.NotNullException;
+
 public class Notificacion {
-	private String nombre;
 	private String descripcion;
 	private LocalDateTime fecha;
-	private boolean visto;
+
 	
 	
-	public Notificacion(String nombre, String descripcion, LocalDateTime fecha, boolean visto) {
-		this.nombre = nombre;
-		this.descripcion = descripcion;
-		this.fecha = fecha;
-		this.visto = visto;
+	public Notificacion(String nombreProyecto) throws NotNullException, DataEmptyException {
+		
+  	    if (esDatoNulo(nombreProyecto)) {
+	    	throw new NotNullException("menu.nombreProyecto");
+	    }
+	    
+	    if (esDatoVacio(nombreProyecto)) {
+	    	throw new DataEmptyException("menu.nombreProyecto");
+	    }
+	    
+	    this.descripcion = "Te invitaron al proyecto: " + nombreProyecto;
+		setFecha();
 	}
 
-	public String getNombre() {
-		return nombre;
-	}
-
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
 
 	public String getDescripcion() {
 		return descripcion;
@@ -37,22 +39,17 @@ public class Notificacion {
 		return fecha;
 	}
 
-	public void setFecha(LocalDateTime fecha) {
-		this.fecha = fecha;
-	}
-
-	public boolean isVisto() {
-		return visto;
-	}
-
-	public void setVisto(boolean visto) {
-		this.visto = visto;
+	public void setFecha() {
+		this.fecha = fecha.now();
 	}
 	
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(descripcion, fecha, nombre, visto);
+		return Objects.hash(descripcion, fecha);
 	}
+	
+	
 
 
 
@@ -65,7 +62,22 @@ public class Notificacion {
 		if (getClass() != obj.getClass())
 			return false;
 		Notificacion other = (Notificacion) obj;
-		return Objects.equals(descripcion, other.descripcion) && Objects.equals(fecha, other.fecha)
-				&& Objects.equals(nombre, other.nombre) && visto == other.visto;
+		return Objects.equals(descripcion, other.descripcion) && Objects.equals(fecha, other.fecha);
 	}
+	private boolean esDatoVacio(String dato) {
+		return dato.equals("");
+	}
+
+	private boolean esDatoNulo(String dato) {
+		return dato == null;
+	}
+
+
+	@Override
+	public String toString() {
+		return "Notificacion [descripcion=" + descripcion + ", fecha=" + fecha + "]";
+	}
+
+
+
 }
