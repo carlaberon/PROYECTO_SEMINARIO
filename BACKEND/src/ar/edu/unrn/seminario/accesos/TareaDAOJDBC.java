@@ -160,7 +160,6 @@ public class TareaDAOJDBC implements TareaDao{
 				unUsuario = new Usuario(rs.getString("u.usuario"), rs.getString("u.contrasena"), rs.getString("u.nombre"), rs.getString("u.email"), rs.getBoolean("u.activo"));
 				unProyecto = new Proyecto(rs.getInt("p.id"), rs.getString("p.nombre"), unUsuario, rs.getString("estado"), rs.getString("p.descripcion"), rs.getString("p.prioridad"));
 				unaTarea = new Tarea(rs.getInt("id"), rs.getString("nombre"), unProyecto, rs.getString("prioridad"), rs.getString("usuario"), rs.getString("estado"),rs.getString("descripcion"), rs.getDate("fecha_inicio").toLocalDate(), rs.getDate("fecha_fin").toLocalDate());
-				System.out.println(unaTarea);
 			}else {
 				 JOptionPane.showMessageDialog(null, "No se encontró la tarea con ID: " + idTarea, "Error", JOptionPane.ERROR_MESSAGE);
 			}
