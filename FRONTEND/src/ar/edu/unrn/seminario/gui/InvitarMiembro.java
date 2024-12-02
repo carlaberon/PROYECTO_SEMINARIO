@@ -123,7 +123,7 @@ public class InvitarMiembro extends JFrame {
 		asignarRolComboBox.setFont(fuente);
 		asignarRolComboBox.setForeground(tituloColor);
 		asignarRolComboBox.setBackground(grisFondoTextfield);
-		asignarRolComboBox.setBorder(new LineBorder(Color.BLACK,3));
+		asignarRolComboBox.setBorder(new LineBorder(Color.BLACK,1));
 		
 	        if ( ! this.roles.isEmpty()) {
 	        	 for (RolDTO rol : this.roles) {
@@ -162,7 +162,7 @@ public class InvitarMiembro extends JFrame {
 		
 		campoBusqueda = new JTextField();
 		campoBusqueda.setBackground(grisFondoTextfield);
-		campoBusqueda.setBorder(new LineBorder(Color.BLACK, 3));
+		campoBusqueda.setBorder(new LineBorder(Color.BLACK, 1));
 		campoBusqueda.setForeground(tituloColor);
 		campoBusqueda.setFont(fuente);
 		panel.add(campoBusqueda, BorderLayout.NORTH);

@@ -163,6 +163,13 @@ public class VentanaResumen extends JFrame {
                 }
             }
         );
+        /**/
+        btnVerMiembros.addActionListener(e -> {
+  			ListaMiembros ventanaMiembros = new ListaMiembros(api);
+  			ventanaMiembros.setVisible(true);
+  			dispose();
+          });
+          
 
         miembrosPanel.add(btnMiembro);
         miembrosPanel.add(btnVerMiembros);

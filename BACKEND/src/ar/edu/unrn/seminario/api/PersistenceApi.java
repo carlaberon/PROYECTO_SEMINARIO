@@ -10,8 +10,11 @@ import ar.edu.unrn.seminario.accesos.TareaDAOJDBC;
 import ar.edu.unrn.seminario.accesos.TareaDao;
 import ar.edu.unrn.seminario.accesos.UsuarioDAOJDBC;
 import ar.edu.unrn.seminario.accesos.UsuarioDao;
+import ar.edu.unrn.seminario.accesos.NotificacionDAOJBDC;
+import ar.edu.unrn.seminario.accesos.NotificacionDao;
 import ar.edu.unrn.seminario.accesos.ProyectoDAOJDBC;
 import ar.edu.unrn.seminario.accesos.ProyectoDao;
+import ar.edu.unrn.seminario.dto.NotificacionDTO;
 import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.TareaDTO;
@@ -20,6 +23,7 @@ import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.exception.UserIsAlreadyMember;
+import ar.edu.unrn.seminario.modelo.Notificacion;
 import ar.edu.unrn.seminario.modelo.Proyecto;
 import ar.edu.unrn.seminario.modelo.Rol;
 import ar.edu.unrn.seminario.modelo.Tarea;
@@ -34,11 +38,14 @@ public class PersistenceApi implements IApi {
 	private Proyecto proyectoActual;
 	private Tarea tareaActual;
 	private TareaDao tareaDao;
+	private NotificacionDao notificacionDao;
+	
 	public PersistenceApi() {
 		rolDao = new RolDAOJDBC();
 		usuarioDao = new UsuarioDAOJDBC();
 		proyectoDao = new ProyectoDAOJDBC();
 		tareaDao = new TareaDAOJDBC();
+		notificacionDao = new NotificacionDAOJBDC();
 	}
 	
 	@Override
@@ -278,6 +285,14 @@ public class PersistenceApi implements IApi {
 		return proyectoDto;
 	}
 	
+	private NotificacionDTO convertirEnNotificacionDTO(Notificacion notificacion) {
+		NotificacionDTO notificacionDto = null;
+		if(notificacion != null)
+			notificacionDto = new NotificacionDTO(notificacion.getDescripcion(),notificacion.getFecha());
+		
+		return notificacionDto;
+	}
+	
 	public UsuarioDTO getUsuarioActual() { 
 	    return convertirEnUsuarioDTO(usuarioActual);
 	}
@@ -312,6 +327,25 @@ public class PersistenceApi implements IApi {
 	        throw new UserIsAlreadyMember("mensaje.esMiembro");
 	    }
 	    return 0; // No existe
+	}
+
+	@Override
+	public void crearNotificacion(String nombreProyecto, int idProyecto, String username, LocalDate fecha) throws NotNullException, DataEmptyException {
+		Notificacion notificacion = new Notificacion(nombreProyecto, fecha);
+		notificacionDao.create(notificacion, username, idProyecto);
+	}
+
+	@Override
+	public List<NotificacionDTO> obtenerNotificaciones(String username) throws NotNullException, DataEmptyException {
+		List<NotificacionDTO> notificacionesDTO = new ArrayList<>();
+		List<Notificacion> notificacion = null;
+		notificacion = notificacionDao.findAll(username);
+		
+		for (Notificacion notificacion2 : notificacion) {
+			notificacionesDTO.add(convertirEnNotificacionDTO(notificacion2));
+		}
+		
+		return notificacionesDTO;
 	}
 
 
