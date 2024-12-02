@@ -34,6 +34,7 @@ public class PersistenceApi implements IApi {
 	private Proyecto proyectoActual;
 	private Tarea tareaActual;
 	private TareaDao tareaDao;
+	
 	public PersistenceApi() {
 		rolDao = new RolDAOJDBC();
 		usuarioDao = new UsuarioDAOJDBC();
