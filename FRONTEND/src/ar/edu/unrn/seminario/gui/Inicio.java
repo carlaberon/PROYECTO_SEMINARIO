@@ -28,6 +28,7 @@ public class Inicio extends JFrame {
         setTitle(labels.getString("ventana.inicio"));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 600);
+        setBounds(50, 50, 1200, 650);
 
         JMenuBar menuBar = new JMenuBar();
         menuBar.setBackground(new Color(138, 102, 204));

@@ -27,25 +27,41 @@ public class ListaProyectos extends JFrame {
 	
     public ListaProyectos(IApi api)  {
     	
-    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
+    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
 //   	 descomentar para que tome el idioma ingles (english)
 
    	//ResourceBundle labels = ResourceBundle.getBundle("labels");
     	this.api = api;
     	this.usuarioActual = api.getUsuarioActual();
-        setTitle(labels.getString("menu.proyectos"));
+        setTitle(labels.getString("menu.proyecto"));
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setBounds(100, 100, 800, 400);
+        setBounds(50, 50, 1200, 650);
         getContentPane().setLayout(new BorderLayout());
 
-        Color fondoColor = new Color(48, 48, 48); // Color de fondo oscuro
-        Color tituloColor = new Color(109, 114, 195); // Púrpura para los títulos
+        Color fondoColor = new Color(65, 62, 77); 
+        Color tituloColor = new Color(138, 102, 204);
         Font fuente = new Font("Segoe UI", Font.PLAIN, 11);
 
         getContentPane().setBackground(fondoColor);
         
+     // Configuración del menú superior
+        JMenuBar menuBar = new JMenuBar();
+        menuBar.setBackground(new Color(138, 102, 204));
+        menuBar.setPreferredSize(new Dimension(100, 50));
+        
+        JLabel appName = new JLabel(labels.getString("menu.proyectos"));
+        appName.setForeground(Color.WHITE);
+        appName.setFont(new Font("Segoe UI", Font.BOLD, 18));
+
+        JPanel centerPanel = new JPanel();
+        centerPanel.setOpaque(false);
+        centerPanel.add(appName);
+        menuBar.add(centerPanel);
+        this.setJMenuBar(menuBar);
+        
+        
         tabla = new JTable();
-        String[] proyectosTabla = {labels.getString("menu.Id"), labels.getString("menu.nombreTabla"), labels.getString("menu.descripcionProyecto"), labels.getString("menu.estadoProyecto"), labels.getString("mensaje.prioridad"), labels.getString("menu.propietario")};
+        String[] proyectosTabla = {labels.getString("menu.Id"), labels.getString("menu.nombreTabla"), labels.getString("menu.descripcionProyecto"), labels.getString("menu.estadoProyecto"), labels.getString("mensaje.prioridad"), labels.getString("menu.administrador")};
         
         DefaultTableModel modelo = new DefaultTableModel(new Object[][] {}, proyectosTabla);
         tabla.setModel(modelo);
@@ -116,7 +132,7 @@ public class ListaProyectos extends JFrame {
 		});
 
         JPanel panelInferior = new JPanel();
-        panelInferior.setBackground(new Color(109, 114, 195)); // Púrpura para el fondo del panel inferior
+        panelInferior.setBackground(new Color(138, 102, 204)); 
         JLabel labelInferior = new JLabel(labels.getString("menu.sistema"));
         labelInferior.setForeground(Color.WHITE);
         panelInferior.add(labelInferior);
