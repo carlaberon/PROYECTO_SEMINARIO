@@ -127,13 +127,8 @@ public class InvitarMiembro extends JFrame {
         
         
        asignarUsuarioComboBox.addItem("");
-        if ( ! this.usuarios.isEmpty()) {
-        	 for (UsuarioDTO usuario : this.usuarios) {
-                 asignarUsuarioComboBox.addItem(usuario.getUsername());
-             }
-        }
-       
-        contentPane.add(asignarUsuarioComboBox);
+       this.usuarios.stream().map(UsuarioDTO::getUsername).forEach(asignarUsuarioComboBox::addItem);
+       contentPane.add(asignarUsuarioComboBox);
         
         
 		setLocationRelativeTo(null);
