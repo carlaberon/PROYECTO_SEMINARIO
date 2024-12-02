@@ -14,11 +14,9 @@ import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.EliminationException;
 import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.exception.NotUpdateException;
-import ar.edu.unrn.seminario.exception.TaskNotUpdatedException;
 import ar.edu.unrn.seminario.exception.InsertionException;
 import ar.edu.unrn.seminario.exception.NotFoundException;
 import ar.edu.unrn.seminario.modelo.Proyecto;
-import ar.edu.unrn.seminario.modelo.Rol;
 import ar.edu.unrn.seminario.modelo.Usuario;
 
 public class ProyectoDAOJDBC implements ProyectoDao{
@@ -31,15 +29,13 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 			conn = ConnectionManager.getConnection();
 			
 			statement = conn
-					.prepareStatement("INSERT INTO `proyectos` (`nombre`,`usuario_propietario`,`estado`,`descripcion`, `prioridad`,`proyecto`) " + "VALUES(?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+					.prepareStatement("INSERT INTO `proyectos` (`nombre`,`usuario_propietario`,`estado`,`descripcion`, `prioridad`) " + "VALUES(?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 			
 			statement.setString(1, proyecto.getNombre());
 			statement.setObject(2, proyecto.getUsuarioPropietario().getUsername());
 			statement.setString(3, proyecto.getEstado());
 			statement.setString(4, proyecto.getDescripcion());
 			statement.setString(5, proyecto.getPrioridad());
-			statement.setNull(6, java.sql.Types.VARCHAR);
-			
 			
 			int cant = statement.executeUpdate();
 		
@@ -187,11 +183,11 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 					proyectos.add(unProyecto);
 				}
 				
-				if (proyectos.isEmpty()) {
-		            throw new NotFoundException("No se encontraron proyectos para el usuario: ");
-		        }
-			} catch(NotFoundException e1) {
-				JOptionPane.showMessageDialog(null, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+//				if (proyectos.isEmpty()) {
+//		            throw new NotFoundException("No se encontraron proyectos para el usuario: ");
+//		        }
+//			} catch(NotFoundException e1) {
+//				JOptionPane.showMessageDialog(null, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 			} catch (SQLException e2) {
 				JOptionPane.showMessageDialog(null,"Error de SQL: " + e2.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 			} finally {
@@ -225,6 +221,38 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 			   } finally {
 			       ConnectionManager.disconnect();
 			   }
+	}
+
+	@Override
+	public List<Usuario> findAllMembers(int proyectoId) {
+		List<Usuario> miembros = new ArrayList<Usuario>();
+		try {
+			Connection conn = ConnectionManager.getConnection();
+			PreparedStatement statement = conn.prepareStatement("SELECT u.usuario, u.contrasena, u.nombre, u.email, u.activo\r\n" 
+					+ "FROM usuarios u\r\n"
+					+ "JOIN proyectos_usuarios_roles pur ON pur.nombre_usuario = u.usuario\r\n"
+					+ "WHERE pur.id_proyecto = ?\r\n");
+			
+			statement.setInt(1, proyectoId);
+			//statement.setString(2, usuario);
+			ResultSet rs = statement.executeQuery();
+			while(rs.next()) {
+				Usuario miembro = new Usuario(rs.getString("u.usuario"), rs.getString("u.contrasena"), rs.getString("u.nombre"), rs.getString("u.email"));
+				
+				miembros.add(miembro);
+			}
+			
+			if (miembros.isEmpty()) {
+	            throw new NotFoundException("El proyecto no tiene miembros.");
+	        }
+		} catch(NotFoundException e1) {
+			JOptionPane.showMessageDialog(null, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+		} catch (SQLException e2) {
+			JOptionPane.showMessageDialog(null,"Error de SQL: " + e2.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+		} finally {
+			ConnectionManager.disconnect();
+		}
+		return miembros;
 	}
 	
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.modelo.Proyecto;
+import ar.edu.unrn.seminario.modelo.Usuario;
 
 public interface ProyectoDao {
 	void create(Proyecto proyecto);
@@ -18,4 +19,6 @@ public interface ProyectoDao {
 	Proyecto find(int id) throws NotNullException, DataEmptyException;
 
 	List<Proyecto> findAll(String usuario) throws NotNullException, DataEmptyException;
+	
+	List<Usuario> findAllMembers(int proyectoId);
 }

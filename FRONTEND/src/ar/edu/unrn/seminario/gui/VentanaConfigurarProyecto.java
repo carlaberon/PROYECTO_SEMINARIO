@@ -6,6 +6,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -34,6 +36,7 @@ public class VentanaConfigurarProyecto extends JFrame {
 	private JButton cancelar;
 	
 	public VentanaConfigurarProyecto(IApi api) {
+		ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
 		setTitle("Modificar Proyecto");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 800, 650);
@@ -87,7 +90,7 @@ public class VentanaConfigurarProyecto extends JFrame {
 		textField_Descripcion.setBounds(216, 306, 451, 26);
 		contentPane.add(textField_Descripcion);
 		
-		mostararDatosActuales(api);
+		mostrarDatosActuales(api);
 		aceptar = new JButton("Aceptar");
 		aceptar.setFont(new Font("Segoe UI", Font.BOLD, 14));
 		aceptar.setForeground(new Color(255, 255, 255));
@@ -130,15 +133,7 @@ public class VentanaConfigurarProyecto extends JFrame {
 		cancelar.setBackground(new Color(229, 212, 237));
 		cancelar.setBounds(627, 573, 147, 27);
 		cancelar.addActionListener(e -> {
-				try {
-					new VentanaResumen(api).setVisible(true);
-				} catch (NotNullException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (DataEmptyException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} 
+				new VentanaResumen(api).setVisible(true);
 				dispose();
 			}
 		);
@@ -148,29 +143,17 @@ public class VentanaConfigurarProyecto extends JFrame {
 		
 		addWindowListener(new WindowAdapter() { 
         	public void windowClosing(WindowEvent e) {
-        		try {
-					new VentanaResumen(api).setVisible(true);
-				} catch (NotNullException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (DataEmptyException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+        		new VentanaResumen(api).setVisible(true);
         	}
 		});
 	}
 	
-	private void mostararDatosActuales(IApi api) {
-        try {
+	private void mostrarDatosActuales(IApi api) {
             String nombreProyecto = api.getProyectoActual().getNombre();
             String prioridadProyecto = api.getProyectoActual().getPrioridad();
             String descripcionProyecto = api.getProyectoActual().getDescripcion();
             textField_Nombre.setText(nombreProyecto);
             prioridadComboBox.setSelectedItem(prioridadProyecto);
             textField_Descripcion.setText(descripcionProyecto);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error al cargar los datos del proyecto.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
     }
 }

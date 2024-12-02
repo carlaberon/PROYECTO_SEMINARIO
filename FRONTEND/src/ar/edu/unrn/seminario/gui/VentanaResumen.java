@@ -2,35 +2,24 @@ package ar.edu.unrn.seminario.gui;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
-import ar.edu.unrn.seminario.exception.DataEmptyException;
-import ar.edu.unrn.seminario.exception.InvalidDateException;
-import ar.edu.unrn.seminario.exception.NotNullException;
-import ar.edu.unrn.seminario.exception.TaskQueryException;
-
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Locale;
 import java.util.ResourceBundle;
-
-import ar.edu.unrn.seminario.api.IApi;
-import ar.edu.unrn.seminario.api.PersistenceApi;
 public class VentanaResumen extends JFrame {
 
     private JPanel contentPane;
     private IApi api;
-    private UsuarioDTO usuarioActual; //obtener usuario actual por medio de la api
-    private ProyectoDTO unproyecto; //obtener proyecto por medio de la api
+    private UsuarioDTO usuarioActual; 
+    private ProyectoDTO unproyecto; 
     
-    public VentanaResumen(IApi api) throws NotNullException, DataEmptyException {
+    public VentanaResumen(IApi api) {
 
-    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
+    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
 //		 descomentar para que tome el idioma ingles (english)
 
 		//ResourceBundle labels = ResourceBundle.getBundle("labels");
@@ -65,7 +54,7 @@ public class VentanaResumen extends JFrame {
 
         menuBar.add(menuProyecto);
 
-        JLabel appName = new JLabel(labels.getString("menu.proyecto"));
+        JLabel appName = new JLabel(labels.getString("menu.proyecto1"));
         appName.setForeground(Color.WHITE);
         appName.setFont(new Font("Segoe UI", Font.BOLD, 18));
 
@@ -85,15 +74,7 @@ public class VentanaResumen extends JFrame {
         accountMenu.add(logoutItem);
         
         
-        logoutItem.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				System.exit(0);
-			}
-        	
-        });
+        logoutItem.addActionListener(e -> System.exit(0));
 
         menuBar.add(accountMenu);
 
@@ -124,11 +105,11 @@ public class VentanaResumen extends JFrame {
             if (item.equals("Configuración") || item.equals("Settings")) {
                 menuButton.addActionListener(e -> {
                     // Por ejemplo, podrías abrir un nuevo panel de configuración:
-                    if(api.getRol(usuarioActual.getUsername(), unproyecto.getId()).getNombre().equals("Admin")) {
+                    if(api.getRol(usuarioActual.getUsername(), unproyecto.getId()).getNombre().equals("Administrador")) {
                     	abrirPanelConfiguracion();
                     	dispose();
                     } else {
-        	            JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.error"), JOptionPane.ERROR_MESSAGE);
+        	            JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.ERROR_MESSAGE);
 
 					}
                     
@@ -137,43 +118,27 @@ public class VentanaResumen extends JFrame {
          // Agregar ActionListener solo al botón de "Volver o Back"
             if (item.equals("Volver") || item.equals("Return")) {
                 menuButton.addActionListener(e -> {
-                	try {
-						new Inicio(api).setVisible(true);
-					} catch (NotNullException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (DataEmptyException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+                	new Inicio(api).setVisible(true);
                     dispose();
                 });
             }
            
         }
-        
-        
-        
+
         // Agregar el panel lateral al contentPane
         contentPane.add(menuPanel, BorderLayout.WEST);
 
-        
-
-        // Panel principal (Centro)
         JPanel centerPanel1 = new JPanel();
         centerPanel1.setLayout(new GridLayout(3, 2, 10, 10));
         centerPanel1.setBackground(new Color(45, 44, 50));
         centerPanel1.setBorder(new EmptyBorder(20, 20, 20, 20)); // Margen alrededor del contenido
 
-        // Descripción del proyecto
         JPanel descPanel = createPanel(labels.getString("menu.descripcionProyecto"),unproyecto.getDescripcion());
         centerPanel1.add(descPanel);
 
-        // Estado del proyecto
         JPanel estadoPanel = createPanel(labels.getString("menu.estadoProyecto"),unproyecto.isEstado());
         centerPanel1.add(estadoPanel);
 
-        // Detalles del plan
         JPanel planPanel = createPanel(labels.getString("menu.detallesPlan"), null);
         JButton btnPlan = createButton(labels.getString("menu.plan"), new Color(138, 102, 204));
         JButton btnVerPlan = createButton(labels.getString("menu.verPlan"), new Color(83, 82, 90));
@@ -181,66 +146,39 @@ public class VentanaResumen extends JFrame {
         planPanel.add(btnVerPlan);
         centerPanel1.add(planPanel);
 
-        // Miembros del proyecto
         JPanel miembrosPanel = createPanel(labels.getString("menu.miembrosProyecto"), null);
         JButton btnMiembro = createButton(labels.getString("menu.agregarMiembro"), new Color(138, 102, 204));
         JButton btnVerMiembros = createButton(labels.getString("menu.verMiembros"), new Color(83, 82, 90));
         miembrosPanel.add(btnMiembro);
         miembrosPanel.add(btnVerMiembros);
         centerPanel1.add(miembrosPanel);
-        btnMiembro.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        btnMiembro.addActionListener(e -> {
             	
-                if(api.getRol(usuarioActual.getUsername(), unproyecto.getId()).getNombre().equals("Admin")) {
-                	try {
-    					
+                if(api.getRol(usuarioActual.getUsername(), unproyecto.getId()).getNombre().equals("Administrador")) {
     					InvitarMiembro invitarMiembro = new InvitarMiembro(api);
     					invitarMiembro.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    	                invitarMiembro.setVisible(true);  // Mostrar la ventana de InvitarMiembro
-    				} catch (NotNullException | DataEmptyException e1) {
-    					// TODO Auto-generated catch block
-    					e1.printStackTrace();
-    				}
+    	                invitarMiembro.setVisible(true);
                 } else {
-    	            JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.error"), JOptionPane.ERROR_MESSAGE);
-
+    	            JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.ERROR_MESSAGE);
                 }
-                
             }
-        });
+        );
 
         miembrosPanel.add(btnMiembro);
         miembrosPanel.add(btnVerMiembros);
         centerPanel1.add(miembrosPanel);
-        // Tareas
         JPanel tareasPanel = createPanel(labels.getString("menu.tareas"), null);
         JButton btnTarea = createButton(labels.getString("menu.agregarTarea"), new Color(138, 102, 204));
         JButton btnVerTareas = createButton(labels.getString("menu.verDetalles"), new Color(83, 82, 90));
         tareasPanel.add(btnTarea);
         tareasPanel.add(btnVerTareas);
         centerPanel1.add(tareasPanel);
-        btnVerTareas.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-            //String nombreProyecto = unproyecto.getNombre(); // Este método obtiene el nombre del proyecto seleccionado
-			try {
-				VentanaTareas ventanaTareas = new VentanaTareas(api);
-				ventanaTareas.setVisible(true);
-				dispose();
-			} catch (TaskQueryException e1) {
-	            JOptionPane.showMessageDialog(null, labels.getString("mensaje.errorConsultaTareas") + e1.getMessage(), labels.getString("mensaje.errorConsulta"), JOptionPane.ERROR_MESSAGE);
-	        } catch (InvalidDateException e1) {
-	            JOptionPane.showMessageDialog(null, labels.getString("mensaje.errorFechaTarea"), labels.getString("mensaje.errorFecha"), JOptionPane.ERROR_MESSAGE);
-	        } catch (NotNullException e1) {
-	            JOptionPane.showMessageDialog(null, labels.getString("mensaje.errorCampoTarea"), labels.getString("mensaje.campoObligatorio"), JOptionPane.ERROR_MESSAGE);
-	        } catch (DataEmptyException e1) {
-	            JOptionPane.showMessageDialog(null, labels.getString("mensaje.noHayDatosDisponibles"),labels.getString("mensaje.datosVacios") , JOptionPane.WARNING_MESSAGE);
-	        } catch (RuntimeException e1) {
-	            JOptionPane.showMessageDialog(null, labels.getString("mensaje.errorInesperado") + e1.getMessage(), labels.getString("mensaje.errorInesperado1"), JOptionPane.ERROR_MESSAGE);
-	        }
-            
+        btnVerTareas.addActionListener(e -> {
+			VentanaTareas ventanaTareas = new VentanaTareas(api);
+			ventanaTareas.setVisible(true);
+			dispose();
         }
-    });
+    );
         // Agregar el panel principal al contentPane
         contentPane.add(centerPanel1, BorderLayout.CENTER);
         
@@ -248,28 +186,16 @@ public class VentanaResumen extends JFrame {
         
         addWindowListener(new WindowAdapter() { 
         	public void windowClosing(WindowEvent e) {
-        		try {
-					new Inicio(api).setVisible(true);
-				} catch (NotNullException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (DataEmptyException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+        		new Inicio(api).setVisible(true);
         	}
 		});
     }
-    
-    // Método para abrir el panel de configuración
+
     private void abrirPanelConfiguracion() {
-        // Lógica para mostrar el panel de configuración
-        // Puedes implementar esto como desees
         VentanaConfigurarProyecto ventanaConfig = new VentanaConfigurarProyecto(api);
         ventanaConfig.setVisible(true);
     }
 
-    // Método auxiliar para crear paneles con título y diseño consistente
     private JPanel createPanel(String title, String subtitle) {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -291,7 +217,6 @@ public class VentanaResumen extends JFrame {
         return panel;
     }
 
-    // Método para crear botones con estilo
     private JButton createButton(String text, Color backgroundColor) {
         JButton button = new JButton(text);
         button.setForeground(Color.WHITE);
@@ -302,20 +227,6 @@ public class VentanaResumen extends JFrame {
         button.setPreferredSize(new Dimension(200, 40));
         return button;
     }
-//    public static void main(String []args) throws NotNullException, DataEmptyException, RuntimeException, InvalidDateException {
-//		IApi api = new PersistenceApi();
-//		//prueba
-//		UsuarioDTO usuario = api.obtenerUsuario("ldifabio");
-//		api.setUsuarioActual(usuario.getUsername());
-//	
-//		api.setProyectoActual("Aplicacion de votos");
-//
-//		VentanaResumen ventana = new VentanaResumen(api);
-//		
-//		ventana.setVisible(true);
-//		
-//		
-//	}
 
 }
 

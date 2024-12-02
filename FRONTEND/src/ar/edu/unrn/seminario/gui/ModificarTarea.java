@@ -2,8 +2,6 @@ package ar.edu.unrn.seminario.gui;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.time.LocalDate;
@@ -23,14 +21,11 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import ar.edu.unrn.seminario.api.IApi;
-import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.TareaDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
-import ar.edu.unrn.seminario.exception.TaskNotUpdatedException;
-import ar.edu.unrn.seminario.exception.TaskQueryException;
 
 import javax.swing.JTextArea;
 import java.util.Date;
@@ -49,16 +44,14 @@ public class ModificarTarea extends JFrame {
 	    private TareaDTO tarea;
 	    private IApi api;
 	    
-	    public ModificarTarea(IApi api) throws NotNullException, DataEmptyException, InvalidDateException {
+	    public ModificarTarea(IApi api) {
 
 	    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
 //			 descomentar para que tome el idioma ingles (english)
 
 			//ResourceBundle labels = ResourceBundle.getBundle("labels");
-	    	
-	    
 	        this.api = api; 
-	        this.usuarios = api.obtenerUsuarios();
+	        this.usuarios = api.obtenerUsuarios(api.getUsuarioActual().getUsername());
 	        this.tarea = api.getTareaActual();
 	        
 	        setTitle(labels.getString("menu.modificarTarea"));
@@ -135,9 +128,7 @@ public class ModificarTarea extends JFrame {
 	        contentPane.add(dateChooserInicio);
 	        
 	        dateChooserFin = new JDateChooser();
-	        dateChooserFin.getCalendarButton().addActionListener(new ActionListener() {
-	        	public void actionPerformed(ActionEvent e) {
-	        	}
+	        dateChooserFin.getCalendarButton().addActionListener(e -> {
 	        });
 	        dateChooserFin.setBounds(190, 232, 160, 19);
 	        contentPane.add(dateChooserFin);
@@ -178,35 +169,12 @@ public class ModificarTarea extends JFrame {
 							
 						} catch (InvalidDateException e1) {
 							JOptionPane.showMessageDialog(null,"Ingrese fechas válidas: " + e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-				        
-						} catch (TaskNotUpdatedException e1) {
-						    JOptionPane.showMessageDialog(null, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-						    
-						} catch (TaskQueryException e1) {
-				            JOptionPane.showMessageDialog(null, "Error al consultar la tarea. Por favor, inténtelo de nuevo.", "Error de consulta", JOptionPane.ERROR_MESSAGE);
-						}	        
+						} 	        
 	            }				
 	        );
 
 	        cancelarButton.addActionListener(e -> {
-	            	try {
-						new VentanaTareas(api).setVisible(true);
-					} catch (RuntimeException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (InvalidDateException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (NotNullException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (DataEmptyException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (TaskQueryException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+					new VentanaTareas(api).setVisible(true);
 	                dispose();
 	            }
 	        );
@@ -214,24 +182,7 @@ public class ModificarTarea extends JFrame {
 	        setLocationRelativeTo(null);
 	        addWindowListener(new WindowAdapter() { 
 	          	public void windowClosing(WindowEvent e) {
-	          		try {
-						new VentanaTareas(api).setVisible(true);
-					} catch (RuntimeException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (InvalidDateException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (NotNullException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (DataEmptyException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (TaskQueryException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+	          		new VentanaTareas(api).setVisible(true);
 	          	}
 	    	});
 	    }

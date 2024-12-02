@@ -8,9 +8,7 @@ import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.NotNullException;
-import ar.edu.unrn.seminario.exception.InvalidDateException;
 import java.awt.*;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -20,10 +18,10 @@ public class Inicio extends JFrame {
     private JPanel proyectosListPanel;
     private UsuarioDTO usuarioActual;
 
-    public Inicio(IApi api) throws NotNullException, DataEmptyException {
+    public Inicio(IApi api) {
 
-        ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
-
+        ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
+        
         this.api = api;
         this.usuarioActual = api.getUsuarioActual();
 
@@ -98,7 +96,9 @@ public class Inicio extends JFrame {
         proyectosListPanel.setLayout(new BoxLayout(proyectosListPanel, BoxLayout.Y_AXIS));
         proyectosListPanel.setBackground(new Color(30, 30, 30));
 
-        List<ProyectoDTO> proyectos = api.obtenerProyectos(usuarioActual.getUsername());
+        List<ProyectoDTO> proyectos;
+		try {
+			proyectos = api.obtenerProyectos(usuarioActual.getUsername());
         proyectos.sort((p1, p2) -> Integer.compare(api.obtenerPrioridad(p1.getPrioridad()), 
                 api.obtenerPrioridad(p2.getPrioridad())));
         proyectos.sort((p1, p2) -> {
@@ -122,12 +122,19 @@ public class Inicio extends JFrame {
                     abrirVentanaResumen();
                     dispose();
                 } catch (NotNullException | DataEmptyException ex) {
-                    ex.printStackTrace();
+                    ex.printStackTrace(); //Tratar mejor la excepcion
                 }
             });
             return proyectoButton;
         }).forEach(proyectosListPanel::add);
 
+		} catch (NotNullException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace(); //Tratar mejor la excepcion
+		} catch (DataEmptyException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
         JPanel proyectosButtonsPanel = new JPanel();
         proyectosButtonsPanel.setBackground(new Color(30, 30, 30));
         proyectosButtonsPanel.setLayout(new BoxLayout(proyectosButtonsPanel, BoxLayout.Y_AXIS));
@@ -140,12 +147,8 @@ public class Inicio extends JFrame {
 
         JButton btnVerProyectos = new JButton(labels.getString("menu.verProyectos"));
         btnVerProyectos.addActionListener(e -> {
-            try {
-                abrirListaProyectos();
-                dispose();
-            } catch (NotNullException | DataEmptyException ex) {
-                ex.printStackTrace();
-            }
+        	abrirListaProyectos();
+        	dispose();
         });
 
         formatButton(btnNuevoProyecto);
@@ -178,22 +181,22 @@ public class Inicio extends JFrame {
     }
 
     private void abrirCrearProyecto() {
-    	CrearProyecto crearProyecto = new CrearProyecto(api); // Crear una instancia de ListaProyectos
-        crearProyecto.setVisible(true); // Hacer visible la ventana de proyectos
+    	CrearProyecto crearProyecto = new CrearProyecto(api); 
+        crearProyecto.setVisible(true);
     }
     
-    private void abrirListaProyectos() throws NotNullException, DataEmptyException {
-        ListaProyectos listaProyectos = new ListaProyectos(api); // Crear una instancia de ListaProyectos
-        listaProyectos.setVisible(true); // Hacer visible la ventana de proyectos
+    private void abrirListaProyectos() {
+        ListaProyectos listaProyectos = new ListaProyectos(api);
+        listaProyectos.setVisible(true); 
     }
 
-    private void abrirVentanaResumen() throws NotNullException, DataEmptyException {
-        VentanaResumen ventanaResumen = new VentanaResumen(api); // Crear una instancia de VentanaResumen
-        ventanaResumen.setVisible(true); // Hacer visible la ventana de resumen
+    private void abrirVentanaResumen() {
+        VentanaResumen ventanaResumen = new VentanaResumen(api); 
+        ventanaResumen.setVisible(true); 
     }
 
     
-	public static void main(String[] args) throws NotNullException, DataEmptyException, InvalidDateException{
+	public static void main(String[] args)  {
 		
 		IApi api = new PersistenceApi();
 		UsuarioDTO usuario = api.obtenerUsuario("ldifabio");

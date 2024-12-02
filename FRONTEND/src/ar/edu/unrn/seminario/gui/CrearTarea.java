@@ -2,17 +2,16 @@ package ar.edu.unrn.seminario.gui;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -22,19 +21,11 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import ar.edu.unrn.seminario.api.IApi;
-import ar.edu.unrn.seminario.api.PersistenceApi;
-import ar.edu.unrn.seminario.dto.ProyectoDTO;
-import ar.edu.unrn.seminario.dto.TareaDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
-import ar.edu.unrn.seminario.exception.TaskNotCreatedException;
-import ar.edu.unrn.seminario.exception.TaskQueryException;
-
 import javax.swing.JTextArea;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerDateModel;
 import java.util.Date;
 import com.toedter.calendar.JDateChooser;
 
@@ -49,10 +40,10 @@ public class CrearTarea extends JFrame {
     
     private IApi api;
     
-    public CrearTarea(IApi api) throws NotNullException, DataEmptyException {
- 
+    public CrearTarea(IApi api) {
+    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
         this.api = api; 
-        this.usuarios = api.obtenerUsuarios();
+        this.usuarios = api.obtenerUsuarios(api.getUsuarioActual().getUsername());
         
 
         setTitle("Crear Tarea");
@@ -157,59 +148,24 @@ public class CrearTarea extends JFrame {
                     api.registrarTarea(nombreTarea, api.getProyectoActual().getId(),prioridadTarea,usuario.getUsername(),"EN CURSO", descripcionTarea, fechaInicioLocalDate, fechaFinLocalDate);
                       
                     JOptionPane.showMessageDialog(null, "Tarea creada con éxito!", "Info", JOptionPane.INFORMATION_MESSAGE);
-                    try {
-						new VentanaTareas(api).setVisible(true);
-					} catch (RuntimeException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (TaskQueryException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-                    dispose();
+					
+                    new VentanaTareas(api).setVisible(true);
+					dispose();
                        
-                	
                 	} catch (NullPointerException e) {
-                		
                 		JOptionPane.showMessageDialog(null,"Las fechas no pueden ser nulas.", "Error", JOptionPane.ERROR_MESSAGE);
                 	} catch (DataEmptyException e) {
                 		JOptionPane.showMessageDialog(null,"La tarea debe tener" +" " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                		
 					} catch (NotNullException e) {
-						
 						JOptionPane.showMessageDialog(null,"La tarea debe tener" +" " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-						
 					} catch (InvalidDateException e) {
-
 						JOptionPane.showMessageDialog(null,"Ingrese fechas válidas: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-					} catch (TaskNotCreatedException e) {
-						
-						JOptionPane.showMessageDialog(null, "No se pudo crear la tarea. Por favor, revise los datos ingresados y vuelva a intentarlo.", "Error al crear tarea", JOptionPane.ERROR_MESSAGE);
-
-					}
-
+					} 
             }
         );
 
         cancelarButton.addActionListener(e -> {
-            	try {
-					new VentanaTareas(api).setVisible(true);
-				} catch (RuntimeException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (InvalidDateException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (NotNullException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (DataEmptyException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (TaskQueryException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				new VentanaTareas(api).setVisible(true);
                 dispose();
             }
         );
@@ -217,24 +173,7 @@ public class CrearTarea extends JFrame {
         setLocationRelativeTo(null);
         addWindowListener(new WindowAdapter() { 
           	public void windowClosing(WindowEvent e) {
-          		try {
-					new VentanaTareas(api).setVisible(true);
-				} catch (RuntimeException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (InvalidDateException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (NotNullException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (DataEmptyException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (TaskQueryException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+          		new VentanaTareas(api).setVisible(true);
           	}
     	});
     }
