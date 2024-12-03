@@ -134,10 +134,8 @@ public class UsuarioDAOJDBC implements UsuarioDao {
 			System.out.println("Error al procesar consulta");
 			// TODO: disparar Exception propia
 			// throw new AppException(e, e.getSQLState(), e.getMessage());
-		} catch (Exception e) {
-			// TODO: disparar Exception propia
-			// throw new AppException(e, e.getCause().getMessage(), e.getMessage());
-		} finally {
+		} 
+		finally {
 			ConnectionManager.disconnect();
 		}
 

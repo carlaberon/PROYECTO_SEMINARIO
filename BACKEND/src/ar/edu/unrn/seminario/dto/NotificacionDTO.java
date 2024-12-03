@@ -5,11 +5,16 @@ import java.time.LocalDateTime;
 
 
 public class NotificacionDTO {
+	private int idProyecto;
+	private String username;
+	private int codigoRol;
 	private String descripcion;
 	private LocalDate fecha;
-
 	
-	public NotificacionDTO(String descripcion, LocalDate fecha) {
+	public NotificacionDTO(int idProyecto, String username, int codigoRol,String descripcion, LocalDate fecha) {
+		this.idProyecto = idProyecto;
+		this.username = username;
+		this.codigoRol = codigoRol;
 		this.descripcion = descripcion;
 		this.fecha = fecha;
 	}
@@ -32,7 +37,32 @@ public class NotificacionDTO {
 
 	@Override
 	public String toString() {
-		return "NotificacionDTO [descripcion=" + descripcion + ", fecha=" + fecha + "]";
+		return "NotificacionDTO [idProyecto=" + idProyecto + ", username=" + username + ", codigoRol=" + codigoRol
+				+ ", descripcion=" + descripcion + ", fecha=" + fecha + "]";
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public int getIdProyecto() {
+		return idProyecto;
+	}
+
+	public void setIdProyecto(int idProyecto) {
+		this.idProyecto = idProyecto;
+	}
+
+	public int getCodigoRol() {
+		return codigoRol;
+	}
+
+	public void setCodigoRol(int codigoRol) {
+		this.codigoRol = codigoRol;
 	}
 
 

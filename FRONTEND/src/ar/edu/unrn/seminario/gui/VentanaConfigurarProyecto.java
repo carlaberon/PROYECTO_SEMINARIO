@@ -97,7 +97,7 @@ public class VentanaConfigurarProyecto extends JFrame {
 		aceptar.setBackground(new Color(89, 65, 169));
 		aceptar.setBounds(452, 573, 147, 27);
 		aceptar.addActionListener(e -> {
-				String prioridadSeleccionada = (String) prioridadComboBox.getSelectedItem();
+				String prioridadSeleccionada = api.obtenerPrioridadPorIndex(prioridadComboBox.getSelectedIndex());
 				try {
 					
 					if (prioridadSeleccionada.equals(api.getProyectoActual().getPrioridad())  && textField_Nombre.getText().equals(api.getProyectoActual().getNombre()) && textField_Descripcion.getText().equals(api.getProyectoActual().getDescripcion()) ) {

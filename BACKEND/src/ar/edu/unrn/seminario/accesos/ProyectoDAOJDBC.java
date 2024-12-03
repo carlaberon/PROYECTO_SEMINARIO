@@ -107,25 +107,43 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 	
 
 	@Override
-	public void remove(int id) {
-		try {
-			Connection conn = ConnectionManager.getConnection();
-			PreparedStatement statement = conn.prepareStatement("UPDATE proyectos SET estado = CONCAT('#', estado) WHERE id = ?");
-			statement.setInt(1, id);
-			
-			
-			int verificacion = statement.executeUpdate();		
-			if(verificacion == 0) 
-				throw new EliminationException("No se pudo eliminar el proyecto.");
-		} catch (EliminationException e1) {
-			JOptionPane.showMessageDialog(null, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-		} catch (SQLException e2) {
-			JOptionPane.showMessageDialog(null,"Error de SQL: " + e2.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-		} finally {
-			ConnectionManager.disconnect();
-		}
-		
+	public void remove(int idProyecto) {
+		Connection conn = null;
+	    PreparedStatement stmtTareas = null;
+	    PreparedStatement stmtRelaciones = null;
+	    PreparedStatement stmtProyecto = null;
+
+	    try {
+	    	conn = ConnectionManager.getConnection();
+	        
+	        //Eliminar tareas asociadas
+	        String deleteTareas = "DELETE FROM tareas WHERE id_proyecto = ?";
+	        stmtTareas = conn.prepareStatement(deleteTareas);
+	        stmtTareas.setInt(1, idProyecto);
+	        stmtTareas.executeUpdate();
+
+	        //Eliminar relaciones en proyectos_roles_usuarios
+	        String deleteRelaciones = "DELETE FROM proyectos_usuarios_roles WHERE id_proyecto = ?";
+	        stmtRelaciones = conn.prepareStatement(deleteRelaciones);
+	        stmtRelaciones.setInt(1, idProyecto);
+	        stmtRelaciones.executeUpdate();
+
+	        //Eliminar el proyecto
+	        String deleteProyecto = "DELETE FROM proyectos WHERE id = ?";
+	        stmtProyecto = conn.prepareStatement(deleteProyecto);
+	        stmtProyecto.setInt(1, idProyecto);
+	        stmtProyecto.executeUpdate();
+
+	        
+
+	    } catch (SQLException e1) {
+	    	JOptionPane.showMessageDialog(null, "No se pudo eliminar el proyecto", "Error", JOptionPane.ERROR_MESSAGE);
+	    } finally {
+	    	ConnectionManager.disconnect();
+	    }
 	}
+		
+	
 
 	@Override
 	public Proyecto find(int id) throws NotNullException, DataEmptyException {

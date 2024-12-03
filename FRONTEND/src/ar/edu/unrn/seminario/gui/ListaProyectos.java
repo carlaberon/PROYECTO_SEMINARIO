@@ -87,8 +87,8 @@ public class ListaProyectos extends JFrame {
         				p.getId(),
         				p.getNombre(), 
         				p.getDescripcion(), 
-        				p.isEstado(),
-        				p.getPrioridad(), 
+        				labels.getString("estado.proyecto"),
+        				labels.getString(api.traducirPrioridad(p.getPrioridad())), 
         				p.getUsuarioPropietario().getUsername()});
         	}
         }
@@ -152,7 +152,7 @@ public class ListaProyectos extends JFrame {
 				           JOptionPane.YES_NO_OPTION);
 				if (opcionSeleccionada == JOptionPane.YES_OPTION) {
 				        int projecId = (int) tabla.getModel().getValueAt(tabla.getSelectedRow(), 0);
-				        if (api.getRol(usuarioActual.getUsername(), projecId).getNombre().equals("Admin")) {
+				        if (api.getRol(usuarioActual.getUsername(), projecId).getNombre().equals("Administrador")) {
 				        
 				            try {
 								api.eliminarProyecto(projecId);

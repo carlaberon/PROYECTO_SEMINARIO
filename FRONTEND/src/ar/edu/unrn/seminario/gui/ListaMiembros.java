@@ -197,7 +197,7 @@ public class ListaMiembros extends JFrame {
 					RolDTO unrol = api.getRol(u.getUsername(),unproyecto.getId()); 
 		    modelo.addRow(new Object[] {
 		    	u.getUsername(),
-		    	unrol.getNombre()
+		    	labels.getString(api.traducirRol(unrol.getNombre()))
 
 		    });
 		}

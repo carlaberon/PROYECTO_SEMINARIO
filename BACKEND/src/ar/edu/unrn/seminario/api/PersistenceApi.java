@@ -200,7 +200,59 @@ public class PersistenceApi implements IApi {
 	            return 0; 
 	    }
 	}
+	
+	@Override
+	public String obtenerPrioridadPorIndex(int indice) {
+		switch (indice) {
+		case 1:
+			return "Alta";
+		case 2:
+			return "Media";
+		case 3:
+			return "Alta";
+		default:
+			return "";
+		}
+	}
 
+	@Override
+	public String traducirPrioridad(String prioridad) {
+		switch (prioridad) {
+		case "Alta":
+			return "prioridad.alta";
+		case "Media":
+			return "prioridad.media";
+		default:
+			return "prioridad.baja";
+		}
+	}
+	
+	@Override
+	public String traducirRol(String rol) {
+		switch (rol) {
+		case "Administrador":
+			return "rol.Admin";
+		case "Colaborador":
+			return "rol.Colaborador";
+		default:
+			return "rol.Observador";
+		}
+	}
+	
+	@Override
+	public String obtenerRolPorIndex(int indice) {
+		switch (indice) {
+		case 1:
+			return "Administrador";
+		case 2:
+			return "Colaborador";
+		case 3:
+			return "Observador";
+		default:
+			return "";
+		}
+	}
+	
 	@Override
 	public UsuarioDTO obtenerUsuario(String username) {
 		Usuario usuario = usuarioDao.find(username);
@@ -296,8 +348,10 @@ public class PersistenceApi implements IApi {
 	private NotificacionDTO convertirEnNotificacionDTO(Notificacion notificacion) {
 		NotificacionDTO notificacionDto = null;
 		if(notificacion != null)
-			notificacionDto = new NotificacionDTO(notificacion.getDescripcion(),notificacion.getFecha());
+			notificacionDto = new NotificacionDTO(notificacion.getIdProyecto(),notificacion.getUsername(),
+					notificacion.getCodigoRol(),notificacion.getDescripcion(),notificacion.getFecha());
 		
+		System.out.println(notificacionDto);
 		return notificacionDto;
 	}
 	
@@ -314,10 +368,7 @@ public class PersistenceApi implements IApi {
 	}
    
 	@Override
-	public void invitarMiembro(String username, int idProyecto, int codigoRol) throws DataEmptyException {
-		if(username.isEmpty() || codigoRol == 0) {
-			throw new DataEmptyException("mensaje.campoObligatorio");
-		}
+	public void invitarMiembro(String username, int idProyecto, int codigoRol) {
 		proyectoDao.update(username, idProyecto, codigoRol);
 	}
 
@@ -338,9 +389,10 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public void crearNotificacion(String nombreProyecto, int idProyecto, String username, LocalDate fecha) throws NotNullException, DataEmptyException {
-		Notificacion notificacion = new Notificacion(nombreProyecto, fecha);
-		notificacionDao.create(notificacion, username, idProyecto);
+	public void crearNotificacion(int idProyecto, String username, int codigoRol, String nombreProyecto, LocalDate fecha) throws NotNullException, DataEmptyException {
+		String descripcion = "Te invitaron al proyecto: " + nombreProyecto;
+		Notificacion notificacion = new Notificacion(idProyecto, username, codigoRol, descripcion, fecha);
+		notificacionDao.create(notificacion);
 	}
 
 	@Override
@@ -356,5 +408,17 @@ public class PersistenceApi implements IApi {
 		return notificacionesDTO;
 	}
 
+	@Override
+	public void eliminarNotificacion(int idProyecto, String username) {
+		notificacionDao.remove(idProyecto, username);
+	}
 
+	@Override
+	public int existeNotificacion(int idProyecto, String username) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+	
 }

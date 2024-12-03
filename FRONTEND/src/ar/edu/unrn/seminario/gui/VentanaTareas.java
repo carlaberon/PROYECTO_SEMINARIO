@@ -210,10 +210,10 @@ public class VentanaTareas extends JFrame {
 		    	t.getId(),
 		        t.getName(),
 		        unproyecto.getNombre(),
-		        t.getEstado(), // Modifica el estado a una cadena legible
+		        labels.getString("estado.proyecto"), // Modifica el estado a una cadena legible
 		        t.getDescription(),
 		        t.getUser(),
-		        t.getPriority(), 
+		        labels.getString(api.traducirPrioridad(t.getPriority())), 
 		        t.getInicio(),
 		        t.getFin()
 		    });

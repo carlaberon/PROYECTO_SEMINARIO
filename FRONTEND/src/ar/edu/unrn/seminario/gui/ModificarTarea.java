@@ -35,7 +35,6 @@ public class ModificarTarea extends JFrame {
 	 private JPanel contentPane;
 	    private JTextField nombreTareaTextField;
 	    private JComboBox<String> asignarUsuarioComboBox; // ComboBox para seleccionar usuario
-	    List<String> prioridades = Arrays.asList("Alta", "Media", "Baja");
 	    private JComboBox<String> prioridadComboBox;
 	    private JTextArea textAreaDescription;
 	    private JDateChooser dateChooserInicio;
@@ -94,7 +93,7 @@ public class ModificarTarea extends JFrame {
 			prioridadComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 10));
 			prioridadComboBox.setBounds(190, 133, 160, 25);
 			contentPane.add(prioridadComboBox);
-
+			prioridadComboBox.addItem("");
 	        for (String prioridad :Arrays.asList(labels.getString("prioridad.alta"), labels.getString("prioridad.media"), labels.getString("prioridad.baja"))) {
 	            prioridadComboBox.addItem(prioridad);
 	        }
@@ -140,7 +139,7 @@ public class ModificarTarea extends JFrame {
 	  
 	                    int selectedUserIndex = asignarUsuarioComboBox.getSelectedIndex();
 	                    String nuevoNombreTarea = nombreTareaTextField.getText();
-	                    String prioridadTarea = (String) prioridadComboBox.getSelectedItem();
+	                    String prioridadTarea = api.obtenerPrioridadPorIndex(prioridadComboBox.getSelectedIndex());
 	                    UsuarioDTO usuario = usuarios.get(selectedUserIndex);
 	                    String descripcionTarea = textAreaDescription.getText();
 	                    Date fechaInicioDate = dateChooserInicio.getDate();
