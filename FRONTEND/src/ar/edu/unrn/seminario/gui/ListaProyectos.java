@@ -40,7 +40,7 @@ public class ListaProyectos extends JFrame {
 
         Color fondoColor = new Color(65, 62, 77); 
         Color tituloColor = new Color(138, 102, 204);
-        Font fuente = new Font("Segoe UI", Font.PLAIN, 11);
+        Font fuente = new Font("Segoe UI", Font.PLAIN, 14);
 
         getContentPane().setBackground(fondoColor);
         
@@ -117,7 +117,7 @@ public class ListaProyectos extends JFrame {
 
         // Establecer fuente y color de encabezados
         tabla.setFont(fuente);
-        tabla.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 11));
+        tabla.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
         tabla.getTableHeader().setBackground(tituloColor); 
         tabla.getTableHeader().setForeground(Color.WHITE);
         tabla.setBackground(fondoColor);
