@@ -141,10 +141,9 @@ public class Inicio extends JFrame {
         JPanel proyectosButtonsPanel = new JPanel();
         proyectosButtonsPanel.setBackground(new Color(65, 62, 77));
  
-        /*!!!!*/
-        proyectosButtonsPanel.setLayout(new GridLayout(3,6,6,6));
-        //proyectosButtonsPanel.setLayout(new BoxLayout(proyectosButtonsPanel, BoxLayout.Y_AXIS));
 
+        proyectosButtonsPanel.setLayout(new GridLayout(3,6,6,6));
+       
   
         JButton btnNuevoProyecto = createButton(labels.getString("menu.agregarProyecto"), new Color(138, 102, 204));
         btnNuevoProyecto.addActionListener(e -> {
@@ -159,15 +158,9 @@ public class Inicio extends JFrame {
         	dispose();
         });
 
-       // formatButton(btnNuevoProyecto);
+   
         formatButton(btnVerProyectos);
 
-        //JPanel panelHorizontal = new JPanel();
-        //panelHorizontal.setLayout(new BoxLayout(panelHorizontal, BoxLayout.Y_AXIS));
-        //panelHorizontal.setBackground(new Color(30, 30, 30));
-       // panelHorizontal.add(btnNuevoProyecto);
-
-        
         proyectosButtonsPanel.add(btnVerProyectos);
         proyectosButtonsPanel.add(btnNuevoProyecto);
 
