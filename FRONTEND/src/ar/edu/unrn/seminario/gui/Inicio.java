@@ -140,31 +140,36 @@ public class Inicio extends JFrame {
 		}
         JPanel proyectosButtonsPanel = new JPanel();
         proyectosButtonsPanel.setBackground(new Color(65, 62, 77));
-        proyectosButtonsPanel.setLayout(new BoxLayout(proyectosButtonsPanel, BoxLayout.Y_AXIS));
+ 
+        /*!!!!*/
+        proyectosButtonsPanel.setLayout(new GridLayout(3,6,6,6));
+        //proyectosButtonsPanel.setLayout(new BoxLayout(proyectosButtonsPanel, BoxLayout.Y_AXIS));
 
-        JButton btnNuevoProyecto = new JButton(labels.getString("menu.agregarProyecto"));
+  
+        JButton btnNuevoProyecto = createButton(labels.getString("menu.agregarProyecto"), new Color(138, 102, 204));
         btnNuevoProyecto.addActionListener(e -> {
             abrirCrearProyecto();
             dispose();
         });
 
         JButton btnVerProyectos = new JButton(labels.getString("menu.verProyectos"));
+        
         btnVerProyectos.addActionListener(e -> {
         	abrirListaProyectos();
         	dispose();
         });
 
-        formatButton(btnNuevoProyecto);
+       // formatButton(btnNuevoProyecto);
         formatButton(btnVerProyectos);
 
-        JPanel panelHorizontal = new JPanel();
-        panelHorizontal.setLayout(new BoxLayout(panelHorizontal, BoxLayout.Y_AXIS));
-        panelHorizontal.setBackground(new Color(30, 30, 30));
-        panelHorizontal.add(btnNuevoProyecto);
+        //JPanel panelHorizontal = new JPanel();
+        //panelHorizontal.setLayout(new BoxLayout(panelHorizontal, BoxLayout.Y_AXIS));
+        //panelHorizontal.setBackground(new Color(30, 30, 30));
+       // panelHorizontal.add(btnNuevoProyecto);
 
-        proyectosButtonsPanel.add(panelHorizontal);
-        proyectosButtonsPanel.add(btnVerProyectos);
         
+        proyectosButtonsPanel.add(btnVerProyectos);
+        proyectosButtonsPanel.add(btnNuevoProyecto);
 
         JPanel panelNotificaciones = new JPanel();
         panelNotificaciones.setLayout(new BoxLayout(panelNotificaciones, BoxLayout.Y_AXIS)); // Cambiar a BoxLayout para tamaño dinámico
@@ -357,11 +362,21 @@ public class Inicio extends JFrame {
 	  proyectosListPanel.repaint();    // Repintar el panel
 }
 
+  private JButton createButton(String text, Color backgroundColor) {
+      JButton button = new JButton(text);
+      button.setForeground(Color.WHITE);
+      button.setBackground(backgroundColor);
+      button.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+      button.setBorderPainted(false);
+      button.setFocusPainted(false);
+      button.setPreferredSize(new Dimension(120, 40));
+      return button;
+  }
     
 	public static void main(String[] args)  {
 		
 		IApi api = new PersistenceApi();
-		UsuarioDTO usuario = api.obtenerUsuario("ldifabio");
+		UsuarioDTO usuario = api.obtenerUsuario("gabi");
 
 		api.setUsuarioActual(usuario.getUsername());
 		Inicio inicio = new Inicio(api);
