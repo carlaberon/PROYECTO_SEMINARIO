@@ -1,18 +1,17 @@
 package ar.edu.unrn.seminario.dto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
 public class NotificacionDTO {
 	private String descripcion;
-	private LocalDateTime fecha;
+	private LocalDate fecha;
 
 	
-	public NotificacionDTO(String descripcion, LocalDateTime fecha) {
-	
+	public NotificacionDTO(String descripcion, LocalDate fecha) {
 		this.descripcion = descripcion;
 		this.fecha = fecha;
-
 	}
 
 	public String getDescripcion() {
@@ -23,11 +22,11 @@ public class NotificacionDTO {
 		this.descripcion = descripcion;
 	}
 
-	public LocalDateTime getFecha() {
+	public LocalDate getFecha() {
 		return fecha;
 	}
 
-	public void setFecha(LocalDateTime fecha) {
+	public void setFecha(LocalDate fecha) {
 		this.fecha = fecha;
 	}
 

@@ -4,6 +4,7 @@ import javax.swing.*;
 
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.api.PersistenceApi;
+import ar.edu.unrn.seminario.dto.NotificacionDTO;
 import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
@@ -177,14 +178,24 @@ public class Inicio extends JFrame {
         scroll.setBorder(null);
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
        
+        try {
+			List<NotificacionDTO> notificaciones = api.obtenerNotificaciones(usuarioActual.getUsername());
+			for (NotificacionDTO notificacionDTO : notificaciones) {
+				JPanel panelPrueba1 = createPanel("Prueba", notificacionDTO.getDescripcion());
+				panelPrueba1.setMaximumSize(new Dimension(Integer.MAX_VALUE, 60)); // Permitir que ocupe todo el ancho disponible
+				panelPrueba1.setAlignmentX(Component.LEFT_ALIGNMENT); // Alinear al inicio del eje X
+				panelNotificaciones.add(panelPrueba1);
+				panelNotificaciones.add(Box.createVerticalStrut(10)); // Espacio entre notificaciones
+			}
+		} catch (NotNullException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace(); //Tratar mejor
+		} catch (DataEmptyException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
         
-        for (int i = 0; i < 30; i++) {
-            JPanel panelPrueba1 = createPanel("Notificacion " + (i + 1), "Descripcion");
-            panelPrueba1.setMaximumSize(new Dimension(Integer.MAX_VALUE, 60)); // Permitir que ocupe todo el ancho disponible
-            panelPrueba1.setAlignmentX(Component.LEFT_ALIGNMENT); // Alinear al inicio del eje X
-            panelNotificaciones.add(panelPrueba1);
-            panelNotificaciones.add(Box.createVerticalStrut(10)); // Espacio entre notificaciones
-        }
+        
 
         rightPanel.add(proyectosLabel, BorderLayout.NORTH);
         rightPanel.add(proyectosListPanel, BorderLayout.CENTER);
