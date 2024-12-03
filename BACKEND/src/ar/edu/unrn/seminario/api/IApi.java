@@ -63,15 +63,20 @@ public interface IApi {
 	
 	void crearProyecto(String nombre, String string, String estado, String descripcion, String prioridad) throws NotNullException, DataEmptyException;
 	
-	public void invitarMiembro(String username, int idProyecto, int codigoRol) throws DataEmptyException;
+	public void invitarMiembro(String username, int idProyecto, int codigoRol);
 	
 	public List<UsuarioDTO> obtenerMiembrosDeUnProyecto(int proyectoId);
 	
 	public int existeMiembro(String username, int idProyecto) throws UserIsAlreadyMember;
 	
-	public void crearNotificacion(String nombreProyecto,int idProyecto, String username,LocalDate fecha) throws NotNullException, DataEmptyException;
+	//Metodos para las notificaciones
+	public void crearNotificacion(int idProyecto, String username, int codigoRol, String nombreProyecto, LocalDate fecha) throws NotNullException, DataEmptyException;
 	
 	public List<NotificacionDTO> obtenerNotificaciones(String username) throws NotNullException, DataEmptyException;
+	
+	public void eliminarNotificacion(int idProyecto, String username);
+	
+	public int existeNotificacion(int idProyecto, String username);
 	
 	//Metodos para proposito general
 	public void setTareaActual(int idTarea) throws DataEmptyException, NotNullException, InvalidDateException;
@@ -83,6 +88,14 @@ public interface IApi {
 	public void setUsuarioActual(String nombreUsuario);	//Setear usuario actual PRUEBAS
 	
 	public int obtenerPrioridad(String prioridad);
+	
+	public String traducirPrioridad(String prioridad);
+	
+	public String obtenerPrioridadPorIndex(int indice);
+	
+	public String obtenerRolPorIndex(int indice);
+	
+	public String traducirRol(String rol);
 	
 	public ProyectoDTO getProyectoActual();//Recuperar proyecto actual	PRUEBAS
 	

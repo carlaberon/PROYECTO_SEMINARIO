@@ -25,8 +25,10 @@ import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
+import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.exception.UserIsAlreadyMember;
 import java.awt.Font;
+import java.time.LocalDate;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -83,13 +85,13 @@ public class InvitarMiembro extends JFrame {
 				String nombreUsuario = campoBusqueda.getText();
 				try {
 					if(api.existeMiembro(nombreUsuario,api.getProyectoActual().getId()) == 0) {
-							int id_proyecto;
-							id_proyecto = api.getProyectoActual().getId();
-							String nombre_rol = (String)asignarRolComboBox.getSelectedItem();
-						
-							int codigo_rol = obtenerCodigoRol(nombre_rol);
-						
-							api.invitarMiembro(nombreUsuario,id_proyecto,codigo_rol);
+							int id_proyecto = api.getProyectoActual().getId();
+							String nombreProject = api.getProyectoActual().getNombre();
+							String rol_seleccionado = api.obtenerRolPorIndex(asignarRolComboBox.getSelectedIndex());
+							
+							int codigo_rol = obtenerCodigoRol(rol_seleccionado);
+							
+							api.crearNotificacion(id_proyecto, nombreUsuario, codigo_rol, nombreProject, LocalDate.now());
 				
 					
 							JOptionPane.showMessageDialog(null, labels.getString("mensaje.invitacionExitosa"), labels.getString("mensaje.info"), JOptionPane.INFORMATION_MESSAGE);
@@ -98,12 +100,14 @@ public class InvitarMiembro extends JFrame {
 					}
 				} catch(UserIsAlreadyMember e1) {
 					JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), labels.getString("mensaje.errorYaEsMiembro"), JOptionPane.ERROR_MESSAGE);
-				} catch (DataEmptyException e2) {
+				} catch (NotNullException e2) {
 					// TODO Auto-generated catch block
-					JOptionPane.showMessageDialog(null, labels.getString(e2.getMessage()), labels.getString("titulo.optionpaneInviteMember"), JOptionPane.ERROR_MESSAGE);
+					e2.printStackTrace(); //Tratar mejor la excepcion
+				} catch (DataEmptyException e3) {
+					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(null,labels.getString("mensaje.elCampo") + labels.getString(e3.getMessage()) + labels.getString("mensaje.empty"), labels.getString("mensaje.campoObligatorio"),JOptionPane.WARNING_MESSAGE);
 				}
-			}
-		); 
+		}); 
 
 		invitarButton.setBounds(514, 279, 147, 27);
 		contentPane.add(invitarButton);
@@ -126,8 +130,20 @@ public class InvitarMiembro extends JFrame {
 		asignarRolComboBox.setBorder(new LineBorder(Color.BLACK,1));
 		
 	        if ( ! this.roles.isEmpty()) {
+	        	String rol1;
 	        	 for (RolDTO rol : this.roles) {
-	                 asignarRolComboBox.addItem(rol.getNombre());
+	        		 switch (rol.getNombre()) {
+					case "Administrador":
+						rol1 = labels.getString("rol.Admin");
+						break;
+					case "Colaborador":
+						rol1 = labels.getString("rol.Colaborador");
+						break;
+					default:
+						rol1 = labels.getString("rol.Observador");
+						break;
+					}
+	                 asignarRolComboBox.addItem(rol1);
 	             }
 	        }
 	       

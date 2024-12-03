@@ -27,7 +27,7 @@ public class ListaProyectos extends JFrame {
 	
     public ListaProyectos(IApi api)  {
     	
-    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
+    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
 //   	 descomentar para que tome el idioma ingles (english)
 
    	//ResourceBundle labels = ResourceBundle.getBundle("labels");
@@ -71,8 +71,8 @@ public class ListaProyectos extends JFrame {
         				p.getId(),
         				p.getNombre(), 
         				p.getDescripcion(), 
-        				p.isEstado(),
-        				p.getPrioridad(), 
+        				labels.getString("estado.proyecto"),
+        				labels.getString(api.traducirPrioridad(p.getPrioridad())), 
         				p.getUsuarioPropietario().getUsername()});
         	}
         }
@@ -136,7 +136,7 @@ public class ListaProyectos extends JFrame {
 				           JOptionPane.YES_NO_OPTION);
 				if (opcionSeleccionada == JOptionPane.YES_OPTION) {
 				        int projecId = (int) tabla.getModel().getValueAt(tabla.getSelectedRow(), 0);
-				        if (api.getRol(usuarioActual.getUsername(), projecId).getNombre().equals("Admin")) {
+				        if (api.getRol(usuarioActual.getUsername(), projecId).getNombre().equals("Administrador")) {
 				        
 				            try {
 								api.eliminarProyecto(projecId);

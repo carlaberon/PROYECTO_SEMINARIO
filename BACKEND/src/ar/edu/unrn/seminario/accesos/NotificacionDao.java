@@ -9,7 +9,10 @@ import ar.edu.unrn.seminario.modelo.Notificacion;
 
 public interface NotificacionDao {
 	
-	void create(Notificacion notificacion, String username, int idProyecto);
+	void create(Notificacion notificacion);
+	
+	void remove(int idProyecto, String username);
 	
 	List<Notificacion> findAll(String username) throws NotNullException, DataEmptyException;
+	
 }
