@@ -116,13 +116,6 @@ public class PersistenceApi implements IApi {
 	public void modificarProyecto(int idProyecto, String nuevoNombre, String nuevaPrioridad,
 			String nuevaDescripcion) throws NotNullException, DataEmptyException {
 	    Proyecto proyectoExistente = new Proyecto(idProyecto, nuevoNombre, null, null, nuevaDescripcion, nuevaPrioridad);
-
-		if(!nuevoNombre.isEmpty()) 
-			proyectoExistente.setNombre(nuevoNombre);
-		if(!nuevaPrioridad.isEmpty())
-			 proyectoExistente.setPrioridad(nuevaPrioridad);
-		if(!nuevaDescripcion.isEmpty())
-			 proyectoExistente.setDescripcion(nuevaDescripcion);
 		
 		proyectoDao.update(proyectoExistente);
 		}

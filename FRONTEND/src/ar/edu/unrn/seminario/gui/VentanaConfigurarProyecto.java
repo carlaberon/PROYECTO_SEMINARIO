@@ -18,7 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import ar.edu.unrn.seminario.api.IApi;
-
+import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 
 import ar.edu.unrn.seminario.exception.NotNullException;
@@ -34,10 +34,14 @@ public class VentanaConfigurarProyecto extends JFrame {
 	private JTextField textField_Descripcion;
 	private JButton aceptar;
 	private JButton cancelar;
+	private ProyectoDTO proyectoActual;
 	
 	public VentanaConfigurarProyecto(IApi api) {
 		ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
-		setTitle("Modificar Proyecto");
+		
+		this.proyectoActual = api.getProyectoActual();
+		
+		setTitle(labels.getString("ventana.modificarProyecto"));
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 800, 650);
 		contentPane = new JPanel();
@@ -46,25 +50,25 @@ public class VentanaConfigurarProyecto extends JFrame {
 		contentPane.setBackground(new Color(81, 79, 89));
 		setContentPane(contentPane);
 		
-		JLabel lblModificarProyecto = new JLabel("Modificar Proyecto");
+		JLabel lblModificarProyecto = new JLabel(labels.getString("ventana.modificarProyecto"));
 		lblModificarProyecto.setBackground(new Color(240, 240, 240));
 		lblModificarProyecto.setForeground(new Color(29, 17, 40));
 		lblModificarProyecto.setFont(new Font("Segoe UI Black", Font.BOLD, 35));
 		lblModificarProyecto.setBounds(58, 47, 374, 39);
 		contentPane.add(lblModificarProyecto);
 		
-		JLabel lblNombre = new JLabel("Nombre:");
+		JLabel lblNombre = new JLabel(labels.getString("menu.nombreProyecto"));
 		lblNombre.setForeground(new Color(255, 255, 255));
 		lblNombre.setFont(new Font("Segoe UI", Font.BOLD, 18));
-		lblNombre.setBounds(83, 183, 93, 44);
+		lblNombre.setBounds(83, 183, 123, 44);
 		contentPane.add(lblNombre);
 		
 		textField_Nombre = new JTextField();
-		textField_Nombre.setBounds(216, 198, 451, 26);
+		textField_Nombre.setBounds(216, 196, 451, 26);
 		contentPane.add(textField_Nombre);
 		textField_Nombre.setColumns(10);
 		
-		JLabel lblPrioridad = new JLabel("Prioridad:");
+		JLabel lblPrioridad = new JLabel(labels.getString("campo.prioridad"));
 		lblPrioridad.setForeground(Color.WHITE);
 		lblPrioridad.setFont(new Font("Segoe UI", Font.BOLD, 18));
 		lblPrioridad.setBounds(83, 237, 93, 44);
@@ -80,7 +84,7 @@ public class VentanaConfigurarProyecto extends JFrame {
 			prioridadComboBox.addItem(prioridad);
 		}
 		
-		descripcion = new JLabel("Descripcion:");
+		descripcion = new JLabel(labels.getString("campo.descripcion"));
 		descripcion.setForeground(Color.WHITE);
 		descripcion.setFont(new Font("Segoe UI", Font.BOLD, 18));
 		descripcion.setBounds(83, 291, 123, 44);
@@ -97,11 +101,11 @@ public class VentanaConfigurarProyecto extends JFrame {
 		aceptar.setBackground(new Color(89, 65, 169));
 		aceptar.setBounds(452, 573, 147, 27);
 		aceptar.addActionListener(e -> {
-				String prioridadSeleccionada = api.obtenerPrioridadPorIndex(prioridadComboBox.getSelectedIndex());
+				String prioridadSeleccionada = api.obtenerPrioridadPorIndex(prioridadComboBox.getSelectedIndex()+1);
 				try {
 					
-					if (prioridadSeleccionada.equals(api.getProyectoActual().getPrioridad())  && textField_Nombre.getText().equals(api.getProyectoActual().getNombre()) && textField_Descripcion.getText().equals(api.getProyectoActual().getDescripcion()) ) {
-						JOptionPane.showMessageDialog(null, "No se cambio ningun campo.", "No se realizo ningun cambio!", JOptionPane.QUESTION_MESSAGE);
+					if (prioridadSeleccionada.equals(proyectoActual.getPrioridad())  && textField_Nombre.getText().equals(proyectoActual.getNombre()) && textField_Descripcion.getText().equals(proyectoActual.getDescripcion()) ) {
+						JOptionPane.showMessageDialog(null, labels.getString("mensaje.noModificoCampos"), labels.getString("titulo.modificarProyecto"), JOptionPane.QUESTION_MESSAGE);
 		            }
 					else {
 					
@@ -111,7 +115,7 @@ public class VentanaConfigurarProyecto extends JFrame {
 					
 					if (opcionSeleccionada == JOptionPane.YES_OPTION) {
 						api.modificarProyecto(api.getProyectoActual().getId(), textField_Nombre.getText(), prioridadSeleccionada, textField_Descripcion.getText());
-						JOptionPane.showMessageDialog(null, "Modificacion realizada con exito!", "Info", JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(null, labels.getString("mensaje.modificacionExitosa"), "Info", JOptionPane.INFORMATION_MESSAGE);
 						api.setProyectoActual(api.getProyectoActual().getId()); 
 						new VentanaResumen(api).setVisible(true);
 						dispose();
@@ -119,9 +123,9 @@ public class VentanaConfigurarProyecto extends JFrame {
 					}
 					
 				} catch (NotNullException e1) {
-		            JOptionPane.showMessageDialog(null, "El campo " + e1.getMessage() + " no puede ser nulo.", "Error", JOptionPane.ERROR_MESSAGE);
+		            JOptionPane.showMessageDialog(null, labels.getString("mensaje.elCampo") + labels.getString(e1.getMessage()) + labels.getString("mensaje.null"), "Error", JOptionPane.ERROR_MESSAGE);
 		        } catch (DataEmptyException e2) {
-		            JOptionPane.showMessageDialog(null, "El campo " + e2.getMessage() + " esta vacío.", "Error", JOptionPane.ERROR_MESSAGE);
+		            JOptionPane.showMessageDialog(null, labels.getString("mensaje.elCampo") + labels.getString(e2.getMessage()) + labels.getString("mensaje.empty"), "Error", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		);
