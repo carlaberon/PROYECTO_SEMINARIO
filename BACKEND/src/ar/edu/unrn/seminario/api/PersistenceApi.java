@@ -98,8 +98,8 @@ public class PersistenceApi implements IApi {
 
 	
 	@Override
-	public void eliminarTarea(int id) {
-		tareaDao.remove(id);
+	public void eliminarTarea(int idTarea) {
+		tareaDao.remove(idTarea);
 	}
 
 
@@ -108,11 +108,8 @@ public class PersistenceApi implements IApi {
 	    return proyectoDao.findAll(username).stream().map(this::convertirEnProyectoDTO).collect(Collectors.toList());
 	}
 	@Override
-	public void eliminarProyecto(int id) throws DataEmptyException, NotNullException, InvalidDateException  {
+	public void eliminarProyecto(int id) {
 		proyectoDao.remove(id);
-		List<Tarea> tareas = tareaDao.findByProject(id);
-		for (Tarea tareas1 : tareas) {
-			tareaDao.remove(tareas1.getId());		}
 	}
 	
 	@Override
@@ -172,20 +169,10 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public void modificarTarea(int id, String nuevoNombre, String nuevaPrioridad, String nombreUsuario, String estado, String nuevaDescripcion, LocalDate inicio, LocalDate fin) throws NotNullException, DataEmptyException, InvalidDateException {
-		
-		Tarea tarea = tareaDao.find(id);
-		
-		//en los setters de tareas están programadas las excepciones que verifican que éstos datos no sean null o empty
-		tarea.setNombre(nuevoNombre);
-		tarea.setPrioridad(nuevaPrioridad);
-		tarea.setUsuario(nombreUsuario);
-		tarea.setEstado(estado);
-		tarea.setDescripcion(nuevaDescripcion);
-		tarea.setInicio(inicio);
-		tarea.setFin(fin);
+	public void modificarTarea(int idTarea, String nuevoNombre, String nuevaPrioridad, String nombreUsuario, String estado, String nuevaDescripcion, LocalDate inicio, LocalDate fin) throws NotNullException, DataEmptyException, InvalidDateException {
+		Tarea tarea = new Tarea(idTarea, nuevoNombre, proyectoActual, nuevaPrioridad, nombreUsuario, estado, nuevaDescripcion, inicio, fin);
 		tareaDao.update(tarea);
-	    }
+	}
 	
 	@Override
 	public int obtenerPrioridad(String prioridad) {
@@ -369,7 +356,7 @@ public class PersistenceApi implements IApi {
    
 	@Override
 	public void invitarMiembro(String username, int idProyecto, int codigoRol) {
-		proyectoDao.update(username, idProyecto, codigoRol);
+		proyectoDao.inviteMember(username, idProyecto, codigoRol);
 	}
 
 	@Override
@@ -415,8 +402,13 @@ public class PersistenceApi implements IApi {
 
 	@Override
 	public int existeNotificacion(int idProyecto, String username) {
-		// TODO Auto-generated method stub
+		
 		return 0;
+	}
+
+	@Override
+	public void eliminarMiembro(String username, int idProyecto) {
+		proyectoDao.deleteMember(username, idProyecto);
 	}
 
 

@@ -44,18 +44,18 @@ public interface IApi {
 	void desactivarRol(Integer codigo); // recuperar el objeto Rol, imp
 	
 	//Metodos para las Tareas
-	public void registrarTarea(String name,int id_proyecto, String priority, String user, String estado, String descripcion, LocalDate inicio, LocalDate fin) throws DataEmptyException, NotNullException, InvalidDateException;
+	public void registrarTarea(String name, int id_proyecto, String priority, String user, String estado, String descripcion, LocalDate inicio, LocalDate fin) throws DataEmptyException, NotNullException, InvalidDateException;
 	
 	List<TareaDTO> obtenerTareas() throws NotNullException, InvalidDateException, DataEmptyException;
 	
 	public void eliminarTarea(int idTarea);
 	
-	void modificarTarea(int id, String nuevoNombre, String nuevaPrioridad,String nombreUsuario, String estado, String nuevaDescripcion,LocalDate inicio, LocalDate fin)throws NotNullException, DataEmptyException, InvalidDateException;
+	void modificarTarea(int idTarea, String nuevoNombre, String nuevaPrioridad,String nombreUsuario, String estado, String nuevaDescripcion,LocalDate inicio, LocalDate fin)throws NotNullException, DataEmptyException, InvalidDateException;
 	
 	//Metodos para los proyectos
 	List<ProyectoDTO> obtenerProyectos(String username) throws NotNullException, DataEmptyException;
 		    
-	public void eliminarProyecto(int id) throws DataEmptyException, NotNullException, InvalidDateException;
+	public void eliminarProyecto(int id);
 	
 	void modificarProyecto(int idProyecto, String nuevoNombre, String nuevaPrioridad, String nuevaDescripcion) throws NotNullException, DataEmptyException;
 
@@ -68,6 +68,8 @@ public interface IApi {
 	public List<UsuarioDTO> obtenerMiembrosDeUnProyecto(int proyectoId);
 	
 	public int existeMiembro(String username, int idProyecto) throws UserIsAlreadyMember;
+	
+	public void eliminarMiembro(String username, int idProyecto);
 	
 	//Metodos para las notificaciones
 	public void crearNotificacion(int idProyecto, String username, int codigoRol, String nombreProyecto, LocalDate fecha) throws NotNullException, DataEmptyException;

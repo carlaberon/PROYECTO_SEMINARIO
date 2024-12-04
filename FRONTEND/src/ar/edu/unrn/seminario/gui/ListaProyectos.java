@@ -147,33 +147,22 @@ public class ListaProyectos extends JFrame {
         
         eliminarProyecto.addActionListener(e -> {
 	        	habilitarBotones(false);
-				int opcionSeleccionada = JOptionPane.showConfirmDialog(null,
-				           labels.getString("mensaje.confirmarEliminacion"), labels.getString("mensaje.eliminarProyecto"),
-				           JOptionPane.YES_NO_OPTION);
-				if (opcionSeleccionada == JOptionPane.YES_OPTION) {
-				        int projecId = (int) tabla.getModel().getValueAt(tabla.getSelectedRow(), 0);
-				        if (api.getRol(usuarioActual.getUsername(), projecId).getNombre().equals("Administrador")) {
-				        
-				            try {
-								api.eliminarProyecto(projecId);
-								actualizarTabla();
-							} catch (DataEmptyException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace(); //Tratar mejor la excepcion
-							} catch (NotNullException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							} catch (InvalidDateException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							}
-				        
-				        habilitarBotones(false);
-				}else {
-					JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.ERROR_MESSAGE);	
-				}
-				}
+	        	int projecId = (int) tabla.getModel().getValueAt(tabla.getSelectedRow(), 0);
+	        	if (api.getRol(usuarioActual.getUsername(), projecId).getNombre().equals("Administrador")) {
+					int opcionSeleccionada = JOptionPane.showConfirmDialog(null,
+					           labels.getString("mensaje.confirmarEliminacion"), labels.getString("mensaje.eliminarProyecto"),
+					           JOptionPane.YES_NO_OPTION);
+					if (opcionSeleccionada == JOptionPane.YES_OPTION) {
+						api.eliminarProyecto(projecId);
+						actualizarTabla();
+								
+						habilitarBotones(false);
+					}
+	        	}else {
+	        		JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.WARNING_MESSAGE);	
+	        	}
         });
+        
         panelEliminar.add(eliminarProyecto);
         JScrollPane scrollPane = new JScrollPane(tabla);
         scrollPane.getViewport().setBackground(fondoColor); // Establecer el fondo del viewport

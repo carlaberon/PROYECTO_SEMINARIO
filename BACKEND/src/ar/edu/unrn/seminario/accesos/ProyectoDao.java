@@ -12,11 +12,13 @@ public interface ProyectoDao {
 
 	void update(Proyecto proyecto);
 	
-	void update(String username, int idProyecto, int codigoRol);
+	void inviteMember(String username, int idProyecto, int codigoRol);
+	
+	void deleteMember(String username, int idProyecto);
+	
+	void remove(int idProyecto);
 
-	void remove(int id);
-
-	Proyecto find(int id) throws NotNullException, DataEmptyException;
+	Proyecto find(int idProyecto) throws NotNullException, DataEmptyException;
 
 	List<Proyecto> findAll(String usuario) throws NotNullException, DataEmptyException;
 	

@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.ProyectoDTO;
+import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -16,7 +17,7 @@ public class VentanaResumen extends JFrame {
     private IApi api;
     private UsuarioDTO usuarioActual; 
     private ProyectoDTO unproyecto; 
-    
+    private RolDTO rolActual;
     public VentanaResumen(IApi api) {
 
     	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
@@ -26,6 +27,7 @@ public class VentanaResumen extends JFrame {
     	
     	this.api = api;
     	this.usuarioActual = api.getUsuarioActual();
+    	this.rolActual = api.getRol(usuarioActual.getUsername(), api.getProyectoActual().getId());
     	this.unproyecto = api.getProyectoActual();
         
         setTitle(labels.getString("menu.resumen"));
@@ -105,11 +107,11 @@ public class VentanaResumen extends JFrame {
             if (item.equals("Configuración") || item.equals("Settings")) {
                 menuButton.addActionListener(e -> {
                     // Por ejemplo, podrías abrir un nuevo panel de configuración:
-                    if(api.getRol(usuarioActual.getUsername(), unproyecto.getId()).getNombre().equals("Administrador")) {
+                    if(rolActual.getNombre().equals("Administrador")) {
                     	abrirPanelConfiguracion();
                     	dispose();
                     } else {
-        	            JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.ERROR_MESSAGE);
+        	            JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.WARNING_MESSAGE);
 
 					}
                     
@@ -148,12 +150,12 @@ public class VentanaResumen extends JFrame {
         centerPanel1.add(miembrosPanel);
         btnMiembro.addActionListener(e -> {
             	
-                if(api.getRol(usuarioActual.getUsername(), unproyecto.getId()).getNombre().equals("Administrador")) {
+                if(rolActual.getNombre().equals("Administrador")) {
     					InvitarMiembro invitarMiembro = new InvitarMiembro(api);
     					invitarMiembro.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     	                invitarMiembro.setVisible(true);
                 } else {
-    	            JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.ERROR_MESSAGE);
+    	            JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.WARNING_MESSAGE);
                 }
             }
         );

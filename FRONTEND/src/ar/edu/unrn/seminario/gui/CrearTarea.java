@@ -137,28 +137,29 @@ public class CrearTarea extends JFrame {
                     String descripcionTarea = textAreaDescription.getText();
                     Date fechaInicioDate = dateChooserInicio.getDate();
                     Date fechaFinDate = dateChooserFin.getDate();
+                    LocalDate fechaInicioLocalDate = null;
+                    LocalDate fechaFinLocalDate = null;
                     
-                	//Convertir Date a Localdate, si no cargo una fecha lanza un nullpointer
-                    LocalDate fechaInicioLocalDate = fechaInicioDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-
-                    LocalDate fechaFinLocalDate = fechaFinDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                    if(fechaInicioDate != null) 
+	                	//Convertir Date a Localdate, si no cargo una fecha lanza un nullpointer
+	                    fechaInicioLocalDate = fechaInicioDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                    if(fechaFinDate != null)
+	                    fechaFinLocalDate = fechaFinDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                         
                       
                     api.registrarTarea(nombreTarea, api.getProyectoActual().getId(),prioridadTarea,usuario.getUsername(),"EN CURSO", descripcionTarea, fechaInicioLocalDate, fechaFinLocalDate);
                       
-                    JOptionPane.showMessageDialog(null, "Tarea creada con éxito!", "Info", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, labels.getString("mensaje.tareaCreada"), labels.getString("titulo.optionPaneCrearTarea"), JOptionPane.INFORMATION_MESSAGE);
 					
                     new VentanaTareas(api).setVisible(true);
 					dispose();
                        
-                	} catch (NullPointerException e) {
-                		JOptionPane.showMessageDialog(null,"Las fechas no pueden ser nulas.", "Error", JOptionPane.ERROR_MESSAGE);
-                	} catch (DataEmptyException e) {
-                		JOptionPane.showMessageDialog(null,"La tarea debe tener" +" " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            		} catch (DataEmptyException e) {
+                		JOptionPane.showMessageDialog(null, labels.getString("mensaje.campoVacioTarea") +" " + labels.getString(e.getMessage()), "Error", JOptionPane.WARNING_MESSAGE);
 					} catch (NotNullException e) {
-						JOptionPane.showMessageDialog(null,"La tarea debe tener" +" " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null,labels.getString("mensaje.campoVacioTarea") +" " + labels.getString(e.getMessage()), "Error", JOptionPane.WARNING_MESSAGE);
 					} catch (InvalidDateException e) {
-						JOptionPane.showMessageDialog(null,"Ingrese fechas válidas: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null,labels.getString("mensaje.fechasValidas") + labels.getString(e.getMessage()), "Error", JOptionPane.WARNING_MESSAGE);
 					} 
             }
         );
