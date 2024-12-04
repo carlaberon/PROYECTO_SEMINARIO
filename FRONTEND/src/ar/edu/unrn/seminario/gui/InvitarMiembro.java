@@ -26,6 +26,7 @@ import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
+import ar.edu.unrn.seminario.exception.ExistNotification;
 import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.exception.UserIsAlreadyMember;
 import java.awt.Font;
@@ -90,12 +91,12 @@ public class InvitarMiembro extends JFrame {
 		invitarButton.addActionListener(e -> {
 				String nombreUsuario = campoBusqueda.getText();
 				String rol_seleccionado = api.obtenerRolPorIndex(asignarRolComboBox.getSelectedIndex());
+				int codigo_rol = obtenerCodigoRol(rol_seleccionado);
 					try {
-						if(api.existeMiembro(nombreUsuario,api.getProyectoActual().getId()) == 0) {
+						if(api.existeMiembro(nombreUsuario,proyectoActual.getId()) == 0 && api.existeNotificacion(proyectoActual.getId(), nombreUsuario, codigo_rol) == 0) {
 								int id_proyecto = api.getProyectoActual().getId();
 								String nombreProject = api.getProyectoActual().getNombre();
 								
-								int codigo_rol = obtenerCodigoRol(rol_seleccionado);
 								
 								api.crearNotificacion(id_proyecto, nombreUsuario, codigo_rol, nombreProject, LocalDate.now());
 					
@@ -104,14 +105,16 @@ public class InvitarMiembro extends JFrame {
 								setVisible(false);
 								dispose();
 						}
-					} catch(UserIsAlreadyMember e1) {
-						JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), labels.getString("mensaje.errorYaEsMiembro"), JOptionPane.ERROR_MESSAGE);
-					} catch (NotNullException e2) {
+					} catch(ExistNotification e1) {
+						JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), labels.getString("mensaje.info"), JOptionPane.ERROR_MESSAGE);
+					} catch(UserIsAlreadyMember e2) {
+						JOptionPane.showMessageDialog(null, labels.getString(e2.getMessage()), labels.getString("mensaje.errorYaEsMiembro"), JOptionPane.ERROR_MESSAGE);
+					} catch (NotNullException e3) {
 						// TODO Auto-generated catch block
-						e2.printStackTrace(); //Tratar mejor la excepcion
-					} catch (DataEmptyException e3) {
+						JOptionPane.showMessageDialog(null,labels.getString("mensaje.elCampo") + labels.getString(e3.getMessage()) + labels.getString("mensaje.null"), labels.getString("mensaje.campoObligatorio"),JOptionPane.WARNING_MESSAGE);
+					} catch (DataEmptyException e4) {
 						// TODO Auto-generated catch block
-						JOptionPane.showMessageDialog(null,labels.getString("mensaje.elCampo") + labels.getString(e3.getMessage()) + labels.getString("mensaje.empty"), labels.getString("mensaje.campoObligatorio"),JOptionPane.WARNING_MESSAGE);
+						JOptionPane.showMessageDialog(null,labels.getString("mensaje.elCampo") + labels.getString(e4.getMessage()) + labels.getString("mensaje.empty"), labels.getString("mensaje.campoObligatorio"),JOptionPane.WARNING_MESSAGE);
 					}
 				
 		}); 

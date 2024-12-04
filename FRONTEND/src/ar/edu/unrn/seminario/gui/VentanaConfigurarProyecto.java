@@ -108,18 +108,17 @@ public class VentanaConfigurarProyecto extends JFrame {
 						JOptionPane.showMessageDialog(null, labels.getString("mensaje.noModificoCampos"), labels.getString("titulo.modificarProyecto"), JOptionPane.QUESTION_MESSAGE);
 		            }
 					else {
-					
-					int opcionSeleccionada = JOptionPane.showConfirmDialog(null,
-							"Estas seguro que queres modificar el proyecto?", "Confirmar cambio de estado.",
-							JOptionPane.YES_NO_OPTION);
-					
-					if (opcionSeleccionada == JOptionPane.YES_OPTION) {
-						api.modificarProyecto(api.getProyectoActual().getId(), textField_Nombre.getText(), prioridadSeleccionada, textField_Descripcion.getText());
-						JOptionPane.showMessageDialog(null, labels.getString("mensaje.modificacionExitosa"), "Info", JOptionPane.INFORMATION_MESSAGE);
-						api.setProyectoActual(api.getProyectoActual().getId()); 
-						new VentanaResumen(api).setVisible(true);
-						dispose();
-					}
+						int opcionSeleccionada = JOptionPane.showConfirmDialog(null,
+								"Estas seguro que queres modificar el proyecto?", "Confirmar cambio de estado.",
+								JOptionPane.YES_NO_OPTION);
+						
+						if (opcionSeleccionada == JOptionPane.YES_OPTION) {
+							api.modificarProyecto(api.getProyectoActual().getId(), textField_Nombre.getText(), prioridadSeleccionada, textField_Descripcion.getText());
+							JOptionPane.showMessageDialog(null, labels.getString("mensaje.modificacionExitosa"), "Info", JOptionPane.INFORMATION_MESSAGE);
+							api.setProyectoActual(api.getProyectoActual().getId()); 
+							new VentanaResumen(api).setVisible(true);
+							dispose();
+						}
 					}
 					
 				} catch (NotNullException e1) {

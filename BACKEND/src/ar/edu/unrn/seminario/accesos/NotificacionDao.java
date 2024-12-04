@@ -15,4 +15,6 @@ public interface NotificacionDao {
 	
 	List<Notificacion> findAll(String username) throws NotNullException, DataEmptyException;
 	
+	int existNotification(int idProyecto, String username, int rol);
+	
 }
