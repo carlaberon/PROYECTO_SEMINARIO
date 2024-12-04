@@ -44,7 +44,6 @@ public class InvitarMiembro extends JFrame {
 	private List<RolDTO> roles = new ArrayList<>(); 
 	private ProyectoDTO proyectoActual;
 	private UsuarioDTO usuarioActual;
-	private RolDTO rolUsuarioActual;
 	private IApi api;
 
 	public InvitarMiembro(IApi api)  {
@@ -52,7 +51,6 @@ public class InvitarMiembro extends JFrame {
 		
 		this.proyectoActual = api.getProyectoActual();
 		this.usuarioActual = api.getUsuarioActual();
-		this.rolUsuarioActual = api.getRol(usuarioActual.getUsername(), proyectoActual.getId());
 		this.roles = api.obtenerRoles();
 		
 		setTitle(labels.getString("ventana.invitarMiembro"));
@@ -102,7 +100,6 @@ public class InvitarMiembro extends JFrame {
 					
 						
 								JOptionPane.showMessageDialog(null, labels.getString("mensaje.invitacionExitosa"), labels.getString("mensaje.info"), JOptionPane.INFORMATION_MESSAGE);
-								setVisible(false);
 								dispose();
 						}
 					} catch(ExistNotification e1) {
@@ -110,10 +107,8 @@ public class InvitarMiembro extends JFrame {
 					} catch(UserIsAlreadyMember e2) {
 						JOptionPane.showMessageDialog(null, labels.getString(e2.getMessage()), labels.getString("mensaje.errorYaEsMiembro"), JOptionPane.ERROR_MESSAGE);
 					} catch (NotNullException e3) {
-						// TODO Auto-generated catch block
 						JOptionPane.showMessageDialog(null,labels.getString("mensaje.elCampo") + labels.getString(e3.getMessage()) + labels.getString("mensaje.null"), labels.getString("mensaje.campoObligatorio"),JOptionPane.WARNING_MESSAGE);
 					} catch (DataEmptyException e4) {
-						// TODO Auto-generated catch block
 						JOptionPane.showMessageDialog(null,labels.getString("mensaje.elCampo") + labels.getString(e4.getMessage()) + labels.getString("mensaje.empty"), labels.getString("mensaje.campoObligatorio"),JOptionPane.WARNING_MESSAGE);
 					}
 				

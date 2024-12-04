@@ -60,7 +60,14 @@ public class ListaProyectos extends JFrame {
         this.setJMenuBar(menuBar);
         
         
-        tabla = new JTable();
+     // Personalización de la tabla
+        tabla = new JTable() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Hace que las celdas no sean editables
+            }
+        };
+        
         String[] proyectosTabla = {labels.getString("menu.Id"), labels.getString("menu.nombreTabla"), labels.getString("menu.descripcionProyecto"), labels.getString("menu.estadoProyecto"), labels.getString("mensaje.prioridad"), labels.getString("menu.propietario")};
         
         DefaultTableModel modelo = new DefaultTableModel(new Object[][] {}, proyectosTabla);
