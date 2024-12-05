@@ -107,18 +107,62 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 	
 
 	@Override
-	public void remove(int id) {
+	public void remove(int idProyecto) {
+		Connection conn = null;
+	    PreparedStatement stmtTareas = null;
+	    PreparedStatement stmtRelaciones = null;
+	    PreparedStatement stmtProyecto = null;
+
+	    try {
+	    	conn = ConnectionManager.getConnection();
+	        
+	        //Eliminar tareas asociadas
+	        String deleteTareas = "DELETE FROM tareas WHERE id_proyecto = ?";
+	        stmtTareas = conn.prepareStatement(deleteTareas);
+	        stmtTareas.setInt(1, idProyecto);
+	        stmtTareas.executeUpdate();
+
+	        //Eliminar relaciones en proyectos_roles_usuarios
+	        String deleteRelaciones = "DELETE FROM proyectos_usuarios_roles WHERE id_proyecto = ?";
+	        stmtRelaciones = conn.prepareStatement(deleteRelaciones);
+	        stmtRelaciones.setInt(1, idProyecto);
+	        stmtRelaciones.executeUpdate();
+
+	        //Eliminar el proyecto
+	        String deleteProyecto = "DELETE FROM proyectos WHERE id = ?";
+	        stmtProyecto = conn.prepareStatement(deleteProyecto);
+	        stmtProyecto.setInt(1, idProyecto);
+	        stmtProyecto.executeUpdate();
+
+	        
+
+	    } catch (SQLException e1) {
+	    	JOptionPane.showMessageDialog(null, "No se pudo eliminar el proyecto", "Error", JOptionPane.ERROR_MESSAGE);
+	    } finally {
+	    	ConnectionManager.disconnect();
+	    }
+	}
+	
+	@Override
+	public void deleteMember(String username, int idProyecto) {
 		try {
 			Connection conn = ConnectionManager.getConnection();
-			PreparedStatement statement = conn.prepareStatement("UPDATE proyectos SET estado = CONCAT('#', estado) WHERE id = ?");
-			statement.setInt(1, id);
+			PreparedStatement statement = conn.prepareStatement("DELETE FROM proyectos_usuarios_roles WHERE id_proyecto = ? and "
+					+ "nombre_usuario = ?\r\n");
+			
+			// Establecer los valores de los nuevos datos del proyecto
+			statement.setInt(1, idProyecto);
+			statement.setString(2, username);
 			
 			
-			int verificacion = statement.executeUpdate();		
-			if(verificacion == 0) 
-				throw new EliminationException("No se pudo eliminar el proyecto.");
-		} catch (EliminationException e1) {
-			JOptionPane.showMessageDialog(null, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+			int verificacion = statement.executeUpdate();
+			
+			
+			if (verificacion == 0) 
+				throw new NotUpdateException("el usuario" + username);
+			
+		} catch (NotUpdateException e1) {
+			JOptionPane.showMessageDialog(null, e1.getMessage() + "no se elimino del proyecto", "Error", JOptionPane.ERROR_MESSAGE);
 		} catch (SQLException e2) {
 			JOptionPane.showMessageDialog(null,"Error de SQL: " + e2.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		} finally {
@@ -126,9 +170,9 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 		}
 		
 	}
-
+		
 	@Override
-	public Proyecto find(int id) throws NotNullException, DataEmptyException {
+	public Proyecto find(int idProyecto) throws NotNullException, DataEmptyException {
 		Proyecto encontrarProyecto = null;
 		try {
 			Connection conn = ConnectionManager.getConnection();
@@ -136,14 +180,14 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 					+ "FROM proyectos p\r\n"
 					+ "JOIN proyectos_usuarios_roles pur ON p.id = pur.id_proyecto\r\n"
 					+ "JOIN usuarios u ON pur.nombre_usuario = u.usuario\r\n"
-					+ "WHERE p.id = ? and p.estado NOT LIKE '#%' AND p.usuario_propietario = u.usuario\r\n");
-			statement.setInt(1, id);
+					+ "WHERE p.id = ? and p.usuario_propietario = u.usuario\r\n");
+			statement.setInt(1, idProyecto);
 			
 			ResultSet rs = statement.executeQuery();
 			// Si no se obtiene ninguna fila
 	        if (!rs.next()) {
 	            // Lanzamos una excepción personalizada cuando no se encuentra el proyecto
-	            throw new NotFoundException("Proyecto no encontrado para el ID: " + id);
+	            throw new NotFoundException("Proyecto no encontrado para el ID: " + idProyecto);
 	        }
 	        
 	        // Si se encuentra una fila se crea el objeto Proyecto por completo
@@ -167,17 +211,25 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 			
 			try {
 				Connection conn = ConnectionManager.getConnection();
-				PreparedStatement statement = conn.prepareStatement("SELECT p.id, p.nombre, p.usuario_propietario, p.estado, p.descripcion, p.prioridad, u.usuario, u.contrasena, u.nombre, u.email, u.activo\r\n" 
+				PreparedStatement statement = conn.prepareStatement("SELECT p.id, p.nombre, p.usuario_propietario, p.estado, p.descripcion, p.prioridad\r\n" 
 						+ "FROM proyectos p\r\n"
 						+ "JOIN proyectos_usuarios_roles pur ON p.id = pur.id_proyecto\r\n"
-						+ "JOIN usuarios u ON pur.nombre_usuario = u.usuario\r\n"
-						+ "WHERE p.estado NOT LIKE '#%' AND pur.nombre_usuario = ?\r\n");
+						+ "WHERE pur.nombre_usuario = ?\r\n");
 				
 				statement.setString(1, usuario);
-				//statement.setString(2, usuario);
+				
 				ResultSet rs = statement.executeQuery();
+				
 				while(rs.next()) {
-					Usuario usuarioPropietario = new Usuario(rs.getString("u.usuario"), rs.getString("u.contrasena"), rs.getString("u.nombre"), rs.getString("u.email"));
+					PreparedStatement statement2 = conn.prepareStatement("SELECT u.usuario, u.contrasena, u.nombre, u.email, u.activo\r\n" 
+							+ "FROM usuarios u\r\n"
+							+ "WHERE u.usuario = ?\r\n");
+					
+					statement2.setString(1, rs.getString("p.usuario_propietario"));
+					ResultSet rs2 = statement2.executeQuery(); //Busqueda propietario
+					rs2.next();
+					
+					Usuario usuarioPropietario = new Usuario(rs2.getString("u.usuario"), rs2.getString("u.contrasena"), rs2.getString("u.nombre"), rs2.getString("u.email"));
 					unProyecto = new Proyecto(rs.getInt("p.id"), rs.getString("p.nombre"), usuarioPropietario, rs.getString("estado"), rs.getString("p.descripcion"), rs.getString("p.prioridad"));
 					
 					proyectos.add(unProyecto);
@@ -197,7 +249,7 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 	}
 
 	@Override
-	public void update(String username, int idProyecto, int codigoRol) {
+	public void inviteMember(String username, int idProyecto, int codigoRol) {
 		try {
 			   Connection conn = ConnectionManager.getConnection();
 			   PreparedStatement statement = conn.prepareStatement("INSERT INTO `proyectos_usuarios_roles` (`codigo_rol`,`nombre_usuario`,`id_proyecto`) " + "VALUES(?, ?, ?)" );
@@ -254,6 +306,7 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 		}
 		return miembros;
 	}
+
 	
 }
 

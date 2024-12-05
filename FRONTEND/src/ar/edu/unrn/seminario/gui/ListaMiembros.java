@@ -197,7 +197,7 @@ public class ListaMiembros extends JFrame {
 					RolDTO unrol = api.getRol(u.getUsername(),unproyecto.getId()); 
 		    modelo.addRow(new Object[] {
 		    	u.getUsername(),
-		    	unrol.getNombre()
+		    	labels.getString(api.traducirRol(unrol.getNombre()))
 
 		    });
 		}
@@ -231,7 +231,7 @@ public class ListaMiembros extends JFrame {
 					invitarMiembro.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	                invitarMiembro.setVisible(true);
             } else {
-	            JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.ERROR_MESSAGE);
+	            JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.WARNING_MESSAGE);
             }
         }
     );
@@ -272,7 +272,7 @@ public class ListaMiembros extends JFrame {
 								}
 								dispose();
     	    	}else {
-    	    		JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.ERROR_MESSAGE);
+    	    		JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.WARNING_MESSAGE);
     	    	}
 	    	    habilitarBotones(false);
 	    	    table.clearSelection();
@@ -280,20 +280,21 @@ public class ListaMiembros extends JFrame {
     	);
       
       botonEliminar.addActionListener(e -> {
-	  		if(!(rolActual.getNombre().equals("Observador"))) {
+	  		if(rolActual.getNombre().equals("Administrador")) {
 	  		int filaSeleccionada = table.getSelectedRow(); 	        
-	  			int idTarea = (int) table.getValueAt(filaSeleccionada, 0);
-				int confirmacion = JOptionPane.showConfirmDialog(null, labels.getString("mensaje.preguntaDeEliminar"),labels.getString("titulo.optionPanePreguntaEliminacion"), JOptionPane.YES_NO_OPTION);				
+	  			String username = (String) table.getValueAt(filaSeleccionada, 0);
+	  			
+				int confirmacion = JOptionPane.showConfirmDialog(null, labels.getString("mensaje.preguntaEliminarMiembro"),labels.getString("titulo.optionPanePreguntaEliminacion"), JOptionPane.YES_NO_OPTION);				
 				if (confirmacion == JOptionPane.YES_OPTION) {		
 					
-						api.eliminarTarea(idTarea);
+						api.eliminarMiembro(username, unproyecto.getId());
 						habilitarBotones(false);
 						((DefaultTableModel) table.getModel()).removeRow(filaSeleccionada);
-	                    JOptionPane.showMessageDialog(null, labels.getString("mensaje.eliminacionExitosa"), labels.getString("titulo.optionPaneEliminacion"), JOptionPane.INFORMATION_MESSAGE);		
+	                    JOptionPane.showMessageDialog(null, labels.getString("mensaje.eliminacionExitosaMiembro"), labels.getString("titulo.optionPaneMiembroEliminado"), JOptionPane.INFORMATION_MESSAGE);		
 	                    
 				}
 	  		}else {
-	  			JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.ERROR_MESSAGE);
+	  			JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.WARNING_MESSAGE);
 	    	}
     	    habilitarBotones(false);
     	    table.clearSelection();

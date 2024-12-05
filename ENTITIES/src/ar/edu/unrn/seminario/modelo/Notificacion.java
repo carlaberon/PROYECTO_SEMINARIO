@@ -1,5 +1,6 @@
 package ar.edu.unrn.seminario.modelo;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -7,23 +8,33 @@ import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.NotNullException;
 
 public class Notificacion {
+	private int idProyecto;
+	private String username;
+	private int codigoRol;
 	private String descripcion;
-	private LocalDateTime fecha;
+	private LocalDate fecha;
 
 	
 	
-	public Notificacion(String nombreProyecto) throws NotNullException, DataEmptyException {
+	public Notificacion(int idProyecto, String username, int codigoRol,String descripcion, LocalDate fechaGenerada) throws NotNullException, DataEmptyException {
 		
-  	    if (esDatoNulo(nombreProyecto)) {
-	    	throw new NotNullException("menu.nombreProyecto");
+		if (esDatoNulo(username)) {
+		    throw new NotNullException("validacion.usuario");
+		}
+		    
+		if (esDatoVacio(username)) {
+		    throw new DataEmptyException("validacion.usuario");
+		}
+		
+		if (codigoRol == 0) {
+	    	throw new DataEmptyException("menu.rol");
 	    }
 	    
-	    if (esDatoVacio(nombreProyecto)) {
-	    	throw new DataEmptyException("menu.nombreProyecto");
-	    }
-	    
-	    this.descripcion = "Te invitaron al proyecto: " + nombreProyecto;
-		setFecha();
+	    this.descripcion = descripcion;
+		this.fecha = fechaGenerada;
+		this.idProyecto = idProyecto;
+		this.username = username;
+		this.codigoRol = codigoRol;
 	}
 
 
@@ -35,12 +46,12 @@ public class Notificacion {
 		this.descripcion = descripcion;
 	}
 
-	public LocalDateTime getFecha() {
+	public LocalDate getFecha() {
 		return fecha;
 	}
 
-	public void setFecha() {
-		this.fecha = fecha.now();
+	public void setFecha(LocalDate fecha) {
+		this.fecha = fecha;
 	}
 	
 
@@ -49,9 +60,6 @@ public class Notificacion {
 		return Objects.hash(descripcion, fecha);
 	}
 	
-	
-
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -72,10 +80,40 @@ public class Notificacion {
 		return dato == null;
 	}
 
-
 	@Override
 	public String toString() {
-		return "Notificacion [descripcion=" + descripcion + ", fecha=" + fecha + "]";
+		return "Notificacion [idProyecto=" + idProyecto + ", username=" + username + ", codigoRol=" + codigoRol
+				+ ", descripcion=" + descripcion + ", fecha=" + fecha + "]";
+	}
+
+
+	public String getUsername() {
+		return username;
+	}
+
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+
+	public int getIdProyecto() {
+		return idProyecto;
+	}
+
+
+	public void setIdProyecto(int idProyecto) {
+		this.idProyecto = idProyecto;
+	}
+
+
+	public int getCodigoRol() {
+		return codigoRol;
+	}
+
+
+	public void setCodigoRol(int codigoRol) {
+		this.codigoRol = codigoRol;
 	}
 
 

@@ -35,7 +35,6 @@ public class ModificarTarea extends JFrame {
 	 private JPanel contentPane;
 	    private JTextField nombreTareaTextField;
 	    private JComboBox<String> asignarUsuarioComboBox; // ComboBox para seleccionar usuario
-	    List<String> prioridades = Arrays.asList("Alta", "Media", "Baja");
 	    private JComboBox<String> prioridadComboBox;
 	    private JTextArea textAreaDescription;
 	    private JDateChooser dateChooserInicio;
@@ -89,7 +88,7 @@ public class ModificarTarea extends JFrame {
 			prioridadComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 10));
 			prioridadComboBox.setBounds(190, 133, 160, 25);
 			contentPane.add(prioridadComboBox);
-
+			prioridadComboBox.addItem("");
 	        for (String prioridad :Arrays.asList(labels.getString("prioridad.alta"), labels.getString("prioridad.media"), labels.getString("prioridad.baja"))) {
 	            prioridadComboBox.addItem(prioridad);
 	        }
@@ -135,35 +134,36 @@ public class ModificarTarea extends JFrame {
 	  
 	                    int selectedUserIndex = asignarUsuarioComboBox.getSelectedIndex();
 	                    String nuevoNombreTarea = nombreTareaTextField.getText();
-	                    String prioridadTarea = (String) prioridadComboBox.getSelectedItem();
+	                    String prioridadTarea = api.obtenerPrioridadPorIndex(prioridadComboBox.getSelectedIndex());
 	                    UsuarioDTO usuario = usuarios.get(selectedUserIndex);
 	                    String descripcionTarea = textAreaDescription.getText();
 	                    Date fechaInicioDate = dateChooserInicio.getDate();
 	                    Date fechaFinDate = dateChooserFin.getDate();
+	                    LocalDate fechaInicioLocalDate = null;
+	                    LocalDate fechaFinLocalDate = null;
 	                    
+	                    if(fechaInicioDate != null) 
+		                	//Convertir Date a Localdate, si no cargo una fecha lanza un nullpointer
+		                    fechaInicioLocalDate = fechaInicioDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+	                    if(fechaFinDate != null)
+		                    fechaFinLocalDate = fechaFinDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                         
-                        LocalDate fechaInicioLocalDate = fechaInicioDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                        LocalDate fechaFinLocalDate = fechaFinDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();	                        
-                   
 	                    api.modificarTarea(tarea.getId(), nuevoNombreTarea, prioridadTarea, usuario.getUsername(), "EN CURSO", descripcionTarea, fechaInicioLocalDate, fechaFinLocalDate);
 	                    
 	                      
-	                    JOptionPane.showMessageDialog(null, "Tarea modificada con éxito!", "Info", JOptionPane.INFORMATION_MESSAGE);
+	                    JOptionPane.showMessageDialog(null, labels.getString("mensaje.tareaModificada"), "Info", JOptionPane.INFORMATION_MESSAGE);
 	                    new VentanaTareas(api).setVisible(true);
 	                    dispose();
 	                       
 	                	
-	                	} catch (NullPointerException excepcion) {
-	                		
-	                		JOptionPane.showMessageDialog(null,"Completar los campos de fecha", "Error", JOptionPane.ERROR_MESSAGE);
 	                	} catch (DataEmptyException e1) {
-	                		JOptionPane.showMessageDialog(null,"La tarea debe tener" +" " + e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+	                		JOptionPane.showMessageDialog(null, labels.getString("mensaje.campoVacioTarea") +" " + labels.getString(e1.getMessage()), "Error", JOptionPane.WARNING_MESSAGE);
 	                		
 						} catch (NotNullException e1) {
-							JOptionPane.showMessageDialog(null,"La tarea debe tener" +" " + e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null,labels.getString("mensaje.campoVacioTarea") +" " + labels.getString(e1.getMessage()), "Error", JOptionPane.WARNING_MESSAGE);
 							
 						} catch (InvalidDateException e1) {
-							JOptionPane.showMessageDialog(null,"Ingrese fechas válidas: " + e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null,labels.getString("mensaje.fechasValidas") + labels.getString(e1.getMessage()), "Error", JOptionPane.WARNING_MESSAGE);
 						} 	        
 	            }				
 	        );

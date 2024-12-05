@@ -27,24 +27,47 @@ public class ListaProyectos extends JFrame {
 	
     public ListaProyectos(IApi api)  {
     	
-    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
+    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
 //   	 descomentar para que tome el idioma ingles (english)
 
    	//ResourceBundle labels = ResourceBundle.getBundle("labels");
     	this.api = api;
     	this.usuarioActual = api.getUsuarioActual();
-        setTitle(labels.getString("menu.proyectos"));
+        setTitle(labels.getString("menu.proyecto"));
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setBounds(100, 100, 800, 400);
+        setBounds(50, 50, 1200, 650);
         getContentPane().setLayout(new BorderLayout());
 
-        Color fondoColor = new Color(48, 48, 48); // Color de fondo oscuro
-        Color tituloColor = new Color(109, 114, 195); // Púrpura para los títulos
-        Font fuente = new Font("Segoe UI", Font.PLAIN, 11);
+        Color fondoColor = new Color(65, 62, 77); 
+        Color tituloColor = new Color(138, 102, 204);
+        Font fuente = new Font("Segoe UI", Font.PLAIN, 14);
 
         getContentPane().setBackground(fondoColor);
         
-        tabla = new JTable();
+     // Configuración del menú superior
+        JMenuBar menuBar = new JMenuBar();
+        menuBar.setBackground(new Color(138, 102, 204));
+        menuBar.setPreferredSize(new Dimension(100, 50));
+        
+        JLabel appName = new JLabel(labels.getString("menu.proyectos"));
+        appName.setForeground(Color.WHITE);
+        appName.setFont(new Font("Segoe UI", Font.BOLD, 18));
+
+        JPanel centerPanel = new JPanel();
+        centerPanel.setOpaque(false);
+        centerPanel.add(appName);
+        menuBar.add(centerPanel);
+        this.setJMenuBar(menuBar);
+        
+        
+     // Personalización de la tabla
+        tabla = new JTable() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Hace que las celdas no sean editables
+            }
+        };
+        
         String[] proyectosTabla = {labels.getString("menu.Id"), labels.getString("menu.nombreTabla"), labels.getString("menu.descripcionProyecto"), labels.getString("menu.estadoProyecto"), labels.getString("mensaje.prioridad"), labels.getString("menu.propietario")};
         
         DefaultTableModel modelo = new DefaultTableModel(new Object[][] {}, proyectosTabla);
@@ -71,8 +94,8 @@ public class ListaProyectos extends JFrame {
         				p.getId(),
         				p.getNombre(), 
         				p.getDescripcion(), 
-        				p.isEstado(),
-        				p.getPrioridad(), 
+        				labels.getString("estado.proyecto"),
+        				labels.getString(api.traducirPrioridad(p.getPrioridad())), 
         				p.getUsuarioPropietario().getUsername()});
         	}
         }
@@ -101,7 +124,7 @@ public class ListaProyectos extends JFrame {
 
         // Establecer fuente y color de encabezados
         tabla.setFont(fuente);
-        tabla.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 11));
+        tabla.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
         tabla.getTableHeader().setBackground(tituloColor); 
         tabla.getTableHeader().setForeground(Color.WHITE);
         tabla.setBackground(fondoColor);
@@ -116,7 +139,7 @@ public class ListaProyectos extends JFrame {
 		});
 
         JPanel panelInferior = new JPanel();
-        panelInferior.setBackground(new Color(109, 114, 195)); // Púrpura para el fondo del panel inferior
+        panelInferior.setBackground(new Color(138, 102, 204)); 
         JLabel labelInferior = new JLabel(labels.getString("menu.sistema"));
         labelInferior.setForeground(Color.WHITE);
         panelInferior.add(labelInferior);
@@ -131,33 +154,22 @@ public class ListaProyectos extends JFrame {
         
         eliminarProyecto.addActionListener(e -> {
 	        	habilitarBotones(false);
-				int opcionSeleccionada = JOptionPane.showConfirmDialog(null,
-				           labels.getString("mensaje.confirmarEliminacion"), labels.getString("mensaje.eliminarProyecto"),
-				           JOptionPane.YES_NO_OPTION);
-				if (opcionSeleccionada == JOptionPane.YES_OPTION) {
-				        int projecId = (int) tabla.getModel().getValueAt(tabla.getSelectedRow(), 0);
-				        if (api.getRol(usuarioActual.getUsername(), projecId).getNombre().equals("Admin")) {
-				        
-				            try {
-								api.eliminarProyecto(projecId);
-								actualizarTabla();
-							} catch (DataEmptyException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace(); //Tratar mejor la excepcion
-							} catch (NotNullException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							} catch (InvalidDateException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							}
-				        
-				        habilitarBotones(false);
-				}else {
-					JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.ERROR_MESSAGE);	
-				}
-				}
+	        	int projecId = (int) tabla.getModel().getValueAt(tabla.getSelectedRow(), 0);
+	        	if (api.getRol(usuarioActual.getUsername(), projecId).getNombre().equals("Administrador")) {
+					int opcionSeleccionada = JOptionPane.showConfirmDialog(null,
+					           labels.getString("mensaje.confirmarEliminacion"), labels.getString("mensaje.eliminarProyecto"),
+					           JOptionPane.YES_NO_OPTION);
+					if (opcionSeleccionada == JOptionPane.YES_OPTION) {
+						api.eliminarProyecto(projecId);
+						actualizarTabla();
+								
+						habilitarBotones(false);
+					}
+	        	}else {
+	        		JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.WARNING_MESSAGE);	
+	        	}
         });
+        
         panelEliminar.add(eliminarProyecto);
         JScrollPane scrollPane = new JScrollPane(tabla);
         scrollPane.getViewport().setBackground(fondoColor); // Establecer el fondo del viewport
