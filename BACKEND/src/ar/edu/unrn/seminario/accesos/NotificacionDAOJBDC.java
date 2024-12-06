@@ -10,6 +10,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import ar.edu.unrn.seminario.exception.DataEmptyException;
+import ar.edu.unrn.seminario.exception.NotFoundException;
 import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.modelo.Notificacion;
 
@@ -97,6 +98,34 @@ public class NotificacionDAOJBDC implements NotificacionDao{
 			ConnectionManager.disconnect();
 		}
 		return notificaciones;
+	}
+
+	@Override
+	public int existNotification(int idProyecto, String username, int rol) {
+		int existe = 0;
+		try {
+			Connection conn = ConnectionManager.getConnection();
+			PreparedStatement statement = conn.prepareStatement("SELECT n.id_proyecto, n.nombre_usuario, n.rol_invitado, n.descripcion, n.fecha\r\n"
+					+ "FROM notificaciones n\r\n"
+					+ "WHERE n.nombre_usuario = ? and id_proyecto = ? and rol_invitado = ?");
+			statement.setString(1, username);
+			statement.setInt(2, idProyecto);
+			statement.setInt(3, rol);
+			
+			ResultSet rs = statement.executeQuery();
+			
+			if (rs.next()) {
+	            existe = 1; // Si hay un registro, existe se convierte en 1
+	        }
+			
+		} catch (SQLException e1) {
+			JOptionPane.showMessageDialog(null, e1.getMessage() + "Error en la consulta", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		 finally {
+			ConnectionManager.disconnect();
+		}
+		
+		return existe;
 	}
 
 }

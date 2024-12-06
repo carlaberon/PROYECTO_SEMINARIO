@@ -22,9 +22,11 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
 import ar.edu.unrn.seminario.api.IApi;
+import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
+import ar.edu.unrn.seminario.exception.ExistNotification;
 import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.exception.UserIsAlreadyMember;
 import java.awt.Font;
@@ -37,17 +39,20 @@ public class InvitarMiembro extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField campoBusqueda;
-//	private JComboBox<String> asignarUsuarioComboBox;
 	private JComboBox<String> asignarRolComboBox = new JComboBox<>();
 	private List<UsuarioDTO> usuarios = new ArrayList<>();
 	private List<RolDTO> roles = new ArrayList<>(); 
+	private ProyectoDTO proyectoActual;
+	private UsuarioDTO usuarioActual;
 	private IApi api;
 
 	public InvitarMiembro(IApi api)  {
 		ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
 		
+		this.proyectoActual = api.getProyectoActual();
+		this.usuarioActual = api.getUsuarioActual();
 		this.roles = api.obtenerRoles();
-	
+		
 		setTitle(labels.getString("ventana.invitarMiembro"));
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 800, 400);
@@ -83,30 +88,30 @@ public class InvitarMiembro extends JFrame {
 	
 		invitarButton.addActionListener(e -> {
 				String nombreUsuario = campoBusqueda.getText();
-				try {
-					if(api.existeMiembro(nombreUsuario,api.getProyectoActual().getId()) == 0) {
-							int id_proyecto = api.getProyectoActual().getId();
-							String nombreProject = api.getProyectoActual().getNombre();
-							String rol_seleccionado = api.obtenerRolPorIndex(asignarRolComboBox.getSelectedIndex());
-							
-							int codigo_rol = obtenerCodigoRol(rol_seleccionado);
-							
-							api.crearNotificacion(id_proyecto, nombreUsuario, codigo_rol, nombreProject, LocalDate.now());
-				
+				String rol_seleccionado = api.obtenerRolPorIndex(asignarRolComboBox.getSelectedIndex());
+				int codigo_rol = obtenerCodigoRol(rol_seleccionado);
+					try {
+						if(api.existeMiembro(nombreUsuario,proyectoActual.getId()) == 0 && api.existeNotificacion(proyectoActual.getId(), nombreUsuario, codigo_rol) == 0) {
+								int id_proyecto = api.getProyectoActual().getId();
+								String nombreProject = api.getProyectoActual().getNombre();
+								
+								
+								api.crearNotificacion(id_proyecto, nombreUsuario, codigo_rol, nombreProject, LocalDate.now());
 					
-							JOptionPane.showMessageDialog(null, labels.getString("mensaje.invitacionExitosa"), labels.getString("mensaje.info"), JOptionPane.INFORMATION_MESSAGE);
-							setVisible(false);
-							dispose();
+						
+								JOptionPane.showMessageDialog(null, labels.getString("mensaje.invitacionExitosa"), labels.getString("mensaje.info"), JOptionPane.INFORMATION_MESSAGE);
+								dispose();
+						}
+					} catch(ExistNotification e1) {
+						JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), labels.getString("mensaje.info"), JOptionPane.ERROR_MESSAGE);
+					} catch(UserIsAlreadyMember e2) {
+						JOptionPane.showMessageDialog(null, labels.getString(e2.getMessage()), labels.getString("mensaje.errorYaEsMiembro"), JOptionPane.ERROR_MESSAGE);
+					} catch (NotNullException e3) {
+						JOptionPane.showMessageDialog(null,labels.getString("mensaje.elCampo") + labels.getString(e3.getMessage()) + labels.getString("mensaje.null"), labels.getString("mensaje.campoObligatorio"),JOptionPane.WARNING_MESSAGE);
+					} catch (DataEmptyException e4) {
+						JOptionPane.showMessageDialog(null,labels.getString("mensaje.elCampo") + labels.getString(e4.getMessage()) + labels.getString("mensaje.empty"), labels.getString("mensaje.campoObligatorio"),JOptionPane.WARNING_MESSAGE);
 					}
-				} catch(UserIsAlreadyMember e1) {
-					JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), labels.getString("mensaje.errorYaEsMiembro"), JOptionPane.ERROR_MESSAGE);
-				} catch (NotNullException e2) {
-					// TODO Auto-generated catch block
-					e2.printStackTrace(); //Tratar mejor la excepcion
-				} catch (DataEmptyException e3) {
-					// TODO Auto-generated catch block
-					JOptionPane.showMessageDialog(null,labels.getString("mensaje.elCampo") + labels.getString(e3.getMessage()) + labels.getString("mensaje.empty"), labels.getString("mensaje.campoObligatorio"),JOptionPane.WARNING_MESSAGE);
-				}
+				
 		}); 
 
 		invitarButton.setBounds(514, 279, 147, 27);

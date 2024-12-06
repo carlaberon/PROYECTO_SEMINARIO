@@ -1,7 +1,6 @@
 package ar.edu.unrn.seminario.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Button;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -14,11 +13,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
-
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -43,8 +40,6 @@ import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
 
-
-
 public class VentanaTareas extends JFrame {
 
     private JPanel contentPane;
@@ -53,11 +48,9 @@ public class VentanaTareas extends JFrame {
 	private IApi api;
 	JButton botonModificar;
 	JButton botonEliminar;
-	private UsuarioDTO usuarioActual; //obtener usuario actual por medio de la api
-    private ProyectoDTO unproyecto; //obtener proyecto por medio de la api
+	private UsuarioDTO usuarioActual;
+    private ProyectoDTO unproyecto; 
     private RolDTO rolActual;
-	
-
     public VentanaTareas(IApi api) {
     	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
 //		 descomentar para que tome el idioma ingles (english)
@@ -77,8 +70,7 @@ public class VentanaTareas extends JFrame {
         contentPane = new JPanel();
         contentPane.setLayout(new BorderLayout());
         setContentPane(contentPane);
-        
-        // Configuración del menú superior
+
         JMenuBar menuBar = new JMenuBar();
         menuBar.setBackground(new Color(138, 102, 204));
         menuBar.setPreferredSize(new Dimension(100, 50));
@@ -256,8 +248,7 @@ public class VentanaTareas extends JFrame {
         buttonPanel.setOpaque(false);
 
         JButton btnTarea = createButton(labels.getString("menu.agregarTarea"), new Color(138, 102, 204));
-        btnTarea.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+        btnTarea.addActionListener(e -> {
 				
 				if(!(rolActual.getNombre().equals("Observador"))) {
 					CrearTarea crearTarea;
@@ -266,11 +257,10 @@ public class VentanaTareas extends JFrame {
 					dispose();
 				
 				}else {
-					JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.WARNING_MESSAGE);
 				}
 			}
-		});
-
+		);
         buttonPanel.add(btnTarea);
         descPanel.add(buttonPanel, BorderLayout.NORTH); // Coloca el botón en el norte (arriba)
         centerPanel1.add(descPanel);
@@ -284,7 +274,6 @@ public class VentanaTareas extends JFrame {
       botones.add(botonModificar);
       botones.add(botonEliminar);
       descPanel.add(botones, BorderLayout.SOUTH);
-      
       
       habilitarBotones(false);
       
@@ -307,7 +296,7 @@ public class VentanaTareas extends JFrame {
 								}
 								dispose();
     	    	}else {
-    	    		JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.ERROR_MESSAGE);
+    	    		JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.WARNING_MESSAGE);
     	    	}
 	    	    habilitarBotones(false);
 	    	    table.clearSelection();
@@ -328,7 +317,7 @@ public class VentanaTareas extends JFrame {
 	                    
 				}
 	  		}else {
-	  			JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.ERROR_MESSAGE);
+	  			JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.WARNING_MESSAGE);
 	    	}
     	    habilitarBotones(false);
     	    table.clearSelection();
