@@ -10,6 +10,7 @@ import ar.edu.unrn.seminario.modelo.Proyecto;
 import ar.edu.unrn.seminario.modelo.Usuario;
 
 public interface ProyectoDao {
+	
 	void create(Proyecto proyecto) throws DataBaseInsertionException, DataBaseConnectionException;
 
 	void update(Proyecto proyecto);
