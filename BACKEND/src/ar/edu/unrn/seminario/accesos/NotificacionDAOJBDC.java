@@ -10,7 +10,6 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import ar.edu.unrn.seminario.exception.DataEmptyException;
-import ar.edu.unrn.seminario.exception.DataBaseFoundException;
 import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.modelo.Notificacion;
 

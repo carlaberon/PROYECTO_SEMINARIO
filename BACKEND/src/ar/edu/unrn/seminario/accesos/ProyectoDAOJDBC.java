@@ -10,20 +10,17 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import ar.edu.unrn.seminario.exception.DataBaseConnectionException;
+
 import ar.edu.unrn.seminario.exception.DataEmptyException;
-import ar.edu.unrn.seminario.exception.DataBaseEliminationException;
+
 import ar.edu.unrn.seminario.exception.NotNullException;
-import ar.edu.unrn.seminario.exception.DataBaseUpdateException;
-import ar.edu.unrn.seminario.exception.DataBaseInsertionException;
-import ar.edu.unrn.seminario.exception.DataBaseFoundException;
 import ar.edu.unrn.seminario.modelo.Proyecto;
 import ar.edu.unrn.seminario.modelo.Usuario;
 
 public class ProyectoDAOJDBC implements ProyectoDao{
 
 	@Override
-	public void create(Proyecto proyecto) throws DataBaseInsertionException, DataBaseConnectionException {
+	public void create(Proyecto proyecto)  {
 		PreparedStatement statement;
 		Connection conn;
 		try {
