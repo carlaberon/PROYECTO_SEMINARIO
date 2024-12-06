@@ -29,17 +29,11 @@ public class ConnectionManager {
 
 	}
 
-	public static void connect() {
-		try {
+	public static void connect() throws SQLException {
 			prop = getProperties();
 			conn = DriverManager.getConnection(prop.getProperty("connection"), prop.getProperty("username"),
 					prop.getProperty("password"));
 			
-		} catch (SQLException sqlEx) {
-			System.out.println(
-			"No se ha podido conectar a " + prop.getProperty("connection") + ". " + sqlEx.getMessage());
-			System.out.println("Error al cargar el driver");
-		}
 	}
 
 	public static void disconnect() {
@@ -53,12 +47,12 @@ public class ConnectionManager {
 		}
 	}
 
-	public static void reconnect() {
+	public static void reconnect() throws SQLException {
 		disconnect();
 		connect();
 	}
 
-	public static Connection getConnection() {
+	public static Connection getConnection() throws SQLException {
 
 		if (conn == null) {
 			connect();
