@@ -13,7 +13,7 @@ public interface UsuarioDao {
 
 	void remove(Usuario Usuario);
 
-	Usuario find(String username);
+	Usuario find(String username) ;
 
 	List<Usuario> findAll();
 

@@ -29,6 +29,7 @@ public class Inicio extends JFrame {
         setTitle(labels.getString("ventana.inicio"));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 600);
+        setBounds(50, 50, 1200, 650);
 
         JMenuBar menuBar = new JMenuBar();
         menuBar.setBackground(new Color(138, 102, 204));
@@ -139,31 +140,29 @@ public class Inicio extends JFrame {
 		}
         JPanel proyectosButtonsPanel = new JPanel();
         proyectosButtonsPanel.setBackground(new Color(65, 62, 77));
-        proyectosButtonsPanel.setLayout(new BoxLayout(proyectosButtonsPanel, BoxLayout.Y_AXIS));
+ 
 
-        JButton btnNuevoProyecto = new JButton(labels.getString("menu.agregarProyecto"));
+        proyectosButtonsPanel.setLayout(new GridLayout(3,6,6,6));
+       
+  
+        JButton btnNuevoProyecto = createButton(labels.getString("menu.agregarProyecto"), new Color(138, 102, 204));
         btnNuevoProyecto.addActionListener(e -> {
             abrirCrearProyecto();
             dispose();
         });
 
         JButton btnVerProyectos = new JButton(labels.getString("menu.verProyectos"));
+        
         btnVerProyectos.addActionListener(e -> {
         	abrirListaProyectos();
         	dispose();
         });
 
-        formatButton(btnNuevoProyecto);
+   
         formatButton(btnVerProyectos);
 
-        JPanel panelHorizontal = new JPanel();
-        panelHorizontal.setLayout(new BoxLayout(panelHorizontal, BoxLayout.Y_AXIS));
-        panelHorizontal.setBackground(new Color(30, 30, 30));
-        panelHorizontal.add(btnNuevoProyecto);
-
-        proyectosButtonsPanel.add(panelHorizontal);
         proyectosButtonsPanel.add(btnVerProyectos);
-        
+        proyectosButtonsPanel.add(btnNuevoProyecto);
 
         JPanel panelNotificaciones = new JPanel();
         panelNotificaciones.setLayout(new BoxLayout(panelNotificaciones, BoxLayout.Y_AXIS)); // Cambiar a BoxLayout para tamaño dinámico
@@ -180,7 +179,8 @@ public class Inicio extends JFrame {
         try {
 			List<NotificacionDTO> notificaciones = api.obtenerNotificaciones(usuarioActual.getUsername());
 			for (NotificacionDTO notificacionDTO : notificaciones) {
-				JPanel panelPrueba1 = createPanel("Prueba", notificacionDTO.getDescripcion());
+				JPanel panelPrueba1 = createPanel("Invitacion a proyecto", notificacionDTO.getDescripcion(),panelNotificaciones, 
+						notificacionDTO.getUsername(),notificacionDTO.getIdProyecto(),notificacionDTO.getCodigoRol());
 				panelPrueba1.setMaximumSize(new Dimension(Integer.MAX_VALUE, 60)); // Permitir que ocupe todo el ancho disponible
 				panelPrueba1.setAlignmentX(Component.LEFT_ALIGNMENT); // Alinear al inicio del eje X
 				panelNotificaciones.add(panelPrueba1);
@@ -230,31 +230,146 @@ public class Inicio extends JFrame {
         ventanaResumen.setVisible(true); 
     }
     
-    private JPanel createPanel(String title, String subtitle) {
+    private JPanel createPanel(String title, String subtitle, JPanel parentPanel, String username, int idProyecto, int codigoRol) {
         JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setLayout(new BorderLayout());
         panel.setBackground(new Color(53, 52, 60));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Margen interno
+
+        // Panel para el contenido de texto
+        JPanel textPanel = new JPanel();
+        textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
+        textPanel.setBackground(new Color(53, 52, 60));
 
         JLabel label = new JLabel(title);
         label.setForeground(Color.WHITE);
         label.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        panel.add(label);
+        textPanel.add(label);
 
         if (subtitle != null) {
             JLabel subLabel = new JLabel(subtitle);
             subLabel.setForeground(Color.GRAY);
             subLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-            panel.add(subLabel);
+            textPanel.add(subLabel);
         }
+
+        panel.add(textPanel, BorderLayout.CENTER);
+
+        // Panel para los botones
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        buttonPanel.setBackground(new Color(53, 52, 60));
+
+        JButton acceptButton = new JButton("Aceptar");
+        JButton rejectButton = new JButton("Rechazar");
+        
+        formatActionButton(acceptButton);
+        formatActionButton(rejectButton);
+
+        acceptButton.addActionListener(e -> {
+        	api.eliminarNotificacion(idProyecto, username);
+        	api.invitarMiembro(username, idProyecto, codigoRol);
+        	parentPanel.remove(panel); // Eliminar este panel del contenedor padre
+            parentPanel.revalidate(); // Actualizar el contenedor para reflejar el cambio
+            parentPanel.repaint();    // Volver a pintar el contenedor
+            try {
+				actualizarProyectos();
+			} catch (NotNullException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (DataEmptyException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+        });
+        
+        // Acción para eliminar el panel al presionar "Rechazar"
+        rejectButton.addActionListener(e -> {
+        	api.eliminarNotificacion(idProyecto, username);
+            parentPanel.remove(panel); // Eliminar este panel del contenedor padre
+            parentPanel.revalidate(); // Actualizar el contenedor para reflejar el cambio
+            parentPanel.repaint();    // Volver a pintar el contenedor
+        });
+
+        buttonPanel.add(acceptButton);
+        buttonPanel.add(rejectButton);
+
+        panel.add(buttonPanel, BorderLayout.EAST);
 
         return panel;
     }
     
+    // Método para aplicar estilo a los botones
+    private void formatActionButton(JButton button) {
+        button.setForeground(Color.WHITE);
+        button.setBackground(new Color(83, 82, 90));
+        button.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        button.setFocusPainted(false);
+        button.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10)); // Ajustar padding interno
+    }
+    
+  public void actualizarProyectos() throws NotNullException, DataEmptyException {
+	  proyectosListPanel.removeAll(); // Limpiar el panel actual
+  
+	  List<ProyectoDTO> proyectos;
+	  try {
+		  proyectos = api.obtenerProyectos(usuarioActual.getUsername());
+		  proyectos.sort((p1, p2) -> Integer.compare(api.obtenerPrioridad(p1.getPrioridad()), 
+          api.obtenerPrioridad(p2.getPrioridad())));
+		  proyectos.sort((p1, p2) -> {
+			  int prioridadComparacion = Integer.compare(api.obtenerPrioridad(p1.getPrioridad()), 
+                                                 api.obtenerPrioridad(p2.getPrioridad()));
+			  if (prioridadComparacion != 0) {
+				  return prioridadComparacion;
+			  }
+			  return p1.getNombre().compareTo(p2.getNombre());
+		  });
+		  
+		  //STREAM MIS MODIFICACIONES
+		  proyectos.stream().map(proyecto -> {
+			  JButton proyectoButton = new JButton(proyecto.getNombre());
+			  proyectoButton.setForeground(Color.WHITE);
+			  proyectoButton.setBackground(new Color(65, 62, 77));
+			  proyectoButton.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+
+			  proyectoButton.addActionListener(e -> {
+				  try {
+					  api.setProyectoActual(proyecto.getId());
+					  abrirVentanaResumen();
+					  dispose();
+				  } catch (NotNullException | DataEmptyException ex) {
+					  ex.printStackTrace(); //Tratar mejor la excepcion
+				  }
+			  });
+			  return proyectoButton;
+		  }).forEach(proyectosListPanel::add);
+
+	  } catch (NotNullException e1) {
+		  	// TODO Auto-generated catch block
+		  	e1.printStackTrace(); //Tratar mejor la excepcion
+	  } catch (DataEmptyException e1) {
+		  	// TODO Auto-generated catch block
+		  	e1.printStackTrace();
+	  }
+ 
+	  proyectosListPanel.revalidate(); // Actualizar el panel
+	  proyectosListPanel.repaint();    // Repintar el panel
+}
+
+  private JButton createButton(String text, Color backgroundColor) {
+      JButton button = new JButton(text);
+      button.setForeground(Color.WHITE);
+      button.setBackground(backgroundColor);
+      button.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+      button.setBorderPainted(false);
+      button.setFocusPainted(false);
+      button.setPreferredSize(new Dimension(120, 40));
+      return button;
+  }
+    
 	public static void main(String[] args)  {
 		
 		IApi api = new PersistenceApi();
-		UsuarioDTO usuario = api.obtenerUsuario("ldifabio");
+		UsuarioDTO usuario = api.obtenerUsuario("gabi");
 
 		api.setUsuarioActual(usuario.getUsername());
 		Inicio inicio = new Inicio(api);

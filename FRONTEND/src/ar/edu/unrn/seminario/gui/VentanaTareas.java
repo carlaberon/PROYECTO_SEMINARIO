@@ -88,7 +88,7 @@ public class VentanaTareas extends JFrame {
 
         menuBar.add(menuProyecto);
 
-        JLabel appName = new JLabel(labels.getString("menu.proyecto1"));
+        JLabel appName = new JLabel(labels.getString("menu.proyecto"));
         appName.setForeground(Color.WHITE);
         appName.setFont(new Font("Segoe UI", Font.BOLD, 18));
 
@@ -202,10 +202,10 @@ public class VentanaTareas extends JFrame {
 		    	t.getId(),
 		        t.getName(),
 		        unproyecto.getNombre(),
-		        t.getEstado(), // Modifica el estado a una cadena legible
+		        labels.getString("estado.proyecto"), // Modifica el estado a una cadena legible
 		        t.getDescription(),
 		        t.getUser(),
-		        t.getPriority(), 
+		        labels.getString(api.traducirPrioridad(t.getPriority())), 
 		        t.getInicio(),
 		        t.getFin()
 		    });
@@ -257,7 +257,7 @@ public class VentanaTareas extends JFrame {
 					dispose();
 				
 				}else {
-					JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		);
@@ -296,7 +296,7 @@ public class VentanaTareas extends JFrame {
 								}
 								dispose();
     	    	}else {
-    	    		JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.ERROR_MESSAGE);
+    	    		JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.WARNING_MESSAGE);
     	    	}
 	    	    habilitarBotones(false);
 	    	    table.clearSelection();
@@ -317,7 +317,7 @@ public class VentanaTareas extends JFrame {
 	                    
 				}
 	  		}else {
-	  			JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.ERROR_MESSAGE);
+	  			JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.WARNING_MESSAGE);
 	    	}
     	    habilitarBotones(false);
     	    table.clearSelection();

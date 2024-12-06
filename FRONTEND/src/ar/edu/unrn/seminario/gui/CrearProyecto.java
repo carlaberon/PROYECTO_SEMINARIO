@@ -86,7 +86,7 @@ public class CrearProyecto extends JFrame {
 		aceptarButton.addActionListener(e -> {
 				String nombreNuevoProyecto = nombreProyectoTextField.getText();
 				String descripcionNueva = descripcionTextField.getText();
-                String prioridadSeleccionadaNueva = (String) prioridadComboBox.getSelectedItem();
+                String prioridadSeleccionadaNueva = api.obtenerPrioridadPorIndex(prioridadComboBox.getSelectedIndex());
 
 				try {
 					// Crear un nuevo proyecto

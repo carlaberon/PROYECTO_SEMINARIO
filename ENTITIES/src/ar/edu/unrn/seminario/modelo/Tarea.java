@@ -23,27 +23,31 @@ public class Tarea {
     
  
     	if (esDatoNulo(nombre))
-			throw new NotNullException("nombre");
-    	if (esDatoNulo(prioridad))
-			throw new NotNullException("prioridad");
+			throw new NotNullException("validacion.nombre");
     	if (esDatoNulo(username))
-			throw new NotNullException("usuario asignado");
+    		throw new NotNullException("validacion.usuarioAsignado");
+    	if (esDatoNulo(prioridad))
+			throw new NotNullException("validacion.prioridad");
     	if (esDatoNulo(descripcion))
-			throw new NotNullException("descripcion");
+			throw new NotNullException("validacion.descripcion");
     	
     	
 		if (esDatoVacio(nombre))
-			throw new DataEmptyException("nombre");
-		if (esDatoVacio(prioridad))
-			throw new DataEmptyException("prioridad");
+			throw new DataEmptyException("validacion.nombre");
 		if (esDatoVacio(username))
-			throw new DataEmptyException("usuario asignado");
+			throw new DataEmptyException("validacion.usuarioAsignado");
+		if (esDatoVacio(prioridad))
+			throw new DataEmptyException("validacion.prioridad");
+		if (esFechaNula(inicio)) 
+			throw new NotNullException("validacion.fechaInicio");
+		if (esFechaNula(fin)) 
+			throw new NotNullException("validacion.fechaFin");
 		if (esDatoVacio(descripcion))
-			throw new DataEmptyException("descripcion");
+			throw new DataEmptyException("validacion.descripcion");
 
-		 if (fin.isBefore(inicio)) {
-				throw new InvalidDateException("La fecha de inicio debe ser anterior a la fecha de finalizacion");
-			}
+		if (fin.isBefore(inicio)) {
+			throw new InvalidDateException("mensaje.fechasNoValidas");
+		}
 		
 		this.id = id;
     	this.nombre = nombre;

@@ -34,7 +34,6 @@ public class CrearTarea extends JFrame {
     private JPanel contentPane;
     private JTextField nombreTareaTextField;
     private JComboBox<String> asignarUsuarioComboBox; // ComboBox para seleccionar usuario
-    List<String> prioridades = Arrays.asList("Alta", "Media", "Baja");
     private List<UsuarioDTO> usuarios = new ArrayList<>();
 
     
@@ -54,7 +53,7 @@ public class CrearTarea extends JFrame {
         contentPane.setLayout(null);
         setContentPane(contentPane);
 
-        JLabel nombreTareaLabel = new JLabel("Nombre de Tarea:");
+        JLabel nombreTareaLabel = new JLabel(labels.getString("campo.nombreTarea"));
         nombreTareaLabel.setBounds(43, 53, 150, 16);
         contentPane.add(nombreTareaLabel);
 
@@ -63,7 +62,7 @@ public class CrearTarea extends JFrame {
         contentPane.add(nombreTareaTextField);
         nombreTareaTextField.setColumns(10);
 
-        JLabel asignarUsuarioLabel = new JLabel("Asignar Usuario:");
+        JLabel asignarUsuarioLabel = new JLabel(labels.getString("campo.asignarUsuario"));
         asignarUsuarioLabel.setBounds(43, 100, 150, 16);
         contentPane.add(asignarUsuarioLabel);
 
@@ -73,7 +72,7 @@ public class CrearTarea extends JFrame {
         this.usuarios.stream().map(UsuarioDTO::getUsername).forEach(asignarUsuarioComboBox::addItem);
         contentPane.add(asignarUsuarioComboBox);
 
-        JLabel prioridadTareaLabel = new JLabel("Prioridad:");
+        JLabel prioridadTareaLabel = new JLabel(labels.getString("campo.prioridad"));
         prioridadTareaLabel.setBounds(43, 140, 150, 16);
         contentPane.add(prioridadTareaLabel);
         JComboBox<String> prioridadComboBox = new JComboBox<>();
@@ -81,12 +80,12 @@ public class CrearTarea extends JFrame {
 		prioridadComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 10));
 		prioridadComboBox.setBounds(190, 133, 160, 25);
 		contentPane.add(prioridadComboBox);
-
-        for (String prioridad : prioridades) {
+		prioridadComboBox.addItem("");
+		for (String prioridad :Arrays.asList(labels.getString("prioridad.alta"), labels.getString("prioridad.media"), labels.getString("prioridad.baja"))) {
             prioridadComboBox.addItem(prioridad);
         }
 
-        JLabel lblDescripcin = new JLabel("Descripción:");
+        JLabel lblDescripcin = new JLabel(labels.getString("campo.descripcion"));
         lblDescripcin.setBounds(43, 291, 150, 16);
         contentPane.add(lblDescripcin);
 
@@ -94,19 +93,19 @@ public class CrearTarea extends JFrame {
         textAreaDescription.setBounds(208, 291, 329, 111);
         contentPane.add(textAreaDescription);
 
-        JLabel lblFechaInicio = new JLabel("Fecha inicio:");
+        JLabel lblFechaInicio = new JLabel(labels.getString("campo.fechaInicio"));
         lblFechaInicio.setBounds(43, 183, 150, 16);
         contentPane.add(lblFechaInicio);
 
-        JLabel lblFechaFin = new JLabel("Fecha fin:");
+        JLabel lblFechaFin = new JLabel(labels.getString("campo.fechaFin"));
         lblFechaFin.setBounds(43, 232, 150, 16);
         contentPane.add(lblFechaFin);
 
-        JButton aceptarButton = new JButton("Aceptar");
+        JButton aceptarButton = new JButton(labels.getString("boton.guardar"));
         aceptarButton.setBounds(312, 438, 97, 25);
         contentPane.add(aceptarButton);
 
-        JButton cancelarButton = new JButton("Cancelar");
+        JButton cancelarButton = new JButton(labels.getString("boton.cancelar"));
         cancelarButton.setBounds(440, 438, 97, 25);
         contentPane.add(cancelarButton);
         
@@ -128,33 +127,34 @@ public class CrearTarea extends JFrame {
             	try {
                     int selectedUserIndex = asignarUsuarioComboBox.getSelectedIndex();
                     String nombreTarea = nombreTareaTextField.getText();
-                    String prioridadTarea = (String) prioridadComboBox.getSelectedItem();
+                    String prioridadTarea = api.obtenerPrioridadPorIndex(prioridadComboBox.getSelectedIndex());
                     UsuarioDTO usuario = usuarios.get(selectedUserIndex);
                     String descripcionTarea = textAreaDescription.getText();
                     Date fechaInicioDate = dateChooserInicio.getDate();
                     Date fechaFinDate = dateChooserFin.getDate();
+                    LocalDate fechaInicioLocalDate = null;
+                    LocalDate fechaFinLocalDate = null;
                     
-                	//Convertir Date a Localdate, si no cargo una fecha lanza un nullpointer
-                    LocalDate fechaInicioLocalDate = fechaInicioDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-
-                    LocalDate fechaFinLocalDate = fechaFinDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                    if(fechaInicioDate != null) 
+	                	//Convertir Date a Localdate, si no cargo una fecha lanza un nullpointer
+	                    fechaInicioLocalDate = fechaInicioDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                    if(fechaFinDate != null)
+	                    fechaFinLocalDate = fechaFinDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                         
                       
                     api.registrarTarea(nombreTarea, api.getProyectoActual().getId(),prioridadTarea,usuario.getUsername(),"EN CURSO", descripcionTarea, fechaInicioLocalDate, fechaFinLocalDate);
                       
-                    JOptionPane.showMessageDialog(null, "Tarea creada con éxito!", "Info", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, labels.getString("mensaje.tareaCreada"), labels.getString("titulo.optionPaneCrearTarea"), JOptionPane.INFORMATION_MESSAGE);
 					
                     new VentanaTareas(api).setVisible(true);
 					dispose();
                        
-                	} catch (NullPointerException e) {
-                		JOptionPane.showMessageDialog(null,"Las fechas no pueden ser nulas.", "Error", JOptionPane.ERROR_MESSAGE);
-                	} catch (DataEmptyException e) {
-                		JOptionPane.showMessageDialog(null,"La tarea debe tener" +" " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            		} catch (DataEmptyException e) {
+                		JOptionPane.showMessageDialog(null, labels.getString("mensaje.campoVacioTarea") +" " + labels.getString(e.getMessage()), "Error", JOptionPane.WARNING_MESSAGE);
 					} catch (NotNullException e) {
-						JOptionPane.showMessageDialog(null,"La tarea debe tener" +" " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null,labels.getString("mensaje.campoVacioTarea") +" " + labels.getString(e.getMessage()), "Error", JOptionPane.WARNING_MESSAGE);
 					} catch (InvalidDateException e) {
-						JOptionPane.showMessageDialog(null,"Ingrese fechas válidas: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null,labels.getString("mensaje.fechasValidas") + labels.getString(e.getMessage()), "Error", JOptionPane.WARNING_MESSAGE);
 					} 
             }
         );

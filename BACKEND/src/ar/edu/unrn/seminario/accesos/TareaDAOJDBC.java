@@ -96,7 +96,7 @@ public class TareaDAOJDBC implements TareaDao{
 						+ "FROM tareas t join proyectos p on t.id_proyecto = p.id\r\n"
 						+ "JOIN proyectos_usuarios_roles pur on pur.id_proyecto = p.id\r\n"
 						+ "join usuarios u on pur.nombre_usuario = u.usuario\r\n"
-						+ "WHERE t.id_proyecto = ? AND t.estado NOT LIKE '#%' AND u.usuario = p.usuario_propietario");
+						+ "WHERE t.id_proyecto = ? and u.usuario = p.usuario_propietario");
 				statement.setInt(1, id_project);
 				ResultSet rs = statement.executeQuery();
 				while(rs.next()) {
@@ -121,11 +121,11 @@ public class TareaDAOJDBC implements TareaDao{
 	
 
 	@Override
-	public void remove(int id) {
+	public void remove(int idTarea) {
 		try {
 			Connection conn = ConnectionManager.getConnection();
-			PreparedStatement sent = conn.prepareStatement("UPDATE tareas SET estado = CONCAT('#', estado) WHERE id = ?");
-			sent.setInt(1, id);
+			PreparedStatement sent = conn.prepareStatement("DELETE FROM tareas WHERE id = ?");
+			sent.setInt(1, idTarea);
 
 			int verificacion = sent.executeUpdate();		
 			if(verificacion <= 0) {

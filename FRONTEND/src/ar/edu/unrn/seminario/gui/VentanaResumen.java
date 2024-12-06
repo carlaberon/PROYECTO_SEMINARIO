@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.ProyectoDTO;
+import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -16,7 +17,7 @@ public class VentanaResumen extends JFrame {
     private IApi api;
     private UsuarioDTO usuarioActual; 
     private ProyectoDTO unproyecto; 
-    
+    private RolDTO rolActual;
     public VentanaResumen(IApi api) {
 
     	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
@@ -26,6 +27,7 @@ public class VentanaResumen extends JFrame {
     	
     	this.api = api;
     	this.usuarioActual = api.getUsuarioActual();
+    	this.rolActual = api.getRol(usuarioActual.getUsername(), api.getProyectoActual().getId());
     	this.unproyecto = api.getProyectoActual();
         
         setTitle(labels.getString("menu.resumen"));
@@ -105,11 +107,11 @@ public class VentanaResumen extends JFrame {
             if (item.equals("Configuración") || item.equals("Settings")) {
                 menuButton.addActionListener(e -> {
                     // Por ejemplo, podrías abrir un nuevo panel de configuración:
-                    if(api.getRol(usuarioActual.getUsername(), unproyecto.getId()).getNombre().equals("Administrador")) {
+                    if(rolActual.getNombre().equals("Administrador")) {
                     	abrirPanelConfiguracion();
                     	dispose();
                     } else {
-        	            JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.ERROR_MESSAGE);
+        	            JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.WARNING_MESSAGE);
 
 					}
                     
@@ -129,7 +131,7 @@ public class VentanaResumen extends JFrame {
         contentPane.add(menuPanel, BorderLayout.WEST);
 
         JPanel centerPanel1 = new JPanel();
-        centerPanel1.setLayout(new GridLayout(3, 2, 10, 10));
+        centerPanel1.setLayout(new GridLayout(2, 2, 20,20));
         centerPanel1.setBackground(new Color(45, 44, 50));
         centerPanel1.setBorder(new EmptyBorder(20, 20, 20, 20)); // Margen alrededor del contenido
 
@@ -139,14 +141,8 @@ public class VentanaResumen extends JFrame {
         JPanel estadoPanel = createPanel(labels.getString("menu.estadoProyecto"),unproyecto.isEstado());
         centerPanel1.add(estadoPanel);
 
-        JPanel planPanel = createPanel(labels.getString("menu.detallesPlan"), null);
-        JButton btnPlan = createButton(labels.getString("menu.plan"), new Color(138, 102, 204));
-        JButton btnVerPlan = createButton(labels.getString("menu.verPlan"), new Color(83, 82, 90));
-        planPanel.add(btnPlan);
-        planPanel.add(btnVerPlan);
-        centerPanel1.add(planPanel);
-
         JPanel miembrosPanel = createPanel(labels.getString("menu.miembrosProyecto"), null);
+        miembrosPanel.setLayout(new GridLayout(3,6,6,6));
         JButton btnMiembro = createButton(labels.getString("menu.agregarMiembro"), new Color(138, 102, 204));
         JButton btnVerMiembros = createButton(labels.getString("menu.verMiembros"), new Color(83, 82, 90));
         miembrosPanel.add(btnMiembro);
@@ -154,12 +150,12 @@ public class VentanaResumen extends JFrame {
         centerPanel1.add(miembrosPanel);
         btnMiembro.addActionListener(e -> {
             	
-                if(api.getRol(usuarioActual.getUsername(), unproyecto.getId()).getNombre().equals("Administrador")) {
+                if(rolActual.getNombre().equals("Administrador")) {
     					InvitarMiembro invitarMiembro = new InvitarMiembro(api);
     					invitarMiembro.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     	                invitarMiembro.setVisible(true);
                 } else {
-    	            JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.ERROR_MESSAGE);
+    	            JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.WARNING_MESSAGE);
                 }
             }
         );
@@ -171,14 +167,17 @@ public class VentanaResumen extends JFrame {
           });
           
 
-        miembrosPanel.add(btnMiembro);
+       
         miembrosPanel.add(btnVerMiembros);
+        miembrosPanel.add(btnMiembro);
         centerPanel1.add(miembrosPanel);
         JPanel tareasPanel = createPanel(labels.getString("menu.tareas"), null);
+        tareasPanel.setLayout(new GridLayout(3,6,6,6));
         JButton btnTarea = createButton(labels.getString("menu.agregarTarea"), new Color(138, 102, 204));
         JButton btnVerTareas = createButton(labels.getString("menu.verDetalles"), new Color(83, 82, 90));
-        tareasPanel.add(btnTarea);
+        
         tareasPanel.add(btnVerTareas);
+        tareasPanel.add(btnTarea);
         centerPanel1.add(tareasPanel);
         btnVerTareas.addActionListener(e -> {
 			VentanaTareas ventanaTareas = new VentanaTareas(api);
@@ -205,7 +204,7 @@ public class VentanaResumen extends JFrame {
 
     private JPanel createPanel(String title, String subtitle) {
         JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setLayout(new GridLayout(3,6,6,6));
         panel.setBackground(new Color(53, 52, 60));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Margen interno
 
@@ -231,7 +230,7 @@ public class VentanaResumen extends JFrame {
         button.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         button.setBorderPainted(false);
         button.setFocusPainted(false);
-        button.setPreferredSize(new Dimension(200, 40));
+        button.setPreferredSize(new Dimension(120, 40));
         return button;
     }
 
