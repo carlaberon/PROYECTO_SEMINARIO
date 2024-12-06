@@ -91,7 +91,7 @@ public class InvitarMiembro extends JFrame {
 				String rol_seleccionado = api.obtenerRolPorIndex(asignarRolComboBox.getSelectedIndex());
 				int codigo_rol = obtenerCodigoRol(rol_seleccionado);
 					try {
-						if(api.existeMiembro(nombreUsuario,proyectoActual.getId()) == 0 && api.existeNotificacion(proyectoActual.getId(), nombreUsuario, codigo_rol) == 0) {
+						if(api.existeMiembro(nombreUsuario,proyectoActual.getId()) == 0 && api.existeNotificacion(proyectoActual.getId(), nombreUsuario) == 0) {
 								int id_proyecto = api.getProyectoActual().getId();
 								String nombreProject = api.getProyectoActual().getNombre();
 								
@@ -130,8 +130,6 @@ public class InvitarMiembro extends JFrame {
 		asignarRolComboBox.setBounds(381, 195, 280, 27);
 		asignarRolComboBox.addItem("");
 		asignarRolComboBox.setFont(fuente);
-		asignarRolComboBox.setForeground(tituloColor);
-		asignarRolComboBox.setBackground(grisFondoTextfield);
 		asignarRolComboBox.setBorder(new LineBorder(Color.BLACK,1));
 		
 	        if ( ! this.roles.isEmpty()) {
@@ -156,7 +154,6 @@ public class InvitarMiembro extends JFrame {
 		
 		
 		JLabel lblNewLabel = new JLabel(labels.getString("label.invitarUnMiembro"));
-		lblNewLabel.setForeground(new Color(29, 17, 40));
 		lblNewLabel.setFont(new Font("Segoe UI Black", Font.BOLD, 35));
 		lblNewLabel.setBounds(35, 47, 404, 73);
 		contentPane.add(lblNewLabel);
@@ -178,13 +175,11 @@ public class InvitarMiembro extends JFrame {
         
 		
 		JPanel panel = new JPanel(new BorderLayout());
-		panel.setBounds(70, 195, 268, 100);  // Ajuste de tamaño y ubicación
+		panel.setBounds(70, 200, 268, 100);  // Ajuste de tamaño y ubicación
 		panel.setBackground(fondoColor);
 		
 		campoBusqueda = new JTextField();
-		campoBusqueda.setBackground(grisFondoTextfield);
 		campoBusqueda.setBorder(new LineBorder(Color.BLACK, 1));
-		campoBusqueda.setForeground(tituloColor);
 		campoBusqueda.setFont(fuente);
 		panel.add(campoBusqueda, BorderLayout.NORTH);
 		
@@ -194,10 +189,8 @@ public class InvitarMiembro extends JFrame {
 		tablaUsuarios.setFont(fuente);
 		tablaUsuarios.getTableHeader().setVisible(false);
 		tablaUsuarios.getTableHeader().setPreferredSize(new Dimension(0, 0)); //Oculto titulo de la columna
-		tablaUsuarios.setBackground(fondoColor);
-		tablaUsuarios.setForeground(tituloColor);
 		tablaUsuarios.setBorder(null);
-//		tablaUsuarios.setOpaque(true);
+
 		
 		// Agregar un ListSelectionListener para detectar cuando se selecciona una fila
 		tablaUsuarios.getSelectionModel().addListSelectionListener(e -> {
@@ -211,7 +204,7 @@ public class InvitarMiembro extends JFrame {
 		            campoBusqueda.setText(usuarioSeleccionado);
 		            
 //		            // Eliminar la fila seleccionada del modelo de la tabla
-//		            modelo.removeRow(selectedRow);
+		            modelo.removeRow(selectedRow);
 		        }
 		    }
 		});
@@ -219,28 +212,28 @@ public class InvitarMiembro extends JFrame {
 		JScrollPane scrollPane = new JScrollPane(tablaUsuarios);
 		scrollPane.setBorder(new LineBorder(Color.BLACK,0));
 		scrollPane.getViewport().setBackground(new Color(81, 79, 89));
-		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER); //Oculto el ScrollPane
+		
 		
 		panel.add(scrollPane,BorderLayout.CENTER);
 		
 		// Cargar todos los usuarios en la tabla al inicio
-        cargarUsuariosEnTabla(usuarios, modelo,10);
+        cargarUsuariosEnTabla(usuarios, modelo,0);
         
 
         campoBusqueda.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-                filtrarUsuarios(campoBusqueda.getText(), usuarios, modelo,10);
+                filtrarUsuarios(campoBusqueda.getText(), usuarios, modelo,1);
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                filtrarUsuarios(campoBusqueda.getText(), usuarios, modelo,10);
+                filtrarUsuarios(campoBusqueda.getText(), usuarios, modelo,0);
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                filtrarUsuarios(campoBusqueda.getText(), usuarios, modelo,10);
+                filtrarUsuarios(campoBusqueda.getText(), usuarios, modelo,0);
             }
         });
         contentPane.add(panel);

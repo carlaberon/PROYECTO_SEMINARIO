@@ -10,7 +10,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import ar.edu.unrn.seminario.exception.DataEmptyException;
-import ar.edu.unrn.seminario.exception.NotFoundException;
+import ar.edu.unrn.seminario.exception.DataBaseFoundException;
 import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.modelo.Notificacion;
 
@@ -101,16 +101,16 @@ public class NotificacionDAOJBDC implements NotificacionDao{
 	}
 
 	@Override
-	public int existNotification(int idProyecto, String username, int rol) {
+	public int existNotification(int idProyecto, String username) {
 		int existe = 0;
 		try {
 			Connection conn = ConnectionManager.getConnection();
-			PreparedStatement statement = conn.prepareStatement("SELECT n.id_proyecto, n.nombre_usuario, n.rol_invitado, n.descripcion, n.fecha\r\n"
+			PreparedStatement statement = conn.prepareStatement("SELECT n.id_proyecto, n.nombre_usuario\r\n"
 					+ "FROM notificaciones n\r\n"
-					+ "WHERE n.nombre_usuario = ? and id_proyecto = ? and rol_invitado = ?");
+					+ "WHERE n.nombre_usuario = ? and id_proyecto = ?");
 			statement.setString(1, username);
 			statement.setInt(2, idProyecto);
-			statement.setInt(3, rol);
+			
 			
 			ResultSet rs = statement.executeQuery();
 			
