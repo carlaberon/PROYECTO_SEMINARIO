@@ -10,19 +10,20 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import ar.edu.unrn.seminario.exception.DataBaseConnectionException;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
-import ar.edu.unrn.seminario.exception.EliminationException;
+import ar.edu.unrn.seminario.exception.DataBaseEliminationException;
 import ar.edu.unrn.seminario.exception.NotNullException;
-import ar.edu.unrn.seminario.exception.NotUpdateException;
-import ar.edu.unrn.seminario.exception.InsertionException;
-import ar.edu.unrn.seminario.exception.NotFoundException;
+import ar.edu.unrn.seminario.exception.DataBaseUpdateException;
+import ar.edu.unrn.seminario.exception.DataBaseInsertionException;
+import ar.edu.unrn.seminario.exception.DataBaseFoundException;
 import ar.edu.unrn.seminario.modelo.Proyecto;
 import ar.edu.unrn.seminario.modelo.Usuario;
 
 public class ProyectoDAOJDBC implements ProyectoDao{
 
 	@Override
-	public void create(Proyecto proyecto) {
+	public void create(Proyecto proyecto) throws DataBaseInsertionException, DataBaseConnectionException {
 		PreparedStatement statement;
 		Connection conn;
 		try {
@@ -55,21 +56,18 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 	                
 	                int miembroInsertado = memberStatement.executeUpdate();
 	                if(miembroInsertado == 0) {
-	                	throw new InsertionException("La relacion miembro-proyecto");
+	                	//Si no se crea la relacion
+	                	throw new DataBaseInsertionException("exceptionDAO.create");
 	                }
 	                memberStatement.close();
 	            }
 			} else {
-				throw new InsertionException("El proyecto" + proyecto.getNombre());
+				throw new DataBaseInsertionException("exceptionDAO.create");
 			}
-			
+				
+		} catch (SQLException e2) {
+			throw new DataBaseConnectionException("exceptionDAO.conecction");
 		}
-		catch (InsertionException e1){
-			JOptionPane.showMessageDialog(null, e1.getMessage() + " no se creó.", "Error", JOptionPane.ERROR_MESSAGE);	
-		}
-		catch (SQLException e2) {
-			JOptionPane.showMessageDialog(null,"Error de SQL: " + e2.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-			}
 		 finally {
 			ConnectionManager.disconnect();
 		}
@@ -94,9 +92,9 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 			   
 			        
 			   if (verificacion == 0) 
-			            throw new NotUpdateException("el proyecto" + proyecto.getNombre());
+			            throw new DataBaseUpdateException("el proyecto" + proyecto.getNombre());
 			    
-		       } catch (NotUpdateException e1) {
+		       } catch (DataBaseUpdateException e1) {
 			   	   JOptionPane.showMessageDialog(null, e1.getMessage() + "no se actualizo.", "Error", JOptionPane.ERROR_MESSAGE);
 			   } catch (SQLException e2) {
 				   JOptionPane.showMessageDialog(null,"Error de SQL: " + e2.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -159,9 +157,9 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 			
 			
 			if (verificacion == 0) 
-				throw new NotUpdateException("el usuario" + username);
+				throw new DataBaseUpdateException("el usuario" + username);
 			
-		} catch (NotUpdateException e1) {
+		} catch (DataBaseUpdateException e1) {
 			JOptionPane.showMessageDialog(null, e1.getMessage() + "no se elimino del proyecto", "Error", JOptionPane.ERROR_MESSAGE);
 		} catch (SQLException e2) {
 			JOptionPane.showMessageDialog(null,"Error de SQL: " + e2.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -187,14 +185,14 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 			// Si no se obtiene ninguna fila
 	        if (!rs.next()) {
 	            // Lanzamos una excepción personalizada cuando no se encuentra el proyecto
-	            throw new NotFoundException("Proyecto no encontrado para el ID: " + idProyecto);
+	            throw new DataBaseFoundException("Proyecto no encontrado para el ID: " + idProyecto);
 	        }
 	        
 	        // Si se encuentra una fila se crea el objeto Proyecto por completo
 			Usuario usuarioPropietario = new Usuario(rs.getString("u.usuario"), rs.getString("u.contrasena"), rs.getString("u.nombre"), rs.getString("u.email"), rs.getBoolean("u.activo"));
 			encontrarProyecto = new Proyecto(rs.getInt("p.id"),rs.getString("p.nombre"), usuarioPropietario, rs.getString("estado"), rs.getString("p.descripcion"), rs.getString("p.prioridad"));
 				
-		} catch(NotFoundException e1) {
+		} catch(DataBaseFoundException e1) {
 			JOptionPane.showMessageDialog(null, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		} catch (SQLException e2) {
 			JOptionPane.showMessageDialog(null,"Error de SQL: " + e2.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -264,9 +262,9 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 			   
 			        
 			   if (verificacion == 0) 
-			            throw new NotUpdateException("No se pudo realizar la invitación a: " + username);
+			            throw new DataBaseUpdateException("No se pudo realizar la invitación a: " + username);
 			    
-		       } catch (NotUpdateException e1) {
+		       } catch (DataBaseUpdateException e1) {
 			   	   JOptionPane.showMessageDialog(null, e1.getMessage() + "no se realizo la invitación.", "Error", JOptionPane.ERROR_MESSAGE);
 			   } catch (SQLException e2) {
 				   JOptionPane.showMessageDialog(null,"Error de SQL: " + e2.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -295,9 +293,9 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 			}
 			
 			if (miembros.isEmpty()) {
-	            throw new NotFoundException("El proyecto no tiene miembros.");
+	            throw new DataBaseFoundException("El proyecto no tiene miembros.");
 	        }
-		} catch(NotFoundException e1) {
+		} catch(DataBaseFoundException e1) {
 			JOptionPane.showMessageDialog(null, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		} catch (SQLException e2) {
 			JOptionPane.showMessageDialog(null,"Error de SQL: " + e2.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
