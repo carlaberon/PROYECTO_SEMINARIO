@@ -226,6 +226,7 @@ public class InvitarMiembro extends JFrame {
 		// Cargar todos los usuarios en la tabla al inicio
         cargarUsuariosEnTabla(usuarios, modelo,10);
         
+
         campoBusqueda.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -242,7 +243,6 @@ public class InvitarMiembro extends JFrame {
                 filtrarUsuarios(campoBusqueda.getText(), usuarios, modelo,10);
             }
         });
-        
         contentPane.add(panel);
 		setLocationRelativeTo(null);
 	}
