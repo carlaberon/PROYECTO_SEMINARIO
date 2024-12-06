@@ -21,7 +21,7 @@ public class Inicio extends JFrame {
 
     public Inicio(IApi api) {
 
-        ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
+        ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
         
         this.api = api;
         this.usuarioActual = api.getUsuarioActual();
@@ -369,7 +369,7 @@ public class Inicio extends JFrame {
 	public static void main(String[] args)  {
 		
 		IApi api = new PersistenceApi();
-		UsuarioDTO usuario = api.obtenerUsuario("gabi");
+		UsuarioDTO usuario = api.obtenerUsuario("erodriguez");
 
 		api.setUsuarioActual(usuario.getUsername());
 		Inicio inicio = new Inicio(api);
