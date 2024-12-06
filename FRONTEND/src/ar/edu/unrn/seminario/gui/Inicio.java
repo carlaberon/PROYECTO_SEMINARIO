@@ -18,10 +18,11 @@ public class Inicio extends JFrame {
     private IApi api;
     private JPanel proyectosListPanel;
     private UsuarioDTO usuarioActual;
-
+    ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
+    
     public Inicio(IApi api) {
 
-        ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
+         
         
         this.api = api;
         this.usuarioActual = api.getUsuarioActual();
@@ -125,19 +126,15 @@ public class Inicio extends JFrame {
                     abrirVentanaResumen();
                     dispose();
                 } catch (NotNullException | DataEmptyException ex) {
-                    ex.printStackTrace(); //Tratar mejor la excepcion
+                	JOptionPane.showMessageDialog(null, labels.getString("mensaje.camposVaciosONulos") + labels.getString(ex.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
                 }
             });
             return proyectoButton;
         }).forEach(proyectosListPanel::add);
 
-		} catch (NotNullException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace(); //Tratar mejor la excepcion
-		} catch (DataEmptyException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		} catch (NotNullException | DataEmptyException ex) {
+        	JOptionPane.showMessageDialog(null, labels.getString("mensaje.camposVaciosONulos") + labels.getString(ex.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+        }
         JPanel proyectosButtonsPanel = new JPanel();
         proyectosButtonsPanel.setBackground(new Color(65, 62, 77));
  
@@ -337,19 +334,15 @@ public class Inicio extends JFrame {
 					  abrirVentanaResumen();
 					  dispose();
 				  } catch (NotNullException | DataEmptyException ex) {
-					  ex.printStackTrace(); //Tratar mejor la excepcion
-				  }
+	                	JOptionPane.showMessageDialog(null, labels.getString("mensaje.camposVaciosONulos") + labels.getString(ex.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+	              }
 			  });
 			  return proyectoButton;
 		  }).forEach(proyectosListPanel::add);
 
-	  } catch (NotNullException e1) {
-		  	// TODO Auto-generated catch block
-		  	e1.printStackTrace(); //Tratar mejor la excepcion
-	  } catch (DataEmptyException e1) {
-		  	// TODO Auto-generated catch block
-		  	e1.printStackTrace();
-	  }
+	  } catch (NotNullException | DataEmptyException ex) {
+      	JOptionPane.showMessageDialog(null, labels.getString("mensaje.camposVaciosONulos") + labels.getString(ex.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+      }
  
 	  proyectosListPanel.revalidate(); // Actualizar el panel
 	  proyectosListPanel.repaint();    // Repintar el panel
@@ -369,7 +362,7 @@ public class Inicio extends JFrame {
 	public static void main(String[] args)  {
 		
 		IApi api = new PersistenceApi();
-		UsuarioDTO usuario = api.obtenerUsuario("gabi");
+		UsuarioDTO usuario = api.obtenerUsuario("ldifabio");
 
 		api.setUsuarioActual(usuario.getUsername());
 		Inicio inicio = new Inicio(api);
