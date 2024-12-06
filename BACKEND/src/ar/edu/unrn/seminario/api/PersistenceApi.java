@@ -182,7 +182,7 @@ public class PersistenceApi implements IApi {
 		case 2:
 			return "Media";
 		case 3:
-			return "Alta";
+			return "Baja";
 		default:
 			return "";
 		}
