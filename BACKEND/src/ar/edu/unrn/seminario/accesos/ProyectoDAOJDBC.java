@@ -60,7 +60,7 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 			} else {
 				throw new DataBaseInsertionException("exceptionDAO.create");
 			}
-			
+				
 		} catch (SQLException e2) {
 			throw new DataBaseConnectionException("exceptionDAO.conecction");
 		}
