@@ -56,6 +56,7 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 	                
 	                int miembroInsertado = memberStatement.executeUpdate();
 	                if(miembroInsertado == 0) {
+	                	//Si no se crea la relacion
 	                	throw new DataBaseInsertionException("exceptionDAO.create");
 	                }
 	                memberStatement.close();
