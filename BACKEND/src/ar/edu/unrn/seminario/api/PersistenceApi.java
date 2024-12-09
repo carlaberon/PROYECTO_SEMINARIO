@@ -77,7 +77,7 @@ public class PersistenceApi implements IApi {
 
 	@Override
 	public void crearProyecto(String nombre, String string, String estado, String descripcion, String prioridad)
-			throws NotNullException, DataEmptyException, DataBaseInsertionException, DataBaseConnectionException {
+			throws NotNullException, DataEmptyException, DataBaseInsertionException {
 		
 		Usuario propietario = usuarioDao.find(string);
 	    Proyecto nuevoProyecto = new Proyecto(0, nombre, propietario, estado, descripcion, prioridad);
