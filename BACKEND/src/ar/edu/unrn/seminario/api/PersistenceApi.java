@@ -71,13 +71,14 @@ public class PersistenceApi implements IApi {
 	}
 	
 	@Override
-	public List<RolDTO> obtenerRoles() throws DataBaseConnectionException {
+	public List<RolDTO> obtenerRoles() {
 	    return rolDao.findAll().stream().map(this::convertirEnRolDTO).collect(Collectors.toList());
 	}
 
 	@Override
 	public void crearProyecto(String nombre, String string, String estado, String descripcion, String prioridad)
-			throws NotNullException, DataEmptyException, DataBaseInsertionException, DataBaseConnectionException {	
+			throws NotNullException, DataEmptyException, DataBaseInsertionException {
+		
 		Usuario propietario = usuarioDao.find(string);
 	    Proyecto nuevoProyecto = new Proyecto(0, nombre, propietario, estado, descripcion, prioridad);
 	    proyectoDao.create(nuevoProyecto);
@@ -122,9 +123,17 @@ public class PersistenceApi implements IApi {
 		proyectoDao.update(proyectoExistente);
 		}
 		
+
 	@Override
-	public List<TareaDTO> obtenerTareasPorProyecto(int id) throws DataEmptyException, NotNullException, InvalidDateException {
-	    return tareaDao.findByProject(id).stream().map(this::convertirEnTareaDTO).collect(Collectors.toList()); 
+	public List<TareaDTO> obtenerTareasPorProyecto(int id) throws DataEmptyException, NotNullException, InvalidDateException  {
+		List<TareaDTO> tareasDTO = new ArrayList<>();
+		List<Tarea> tareas = null;
+		tareas = tareaDao.findByProject(id);
+
+		for (Tarea t : tareas) {  
+			tareasDTO.add(convertirEnTareaDTO(t));
+	    }
+	    return tareasDTO;
 	}
 	
 	@Override
@@ -314,7 +323,7 @@ public class PersistenceApi implements IApi {
 		ProyectoDTO proyectoDto = null;
 		if(proyecto != null)
 			proyectoDto = new ProyectoDTO(proyecto.getId(),proyecto.getNombre(), convertirEnUsuarioDTO(proyecto.getUsuarioPropietario()), proyecto.getEstado(), proyecto.getPrioridad(), proyecto.getDescripcion());
-
+			
 		proyectoDto.setId(proyecto.getId());
 		return proyectoDto;
 	}
@@ -398,5 +407,8 @@ public class PersistenceApi implements IApi {
 	@Override
 	public void eliminarMiembro(String username, int idProyecto) {
 		proyectoDao.deleteMember(username, idProyecto);
-	}	
+	}
+
+
+	
 }

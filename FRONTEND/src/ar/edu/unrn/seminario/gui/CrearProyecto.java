@@ -102,9 +102,7 @@ public class CrearProyecto extends JFrame {
 		            JOptionPane.showMessageDialog(null, labels.getString("mensaje.elCampo") + labels.getString(e3.getMessage()) + labels.getString("mensaje.empty"), "Error", JOptionPane.ERROR_MESSAGE);
 		        } catch (DataBaseInsertionException e1) {
 		        	JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
-		        } catch (DataBaseConnectionException e1) {
-		        	JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
-				}
+		        } 
 			}
 		);
 		JButton cancelarButton = new JButton(labels.getString("boton.cancelar"));
