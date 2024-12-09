@@ -18,6 +18,7 @@ import javax.swing.border.EmptyBorder;
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.exception.DataBaseConnectionException;
+import ar.edu.unrn.seminario.exception.DataBaseFoundException;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.DataBaseInsertionException;
 
@@ -104,6 +105,8 @@ public class CrearProyecto extends JFrame {
 		        	JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 		        } catch (DataBaseConnectionException e1) {
 		        	JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+				} catch (DataBaseFoundException e1) {
+					JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		);

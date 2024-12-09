@@ -7,6 +7,8 @@ import ar.edu.unrn.seminario.api.PersistenceApi;
 import ar.edu.unrn.seminario.dto.NotificacionDTO;
 import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
+import ar.edu.unrn.seminario.exception.DataBaseConnectionException;
+import ar.edu.unrn.seminario.exception.DataBaseFoundException;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.NotNullException;
 import java.awt.*;
@@ -362,11 +364,19 @@ public class Inicio extends JFrame {
 	public static void main(String[] args)  {
 		
 		IApi api = new PersistenceApi();
-		UsuarioDTO usuario = api.obtenerUsuario("ldifabio");
+		UsuarioDTO usuario;
+		ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
+		try {
+			usuario = api.obtenerUsuario("ldifabio");
+			api.setUsuarioActual(usuario.getUsername());
+			Inicio inicio = new Inicio(api);
+			inicio.setVisible(true);
+		} catch (DataBaseFoundException e1) {
+			JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+		} catch (DataBaseConnectionException e1) {
+			JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+		}
 
-		api.setUsuarioActual(usuario.getUsername());
-		Inicio inicio = new Inicio(api);
-		inicio.setVisible(true);
 	}
 
 	

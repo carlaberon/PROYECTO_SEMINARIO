@@ -7,6 +7,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
+import ar.edu.unrn.seminario.exception.DataBaseConnectionException;
+import ar.edu.unrn.seminario.exception.DataBaseFoundException;
 import ar.edu.unrn.seminario.modelo.Usuario;
 
 public class UsuarioDAOJDBC implements UsuarioDao {
@@ -115,7 +118,7 @@ public class UsuarioDAOJDBC implements UsuarioDao {
 	}
 
 	@Override
-	public Usuario find(String username) {
+	public Usuario find(String username) throws DataBaseConnectionException, DataBaseFoundException {
 		Usuario usuario = null;
 		try {
 			Connection conn = ConnectionManager.getConnection();
@@ -126,14 +129,13 @@ public class UsuarioDAOJDBC implements UsuarioDao {
 			statement.setString(1, username);
 			ResultSet rs = statement.executeQuery();
 			if (rs.next()) {
-				usuario = new Usuario(rs.getString("usuario"), rs.getString("contrasena"), rs.getString("nombre"),
-						rs.getString("email"));
+				usuario = new Usuario(rs.getString("usuario"), rs.getString("contrasena"), rs.getString("nombre"), rs.getString("email"));
+			} else {
+				throw new DataBaseFoundException("exceptionUsuarioDAO.find");
 			}
 		
 		} catch (SQLException e) {
-			System.out.println("Error al procesar consulta");
-			// TODO: disparar Exception propia
-			// throw new AppException(e, e.getSQLState(), e.getMessage());
+	        throw new DataBaseConnectionException("exceptionDAO.conecction");
 		} 
 		finally {
 			ConnectionManager.disconnect();

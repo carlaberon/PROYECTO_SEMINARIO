@@ -83,7 +83,7 @@ public class PersistenceApi implements IApi {
 
 	@Override
 	public void crearProyecto(String nombre, String string, String estado, String descripcion, String prioridad)
-			throws NotNullException, DataEmptyException, DataBaseInsertionException, DataBaseConnectionException {
+			throws NotNullException, DataEmptyException, DataBaseInsertionException, DataBaseConnectionException, DataBaseFoundException {
 		
 		Usuario propietario = usuarioDao.find(string);
 	    Proyecto nuevoProyecto = new Proyecto(0, nombre, propietario, estado, descripcion, prioridad);
@@ -155,7 +155,7 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public void setUsuarioActual(String nombreUsuario) {
+	public void setUsuarioActual(String nombreUsuario) throws DataBaseFoundException, DataBaseConnectionException {
 	    Usuario usuario = usuarioDao.find(nombreUsuario);
 	    if (usuario != null) {
 	        this.usuarioActual = usuario; 
@@ -235,7 +235,7 @@ public class PersistenceApi implements IApi {
 	}
 	
 	@Override
-	public UsuarioDTO obtenerUsuario(String username) {
+	public UsuarioDTO obtenerUsuario(String username) throws DataBaseFoundException, DataBaseConnectionException {
 		Usuario usuario = usuarioDao.find(username);
 		if (usuario != null){
 			 UsuarioDTO userDTO = new UsuarioDTO(
