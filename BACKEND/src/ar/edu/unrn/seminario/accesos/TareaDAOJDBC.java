@@ -10,6 +10,12 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import java.sql.SQLException;
+
+import ar.edu.unrn.seminario.exception.DataBaseConnectionException;
+import ar.edu.unrn.seminario.exception.DataBaseEliminationException;
+import ar.edu.unrn.seminario.exception.DataBaseFoundException;
+import ar.edu.unrn.seminario.exception.DataBaseInsertionException;
+import ar.edu.unrn.seminario.exception.DataBaseUpdateException;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
@@ -20,7 +26,7 @@ import ar.edu.unrn.seminario.modelo.Usuario;
 public class TareaDAOJDBC implements TareaDao{
 
 	@Override
-	public void create(Tarea tarea) {
+	public void create(Tarea tarea) throws DataBaseInsertionException, DataBaseConnectionException {
 		PreparedStatement statement;
 		Connection conn;
 		try {
@@ -41,20 +47,19 @@ public class TareaDAOJDBC implements TareaDao{
 			int cant = statement.executeUpdate();
 		
 			if ( cant <= 0) {
+	            throw new DataBaseInsertionException("exceptionTareaDAO.create");
 			}
 		}
 		catch (SQLException e1) {
-			JOptionPane.showMessageDialog(null, e1.getMessage() + "No se pudo crear la tarea", "Error", JOptionPane.ERROR_MESSAGE);
+	        throw new DataBaseConnectionException("exceptionDAO.conecction");
 		}
 		finally {
 			ConnectionManager.disconnect();
 		}
-
-		
 	}
 
 	@Override
-	public void update(Tarea tarea) {
+	public void update(Tarea tarea) throws DataBaseConnectionException, DataBaseUpdateException {
 		try {
 		   Connection conn = ConnectionManager.getConnection();
 		   PreparedStatement statement = conn.prepareStatement("UPDATE tareas SET nombre = ?, prioridad = ?, usuario = ?, estado = ?, descripcion = ?, fecha_inicio = ?, fecha_fin = ? WHERE id = ? ");
@@ -74,17 +79,18 @@ public class TareaDAOJDBC implements TareaDao{
 		   int verificacion = statement.executeUpdate();
 		        
 		   if (verificacion <= 0) {
+	            throw new DataBaseUpdateException("exceptionTareaDAO.update");
 		   }
 		        
-		   } catch (SQLException e1) { 
-			   JOptionPane.showMessageDialog(null, e1.getMessage() + "No se pudo actualizar la tarea", "Error", JOptionPane.ERROR_MESSAGE);
+		   } catch (SQLException e) { 
+		        throw new DataBaseConnectionException("exceptionDAO.conecction");
 		   } finally {
 		       ConnectionManager.disconnect();
 		   }
 	}
 	
 	@Override
-	public List<Tarea> findByProject(int id_project) throws DataEmptyException, NotNullException, InvalidDateException{
+	public List<Tarea> findByProject(int id_project) throws DataEmptyException, NotNullException, InvalidDateException, DataBaseConnectionException, DataBaseFoundException{
 		List<Tarea>tareas = new ArrayList<Tarea>();
 		Usuario unUsuario = null;
 		Proyecto unProyecto = null;
@@ -107,10 +113,13 @@ public class TareaDAOJDBC implements TareaDao{
 					
 					tareas.add(unaTarea);
 				}
+				if (tareas.isEmpty()) {
+					throw new DataBaseFoundException("exceptionTareaDAO.findByProject");
+				}
 			
 				
 			} catch (SQLException e1) {
-				JOptionPane.showMessageDialog(null, e1.getMessage() + "No se pudo consultar las tareas", "Error", JOptionPane.ERROR_MESSAGE);
+		        throw new DataBaseConnectionException("exceptionDAO.conecction");
 			}
 			 finally {
 				ConnectionManager.disconnect();
@@ -121,7 +130,7 @@ public class TareaDAOJDBC implements TareaDao{
 	
 
 	@Override
-	public void remove(int idTarea) {
+	public void remove(int idTarea) throws DataBaseConnectionException, DataBaseEliminationException {
 		try {
 			Connection conn = ConnectionManager.getConnection();
 			PreparedStatement sent = conn.prepareStatement("DELETE FROM tareas WHERE id = ?");
@@ -129,17 +138,17 @@ public class TareaDAOJDBC implements TareaDao{
 
 			int verificacion = sent.executeUpdate();		
 			if(verificacion <= 0) {
-				
+				throw new DataBaseEliminationException("exceptionTareaDAO.remove");
 			}
 		} catch (SQLException e) {
-
+	        throw new DataBaseConnectionException("exceptionDAO.conecction");
 		} finally {
 		ConnectionManager.disconnect();
 		}
 	}
 	
 
-	public Tarea find(int idTarea) throws NotNullException, DataEmptyException, InvalidDateException {
+	public Tarea find(int idTarea) throws NotNullException, DataEmptyException, InvalidDateException, DataBaseConnectionException, DataBaseFoundException {
 
 		Usuario unUsuario = null;
 		Proyecto unProyecto = null;
@@ -161,10 +170,10 @@ public class TareaDAOJDBC implements TareaDao{
 				unProyecto = new Proyecto(rs.getInt("p.id"), rs.getString("p.nombre"), unUsuario, rs.getString("estado"), rs.getString("p.descripcion"), rs.getString("p.prioridad"));
 				unaTarea = new Tarea(rs.getInt("id"), rs.getString("nombre"), unProyecto, rs.getString("prioridad"), rs.getString("usuario"), rs.getString("estado"),rs.getString("descripcion"), rs.getDate("fecha_inicio").toLocalDate(), rs.getDate("fecha_fin").toLocalDate());
 			}else {
-				 JOptionPane.showMessageDialog(null, "No se encontró la tarea con ID: " + idTarea, "Error", JOptionPane.ERROR_MESSAGE);
+				throw new DataBaseFoundException("exceptionTareaDAO.findByProject");
 			}
 		} catch (SQLException e1) {
-			JOptionPane.showMessageDialog(null, e1.getMessage() + "No se pudo crear la tarea", "Error", JOptionPane.ERROR_MESSAGE);
+	        throw new DataBaseConnectionException("exceptionDAO.conecction");
 		}
 		finally {
 			ConnectionManager.disconnect();
