@@ -25,6 +25,7 @@ import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
+import ar.edu.unrn.seminario.exception.DataBaseConnectionException;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.ExistNotification;
 import ar.edu.unrn.seminario.exception.NotNullException;
@@ -51,7 +52,12 @@ public class InvitarMiembro extends JFrame {
 		
 		this.proyectoActual = api.getProyectoActual();
 		this.usuarioActual = api.getUsuarioActual();
-		this.roles = api.obtenerRoles();
+		try {
+			this.roles = api.obtenerRoles();
+		} catch (DataBaseConnectionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		setTitle(labels.getString("ventana.invitarMiembro"));
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

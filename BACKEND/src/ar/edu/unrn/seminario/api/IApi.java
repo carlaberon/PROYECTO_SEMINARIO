@@ -32,7 +32,7 @@ public interface IApi {
 	void desactivarUsuario(String username); // recuperar el objeto Usuario, implementar el comportamiento de estado.
 	
 	//Metodos para Roles
-	List<RolDTO> obtenerRoles();
+	List<RolDTO> obtenerRoles()throws DataBaseConnectionException;
 
 	List<RolDTO> obtenerRolesActivos();
 

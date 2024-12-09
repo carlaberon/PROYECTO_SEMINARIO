@@ -71,14 +71,13 @@ public class PersistenceApi implements IApi {
 	}
 	
 	@Override
-	public List<RolDTO> obtenerRoles() {
+	public List<RolDTO> obtenerRoles() throws DataBaseConnectionException {
 	    return rolDao.findAll().stream().map(this::convertirEnRolDTO).collect(Collectors.toList());
 	}
 
 	@Override
 	public void crearProyecto(String nombre, String string, String estado, String descripcion, String prioridad)
-			throws NotNullException, DataEmptyException, DataBaseInsertionException, DataBaseConnectionException {
-		
+			throws NotNullException, DataEmptyException, DataBaseInsertionException, DataBaseConnectionException {	
 		Usuario propietario = usuarioDao.find(string);
 	    Proyecto nuevoProyecto = new Proyecto(0, nombre, propietario, estado, descripcion, prioridad);
 	    proyectoDao.create(nuevoProyecto);
