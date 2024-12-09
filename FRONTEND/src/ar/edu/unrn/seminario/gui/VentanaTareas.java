@@ -37,6 +37,7 @@ import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.TareaDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataBaseConnectionException;
+import ar.edu.unrn.seminario.exception.DataBaseEliminationException;
 import ar.edu.unrn.seminario.exception.DataBaseFoundException;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
@@ -319,10 +320,16 @@ public class VentanaTareas extends JFrame {
 				int confirmacion = JOptionPane.showConfirmDialog(null, labels.getString("mensaje.preguntaDeEliminar"),labels.getString("titulo.optionPanePreguntaEliminacion"), JOptionPane.YES_NO_OPTION);				
 				if (confirmacion == JOptionPane.YES_OPTION) {		
 					
-						api.eliminarTarea(idTarea);
-						habilitarBotones(false);
-						((DefaultTableModel) table.getModel()).removeRow(filaSeleccionada);
-	                    JOptionPane.showMessageDialog(null, labels.getString("mensaje.eliminacionExitosa"), labels.getString("titulo.optionPaneEliminacion"), JOptionPane.INFORMATION_MESSAGE);		
+						try {
+							api.eliminarTarea(idTarea);
+							habilitarBotones(false);
+							((DefaultTableModel) table.getModel()).removeRow(filaSeleccionada);
+							JOptionPane.showMessageDialog(null, labels.getString("mensaje.eliminacionExitosa"), labels.getString("titulo.optionPaneEliminacion"), JOptionPane.INFORMATION_MESSAGE);		
+						}  catch (DataBaseEliminationException e1) {
+							JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+						} catch (DataBaseConnectionException e1) {
+							JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+						}
 	                    
 				}
 	  		}else {

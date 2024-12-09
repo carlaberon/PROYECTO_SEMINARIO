@@ -107,14 +107,8 @@ public class PersistenceApi implements IApi {
 
 	
 	@Override
-	public void eliminarTarea(int idTarea) {
-		try {
+	public void eliminarTarea(int idTarea) throws DataBaseEliminationException, DataBaseConnectionException {
 			tareaDao.remove(idTarea);
-		} catch (DataBaseEliminationException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-		} catch (DataBaseConnectionException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-		}
 	}
 
 

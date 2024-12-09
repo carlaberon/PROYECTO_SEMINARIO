@@ -9,6 +9,7 @@ import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.TareaDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataBaseConnectionException;
+import ar.edu.unrn.seminario.exception.DataBaseEliminationException;
 import ar.edu.unrn.seminario.exception.DataBaseFoundException;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.ExistNotification;
@@ -53,7 +54,7 @@ public interface IApi {
 	
 	List<TareaDTO> obtenerTareas() throws NotNullException, InvalidDateException, DataEmptyException, DataBaseFoundException, DataBaseConnectionException;
 	
-	public void eliminarTarea(int idTarea);
+	public void eliminarTarea(int idTarea) throws DataBaseEliminationException, DataBaseConnectionException;
 	
 	void modificarTarea(int idTarea, String nuevoNombre, String nuevaPrioridad,String nombreUsuario, String estado, String nuevaDescripcion,LocalDate inicio, LocalDate fin)throws NotNullException, DataEmptyException, InvalidDateException, DataBaseConnectionException, DataBaseUpdateException;
 	
