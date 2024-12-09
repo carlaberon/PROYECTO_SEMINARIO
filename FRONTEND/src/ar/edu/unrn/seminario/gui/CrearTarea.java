@@ -22,6 +22,8 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
+import ar.edu.unrn.seminario.exception.DataBaseConnectionException;
+import ar.edu.unrn.seminario.exception.DataBaseInsertionException;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
@@ -155,7 +157,11 @@ public class CrearTarea extends JFrame {
 						JOptionPane.showMessageDialog(null,labels.getString("mensaje.campoVacioTarea") +" " + labels.getString(e.getMessage()), "Error", JOptionPane.WARNING_MESSAGE);
 					} catch (InvalidDateException e) {
 						JOptionPane.showMessageDialog(null,labels.getString("mensaje.fechasValidas") + labels.getString(e.getMessage()), "Error", JOptionPane.WARNING_MESSAGE);
-					} 
+					} catch (DataBaseInsertionException e) {
+			        	JOptionPane.showMessageDialog(null, labels.getString(e.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+			        } catch (DataBaseConnectionException e) {
+			        	JOptionPane.showMessageDialog(null, labels.getString(e.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+					}
             }
         );
 

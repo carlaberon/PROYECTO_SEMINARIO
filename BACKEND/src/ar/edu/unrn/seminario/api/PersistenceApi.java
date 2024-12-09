@@ -4,6 +4,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import javax.swing.JOptionPane;
+
 import ar.edu.unrn.seminario.accesos.RolDAOJDBC;
 import ar.edu.unrn.seminario.accesos.RolDao;
 import ar.edu.unrn.seminario.accesos.TareaDAOJDBC;
@@ -20,9 +23,12 @@ import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.TareaDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataBaseConnectionException;
+import ar.edu.unrn.seminario.exception.DataBaseEliminationException;
+import ar.edu.unrn.seminario.exception.DataBaseFoundException;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.ExistNotification;
 import ar.edu.unrn.seminario.exception.DataBaseInsertionException;
+import ar.edu.unrn.seminario.exception.DataBaseUpdateException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.exception.UserIsAlreadyMember;
@@ -52,7 +58,7 @@ public class PersistenceApi implements IApi {
 	}
 	
 	@Override
-	public List<TareaDTO> obtenerTareas() throws NotNullException, InvalidDateException, DataEmptyException {
+	public List<TareaDTO> obtenerTareas() throws NotNullException, InvalidDateException, DataEmptyException, DataBaseFoundException, DataBaseConnectionException {
 	    List<Tarea> tareas = tareaDao.findByProject(proyectoActual.getId());
 	    return tareas.stream()
 	            .map(this::convertirEnTareaDTO) 
@@ -77,7 +83,7 @@ public class PersistenceApi implements IApi {
 
 	@Override
 	public void crearProyecto(String nombre, String string, String estado, String descripcion, String prioridad)
-			throws NotNullException, DataEmptyException, DataBaseInsertionException {
+			throws NotNullException, DataEmptyException, DataBaseInsertionException, DataBaseConnectionException {
 		
 		Usuario propietario = usuarioDao.find(string);
 	    Proyecto nuevoProyecto = new Proyecto(0, nombre, propietario, estado, descripcion, prioridad);
@@ -89,11 +95,11 @@ public class PersistenceApi implements IApi {
 		RolDTO rolDto = new RolDTO(rol.getCodigo(), rol.getNombre(), rol.isActivo());
 		return rolDto;
 	}
-
+	
 	@Override
 	public void registrarTarea(String name,int id_proyecto, String priority, String user, String estado,
 			String descripcion, LocalDate inicio, LocalDate fin)
-			throws DataEmptyException, NotNullException, InvalidDateException {
+			throws DataEmptyException, NotNullException, InvalidDateException, DataBaseInsertionException, DataBaseConnectionException {
 		
 		Tarea tarea = new Tarea(0, name, proyectoDao.find(id_proyecto), priority, user, estado, descripcion, inicio, fin);
 		tareaDao.create(tarea);
@@ -101,8 +107,8 @@ public class PersistenceApi implements IApi {
 
 	
 	@Override
-	public void eliminarTarea(int idTarea) {
-		tareaDao.remove(idTarea);
+	public void eliminarTarea(int idTarea) throws DataBaseEliminationException, DataBaseConnectionException {
+			tareaDao.remove(idTarea);
 	}
 
 
@@ -123,17 +129,9 @@ public class PersistenceApi implements IApi {
 		proyectoDao.update(proyectoExistente);
 		}
 		
-
 	@Override
-	public List<TareaDTO> obtenerTareasPorProyecto(int id) throws DataEmptyException, NotNullException, InvalidDateException  {
-		List<TareaDTO> tareasDTO = new ArrayList<>();
-		List<Tarea> tareas = null;
-		tareas = tareaDao.findByProject(id);
-
-		for (Tarea t : tareas) {  
-			tareasDTO.add(convertirEnTareaDTO(t));
-	    }
-	    return tareasDTO;
+	public List<TareaDTO> obtenerTareasPorProyecto(int id) throws DataEmptyException, NotNullException, InvalidDateException, DataBaseFoundException, DataBaseConnectionException {
+	    return tareaDao.findByProject(id).stream().map(this::convertirEnTareaDTO).collect(Collectors.toList()); 
 	}
 	
 	@Override
@@ -148,7 +146,7 @@ public class PersistenceApi implements IApi {
 			}			
 	}
 	
-	public void setTareaActual(int idTarea) throws DataEmptyException, NotNullException, InvalidDateException {
+	public void setTareaActual(int idTarea) throws DataEmptyException, NotNullException, InvalidDateException, DataBaseFoundException, DataBaseConnectionException {
 		this.tareaActual = tareaDao.find(idTarea);
 	}
 	
@@ -165,7 +163,7 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public void modificarTarea(int idTarea, String nuevoNombre, String nuevaPrioridad, String nombreUsuario, String estado, String nuevaDescripcion, LocalDate inicio, LocalDate fin) throws NotNullException, DataEmptyException, InvalidDateException {
+	public void modificarTarea(int idTarea, String nuevoNombre, String nuevaPrioridad, String nombreUsuario, String estado, String nuevaDescripcion, LocalDate inicio, LocalDate fin) throws NotNullException, DataEmptyException, InvalidDateException, DataBaseConnectionException, DataBaseUpdateException {
 		Tarea tarea = new Tarea(idTarea, nuevoNombre, proyectoActual, nuevaPrioridad, nombreUsuario, estado, nuevaDescripcion, inicio, fin);
 		tareaDao.update(tarea);
 	}
@@ -323,7 +321,7 @@ public class PersistenceApi implements IApi {
 		ProyectoDTO proyectoDto = null;
 		if(proyecto != null)
 			proyectoDto = new ProyectoDTO(proyecto.getId(),proyecto.getNombre(), convertirEnUsuarioDTO(proyecto.getUsuarioPropietario()), proyecto.getEstado(), proyecto.getPrioridad(), proyecto.getDescripcion());
-			
+
 		proyectoDto.setId(proyecto.getId());
 		return proyectoDto;
 	}
@@ -407,8 +405,5 @@ public class PersistenceApi implements IApi {
 	@Override
 	public void eliminarMiembro(String username, int idProyecto) {
 		proyectoDao.deleteMember(username, idProyecto);
-	}
-
-
-	
+	}	
 }

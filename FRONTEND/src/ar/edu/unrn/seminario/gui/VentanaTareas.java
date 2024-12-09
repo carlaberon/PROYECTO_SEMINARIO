@@ -36,6 +36,9 @@ import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.TareaDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
+import ar.edu.unrn.seminario.exception.DataBaseConnectionException;
+import ar.edu.unrn.seminario.exception.DataBaseEliminationException;
+import ar.edu.unrn.seminario.exception.DataBaseFoundException;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
@@ -185,7 +188,7 @@ public class VentanaTareas extends JFrame {
 		List<TareaDTO> tareas;
 		try {
 			tareas = api.obtenerTareasPorProyecto(unproyecto.getId());
-		tareas.sort((t1, t2) -> {
+			tareas.sort((t1, t2) -> {
             int prioridadComparacion = Integer.compare(api.obtenerPrioridad(t1.getPriority()), 
                                                        api.obtenerPrioridad(t2.getPriority()));
             if (prioridadComparacion != 0) {
@@ -219,6 +222,10 @@ public class VentanaTareas extends JFrame {
 		} catch (DataEmptyException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
+		} catch (DataBaseFoundException e1) {
+			JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+		} catch (DataBaseConnectionException e1) {
+			JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 		}
 		
 		
@@ -292,6 +299,10 @@ public class VentanaTareas extends JFrame {
 								} catch (InvalidDateException e1) {
 									// TODO Auto-generated catch block
 									e1.printStackTrace();
+								} catch (DataBaseFoundException e1) {
+						        	JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+								} catch (DataBaseConnectionException e1) {
+						        	JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 								}
 								dispose();
     	    	}else {
@@ -309,10 +320,16 @@ public class VentanaTareas extends JFrame {
 				int confirmacion = JOptionPane.showConfirmDialog(null, labels.getString("mensaje.preguntaDeEliminar"),labels.getString("titulo.optionPanePreguntaEliminacion"), JOptionPane.YES_NO_OPTION);				
 				if (confirmacion == JOptionPane.YES_OPTION) {		
 					
-						api.eliminarTarea(idTarea);
-						habilitarBotones(false);
-						((DefaultTableModel) table.getModel()).removeRow(filaSeleccionada);
-	                    JOptionPane.showMessageDialog(null, labels.getString("mensaje.eliminacionExitosa"), labels.getString("titulo.optionPaneEliminacion"), JOptionPane.INFORMATION_MESSAGE);		
+						try {
+							api.eliminarTarea(idTarea);
+							habilitarBotones(false);
+							((DefaultTableModel) table.getModel()).removeRow(filaSeleccionada);
+							JOptionPane.showMessageDialog(null, labels.getString("mensaje.eliminacionExitosa"), labels.getString("titulo.optionPaneEliminacion"), JOptionPane.INFORMATION_MESSAGE);		
+						}  catch (DataBaseEliminationException e1) {
+							JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+						} catch (DataBaseConnectionException e1) {
+							JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+						}
 	                    
 				}
 	  		}else {
