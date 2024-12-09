@@ -95,7 +95,7 @@ public class PersistenceApi implements IApi {
 		RolDTO rolDto = new RolDTO(rol.getCodigo(), rol.getNombre(), rol.isActivo());
 		return rolDto;
 	}
-
+	
 	@Override
 	public void registrarTarea(String name,int id_proyecto, String priority, String user, String estado,
 			String descripcion, LocalDate inicio, LocalDate fin)
