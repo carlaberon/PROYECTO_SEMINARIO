@@ -18,6 +18,7 @@ import javax.swing.border.EmptyBorder;
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.exception.DataBaseConnectionException;
+import ar.edu.unrn.seminario.exception.DataBaseFoundException;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.DataBaseInsertionException;
 
@@ -92,12 +93,7 @@ public class CrearProyecto extends JFrame {
 
 				try {
 					// Crear un nuevo proyecto
-	                try {
-						api.crearProyecto(nombreNuevoProyecto, api.getUsuarioActual().getUsername(), "EN CURSO", descripcionNueva, prioridadSeleccionadaNueva);
-					} catch (DataBaseConnectionException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+	                api.crearProyecto(nombreNuevoProyecto, api.getUsuarioActual().getUsername(), "EN CURSO", descripcionNueva, prioridadSeleccionadaNueva);
 	                JOptionPane.showMessageDialog(null, labels.getString("mensaje.proyectoCreado"), "Info", JOptionPane.INFORMATION_MESSAGE);
 	                new Inicio(api).setVisible(true);
 	                dispose();
@@ -107,7 +103,11 @@ public class CrearProyecto extends JFrame {
 		            JOptionPane.showMessageDialog(null, labels.getString("mensaje.elCampo") + labels.getString(e3.getMessage()) + labels.getString("mensaje.empty"), "Error", JOptionPane.ERROR_MESSAGE);
 		        } catch (DataBaseInsertionException e1) {
 		        	JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
-		        } 
+		        } catch (DataBaseConnectionException e1) {
+		        	JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+				} catch (DataBaseFoundException e1) {
+					JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		);
 		JButton cancelarButton = new JButton(labels.getString("boton.cancelar"));

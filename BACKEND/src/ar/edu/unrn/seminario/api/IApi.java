@@ -24,7 +24,7 @@ public interface IApi {
 	//Metodos para los usuarios
 	void registrarUsuario(String username, String password, String email, String nombre, Integer rol);
 
-	UsuarioDTO obtenerUsuario(String username);
+	UsuarioDTO obtenerUsuario(String username) throws DataBaseFoundException, DataBaseConnectionException;
 
 	void eliminarUsuario(String username);
 
@@ -67,7 +67,7 @@ public interface IApi {
 
 	List<TareaDTO> obtenerTareasPorProyecto(int id_project) throws InvalidDateException, NotNullException, DataEmptyException, DataBaseFoundException, DataBaseConnectionException;
 	
-	void crearProyecto(String nombre, String string, String estado, String descripcion, String prioridad) throws NotNullException, DataEmptyException, DataBaseInsertionException, DataBaseConnectionException;
+	void crearProyecto(String nombre, String string, String estado, String descripcion, String prioridad) throws NotNullException, DataEmptyException, DataBaseInsertionException, DataBaseConnectionException, DataBaseFoundException;
 	
 	public void invitarMiembro(String username, int idProyecto, int codigoRol);
 	
@@ -93,7 +93,7 @@ public interface IApi {
 	
 	public UsuarioDTO getUsuarioActual(); //Recuperar usuario actual PRUEBAS
 	
-	public void setUsuarioActual(String nombreUsuario);	//Setear usuario actual PRUEBAS
+	public void setUsuarioActual(String nombreUsuario) throws DataBaseFoundException, DataBaseConnectionException;	//Setear usuario actual PRUEBAS
 	
 	public int obtenerPrioridad(String prioridad);
 	
