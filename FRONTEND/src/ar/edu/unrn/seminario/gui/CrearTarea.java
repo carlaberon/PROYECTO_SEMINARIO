@@ -209,7 +209,6 @@ public class CrearTarea extends JFrame {
         JButton cancelarButton = createButton(labels.getString("boton.cancelar"), new Color(138, 102, 204));
         cancelarButton.setBounds(330, 420, 100, 30);
         
-        
         centerPanel1.add(cancelarButton);
         
        
