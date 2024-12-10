@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -28,6 +30,7 @@ public class AltaUsuario extends JFrame {
 	private JComboBox rolComboBox;
 
 	private List<RolDTO> roles = new ArrayList<>();
+	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es"));
 	
 	public AltaUsuario(IApi api)  {
 
@@ -35,8 +38,7 @@ public class AltaUsuario extends JFrame {
 		try {
 			this.roles = api.obtenerRoles();
 		} catch (DataBaseConnectionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, labels.getString(e.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 		}
 
 		setTitle("Alta Usuario");

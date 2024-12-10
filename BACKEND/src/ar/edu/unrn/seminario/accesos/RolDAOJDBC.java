@@ -94,9 +94,7 @@ public class RolDAOJDBC implements RolDao {
 				listado.add(rol);
 			}
 		} catch (SQLException e) {
-			throw new DataBaseConnectionException("Error en la consulta sobre la base de datos: " + e.getMessage());
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
+			throw new DataBaseConnectionException("exceptionDAO.conecction");
 		} finally {
 			ConnectionManager.disconnect();
 		}

@@ -92,7 +92,12 @@ public class CrearProyecto extends JFrame {
 
 				try {
 					// Crear un nuevo proyecto
-	                api.crearProyecto(nombreNuevoProyecto, api.getUsuarioActual().getUsername(), "EN CURSO", descripcionNueva, prioridadSeleccionadaNueva);
+	                try {
+						api.crearProyecto(nombreNuevoProyecto, api.getUsuarioActual().getUsername(), "EN CURSO", descripcionNueva, prioridadSeleccionadaNueva);
+					} catch (DataBaseConnectionException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 	                JOptionPane.showMessageDialog(null, labels.getString("mensaje.proyectoCreado"), "Info", JOptionPane.INFORMATION_MESSAGE);
 	                new Inicio(api).setVisible(true);
 	                dispose();

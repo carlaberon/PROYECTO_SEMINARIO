@@ -55,8 +55,7 @@ public class InvitarMiembro extends JFrame {
 		try {
 			this.roles = api.obtenerRoles();
 		} catch (DataBaseConnectionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, labels.getString(e.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 		}
 		
 		setTitle(labels.getString("ventana.invitarMiembro"));

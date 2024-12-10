@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.swing.JOptionPane;
-
 import ar.edu.unrn.seminario.accesos.RolDAOJDBC;
 import ar.edu.unrn.seminario.accesos.RolDao;
 import ar.edu.unrn.seminario.accesos.TareaDAOJDBC;
@@ -77,7 +75,7 @@ public class PersistenceApi implements IApi {
 	}
 	
 	@Override
-	public List<RolDTO> obtenerRoles() {
+	public List<RolDTO> obtenerRoles() throws DataBaseConnectionException {
 	    return rolDao.findAll().stream().map(this::convertirEnRolDTO).collect(Collectors.toList());
 	}
 
@@ -128,7 +126,7 @@ public class PersistenceApi implements IApi {
 		
 		proyectoDao.update(proyectoExistente);
 		}
-		
+	
 	@Override
 	public List<TareaDTO> obtenerTareasPorProyecto(int id) throws DataEmptyException, NotNullException, InvalidDateException, DataBaseFoundException, DataBaseConnectionException {
 	    return tareaDao.findByProject(id).stream().map(this::convertirEnTareaDTO).collect(Collectors.toList()); 
