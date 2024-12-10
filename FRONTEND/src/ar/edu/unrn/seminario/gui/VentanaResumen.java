@@ -32,8 +32,7 @@ public class VentanaResumen extends JFrame {
         
         setTitle(labels.getString("menu.resumen"));
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setBounds(100, 100, 900, 600);
-
+        setBounds(50, 50, 1200, 650); 
         
         contentPane = new JPanel();
         contentPane.setLayout(new BorderLayout());
@@ -46,17 +45,9 @@ public class VentanaResumen extends JFrame {
         JMenu menuProyecto = new JMenu(unproyecto.getNombre());
         menuProyecto.setForeground(Color.WHITE);
         menuProyecto.setFont(new Font("Segoe UI", Font.BOLD, 18));
-
-        JMenuItem item1 = new JMenuItem("Opción 1");
-        JMenuItem item2 = new JMenuItem("Opción 2");
-        JMenuItem item3 = new JMenuItem("Opción 3");
-        menuProyecto.add(item1);
-        menuProyecto.add(item2);
-        menuProyecto.add(item3);
-
         menuBar.add(menuProyecto);
 
-        JLabel appName = new JLabel(labels.getString("menu.proyecto1"));
+        JLabel appName = new JLabel(labels.getString("menu.proyecto"));
         appName.setForeground(Color.WHITE);
         appName.setFont(new Font("Segoe UI", Font.BOLD, 18));
 
@@ -185,6 +176,19 @@ public class VentanaResumen extends JFrame {
 			dispose();
         }
     );
+        btnTarea.addActionListener(e -> {
+			
+				if(!(rolActual.getNombre().equals("Observador"))) {
+					CrearTarea crearTarea;
+					crearTarea = new CrearTarea(api);
+					crearTarea.setVisible(true);
+					dispose();
+				
+				}else {
+					JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.WARNING_MESSAGE);
+				}
+			}
+		);
         // Agregar el panel principal al contentPane
         contentPane.add(centerPanel1, BorderLayout.CENTER);
         

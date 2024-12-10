@@ -81,14 +81,6 @@ public class VentanaTareas extends JFrame {
         JMenu menuProyecto = new JMenu(unproyecto.getNombre());
         menuProyecto.setForeground(Color.WHITE);
         menuProyecto.setFont(new Font("Segoe UI", Font.BOLD, 18));
-
-        JMenuItem item1 = new JMenuItem("Opción 1");
-        JMenuItem item2 = new JMenuItem("Opción 2");
-        JMenuItem item3 = new JMenuItem("Opción 3");
-        menuProyecto.add(item1);
-        menuProyecto.add(item2);
-        menuProyecto.add(item3);
-
         menuBar.add(menuProyecto);
 
         JLabel appName = new JLabel(labels.getString("menu.proyecto"));
@@ -141,6 +133,7 @@ public class VentanaTareas extends JFrame {
     
         contentPane.add(menuPanel, BorderLayout.WEST);
         
+        //Panel central 
         JPanel centerPanel1 = new JPanel();
         centerPanel1.setLayout(new GridLayout(1, 1, 10, 10));
         centerPanel1.setBackground(new Color(45, 44, 50));

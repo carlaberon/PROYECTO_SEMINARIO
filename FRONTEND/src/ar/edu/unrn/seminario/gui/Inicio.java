@@ -62,14 +62,15 @@ public class Inicio extends JFrame {
         setJMenuBar(menuBar);
 
         JPanel mainPanel = new JPanel(new BorderLayout());
-        mainPanel.setBackground(Color.DARK_GRAY);
+        //
+        mainPanel.setBackground(new Color(45, 44, 50)); //color del centro
 
         JPanel menuPanel = new JPanel();
         menuPanel.setLayout(new GridLayout(7, 1, 10, 10));
         menuPanel.setPreferredSize(new Dimension(200, 0));
         menuPanel.setBackground(new Color(65, 62, 77));
 
-        String[] menuItems = {labels.getString("menu.proyectos"), labels.getString("menu.actividad"), labels.getString("menu.calendario")};
+        String[] menuItems = {labels.getString("menu.proyectos"), labels.getString("menu.actividad")};
         for (String item : menuItems) {
             JButton menuButton = new JButton(item + " →");
             menuButton.setForeground(Color.WHITE);
@@ -101,6 +102,7 @@ public class Inicio extends JFrame {
         proyectosListPanel = new JPanel();
         proyectosListPanel.setLayout(new GridLayout(10,1,6,6));
         proyectosListPanel.setBackground(new Color(65, 62, 77));
+       
 
         List<ProyectoDTO> proyectos;
 		try {
