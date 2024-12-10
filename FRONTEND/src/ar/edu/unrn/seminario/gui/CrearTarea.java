@@ -137,7 +137,7 @@ public class CrearTarea extends JFrame {
         JLabel nombreTareaLabel = new JLabel(labels.getString("campo.nombreTarea"));
         nombreTareaLabel.setForeground(new Color(255, 255, 255));
         nombreTareaLabel.setBounds(50, 50, 150, 20);
-        nombreTareaLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14)); // Estilo aplicado
+        nombreTareaLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         centerPanel1.add(nombreTareaLabel);
 
         nombreTareaTextField = new JTextField();
