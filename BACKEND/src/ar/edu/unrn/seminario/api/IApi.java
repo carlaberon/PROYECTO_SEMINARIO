@@ -45,7 +45,7 @@ public interface IApi {
 
 	void activarRol(Integer codigo); // recuperar el objeto Rol, implementar el comportamiento de estado.
 	
-	public RolDTO getRol(String username, int idProyecto);
+	public RolDTO getRol(String username, int idProyecto) throws DataBaseConnectionException, DataBaseFoundException;
 
 	void desactivarRol(Integer codigo); // recuperar el objeto Rol, imp
 	

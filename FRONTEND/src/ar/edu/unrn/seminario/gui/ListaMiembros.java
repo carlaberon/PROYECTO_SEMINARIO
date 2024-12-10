@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.HeadlessException;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -70,7 +71,13 @@ public class ListaMiembros extends JFrame {
     	this.api = api; 
     	this.usuarioActual = api.getUsuarioActual();
     	this.unproyecto = api.getProyectoActual();
-    	this.rolActual = api.getRol(usuarioActual.getUsername(), unproyecto.getId());
+    	try {
+			this.rolActual = api.getRol(usuarioActual.getUsername(), unproyecto.getId());
+		} catch (DataBaseFoundException e) {
+			JOptionPane.showMessageDialog(null, labels.getString(e.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+		} catch (DataBaseConnectionException e) {
+			JOptionPane.showMessageDialog(null, labels.getString(e.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+		}
     	this.usuariosProyecto = api.obtenerMiembrosDeUnProyecto(unproyecto.getId());
     	
     	setTitle(labels.getString("menu.miembros"));
@@ -196,7 +203,14 @@ public class ListaMiembros extends JFrame {
 		
 		for (UsuarioDTO u : usuariosProyecto) {
 			
-					RolDTO unrol = api.getRol(u.getUsername(),unproyecto.getId()); 
+					RolDTO unrol = null;
+					try {
+						unrol = api.getRol(u.getUsername(),unproyecto.getId());
+					} catch (DataBaseFoundException e1) {
+						JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+					} catch (DataBaseConnectionException e1) {
+						JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+					} 
 		    modelo.addRow(new Object[] {
 		    	u.getUsername(),
 		    	labels.getString(api.traducirRol(unrol.getNombre()))
@@ -228,16 +242,21 @@ public class ListaMiembros extends JFrame {
  
         btnMiembro.addActionListener(e -> {
         	
-            if(api.getRol(usuarioActual.getUsername(), unproyecto.getId()).getNombre().equals("Administrador")) {
-					InvitarMiembro invitarMiembro = new InvitarMiembro(api);
-					invitarMiembro.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-	                invitarMiembro.setVisible(true);
-            } else {
-	            JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.WARNING_MESSAGE);
-            }
+            try {
+				if(api.getRol(usuarioActual.getUsername(), unproyecto.getId()).getNombre().equals("Administrador")) {
+						InvitarMiembro invitarMiembro = new InvitarMiembro(api);
+						invitarMiembro.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				        invitarMiembro.setVisible(true);
+				} else {
+				    JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.WARNING_MESSAGE);
+				}
+			} catch (DataBaseFoundException e1) {
+				JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+			} catch (DataBaseConnectionException e1) {
+				JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+			}
         }
     );
-
         buttonPanel.add(btnMiembro);
         descPanel.add(buttonPanel, BorderLayout.NORTH); // Coloca el botón en el norte (arriba)
         centerPanel1.add(descPanel);

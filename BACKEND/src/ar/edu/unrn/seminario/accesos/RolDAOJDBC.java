@@ -4,14 +4,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-//import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 import ar.edu.unrn.seminario.exception.DataBaseConnectionException;
+import ar.edu.unrn.seminario.exception.DataBaseFoundException;
 import ar.edu.unrn.seminario.modelo.Rol;
-//import ar.edu.unrn.seminario.modelo.Usuario;
+
 
 public class RolDAOJDBC implements RolDao {
 
@@ -46,7 +46,7 @@ public class RolDAOJDBC implements RolDao {
 	}
 
 	@Override
-	public Rol find(String username, int id_proyecto) {
+	public Rol find(String username, int id_proyecto) throws DataBaseConnectionException,DataBaseFoundException {
 		Rol rol = null;
 		try {
 			Connection conn = ConnectionManager.getConnection();
@@ -60,15 +60,12 @@ public class RolDAOJDBC implements RolDao {
 			ResultSet rs = statement.executeQuery();
 			if (rs.next()) {
 				rol = new Rol(rs.getInt("r.codigo"), rs.getString("r.nombre"), rs.getBoolean("r.activo"));
-			}
-
+			} else {
+			   throw new DataBaseFoundException("exceptionRolDAO.find");
+		 }
+			
 		} catch (SQLException e) {
-			System.out.println("Error al procesar consulta");
-			// TODO: disparar Exception propia
-			// throw new AppException(e, e.getSQLState(), e.getMessage());
-		} catch (Exception e) {
-			// TODO: disparar Exception propia
-			// throw new AppException(e, e.getCause().getMessage(), e.getMessage());
+			throw new DataBaseConnectionException("exceptionDAO.conecction");
 		} finally {
 			ConnectionManager.disconnect();
 		}

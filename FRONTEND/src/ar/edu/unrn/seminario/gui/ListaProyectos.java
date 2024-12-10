@@ -6,6 +6,8 @@ import javax.swing.table.DefaultTableModel;
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
+import ar.edu.unrn.seminario.exception.DataBaseConnectionException;
+import ar.edu.unrn.seminario.exception.DataBaseFoundException;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
@@ -155,19 +157,25 @@ public class ListaProyectos extends JFrame {
         eliminarProyecto.addActionListener(e -> {
 	        	habilitarBotones(false);
 	        	int projecId = (int) tabla.getModel().getValueAt(tabla.getSelectedRow(), 0);
-	        	if (api.getRol(usuarioActual.getUsername(), projecId).getNombre().equals("Administrador")) {
-					int opcionSeleccionada = JOptionPane.showConfirmDialog(null,
-					           labels.getString("mensaje.confirmarEliminacion"), labels.getString("mensaje.eliminarProyecto"),
-					           JOptionPane.YES_NO_OPTION);
-					if (opcionSeleccionada == JOptionPane.YES_OPTION) {
-						api.eliminarProyecto(projecId);
-						actualizarTabla();
-								
-						habilitarBotones(false);
+	        	try {
+					if (api.getRol(usuarioActual.getUsername(), projecId).getNombre().equals("Administrador")) {
+						int opcionSeleccionada = JOptionPane.showConfirmDialog(null,
+						           labels.getString("mensaje.confirmarEliminacion"), labels.getString("mensaje.eliminarProyecto"),
+						           JOptionPane.YES_NO_OPTION);
+						if (opcionSeleccionada == JOptionPane.YES_OPTION) {
+							api.eliminarProyecto(projecId);
+							actualizarTabla();
+									
+							habilitarBotones(false);
+						}
+					}else {
+						JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.WARNING_MESSAGE);	
 					}
-	        	}else {
-	        		JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.WARNING_MESSAGE);	
-	        	}
+	        	} catch (DataBaseFoundException e1) {
+					JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+				} catch (DataBaseConnectionException e1) {
+					JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+				}
         });
         
         panelEliminar.add(eliminarProyecto);
