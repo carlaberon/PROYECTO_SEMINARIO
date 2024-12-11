@@ -16,6 +16,7 @@ import javax.swing.border.EmptyBorder;
 
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.RolDTO;
+import ar.edu.unrn.seminario.exception.DataBaseConnectionException;
 
 public class AltaUsuario extends JFrame {
 
@@ -28,7 +29,7 @@ public class AltaUsuario extends JFrame {
 
 	private List<RolDTO> roles = new ArrayList<>();
 	
-	public AltaUsuario(IApi api) {
+	public AltaUsuario(IApi api) throws DataBaseConnectionException {
 
 		// Obtengo los roles
 		this.roles = api.obtenerRoles();

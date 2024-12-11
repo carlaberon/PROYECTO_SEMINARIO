@@ -199,6 +199,9 @@ public class Inicio extends JFrame {
 		} catch (DataEmptyException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
+		} catch (DataBaseConnectionException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
         
         
@@ -273,8 +276,8 @@ public class Inicio extends JFrame {
         formatActionButton(rejectButton);
 
         acceptButton.addActionListener(e -> {
-        	api.eliminarNotificacion(idProyecto, username);
         	try {
+        	api.eliminarNotificacion(idProyecto, username);
         	api.invitarMiembro(username, idProyecto, codigoRol);
         	parentPanel.remove(panel); // Eliminar este panel del contenedor padre
             parentPanel.revalidate(); // Actualizar el contenedor para reflejar el cambio
@@ -289,10 +292,15 @@ public class Inicio extends JFrame {
         
         // Acción para eliminar el panel al presionar "Rechazar"
         rejectButton.addActionListener(e -> {
-        	api.eliminarNotificacion(idProyecto, username);
-            parentPanel.remove(panel); // Eliminar este panel del contenedor padre
-            parentPanel.revalidate(); // Actualizar el contenedor para reflejar el cambio
-            parentPanel.repaint();    // Volver a pintar el contenedor
+        	try {
+				api.eliminarNotificacion(idProyecto, username);
+				parentPanel.remove(panel); // Eliminar este panel del contenedor padre
+				parentPanel.revalidate(); // Actualizar el contenedor para reflejar el cambio
+				parentPanel.repaint();    // Volver a pintar el contenedor
+			} catch (DataBaseConnectionException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
         });
 
         buttonPanel.add(acceptButton);

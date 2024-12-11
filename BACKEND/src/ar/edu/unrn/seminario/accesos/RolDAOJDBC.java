@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import ar.edu.unrn.seminario.exception.DataBaseConnectionException;
 import ar.edu.unrn.seminario.modelo.Rol;
 //import ar.edu.unrn.seminario.modelo.Usuario;
 
@@ -45,7 +46,7 @@ public class RolDAOJDBC implements RolDao {
 	}
 
 	@Override
-	public Rol find(String username, int id_proyecto) {
+	public Rol find(String username, int id_proyecto) throws DataBaseConnectionException {
 		Rol rol = null;
 		try {
 			Connection conn = ConnectionManager.getConnection();
@@ -69,14 +70,18 @@ public class RolDAOJDBC implements RolDao {
 			// TODO: disparar Exception propia
 			// throw new AppException(e, e.getCause().getMessage(), e.getMessage());
 		} finally {
-			ConnectionManager.disconnect();
+			try {
+				ConnectionManager.disconnect();
+			} catch (SQLException e) {
+				throw new DataBaseConnectionException("exceptionDAO.disconnect");
+			}
 		}
 
 		return rol;
 	}
 
 	@Override
-	public List<Rol> findAll() {
+	public List<Rol> findAll() throws DataBaseConnectionException {
 		List<Rol> listado = new ArrayList<Rol>();
 		Statement sentencia = null;
 		ResultSet resultado = null;
@@ -97,7 +102,11 @@ public class RolDAOJDBC implements RolDao {
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		} finally {
-			ConnectionManager.disconnect();
+			try {
+				ConnectionManager.disconnect();
+			} catch (SQLException e) {
+				throw new DataBaseConnectionException("exceptionDAO.disconnect");
+			}
 		}
 
 		return listado;

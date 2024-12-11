@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.HeadlessException;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -40,7 +41,7 @@ import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.TareaDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataBaseConnectionException;
-
+import ar.edu.unrn.seminario.exception.DataBaseFoundException;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
@@ -70,8 +71,8 @@ public class ListaMiembros extends JFrame {
     	this.api = api; 
     	this.usuarioActual = api.getUsuarioActual();
     	this.unproyecto = api.getProyectoActual();
-    	this.rolActual = api.getRol(usuarioActual.getUsername(), unproyecto.getId());
     	try {
+    		this.rolActual = api.getRol(usuarioActual.getUsername(), unproyecto.getId());
 			this.usuariosProyecto = api.obtenerMiembrosDeUnProyecto(unproyecto.getId());
 		} catch (DataBaseConnectionException e1) {
 			JOptionPane.showMessageDialog(null,labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
@@ -200,12 +201,18 @@ public class ListaMiembros extends JFrame {
 		
 		for (UsuarioDTO u : usuariosProyecto) {
 			
-					RolDTO unrol = api.getRol(u.getUsername(),unproyecto.getId()); 
-		    modelo.addRow(new Object[] {
-		    	u.getUsername(),
-		    	labels.getString(api.traducirRol(unrol.getNombre()))
+					RolDTO unrol;
+					try {
+						unrol = api.getRol(u.getUsername(),unproyecto.getId());
+						modelo.addRow(new Object[] {
+								u.getUsername(),
+								labels.getString(api.traducirRol(unrol.getNombre()))
+						});
+					} catch (DataBaseConnectionException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} 
 
-		    });
 		}
 		
 		
@@ -232,13 +239,18 @@ public class ListaMiembros extends JFrame {
  
         btnMiembro.addActionListener(e -> {
         	
-            if(api.getRol(usuarioActual.getUsername(), unproyecto.getId()).getNombre().equals("Administrador")) {
-					InvitarMiembro invitarMiembro = new InvitarMiembro(api);
-					invitarMiembro.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-	                invitarMiembro.setVisible(true);
-            } else {
-	            JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.WARNING_MESSAGE);
-            }
+            try {
+				if(api.getRol(usuarioActual.getUsername(), unproyecto.getId()).getNombre().equals("Administrador")) {
+						InvitarMiembro invitarMiembro = new InvitarMiembro(api);
+						invitarMiembro.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				        invitarMiembro.setVisible(true);
+				} else {
+				    JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.WARNING_MESSAGE);
+				}
+			} catch (DataBaseConnectionException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
         }
     );
 
@@ -277,6 +289,8 @@ public class ListaMiembros extends JFrame {
 									e1.printStackTrace();
 								} catch (DataBaseConnectionException e1) {
 						        	JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+								} catch (DataBaseFoundException e1) {
+									JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 								}
 								dispose();
     	    	}else {

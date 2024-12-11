@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import ar.edu.unrn.seminario.exception.DataBaseConnectionException;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.modelo.Notificacion;
@@ -17,7 +18,7 @@ import ar.edu.unrn.seminario.modelo.Notificacion;
 public class NotificacionDAOJBDC implements NotificacionDao{
 
 	@Override
-	public void create(Notificacion notificacion) {
+	public void create(Notificacion notificacion) throws DataBaseConnectionException {
 			PreparedStatement statement;
 			Connection conn;
 			try {
@@ -41,14 +42,18 @@ public class NotificacionDAOJBDC implements NotificacionDao{
 				JOptionPane.showMessageDialog(null, e1.getMessage() + "No se pudo invitar al usuario", "Error", JOptionPane.ERROR_MESSAGE);
 			}
 			finally {
-				ConnectionManager.disconnect();
+				try {
+					ConnectionManager.disconnect();
+				} catch (SQLException e) {
+					throw new DataBaseConnectionException("exceptionDAO.disconnect");
+				}
 			}
 
 		
 	}
 
 	@Override
-	public void remove(int idProyecto, String username) {
+	public void remove(int idProyecto, String username) throws DataBaseConnectionException {
 		try {
 			Connection conn = ConnectionManager.getConnection();
 			PreparedStatement statement = conn.prepareStatement("DELETE FROM notificaciones\r\n"
@@ -64,7 +69,11 @@ public class NotificacionDAOJBDC implements NotificacionDao{
 			JOptionPane.showMessageDialog(null, e1.getMessage() + "No se pudo consultar las tareas", "Error", JOptionPane.ERROR_MESSAGE);
 		}
 		 finally {
-			ConnectionManager.disconnect();
+			try {
+				ConnectionManager.disconnect();
+			} catch (SQLException e) {
+				throw new DataBaseConnectionException("exceptionDAO.disconnect");
+			}
 		}
 		
 	}
@@ -72,7 +81,7 @@ public class NotificacionDAOJBDC implements NotificacionDao{
 	
 	
 	@Override
-	public List<Notificacion> findAll(String username) throws NotNullException, DataEmptyException {
+	public List<Notificacion> findAll(String username) throws NotNullException, DataEmptyException, DataBaseConnectionException {
 		List<Notificacion>notificaciones = new ArrayList<Notificacion>();
 		
 		try {
@@ -94,13 +103,17 @@ public class NotificacionDAOJBDC implements NotificacionDao{
 			JOptionPane.showMessageDialog(null, e1.getMessage() + "Error en la consulta", "Error", JOptionPane.ERROR_MESSAGE);
 		}
 		 finally {
-			ConnectionManager.disconnect();
+			try {
+				ConnectionManager.disconnect();
+			} catch (SQLException e) {
+				throw new DataBaseConnectionException("exceptionDAO.disconnect");
+			}
 		}
 		return notificaciones;
 	}
 
 	@Override
-	public int existNotification(int idProyecto, String username) {
+	public int existNotification(int idProyecto, String username) throws DataBaseConnectionException {
 		int existe = 0;
 		try {
 			Connection conn = ConnectionManager.getConnection();
@@ -121,7 +134,11 @@ public class NotificacionDAOJBDC implements NotificacionDao{
 			JOptionPane.showMessageDialog(null, e1.getMessage() + "Error en la consulta", "Error", JOptionPane.ERROR_MESSAGE);
 		}
 		 finally {
-			ConnectionManager.disconnect();
+			try {
+				ConnectionManager.disconnect();
+			} catch (SQLException e) {
+				throw new DataBaseConnectionException("exceptionDAO.disconnect");
+			}
 		}
 		
 		return existe;

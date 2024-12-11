@@ -64,7 +64,12 @@ public class VentanaTareas extends JFrame {
     	this.api = api; 
     	this.usuarioActual = api.getUsuarioActual();
     	this.unproyecto = api.getProyectoActual();
-    	this.rolActual = api.getRol(usuarioActual.getUsername(), unproyecto.getId());
+    	try {
+			this.rolActual = api.getRol(usuarioActual.getUsername(), unproyecto.getId());
+		} catch (DataBaseConnectionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     	
     	setTitle(labels.getString("menu.tareas"));
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

@@ -62,9 +62,14 @@ public class InvitarMiembro extends JFrame {
 		
 		this.proyectoActual = api.getProyectoActual();
 		this.usuarioActual = api.getUsuarioActual();
-		this.roles = api.obtenerRoles();
 		this.api = api;
-		this.usuarios = api.obtenerUsuarios(api.getUsuarioActual().getUsername());
+		try {
+			this.roles = api.obtenerRoles();
+			this.usuarios = api.obtenerUsuarios(api.getUsuarioActual().getUsername());
+		} catch (DataBaseConnectionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		setTitle(labels.getString("ventana.invitarMiembro"));
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

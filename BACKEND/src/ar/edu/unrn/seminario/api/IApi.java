@@ -26,16 +26,16 @@ public interface IApi {
 
 	UsuarioDTO obtenerUsuario(String username) throws DataBaseFoundException, DataBaseConnectionException;
 
-	void eliminarUsuario(String username);
+	void eliminarUsuario(String username) throws DataBaseConnectionException;
 
 	void activarUsuario(String username); // recuperar el objeto Usuario, implementar el comportamiento de estado.
 	
-	List<UsuarioDTO> obtenerUsuarios(String username); // recuperar todos los usuarios
+	List<UsuarioDTO> obtenerUsuarios(String username) throws DataBaseConnectionException; // recuperar todos los usuarios
 	
 	void desactivarUsuario(String username); // recuperar el objeto Usuario, implementar el comportamiento de estado.
 	
 	//Metodos para Roles
-	List<RolDTO> obtenerRoles();
+	List<RolDTO> obtenerRoles() throws DataBaseConnectionException;
 
 	List<RolDTO> obtenerRolesActivos();
 
@@ -45,12 +45,12 @@ public interface IApi {
 
 	void activarRol(Integer codigo); // recuperar el objeto Rol, implementar el comportamiento de estado.
 	
-	public RolDTO getRol(String username, int idProyecto);
+	public RolDTO getRol(String username, int idProyecto) throws DataBaseConnectionException;
 
 	void desactivarRol(Integer codigo); // recuperar el objeto Rol, imp
 	
 	//Metodos para las Tareas
-	public void registrarTarea(String name, int id_proyecto, String priority, String user, String estado, String descripcion, LocalDate inicio, LocalDate fin) throws DataEmptyException, NotNullException, InvalidDateException, DataBaseConnectionException;
+	public void registrarTarea(String name, int id_proyecto, String priority, String user, String estado, String descripcion, LocalDate inicio, LocalDate fin) throws DataEmptyException, NotNullException, InvalidDateException, DataBaseConnectionException, DataBaseInsertionException;
 
 	
 	List<TareaDTO> obtenerTareas() throws NotNullException, InvalidDateException, DataEmptyException, DataBaseFoundException, DataBaseConnectionException;
@@ -79,13 +79,13 @@ public interface IApi {
 	public void eliminarMiembro(String username, int idProyecto) throws DataBaseConnectionException;
 	
 	//Metodos para las notificaciones
-	public void crearNotificacion(int idProyecto, String username, int codigoRol, String nombreProyecto, LocalDate fecha) throws NotNullException, DataEmptyException;
+	public void crearNotificacion(int idProyecto, String username, int codigoRol, String nombreProyecto, LocalDate fecha) throws NotNullException, DataEmptyException, DataBaseConnectionException;
 	
-	public List<NotificacionDTO> obtenerNotificaciones(String username) throws NotNullException, DataEmptyException;
+	public List<NotificacionDTO> obtenerNotificaciones(String username) throws NotNullException, DataEmptyException, DataBaseConnectionException;
 	
-	public void eliminarNotificacion(int idProyecto, String username);
+	public void eliminarNotificacion(int idProyecto, String username) throws DataBaseConnectionException;
 	
-	public int existeNotificacion(int idProyecto, String username) throws ExistNotification;
+	public int existeNotificacion(int idProyecto, String username) throws ExistNotification, DataBaseConnectionException;
 	
 	//Metodos para proposito general
 	public void setTareaActual(int idTarea) throws DataEmptyException, NotNullException, InvalidDateException, DataBaseFoundException, DataBaseConnectionException;
