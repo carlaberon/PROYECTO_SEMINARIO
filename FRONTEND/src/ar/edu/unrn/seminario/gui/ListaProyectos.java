@@ -7,7 +7,6 @@ import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataBaseConnectionException;
-import ar.edu.unrn.seminario.exception.DataBaseFoundException;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.NotNullException;
 import java.awt.*;
@@ -26,7 +25,7 @@ public class ListaProyectos extends JFrame {
 	private JButton eliminarProyecto;
 	private UsuarioDTO usuarioActual; 
 	
-    public ListaProyectos(IApi api)  {
+    public ListaProyectos(IApi api) throws DataBaseConnectionException  {
     	
     	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
 //   	 descomentar para que tome el idioma ingles (english)
@@ -170,9 +169,7 @@ public class ListaProyectos extends JFrame {
 					}else {
 						JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.WARNING_MESSAGE);	
 					}
-	        	} catch (DataBaseFoundException e1) {
-					JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
-				} catch (DataBaseConnectionException e1) {
+	        	} catch (DataBaseConnectionException e1) {
 					JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 				}
         });
@@ -200,9 +197,14 @@ public class ListaProyectos extends JFrame {
     	// Obtiene el model del table
     			DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
     			// Obtiene la lista de usuarios a mostrar
-    			List<ProyectoDTO> proyectos;
+    			List<ProyectoDTO> proyectos = null;
 				try {
-					proyectos = api.obtenerProyectos(api.getUsuarioActual().getUsername());
+					try {
+						proyectos = api.obtenerProyectos(api.getUsuarioActual().getUsername());
+					} catch (DataBaseConnectionException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
     			  proyectos.sort((p1, p2) -> {
     		            int prioridadComparacion = Integer.compare(api.obtenerPrioridad(p1.getPrioridad()), 
     		                                                       api.obtenerPrioridad(p2.getPrioridad()));
