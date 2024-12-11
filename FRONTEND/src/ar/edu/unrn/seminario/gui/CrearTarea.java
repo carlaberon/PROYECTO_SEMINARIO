@@ -22,6 +22,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
+import ar.edu.unrn.seminario.exception.DataBaseConnectionException;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
@@ -42,7 +43,11 @@ public class CrearTarea extends JFrame {
     public CrearTarea(IApi api) {
     	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
         this.api = api; 
-        this.usuarios = api.obtenerMiembrosDeUnProyecto(api.getProyectoActual().getId());
+        try {
+			this.usuarios = api.obtenerMiembrosDeUnProyecto(api.getProyectoActual().getId());
+		} catch (DataBaseConnectionException e1) {
+			JOptionPane.showMessageDialog(null,labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+		}
         
 
         setTitle("Crear Tarea");
@@ -154,12 +159,14 @@ public class CrearTarea extends JFrame {
                     new VentanaTareas(api).setVisible(true);
 					dispose();
                        
-            		} catch (DataEmptyException e) {
-                		JOptionPane.showMessageDialog(null, labels.getString("mensaje.campoVacioTarea") +" " + labels.getString(e.getMessage()), "Error", JOptionPane.WARNING_MESSAGE);
-					} catch (NotNullException e) {
-						JOptionPane.showMessageDialog(null,labels.getString("mensaje.campoVacioTarea") +" " + labels.getString(e.getMessage()), "Error", JOptionPane.WARNING_MESSAGE);
-					} catch (InvalidDateException e) {
-						JOptionPane.showMessageDialog(null,labels.getString("mensaje.fechasValidas") + labels.getString(e.getMessage()), "Error", JOptionPane.WARNING_MESSAGE);
+            		} catch (DataEmptyException e1) {
+                		JOptionPane.showMessageDialog(null, labels.getString("mensaje.campoVacioTarea") +" " + labels.getString(e1.getMessage()), "Error", JOptionPane.WARNING_MESSAGE);
+					} catch (NotNullException e2) {
+						JOptionPane.showMessageDialog(null,labels.getString("mensaje.campoVacioTarea") +" " + labels.getString(e2.getMessage()), "Error", JOptionPane.WARNING_MESSAGE);
+					} catch (InvalidDateException e3) {
+						JOptionPane.showMessageDialog(null,labels.getString("mensaje.fechasValidas") + labels.getString(e3.getMessage()), "Error", JOptionPane.WARNING_MESSAGE);
+					} catch (DataBaseConnectionException e4) {
+						JOptionPane.showMessageDialog(null,labels.getString(e4.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 					} 
             }
         );

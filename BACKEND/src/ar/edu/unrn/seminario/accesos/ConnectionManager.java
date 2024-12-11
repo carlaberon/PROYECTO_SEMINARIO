@@ -36,15 +36,12 @@ public class ConnectionManager {
 			
 	}
 
-	public static void disconnect()  {
+	public static void disconnect() throws SQLException  {
 		if (conn != null) {
 			
-				try {
+				
 					conn.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				
 				conn = null;
 			
 		}
@@ -55,15 +52,12 @@ public class ConnectionManager {
 		connect();
 	}
 
-	public static Connection getConnection()  {
+	public static Connection getConnection() throws SQLException  {
 
 		if (conn == null) {
-			try {
+			
 				connect();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			
 		}
 		return conn;
 	}

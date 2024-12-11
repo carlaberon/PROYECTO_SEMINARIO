@@ -23,6 +23,7 @@ import javax.swing.border.EmptyBorder;
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.TareaDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
+import ar.edu.unrn.seminario.exception.DataBaseConnectionException;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
@@ -50,7 +51,11 @@ public class ModificarTarea extends JFrame {
 
 			//ResourceBundle labels = ResourceBundle.getBundle("labels");
 	        this.api = api; 
-	        this.usuarios = api.obtenerMiembrosDeUnProyecto(api.getProyectoActual().getId());
+	        try {
+				this.usuarios = api.obtenerMiembrosDeUnProyecto(api.getProyectoActual().getId());
+			} catch (DataBaseConnectionException e1) {
+				JOptionPane.showMessageDialog(null,labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+			}
 	        this.tarea = api.getTareaActual();
 	        
 	        setTitle(labels.getString("menu.modificarTarea"));

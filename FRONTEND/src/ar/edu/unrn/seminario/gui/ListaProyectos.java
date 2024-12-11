@@ -6,6 +6,7 @@ import javax.swing.table.DefaultTableModel;
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
+import ar.edu.unrn.seminario.exception.DataBaseConnectionException;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
@@ -24,10 +25,10 @@ public class ListaProyectos extends JFrame {
 	private JTable tabla;
 	private JButton eliminarProyecto;
 	private UsuarioDTO usuarioActual; 
+	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
 	
     public ListaProyectos(IApi api)  {
     	
-    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
 //   	 descomentar para que tome el idioma ingles (english)
 
    	//ResourceBundle labels = ResourceBundle.getBundle("labels");
@@ -99,12 +100,10 @@ public class ListaProyectos extends JFrame {
         				p.getUsuarioPropietario().getUsername()});
         	}
         }
-		} catch (NotNullException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace(); //Tratar mejor la excepcion
-		} catch (DataEmptyException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (NotNullException | DataEmptyException e1) {
+        	JOptionPane.showMessageDialog(null, labels.getString("mensaje.camposVaciosONulos") + labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+		} catch (DataBaseConnectionException e2) {
+    	  JOptionPane.showMessageDialog(null,labels.getString(e2.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 		}
      
         // Ocultar la columna ID
@@ -160,7 +159,11 @@ public class ListaProyectos extends JFrame {
 					           labels.getString("mensaje.confirmarEliminacion"), labels.getString("mensaje.eliminarProyecto"),
 					           JOptionPane.YES_NO_OPTION);
 					if (opcionSeleccionada == JOptionPane.YES_OPTION) {
-						api.eliminarProyecto(projecId);
+						try {
+							api.eliminarProyecto(projecId);
+						} catch (DataBaseConnectionException e1) {
+							JOptionPane.showMessageDialog(null,labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+						}
 						actualizarTabla();
 								
 						habilitarBotones(false);
@@ -218,12 +221,10 @@ public class ListaProyectos extends JFrame {
     				}
     			}
 
-				} catch (NotNullException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace(); //Tratar mejor la excepcion
-				} catch (DataEmptyException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				} catch (NotNullException | DataEmptyException e1) {
+                	JOptionPane.showMessageDialog(null, labels.getString("mensaje.camposVaciosONulos") + labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+				} catch (DataBaseConnectionException e2) {
+            	  JOptionPane.showMessageDialog(null,labels.getString(e2.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 				}
     }
  // Método para crear botones con estilo

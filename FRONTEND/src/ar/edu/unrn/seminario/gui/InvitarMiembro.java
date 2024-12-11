@@ -25,11 +25,13 @@ import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
+import ar.edu.unrn.seminario.exception.DataBaseConnectionException;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.ExistNotification;
 import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.exception.UserIsAlreadyMember;
 import java.awt.Font;
+import java.awt.HeadlessException;
 import java.time.LocalDate;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -110,6 +112,8 @@ public class InvitarMiembro extends JFrame {
 						JOptionPane.showMessageDialog(null,labels.getString("mensaje.elCampo") + labels.getString(e3.getMessage()) + labels.getString("mensaje.null"), labels.getString("mensaje.campoObligatorio"),JOptionPane.WARNING_MESSAGE);
 					} catch (DataEmptyException e4) {
 						JOptionPane.showMessageDialog(null,labels.getString("mensaje.elCampo") + labels.getString(e4.getMessage()) + labels.getString("mensaje.empty"), labels.getString("mensaje.campoObligatorio"),JOptionPane.WARNING_MESSAGE);
+					} catch (DataBaseConnectionException e5) {
+						JOptionPane.showMessageDialog(null,labels.getString(e5.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 					}
 				
 		}); 
