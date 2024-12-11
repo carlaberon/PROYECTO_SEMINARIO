@@ -22,32 +22,14 @@ import ar.edu.unrn.seminario.exception.UserIsAlreadyMember;
 
 public interface IApi {
 	//Metodos para los usuarios
-	void registrarUsuario(String username, String password, String email, String nombre, Integer rol);
-
 	UsuarioDTO obtenerUsuario(String username) throws DataBaseFoundException, DataBaseConnectionException;
-
-	void eliminarUsuario(String username) throws DataBaseConnectionException;
-
-	void activarUsuario(String username); // recuperar el objeto Usuario, implementar el comportamiento de estado.
 	
 	List<UsuarioDTO> obtenerUsuarios(String username) throws DataBaseConnectionException; // recuperar todos los usuarios
-	
-	void desactivarUsuario(String username); // recuperar el objeto Usuario, implementar el comportamiento de estado.
-	
+		
 	//Metodos para Roles
 	List<RolDTO> obtenerRoles() throws DataBaseConnectionException;
 
-	List<RolDTO> obtenerRolesActivos();
-
-	void guardarRol(Integer codigo, String descripcion, boolean estado); // crear el objeto de dominio �Rol�
-
-	RolDTO obtenerRolPorCodigo(Integer codigo); // recuperar el rol almacenado
-
-	void activarRol(Integer codigo); // recuperar el objeto Rol, implementar el comportamiento de estado.
-	
 	public RolDTO getRol(String username, int idProyecto) throws DataBaseConnectionException;
-
-	void desactivarRol(Integer codigo); // recuperar el objeto Rol, imp
 	
 	//Metodos para las Tareas
 	public void registrarTarea(String name, int id_proyecto, String priority, String user, String estado, String descripcion, LocalDate inicio, LocalDate fin) throws DataEmptyException, NotNullException, InvalidDateException, DataBaseConnectionException, DataBaseInsertionException;

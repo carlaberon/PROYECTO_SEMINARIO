@@ -14,37 +14,6 @@ import ar.edu.unrn.seminario.modelo.Rol;
 //import ar.edu.unrn.seminario.modelo.Usuario;
 
 public class RolDAOJDBC implements RolDao {
-
-	@Override
-	public void create(Rol rol) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void update(Rol rol) {
-		// TODO Auto-generated method stub
-
-//		if (e instanceof SQLIntegrityConstraintViolationException) {
-//	        // Duplicate entry
-//	    } else {
-//	        // Other SQL Exception
-//	    }
-
-	}
-
-	@Override
-	public void remove(Long id) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void remove(Rol rol) {
-		// TODO Auto-generated method stub
-
-	}
-
 	@Override
 	public Rol find(String username, int id_proyecto) throws DataBaseConnectionException {
 		Rol rol = null;

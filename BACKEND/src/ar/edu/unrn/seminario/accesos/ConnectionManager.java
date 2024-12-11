@@ -37,13 +37,9 @@ public class ConnectionManager {
 	}
 
 	public static void disconnect() throws SQLException  {
-		if (conn != null) {
-			
-				
-					conn.close();
-				
+		if (conn != null) {		
+					conn.close();			
 				conn = null;
-			
 		}
 	}
 
@@ -53,11 +49,8 @@ public class ConnectionManager {
 	}
 
 	public static Connection getConnection() throws SQLException  {
-
 		if (conn == null) {
-			
-				connect();
-			
+				connect();	
 		}
 		return conn;
 	}
