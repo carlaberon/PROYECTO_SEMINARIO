@@ -7,6 +7,7 @@ import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataBaseConnectionException;
+import ar.edu.unrn.seminario.exception.DataBaseFoundException;
 
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -31,10 +32,11 @@ public class VentanaResumen extends JFrame {
     	this.usuarioActual = api.getUsuarioActual();
     	try {
 			this.rolActual = api.getRol(usuarioActual.getUsername(), api.getProyectoActual().getId());
-		} catch (DataBaseConnectionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    	} catch (DataBaseConnectionException e1) {
+			JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+		} catch (DataBaseFoundException e1) {
+	        JOptionPane.showMessageDialog(null,labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+} 
     	this.unproyecto = api.getProyectoActual();
         
         setTitle(labels.getString("menu.resumen"));

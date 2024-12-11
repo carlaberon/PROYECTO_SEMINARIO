@@ -29,7 +29,7 @@ public interface IApi {
 	//Metodos para Roles
 	List<RolDTO> obtenerRoles() throws DataBaseConnectionException;
 
-	public RolDTO getRol(String username, int idProyecto) throws DataBaseConnectionException;
+	public RolDTO getRol(String username, int idProyecto) throws DataBaseConnectionException, DataBaseFoundException;
 	
 	//Metodos para las Tareas
 	public void registrarTarea(String name, int id_proyecto, String priority, String user, String estado, String descripcion, LocalDate inicio, LocalDate fin) throws DataEmptyException, NotNullException, InvalidDateException, DataBaseConnectionException, DataBaseInsertionException;

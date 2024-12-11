@@ -161,7 +161,12 @@ public class Inicio extends JFrame {
         JButton btnVerProyectos = new JButton(labels.getString("menu.verProyectos"));
         
         btnVerProyectos.addActionListener(e -> {
-        	abrirListaProyectos();
+        	try {
+				abrirListaProyectos();
+			} catch (DataBaseConnectionException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
         	dispose();
         });
 
@@ -193,15 +198,10 @@ public class Inicio extends JFrame {
 				panelNotificaciones.add(panelPrueba1);
 				panelNotificaciones.add(Box.createVerticalStrut(10)); // Espacio entre notificaciones
 			}
-		} catch (NotNullException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace(); //Tratar mejor
-		} catch (DataEmptyException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (DataBaseConnectionException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+        } catch (NotNullException | DataEmptyException e1) {
+        	JOptionPane.showMessageDialog(null, labels.getString("mensaje.camposVaciosONulos") + labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (DataBaseConnectionException e2) {
+			JOptionPane.showMessageDialog(null,labels.getString(e2.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 		}
         
         
@@ -230,7 +230,7 @@ public class Inicio extends JFrame {
         crearProyecto.setVisible(true);
     }
     
-    private void abrirListaProyectos() {
+    private void abrirListaProyectos() throws DataBaseConnectionException {
         ListaProyectos listaProyectos = new ListaProyectos(api);
         listaProyectos.setVisible(true); 
     }
