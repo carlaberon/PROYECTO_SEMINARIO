@@ -36,14 +36,14 @@ public class ConnectionManager {
 			
 	}
 
-	public static void disconnect() {
+	public static void disconnect() throws SQLException  {
 		if (conn != null) {
-			try {
-				conn.close();
+			
+				
+					conn.close();
+				
 				conn = null;
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			
 		}
 	}
 
@@ -52,10 +52,12 @@ public class ConnectionManager {
 		connect();
 	}
 
-	public static Connection getConnection() throws SQLException {
+	public static Connection getConnection() throws SQLException  {
 
 		if (conn == null) {
-			connect();
+			
+				connect();
+			
 		}
 		return conn;
 	}

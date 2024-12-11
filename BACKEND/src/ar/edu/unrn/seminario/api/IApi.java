@@ -50,7 +50,8 @@ public interface IApi {
 	void desactivarRol(Integer codigo); // recuperar el objeto Rol, imp
 	
 	//Metodos para las Tareas
-	public void registrarTarea(String name, int id_proyecto, String priority, String user, String estado, String descripcion, LocalDate inicio, LocalDate fin) throws DataEmptyException, NotNullException, InvalidDateException, DataBaseInsertionException, DataBaseConnectionException;
+	public void registrarTarea(String name, int id_proyecto, String priority, String user, String estado, String descripcion, LocalDate inicio, LocalDate fin) throws DataEmptyException, NotNullException, InvalidDateException, DataBaseConnectionException;
+
 	
 	List<TareaDTO> obtenerTareas() throws NotNullException, InvalidDateException, DataEmptyException, DataBaseFoundException, DataBaseConnectionException;
 	
@@ -59,23 +60,23 @@ public interface IApi {
 	void modificarTarea(int idTarea, String nuevoNombre, String nuevaPrioridad,String nombreUsuario, String estado, String nuevaDescripcion,LocalDate inicio, LocalDate fin)throws NotNullException, DataEmptyException, InvalidDateException, DataBaseConnectionException, DataBaseUpdateException;
 	
 	//Metodos para los proyectos
-	List<ProyectoDTO> obtenerProyectos(String username) throws NotNullException, DataEmptyException;
+	List<ProyectoDTO> obtenerProyectos(String username) throws NotNullException, DataEmptyException, DataBaseConnectionException;
 		    
-	public void eliminarProyecto(int id);
+	public void eliminarProyecto(int id) throws DataBaseConnectionException;
 	
-	void modificarProyecto(int idProyecto, String nuevoNombre, String nuevaPrioridad, String nuevaDescripcion) throws NotNullException, DataEmptyException;
+	void modificarProyecto(int idProyecto, String nuevoNombre, String nuevaPrioridad, String nuevaDescripcion) throws NotNullException, DataEmptyException, DataBaseConnectionException;
 
 	List<TareaDTO> obtenerTareasPorProyecto(int id_project) throws InvalidDateException, NotNullException, DataEmptyException, DataBaseFoundException, DataBaseConnectionException;
 	
 	void crearProyecto(String nombre, String string, String estado, String descripcion, String prioridad) throws NotNullException, DataEmptyException, DataBaseInsertionException, DataBaseConnectionException, DataBaseFoundException;
 	
-	public void invitarMiembro(String username, int idProyecto, int codigoRol);
+	public void invitarMiembro(String username, int idProyecto, int codigoRol) throws DataBaseConnectionException;
 	
-	public List<UsuarioDTO> obtenerMiembrosDeUnProyecto(int proyectoId);
+	public List<UsuarioDTO> obtenerMiembrosDeUnProyecto(int proyectoId) throws DataBaseConnectionException;
 	
-	public int existeMiembro(String username, int idProyecto) throws UserIsAlreadyMember;
+	public int existeMiembro(String username, int idProyecto) throws UserIsAlreadyMember, DataBaseConnectionException;
 	
-	public void eliminarMiembro(String username, int idProyecto);
+	public void eliminarMiembro(String username, int idProyecto) throws DataBaseConnectionException;
 	
 	//Metodos para las notificaciones
 	public void crearNotificacion(int idProyecto, String username, int codigoRol, String nombreProyecto, LocalDate fecha) throws NotNullException, DataEmptyException;
@@ -107,6 +108,6 @@ public interface IApi {
 	
 	public ProyectoDTO getProyectoActual();//Recuperar proyecto actual	PRUEBAS
 	
-	public void setProyectoActual(int id) throws NotNullException, DataEmptyException;	//Setear proyecto actual PRUEBAS
+	public void setProyectoActual(int id) throws NotNullException, DataEmptyException, DataBaseConnectionException;	//Setear proyecto actual PRUEBAS
 	
 }

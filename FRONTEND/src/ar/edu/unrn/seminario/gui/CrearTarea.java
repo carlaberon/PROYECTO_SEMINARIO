@@ -37,7 +37,6 @@ import com.toedter.calendar.JDateChooser;
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataBaseConnectionException;
-import ar.edu.unrn.seminario.exception.DataBaseInsertionException;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
@@ -52,10 +51,16 @@ public class CrearTarea extends JFrame {
 
     private IApi api;
 
+    
     public CrearTarea(IApi api) {
-        ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en"));
-        this.api = api;
-        this.usuarios = api.obtenerMiembrosDeUnProyecto(api.getProyectoActual().getId());
+    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
+        this.api = api; 
+        try {
+			this.usuarios = api.obtenerMiembrosDeUnProyecto(api.getProyectoActual().getId());
+		} catch (DataBaseConnectionException e1) {
+			JOptionPane.showMessageDialog(null,labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+		}
+
         this.usuarioActual = api.getUsuarioActual();
 
 
@@ -241,14 +246,13 @@ public class CrearTarea extends JFrame {
                     new VentanaTareas(api).setVisible(true);
 					dispose();
                        
+
             		} catch (DataEmptyException e) {
                 		JOptionPane.showMessageDialog(null, labels.getString("mensaje.campoVacioTarea") +" " + labels.getString(e.getMessage()), "Error", JOptionPane.WARNING_MESSAGE);
 					} catch (NotNullException e) {
 						JOptionPane.showMessageDialog(null,labels.getString("mensaje.campoVacioTarea") +" " + labels.getString(e.getMessage()), "Error", JOptionPane.WARNING_MESSAGE);
 					} catch (InvalidDateException e) {
 						JOptionPane.showMessageDialog(null,labels.getString("mensaje.fechasValidas") + labels.getString(e.getMessage()), "Error", JOptionPane.WARNING_MESSAGE);
-					} catch (DataBaseInsertionException e) {
-			        	JOptionPane.showMessageDialog(null, labels.getString(e.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 			        } catch (DataBaseConnectionException e) {
 			        	JOptionPane.showMessageDialog(null, labels.getString(e.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 					}

@@ -27,7 +27,11 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.ProyectoDTO;
+
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
+
+import ar.edu.unrn.seminario.exception.DataBaseConnectionException;
+
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.NotNullException;
 
@@ -44,6 +48,7 @@ public class VentanaConfigurarProyecto extends JFrame {
     private JButton cancelar;
     private ProyectoDTO proyectoActual;
     private UsuarioDTO usuarioActual;
+
 
     public VentanaConfigurarProyecto(IApi api) {
     	
@@ -200,7 +205,9 @@ public class VentanaConfigurarProyecto extends JFrame {
                 JOptionPane.showMessageDialog(null, labels.getString("mensaje.elCampo") + labels.getString(e1.getMessage()) + labels.getString("mensaje.null"), "Error", JOptionPane.ERROR_MESSAGE);
             } catch (DataEmptyException e2) {
                 JOptionPane.showMessageDialog(null, labels.getString("mensaje.elCampo") + labels.getString(e2.getMessage()) + labels.getString("mensaje.empty"), "Error", JOptionPane.ERROR_MESSAGE);
-            }
+            } catch (DataBaseConnectionException e3) {
+				JOptionPane.showMessageDialog(null,labels.getString(e3.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);;
+			}
         });
         centerPanel1.add(aceptar);
 
@@ -238,5 +245,6 @@ public class VentanaConfigurarProyecto extends JFrame {
         button.setFocusPainted(false);
         button.setPreferredSize(new Dimension(120, 40));
         return button;
+
     }
 }

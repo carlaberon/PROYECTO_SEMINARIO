@@ -13,17 +13,17 @@ public interface ProyectoDao {
 	
 	void create(Proyecto proyecto) throws DataBaseInsertionException, DataBaseConnectionException;
 
-	void update(Proyecto proyecto);
+	void update(Proyecto proyecto) throws DataBaseConnectionException;
 	
-	void inviteMember(String username, int idProyecto, int codigoRol);
+	void inviteMember(String username, int idProyecto, int codigoRol) throws DataBaseConnectionException;
 	
-	void deleteMember(String username, int idProyecto);
+	void deleteMember(String username, int idProyecto) throws DataBaseConnectionException;
 	
-	void remove(int idProyecto);
+	void remove(int idProyecto) throws DataBaseConnectionException;
 
-	Proyecto find(int idProyecto) throws NotNullException, DataEmptyException;
+	Proyecto find(int idProyecto) throws NotNullException, DataEmptyException, DataBaseConnectionException;
 
-	List<Proyecto> findAll(String usuario) throws NotNullException, DataEmptyException;
+	List<Proyecto> findAll(String usuario) throws NotNullException, DataEmptyException, DataBaseConnectionException;
 	
-	List<Usuario> findAllMembers(int proyectoId);
+	List<Usuario> findAllMembers(int proyectoId) throws DataBaseConnectionException;
 }

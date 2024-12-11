@@ -40,7 +40,7 @@ import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.TareaDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataBaseConnectionException;
-import ar.edu.unrn.seminario.exception.DataBaseFoundException;
+
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
@@ -71,7 +71,11 @@ public class ListaMiembros extends JFrame {
     	this.usuarioActual = api.getUsuarioActual();
     	this.unproyecto = api.getProyectoActual();
     	this.rolActual = api.getRol(usuarioActual.getUsername(), unproyecto.getId());
-    	this.usuariosProyecto = api.obtenerMiembrosDeUnProyecto(unproyecto.getId());
+    	try {
+			this.usuariosProyecto = api.obtenerMiembrosDeUnProyecto(unproyecto.getId());
+		} catch (DataBaseConnectionException e1) {
+			JOptionPane.showMessageDialog(null,labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+		}
     	
     	setTitle(labels.getString("menu.miembros"));
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -271,8 +275,6 @@ public class ListaMiembros extends JFrame {
 								} catch (InvalidDateException e1) {
 									// TODO Auto-generated catch block
 									e1.printStackTrace();
-								} catch (DataBaseFoundException e1) {
-						        	JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 								} catch (DataBaseConnectionException e1) {
 						        	JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 								}
@@ -293,7 +295,11 @@ public class ListaMiembros extends JFrame {
 				int confirmacion = JOptionPane.showConfirmDialog(null, labels.getString("mensaje.preguntaEliminarMiembro"),labels.getString("titulo.optionPanePreguntaEliminacion"), JOptionPane.YES_NO_OPTION);				
 				if (confirmacion == JOptionPane.YES_OPTION) {		
 					
-						api.eliminarMiembro(username, unproyecto.getId());
+						try {
+							api.eliminarMiembro(username, unproyecto.getId());
+						} catch (DataBaseConnectionException e1) {
+							JOptionPane.showMessageDialog(null,labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+						}
 						habilitarBotones(false);
 						((DefaultTableModel) table.getModel()).removeRow(filaSeleccionada);
 	                    JOptionPane.showMessageDialog(null, labels.getString("mensaje.eliminacionExitosaMiembro"), labels.getString("titulo.optionPaneMiembroEliminado"), JOptionPane.INFORMATION_MESSAGE);		

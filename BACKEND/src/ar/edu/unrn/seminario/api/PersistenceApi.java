@@ -98,8 +98,8 @@ public class PersistenceApi implements IApi {
 	
 	@Override
 	public void registrarTarea(String name,int id_proyecto, String priority, String user, String estado,
-			String descripcion, LocalDate inicio, LocalDate fin)
-			throws DataEmptyException, NotNullException, InvalidDateException, DataBaseInsertionException, DataBaseConnectionException {
+			String descripcion, LocalDate inicio, LocalDate fin) throws DataEmptyException, NotNullException, InvalidDateException, DataBaseConnectionException {
+
 		
 		Tarea tarea = new Tarea(0, name, proyectoDao.find(id_proyecto), priority, user, estado, descripcion, inicio, fin);
 		tareaDao.create(tarea);
@@ -113,17 +113,17 @@ public class PersistenceApi implements IApi {
 
 
 	@Override
-	public List<ProyectoDTO> obtenerProyectos(String username) throws NotNullException, DataEmptyException {
+	public List<ProyectoDTO> obtenerProyectos(String username) throws NotNullException, DataEmptyException, DataBaseConnectionException {
 	    return proyectoDao.findAll(username).stream().map(this::convertirEnProyectoDTO).collect(Collectors.toList());
 	}
 	@Override
-	public void eliminarProyecto(int id) {
+	public void eliminarProyecto(int id) throws DataBaseConnectionException {
 		proyectoDao.remove(id);
 	}
 	
 	@Override
 	public void modificarProyecto(int idProyecto, String nuevoNombre, String nuevaPrioridad,
-			String nuevaDescripcion) throws NotNullException, DataEmptyException {
+			String nuevaDescripcion) throws NotNullException, DataEmptyException, DataBaseConnectionException {
 	    Proyecto proyectoExistente = new Proyecto(idProyecto, nuevoNombre, null, null, nuevaDescripcion, nuevaPrioridad);
 		
 		proyectoDao.update(proyectoExistente);
@@ -139,7 +139,7 @@ public class PersistenceApi implements IApi {
 		return convertirEnProyectoDTO(proyectoActual);
 	}
 	@Override
-	public void setProyectoActual(int id) throws NotNullException, DataEmptyException {
+	public void setProyectoActual(int id) throws NotNullException, DataEmptyException, DataBaseConnectionException {
 			String usuarioActual = getUsuarioActual().getUsername();
 			if (! usuarioActual.isEmpty()) {
 				this.proyectoActual = proyectoDao.find(id);
@@ -349,19 +349,19 @@ public class PersistenceApi implements IApi {
 	}
    
 	@Override
-	public void invitarMiembro(String username, int idProyecto, int codigoRol) {
+	public void invitarMiembro(String username, int idProyecto, int codigoRol) throws DataBaseConnectionException {
 		proyectoDao.inviteMember(username, idProyecto, codigoRol);
 	}
 
 	@Override
-	public List<UsuarioDTO> obtenerMiembrosDeUnProyecto(int proyectoId) {
+	public List<UsuarioDTO> obtenerMiembrosDeUnProyecto(int proyectoId) throws DataBaseConnectionException {
 	    return proyectoDao.findAllMembers(proyectoId).stream()
 	                      .map(this::convertirEnUsuarioDTO) // Convierte cada Usuario a UsuarioDTO
 	                      .collect(Collectors.toList());   // Recoge el resultado como una lista
 	}
 
 	@Override
-	public int existeMiembro(String username, int idProyecto) throws UserIsAlreadyMember {
+	public int existeMiembro(String username, int idProyecto) throws UserIsAlreadyMember, DataBaseConnectionException {
 	    List<UsuarioDTO> miembrosDTO = obtenerMiembrosDeUnProyecto(idProyecto);
 	    if (miembrosDTO.stream().anyMatch(miembro -> username.equals(miembro.getUsername()))) {
 	        throw new UserIsAlreadyMember("mensaje.esMiembro");
@@ -403,7 +403,7 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public void eliminarMiembro(String username, int idProyecto) {
+	public void eliminarMiembro(String username, int idProyecto) throws DataBaseConnectionException {
 		proyectoDao.deleteMember(username, idProyecto);
 	}	
 }
