@@ -181,7 +181,6 @@ public class TareaDAOJDBC implements TareaDao{
 			statement.setInt(1, idTarea);
 			
 			ResultSet rs = statement.executeQuery();
-
 			if(rs.next()) {
 				unUsuario = new Usuario(rs.getString("u.usuario"), rs.getString("u.contrasena"), rs.getString("u.nombre"), rs.getString("u.email"), rs.getBoolean("u.activo"));
 				unProyecto = new Proyecto(rs.getInt("p.id"), rs.getString("p.nombre"), unUsuario, rs.getString("estado"), rs.getString("p.descripcion"), rs.getString("p.prioridad"));

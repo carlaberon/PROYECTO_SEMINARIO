@@ -1,7 +1,6 @@
 package ar.edu.unrn.seminario.modelo;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 import ar.edu.unrn.seminario.exception.DataEmptyException;
