@@ -18,6 +18,7 @@ import ar.edu.unrn.seminario.exception.DataBaseUpdateException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.exception.UserIsAlreadyMember;
+import ar.edu.unrn.seminario.exception.UserNotFound;
 
 
 public interface IApi {
@@ -79,7 +80,7 @@ public interface IApi {
 	public void eliminarMiembro(String username, int idProyecto) throws DataBaseConnectionException;
 	
 	//Metodos para las notificaciones
-	public void crearNotificacion(int idProyecto, String username, int codigoRol, String nombreProyecto, LocalDate fecha) throws NotNullException, DataEmptyException, DataBaseConnectionException;
+	public void crearNotificacion(int idProyecto, String username, int codigoRol, String nombreProyecto, LocalDate fecha) throws NotNullException, DataEmptyException, DataBaseConnectionException, UserNotFound;
 	
 	public List<NotificacionDTO> obtenerNotificaciones(String username) throws NotNullException, DataEmptyException, DataBaseConnectionException;
 	
