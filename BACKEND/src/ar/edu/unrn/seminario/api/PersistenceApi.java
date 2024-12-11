@@ -278,8 +278,6 @@ public class PersistenceApi implements IApi {
 		if(notificacion != null)
 			notificacionDto = new NotificacionDTO(notificacion.getIdProyecto(),notificacion.getUsername(),
 					notificacion.getCodigoRol(),notificacion.getDescripcion(),notificacion.getFecha());
-		
-		System.out.println(notificacionDto);
 		return notificacionDto;
 	}
 	
