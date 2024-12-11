@@ -7,7 +7,6 @@ import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataBaseConnectionException;
-import ar.edu.unrn.seminario.exception.DataBaseFoundException;
 
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -31,18 +30,16 @@ public class VentanaResumen extends JFrame {
     	this.api = api;
     	this.usuarioActual = api.getUsuarioActual();
     	try {
-			this.rolActual = api.getRol(usuarioActual.getUsername(), unproyecto.getId());
-		} catch (DataBaseFoundException e) {
-			JOptionPane.showMessageDialog(null, labels.getString(e.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+			this.rolActual = api.getRol(usuarioActual.getUsername(), api.getProyectoActual().getId());
 		} catch (DataBaseConnectionException e) {
-			JOptionPane.showMessageDialog(null, labels.getString(e.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
     	this.unproyecto = api.getProyectoActual();
         
         setTitle(labels.getString("menu.resumen"));
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setBounds(100, 100, 900, 600);
-
+        setBounds(50, 50, 1200, 650); 
         
         contentPane = new JPanel();
         contentPane.setLayout(new BorderLayout());
@@ -55,17 +52,9 @@ public class VentanaResumen extends JFrame {
         JMenu menuProyecto = new JMenu(unproyecto.getNombre());
         menuProyecto.setForeground(Color.WHITE);
         menuProyecto.setFont(new Font("Segoe UI", Font.BOLD, 18));
-
-        JMenuItem item1 = new JMenuItem("Opción 1");
-        JMenuItem item2 = new JMenuItem("Opción 2");
-        JMenuItem item3 = new JMenuItem("Opción 3");
-        menuProyecto.add(item1);
-        menuProyecto.add(item2);
-        menuProyecto.add(item3);
-
         menuBar.add(menuProyecto);
 
-        JLabel appName = new JLabel(labels.getString("menu.proyecto1"));
+        JLabel appName = new JLabel(labels.getString("menu.proyecto"));
         appName.setForeground(Color.WHITE);
         appName.setFont(new Font("Segoe UI", Font.BOLD, 18));
 
@@ -194,6 +183,19 @@ public class VentanaResumen extends JFrame {
 			dispose();
         }
     );
+        btnTarea.addActionListener(e -> {
+			
+				if(!(rolActual.getNombre().equals("Observador"))) {
+					CrearTarea crearTarea;
+					crearTarea = new CrearTarea(api);
+					crearTarea.setVisible(true);
+					dispose();
+				
+				}else {
+					JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.WARNING_MESSAGE);
+				}
+			}
+		);
         // Agregar el panel principal al contentPane
         contentPane.add(centerPanel1, BorderLayout.CENTER);
         

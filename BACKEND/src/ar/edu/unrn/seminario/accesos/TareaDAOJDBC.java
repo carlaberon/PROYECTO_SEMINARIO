@@ -45,7 +45,7 @@ public class TareaDAOJDBC implements TareaDao{
 			statement.setDate(8, java.sql.Date.valueOf(tarea.getFin()));
 			
 			int cant = statement.executeUpdate();
-		
+			
 			if ( cant <= 0) {
 	            throw new DataBaseInsertionException("exceptionTareaDAO.create");
 			}
@@ -54,7 +54,12 @@ public class TareaDAOJDBC implements TareaDao{
 	        throw new DataBaseConnectionException("exceptionDAO.conecction");
 		}
 		finally {
-			ConnectionManager.disconnect();
+			try {
+				ConnectionManager.disconnect();
+			} catch (SQLException e) {
+				throw new DataBaseConnectionException("exceptionDAO.disconnect");
+			}
+			
 		}
 	}
 
@@ -85,7 +90,11 @@ public class TareaDAOJDBC implements TareaDao{
 		   } catch (SQLException e) { 
 		        throw new DataBaseConnectionException("exceptionDAO.conecction");
 		   } finally {
-		       ConnectionManager.disconnect();
+		       try {
+				ConnectionManager.disconnect();
+			} catch (SQLException e) {
+				throw new DataBaseConnectionException("exceptionDAO.disconnect");
+			}
 		   }
 	}
 	
@@ -113,16 +122,20 @@ public class TareaDAOJDBC implements TareaDao{
 					
 					tareas.add(unaTarea);
 				}
-				if (tareas.isEmpty()) {
-					throw new DataBaseFoundException("exceptionTareaDAO.findByProject");
-				}
+//				if (tareas.isEmpty()) {
+//					throw new DataBaseFoundException("exceptionTareaDAO.findByProject");
+//				}
 			
 				
 			} catch (SQLException e1) {
 		        throw new DataBaseConnectionException("exceptionDAO.conecction");
 			}
 			 finally {
-				ConnectionManager.disconnect();
+				try {
+					ConnectionManager.disconnect();
+				} catch (SQLException e) {
+					throw new DataBaseConnectionException("exceptionDAO.disconnect");
+				}
 			}
 			return tareas;
 		}
@@ -143,7 +156,11 @@ public class TareaDAOJDBC implements TareaDao{
 		} catch (SQLException e) {
 	        throw new DataBaseConnectionException("exceptionDAO.conecction");
 		} finally {
-		ConnectionManager.disconnect();
+			try {
+				ConnectionManager.disconnect();
+			} catch (SQLException e) {
+				throw new DataBaseConnectionException("exceptionDAO.disconnect");
+			}
 		}
 	}
 	
@@ -175,7 +192,11 @@ public class TareaDAOJDBC implements TareaDao{
 	        throw new DataBaseConnectionException("exceptionDAO.conecction");
 		}
 		finally {
-			ConnectionManager.disconnect();
+			try {
+				ConnectionManager.disconnect();
+			} catch (SQLException e) {
+				throw new DataBaseConnectionException("exceptionDAO.disconnect");
+			}
 		}
 		return unaTarea;
 	}

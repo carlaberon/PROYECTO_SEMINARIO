@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.swing.JOptionPane;
+
 import ar.edu.unrn.seminario.accesos.RolDAOJDBC;
 import ar.edu.unrn.seminario.accesos.RolDao;
 import ar.edu.unrn.seminario.accesos.TareaDAOJDBC;
@@ -64,7 +66,7 @@ public class PersistenceApi implements IApi {
 	}
 	
 	@Override
-	public List<UsuarioDTO> obtenerUsuarios(String username) {
+	public List<UsuarioDTO> obtenerUsuarios(String username) throws DataBaseConnectionException {
 	    List<Usuario> usuarios = usuarioDao.findAll();
 
 	    // Filtra los usuarios cuyo username no coincida con el proporcionado y conviértelos a UsuarioDTO
@@ -96,8 +98,8 @@ public class PersistenceApi implements IApi {
 	
 	@Override
 	public void registrarTarea(String name,int id_proyecto, String priority, String user, String estado,
-			String descripcion, LocalDate inicio, LocalDate fin)
-			throws DataEmptyException, NotNullException, InvalidDateException, DataBaseInsertionException, DataBaseConnectionException {
+			String descripcion, LocalDate inicio, LocalDate fin) throws DataEmptyException, NotNullException, InvalidDateException, DataBaseConnectionException, DataBaseInsertionException {
+
 		
 		Tarea tarea = new Tarea(0, name, proyectoDao.find(id_proyecto), priority, user, estado, descripcion, inicio, fin);
 		tareaDao.create(tarea);
@@ -111,22 +113,22 @@ public class PersistenceApi implements IApi {
 
 
 	@Override
-	public List<ProyectoDTO> obtenerProyectos(String username) throws NotNullException, DataEmptyException {
+	public List<ProyectoDTO> obtenerProyectos(String username) throws NotNullException, DataEmptyException, DataBaseConnectionException {
 	    return proyectoDao.findAll(username).stream().map(this::convertirEnProyectoDTO).collect(Collectors.toList());
 	}
 	@Override
-	public void eliminarProyecto(int id) {
+	public void eliminarProyecto(int id) throws DataBaseConnectionException {
 		proyectoDao.remove(id);
 	}
 	
 	@Override
 	public void modificarProyecto(int idProyecto, String nuevoNombre, String nuevaPrioridad,
-			String nuevaDescripcion) throws NotNullException, DataEmptyException {
+			String nuevaDescripcion) throws NotNullException, DataEmptyException, DataBaseConnectionException {
 	    Proyecto proyectoExistente = new Proyecto(idProyecto, nuevoNombre, null, null, nuevaDescripcion, nuevaPrioridad);
 		
 		proyectoDao.update(proyectoExistente);
 		}
-	
+		
 	@Override
 	public List<TareaDTO> obtenerTareasPorProyecto(int id) throws DataEmptyException, NotNullException, InvalidDateException, DataBaseFoundException, DataBaseConnectionException {
 	    return tareaDao.findByProject(id).stream().map(this::convertirEnTareaDTO).collect(Collectors.toList()); 
@@ -137,7 +139,7 @@ public class PersistenceApi implements IApi {
 		return convertirEnProyectoDTO(proyectoActual);
 	}
 	@Override
-	public void setProyectoActual(int id) throws NotNullException, DataEmptyException {
+	public void setProyectoActual(int id) throws NotNullException, DataEmptyException, DataBaseConnectionException {
 			String usuarioActual = getUsuarioActual().getUsername();
 			if (! usuarioActual.isEmpty()) {
 				this.proyectoActual = proyectoDao.find(id);
@@ -275,7 +277,7 @@ public class PersistenceApi implements IApi {
 		return null;
 	}
 	@Override
-	public void eliminarUsuario(String username) {
+	public void eliminarUsuario(String username) throws DataBaseConnectionException {
 		usuarioDao.remove(username);
 	}
 
@@ -338,7 +340,7 @@ public class PersistenceApi implements IApi {
 	    return convertirEnUsuarioDTO(usuarioActual);
 	}
 	
-	public RolDTO getRol(String username, int idProyecto) throws DataBaseConnectionException,DataBaseFoundException{
+	public RolDTO getRol(String username, int idProyecto) throws DataBaseConnectionException {
 		Rol rol = rolDao.find(username, idProyecto);
 		if (rol != null) {
 			return convertirEnRolDTO(rol);
@@ -347,19 +349,19 @@ public class PersistenceApi implements IApi {
 	}
    
 	@Override
-	public void invitarMiembro(String username, int idProyecto, int codigoRol) {
+	public void invitarMiembro(String username, int idProyecto, int codigoRol) throws DataBaseConnectionException {
 		proyectoDao.inviteMember(username, idProyecto, codigoRol);
 	}
 
 	@Override
-	public List<UsuarioDTO> obtenerMiembrosDeUnProyecto(int proyectoId) {
+	public List<UsuarioDTO> obtenerMiembrosDeUnProyecto(int proyectoId) throws DataBaseConnectionException {
 	    return proyectoDao.findAllMembers(proyectoId).stream()
 	                      .map(this::convertirEnUsuarioDTO) // Convierte cada Usuario a UsuarioDTO
 	                      .collect(Collectors.toList());   // Recoge el resultado como una lista
 	}
 
 	@Override
-	public int existeMiembro(String username, int idProyecto) throws UserIsAlreadyMember {
+	public int existeMiembro(String username, int idProyecto) throws UserIsAlreadyMember, DataBaseConnectionException {
 	    List<UsuarioDTO> miembrosDTO = obtenerMiembrosDeUnProyecto(idProyecto);
 	    if (miembrosDTO.stream().anyMatch(miembro -> username.equals(miembro.getUsername()))) {
 	        throw new UserIsAlreadyMember("mensaje.esMiembro");
@@ -368,14 +370,14 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public void crearNotificacion(int idProyecto, String username, int codigoRol, String nombreProyecto, LocalDate fecha) throws NotNullException, DataEmptyException {
+	public void crearNotificacion(int idProyecto, String username, int codigoRol, String nombreProyecto, LocalDate fecha) throws NotNullException, DataEmptyException, DataBaseConnectionException {
 		String descripcion = "Te invitaron al proyecto: " + nombreProyecto;
 		Notificacion notificacion = new Notificacion(idProyecto, username, codigoRol, descripcion, fecha);
 		notificacionDao.create(notificacion);
 	}
 
 	@Override
-	public List<NotificacionDTO> obtenerNotificaciones(String username) throws NotNullException, DataEmptyException {
+	public List<NotificacionDTO> obtenerNotificaciones(String username) throws NotNullException, DataEmptyException, DataBaseConnectionException {
 		List<NotificacionDTO> notificacionesDTO = new ArrayList<>();
 		List<Notificacion> notificacion = null;
 		notificacion = notificacionDao.findAll(username);
@@ -388,12 +390,12 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public void eliminarNotificacion(int idProyecto, String username) {
+	public void eliminarNotificacion(int idProyecto, String username) throws DataBaseConnectionException {
 		notificacionDao.remove(idProyecto, username);
 	}
 
 	@Override
-	public int existeNotificacion(int idProyecto, String username) throws ExistNotification {
+	public int existeNotificacion(int idProyecto, String username) throws ExistNotification, DataBaseConnectionException {
 		int existe = notificacionDao.existNotification(idProyecto, username);
 		if(existe == 1)
 			throw new ExistNotification("mensaje.usuarioYaInvitado");
@@ -401,7 +403,7 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public void eliminarMiembro(String username, int idProyecto) {
+	public void eliminarMiembro(String username, int idProyecto) throws DataBaseConnectionException {
 		proyectoDao.deleteMember(username, idProyecto);
 	}	
 }

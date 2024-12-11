@@ -11,19 +11,19 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import ar.edu.unrn.seminario.exception.DataBaseConnectionException;
-import ar.edu.unrn.seminario.exception.DataEmptyException;
-import ar.edu.unrn.seminario.exception.DataBaseEliminationException;
-import ar.edu.unrn.seminario.exception.NotNullException;
-import ar.edu.unrn.seminario.exception.DataBaseUpdateException;
-import ar.edu.unrn.seminario.exception.DataBaseInsertionException;
 import ar.edu.unrn.seminario.exception.DataBaseFoundException;
+import ar.edu.unrn.seminario.exception.DataBaseInsertionException;
+import ar.edu.unrn.seminario.exception.DataBaseUpdateException;
+import ar.edu.unrn.seminario.exception.DataEmptyException;
+
+import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.modelo.Proyecto;
 import ar.edu.unrn.seminario.modelo.Usuario;
 
 public class ProyectoDAOJDBC implements ProyectoDao{
 
 	@Override
-	public void create(Proyecto proyecto) throws DataBaseInsertionException {
+	public void create(Proyecto proyecto) throws DataBaseInsertionException, DataBaseConnectionException {
 		PreparedStatement statement;
 		Connection conn;
 		try {
@@ -66,18 +66,20 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 			}
 				
 		} catch (SQLException e2) {
-			JOptionPane.showMessageDialog(null,"Error de SQL: " + e2.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+			throw new DataBaseConnectionException("exceptionDAO.conecction");
 		}
 		 finally {
-			
-				ConnectionManager.disconnect();
-			
+				try {
+					ConnectionManager.disconnect();
+				} catch (SQLException e) {
+					throw new DataBaseConnectionException("exceptionDAO.disconnect");
+				}
 		}
 		
 	}
 
 	@Override
-	public void update(Proyecto proyecto)  {
+	public void update(Proyecto proyecto) throws DataBaseConnectionException  {
 		try {
 			   Connection conn = ConnectionManager.getConnection();
 			   PreparedStatement statement = conn.prepareStatement("UPDATE proyectos SET nombre=?, prioridad=?, descripcion=? WHERE id = ?");
@@ -96,20 +98,21 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 			   if (verificacion == 0) 
 			            throw new DataBaseUpdateException("el proyecto" + proyecto.getNombre());
 			    
-		       } catch (DataBaseUpdateException e1) {
-			   	   JOptionPane.showMessageDialog(null, e1.getMessage() + "no se actualizo.", "Error", JOptionPane.ERROR_MESSAGE);
-			   } catch (SQLException e2) {
-				   JOptionPane.showMessageDialog(null,"Error de SQL: " + e2.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-			   } finally {
-				  
-						ConnectionManager.disconnect();
-					
-			   }
+			} catch (SQLException e2) {
+				throw new DataBaseConnectionException("exceptionDAO.conecction");
+			}
+		 	finally {
+				try {
+					ConnectionManager.disconnect();
+				} catch (SQLException e) {
+					throw new DataBaseConnectionException("exceptionDAO.disconnect");
+				}
+		 	}
 	}
 	
 
 	@Override
-	public void remove(int idProyecto) {
+	public void remove(int idProyecto) throws DataBaseConnectionException  {
 		Connection conn = null;
 	    PreparedStatement stmtTareas = null;
 	    PreparedStatement stmtRelaciones = null;
@@ -138,15 +141,20 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 
 	        
 
-	    } catch (SQLException e1) {
-	    	JOptionPane.showMessageDialog(null, "No se pudo eliminar el proyecto", "Error", JOptionPane.ERROR_MESSAGE);
-	    } finally {
-	    	ConnectionManager.disconnect();
-	    }
+	    } catch (SQLException e2) {
+			throw new DataBaseConnectionException("exceptionDAO.conecction");
+		}
+		 finally {
+				try {
+					ConnectionManager.disconnect();
+				} catch (SQLException e) {
+					throw new DataBaseConnectionException("exceptionDAO.disconnect");
+				}
+		}
 	}
 	
 	@Override
-	public void deleteMember(String username, int idProyecto) {
+	public void deleteMember(String username, int idProyecto) throws DataBaseConnectionException  {
 		try {
 			Connection conn = ConnectionManager.getConnection();
 			PreparedStatement statement = conn.prepareStatement("DELETE FROM proyectos_usuarios_roles WHERE id_proyecto = ? and "
@@ -163,18 +171,21 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 			if (verificacion == 0) 
 				throw new DataBaseUpdateException("el usuario" + username);
 			
-		} catch (DataBaseUpdateException e1) {
-			JOptionPane.showMessageDialog(null, e1.getMessage() + "no se elimino del proyecto", "Error", JOptionPane.ERROR_MESSAGE);
 		} catch (SQLException e2) {
-			JOptionPane.showMessageDialog(null,"Error de SQL: " + e2.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-		} finally {
-			ConnectionManager.disconnect();
+			throw new DataBaseConnectionException("exceptionDAO.conecction");
+		}
+		 finally {
+				try {
+					ConnectionManager.disconnect();
+				} catch (SQLException e) {
+					throw new DataBaseConnectionException("exceptionDAO.disconnect");
+				}
 		}
 		
 	}
 		
 	@Override
-	public Proyecto find(int idProyecto) throws NotNullException, DataEmptyException {
+	public Proyecto find(int idProyecto) throws NotNullException, DataEmptyException, DataBaseConnectionException {
 		Proyecto encontrarProyecto = null;
 		try {
 			Connection conn = ConnectionManager.getConnection();
@@ -196,18 +207,21 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 			Usuario usuarioPropietario = new Usuario(rs.getString("u.usuario"), rs.getString("u.contrasena"), rs.getString("u.nombre"), rs.getString("u.email"), rs.getBoolean("u.activo"));
 			encontrarProyecto = new Proyecto(rs.getInt("p.id"),rs.getString("p.nombre"), usuarioPropietario, rs.getString("estado"), rs.getString("p.descripcion"), rs.getString("p.prioridad"));
 				
-		} catch(DataBaseFoundException e1) {
-			JOptionPane.showMessageDialog(null, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		} catch (SQLException e2) {
-			JOptionPane.showMessageDialog(null,"Error de SQL: " + e2.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-		} finally {
-			ConnectionManager.disconnect();
+			throw new DataBaseConnectionException("exceptionDAO.conecction");
+		}
+		 finally {
+				try {
+					ConnectionManager.disconnect();
+				} catch (SQLException e) {
+					throw new DataBaseConnectionException("exceptionDAO.disconnect");
+				}
 		}
 		return encontrarProyecto;
 	}
 
 	@Override
-	public List<Proyecto> findAll(String usuario) throws NotNullException, DataEmptyException {
+	public List<Proyecto> findAll(String usuario) throws NotNullException, DataEmptyException, DataBaseConnectionException {
 		List<Proyecto> proyectos = new ArrayList<Proyecto>();
 		Proyecto unProyecto = null;
 			
@@ -237,21 +251,21 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 					proyectos.add(unProyecto);
 				}
 				
-//				if (proyectos.isEmpty()) {
-//		            throw new NotFoundException("No se encontraron proyectos para el usuario: ");
-//		        }
-//			} catch(NotFoundException e1) {
-//				JOptionPane.showMessageDialog(null, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 			} catch (SQLException e2) {
-				JOptionPane.showMessageDialog(null,"Error de SQL: " + e2.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-			} finally {
-				ConnectionManager.disconnect();
+				throw new DataBaseConnectionException("exceptionDAO.conecction");
+			}
+			 finally {
+					try {
+						ConnectionManager.disconnect();
+					} catch (SQLException e) {
+						throw new DataBaseConnectionException("exceptionDAO.disconnect");
+					}
 			}
 			return proyectos;
 	}
 
 	@Override
-	public void inviteMember(String username, int idProyecto, int codigoRol) {
+	public void inviteMember(String username, int idProyecto, int codigoRol) throws DataBaseConnectionException  {
 		try {
 			   Connection conn = ConnectionManager.getConnection();
 			   PreparedStatement statement = conn.prepareStatement("INSERT INTO `proyectos_usuarios_roles` (`codigo_rol`,`nombre_usuario`,`id_proyecto`) " + "VALUES(?, ?, ?)" );
@@ -268,17 +282,20 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 			   if (verificacion == 0) 
 			            throw new DataBaseUpdateException("No se pudo realizar la invitación a: " + username);
 			    
-		       } catch (DataBaseUpdateException e1) {
-			   	   JOptionPane.showMessageDialog(null, e1.getMessage() + "no se realizo la invitación.", "Error", JOptionPane.ERROR_MESSAGE);
-			   } catch (SQLException e2) {
-				   JOptionPane.showMessageDialog(null,"Error de SQL: " + e2.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-			   } finally {
-			       ConnectionManager.disconnect();
-			   }
+			} catch (SQLException e2) {
+				throw new DataBaseConnectionException("exceptionDAO.conecction");
+			}
+		 	finally {
+				try {
+					ConnectionManager.disconnect();
+				} catch (SQLException e) {
+					throw new DataBaseConnectionException("exceptionDAO.disconnect");
+				}
+		 	}
 	}
 
 	@Override
-	public List<Usuario> findAllMembers(int proyectoId) {
+	public List<Usuario> findAllMembers(int proyectoId) throws DataBaseConnectionException {
 		List<Usuario> miembros = new ArrayList<Usuario>();
 		try {
 			Connection conn = ConnectionManager.getConnection();
@@ -299,12 +316,15 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 			if (miembros.isEmpty()) {
 	            throw new DataBaseFoundException("El proyecto no tiene miembros.");
 	        }
-		} catch(DataBaseFoundException e1) {
-			JOptionPane.showMessageDialog(null, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		} catch (SQLException e2) {
-			JOptionPane.showMessageDialog(null,"Error de SQL: " + e2.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-		} finally {
-			ConnectionManager.disconnect();
+			throw new DataBaseConnectionException("exceptionDAO.conecction");
+		}
+		 finally {
+				try {
+					ConnectionManager.disconnect();
+				} catch (SQLException e) {
+					throw new DataBaseConnectionException("exceptionDAO.disconnect");
+				}
 		}
 		return miembros;
 	}

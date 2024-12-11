@@ -15,7 +15,7 @@ import ar.edu.unrn.seminario.modelo.Usuario;
 public class UsuarioDAOJDBC implements UsuarioDao {
 
 	@Override
-	public void create(Usuario usuario) {
+	public void create(Usuario usuario) throws DataBaseConnectionException {
 		try {
 
 			Connection conn = ConnectionManager.getConnection();
@@ -43,12 +43,16 @@ public class UsuarioDAOJDBC implements UsuarioDao {
 			System.out.println("Error al insertar un usuario");
 			// TODO: disparar Exception propia
 		} finally {
-			ConnectionManager.disconnect();
+			try {
+				ConnectionManager.disconnect();
+			} catch (SQLException e) {
+				throw new DataBaseConnectionException("exceptionDAO.disconnect");
+			}
 		}
 
 	}
 
-	public void update(Usuario usuario) {
+	public void update(Usuario usuario) throws DataBaseConnectionException {
 	    try {
 	        Connection conn = ConnectionManager.getConnection();
 	        PreparedStatement statement = conn.prepareStatement(
@@ -70,11 +74,15 @@ public class UsuarioDAOJDBC implements UsuarioDao {
 	        System.out.println("Error al actualizar usuario. " + e.toString());
 	        // TODO: disparar Exception propia
 	    } finally {
-	        ConnectionManager.disconnect();
+	        try {
+				ConnectionManager.disconnect();
+			} catch (SQLException e) {
+				throw new DataBaseConnectionException("exceptionDAO.disconnect");
+			}
 	    }
 	}
 	
-	public void remove(String username) {
+	public void remove(String username) throws DataBaseConnectionException {
 	    try {
 	        Connection conn = ConnectionManager.getConnection();
 	        PreparedStatement statement = conn.prepareStatement("DELETE FROM usuarios WHERE usuario = ?");
@@ -91,12 +99,16 @@ public class UsuarioDAOJDBC implements UsuarioDao {
 	        System.out.println("Error al eliminar usuario. " + e.toString());
 	        // TODO: disparar Exception propia
 	    } finally {
-	        ConnectionManager.disconnect();
+	        try {
+				ConnectionManager.disconnect();
+			} catch (SQLException e) {
+				throw new DataBaseConnectionException("exceptionDAO.disconnect");
+			}
 	    }
 	}
 
 	@Override
-	public void remove(Usuario usuario) {
+	public void remove(Usuario usuario) throws DataBaseConnectionException {
 	    try {
 	        Connection conn = ConnectionManager.getConnection();
 	        PreparedStatement statement = conn.prepareStatement("DELETE FROM usuarios WHERE usuario = ?");
@@ -113,7 +125,11 @@ public class UsuarioDAOJDBC implements UsuarioDao {
 	        System.out.println("Error al eliminar usuario. " + e.toString());
 	        // TODO: disparar Exception propia
 	    } finally {
-	        ConnectionManager.disconnect();
+	        try {
+				ConnectionManager.disconnect();
+			} catch (SQLException e) {
+				throw new DataBaseConnectionException("exceptionDAO.disconnect");
+			}
 	    }
 	}
 
@@ -138,14 +154,18 @@ public class UsuarioDAOJDBC implements UsuarioDao {
 	        throw new DataBaseConnectionException("exceptionDAO.conecction");
 		} 
 		finally {
-			ConnectionManager.disconnect();
+			try {
+				ConnectionManager.disconnect();
+			} catch (SQLException e) {
+				throw new DataBaseConnectionException("exceptionDAO.disconnect");
+			}
 		}
 
 		return usuario;
 	}
 
 	@Override
-	public List<Usuario> findAll() {
+	public List<Usuario> findAll() throws DataBaseConnectionException {
 		List<Usuario> usuarios = new ArrayList<Usuario>();
 		try {
 			Connection conn = ConnectionManager.getConnection();
@@ -166,7 +186,11 @@ public class UsuarioDAOJDBC implements UsuarioDao {
 			e.printStackTrace();
 			// TODO: disparar Exception propia
 		} finally {
-			ConnectionManager.disconnect();
+			try {
+				ConnectionManager.disconnect();
+			} catch (SQLException e) {
+				throw new DataBaseConnectionException("exceptionDAO.disconnect");
+			}
 		}
 
 		return usuarios;
