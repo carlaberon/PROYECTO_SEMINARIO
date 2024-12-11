@@ -251,59 +251,6 @@ public class PersistenceApi implements IApi {
 			    return null; // Retorna null si no se encuentra el usuario
 			}
 
-	@Override
-	public void registrarUsuario(String username, String password, String email, String nombre, Integer codigoRol) {
-		/*Rol rol = rolDao.find(codigoRol);
-		Usuario usuario = new Usuario(username, password, nombre, email);
-		this.usuarioDao.create(usuario);*/
-	}
-	@Override
-	public List<RolDTO> obtenerRolesActivos() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void guardarRol(Integer codigo, String descripcion, boolean estado) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public RolDTO obtenerRolPorCodigo(Integer codigo) {
-		/*//Rol rol = rolDao.find(codigo);
-		RolDTO rolDTO = new RolDTO(rol.getCodigo(), rol.getNombre(), rol.isActivo());
-		return rolDTO;*/
-		return null;
-	}
-	@Override
-	public void eliminarUsuario(String username) throws DataBaseConnectionException {
-		usuarioDao.remove(username);
-	}
-
-	@Override
-	public void activarRol(Integer codigo) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void desactivarRol(Integer codigo) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void activarUsuario(String username) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void desactivarUsuario(String username) {
-		// TODO Auto-generated method stub
-
-	}
 
 
 	private UsuarioDTO convertirEnUsuarioDTO(Usuario usuario)  {
