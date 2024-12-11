@@ -5,12 +5,13 @@ import java.util.List;
 import ar.edu.unrn.seminario.exception.DataBaseConnectionException;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.NotNullException;
+import ar.edu.unrn.seminario.exception.UserNotFound;
 import ar.edu.unrn.seminario.modelo.Notificacion;
 
 
 public interface NotificacionDao {
 	
-	void create(Notificacion notificacion) throws DataBaseConnectionException;
+	void create(Notificacion notificacion) throws DataBaseConnectionException, UserNotFound;
 	
 	void remove(int idProyecto, String username) throws DataBaseConnectionException;
 	

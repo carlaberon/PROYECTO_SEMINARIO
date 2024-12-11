@@ -34,6 +34,8 @@ import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.ExistNotification;
 import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.exception.UserIsAlreadyMember;
+import ar.edu.unrn.seminario.exception.UserNotFound;
+
 import java.awt.Font;
 
 import java.awt.GridLayout;
@@ -190,6 +192,8 @@ public class InvitarMiembro extends JFrame {
 						JOptionPane.showMessageDialog(null,labels.getString("mensaje.elCampo") + labels.getString(e4.getMessage()) + labels.getString("mensaje.empty"), labels.getString("mensaje.campoObligatorio"),JOptionPane.WARNING_MESSAGE);
 					} catch (DataBaseConnectionException e5) {
 						JOptionPane.showMessageDialog(null,labels.getString(e5.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+					} catch (UserNotFound e6) {
+						JOptionPane.showMessageDialog(null,labels.getString(e6.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 					}
 				
 		}); 
