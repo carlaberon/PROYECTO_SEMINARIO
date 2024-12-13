@@ -211,19 +211,14 @@ public class VentanaTareas extends JFrame {
 		    });
 		}
 		
-		} catch (InvalidDateException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace(); //Tratar mejor la excepcion
-		} catch (NotNullException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (DataEmptyException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (DataBaseFoundException e1) {
+		} catch (NotNullException | DataEmptyException e1) {
+        	JOptionPane.showMessageDialog(null, labels.getString("mensaje.camposVaciosONulos") + labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (DataBaseFoundException e1) {
 			JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 		} catch (DataBaseConnectionException e1) {
 			JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+		} catch (InvalidDateException e1) {
+			JOptionPane.showMessageDialog(null,labels.getString("mensaje.fechasValidas") + labels.getString(e1.getMessage()), "Error", JOptionPane.WARNING_MESSAGE);
 		}
 		
 		
@@ -288,15 +283,10 @@ public class VentanaTareas extends JFrame {
 								try {
 									api.setTareaActual(idTarea);
 									modificarTarea();
-								} catch (NotNullException e1) {
-									// TODO Auto-generated catch block
-									e1.printStackTrace(); //Tratar mejor la excepcion
-								} catch (DataEmptyException e1) {
-									// TODO Auto-generated catch block
-									e1.printStackTrace();
-								} catch (InvalidDateException e1) {
-									// TODO Auto-generated catch block
-									e1.printStackTrace();
+								} catch (NotNullException | DataEmptyException e1) {
+				                	JOptionPane.showMessageDialog(null, labels.getString("mensaje.camposVaciosONulos") + labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+				                } catch (InvalidDateException e1) {
+									JOptionPane.showMessageDialog(null,labels.getString("mensaje.fechasValidas") + labels.getString(e1.getMessage()), "Error", JOptionPane.WARNING_MESSAGE);
 								} catch (DataBaseFoundException e1) {
 						        	JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 								} catch (DataBaseConnectionException e1) {

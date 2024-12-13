@@ -193,15 +193,10 @@ public class Inicio extends JFrame {
 				panelNotificaciones.add(panelPrueba1);
 				panelNotificaciones.add(Box.createVerticalStrut(10)); // Espacio entre notificaciones
 			}
-		} catch (NotNullException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace(); //Tratar mejor
-		} catch (DataEmptyException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (DataBaseConnectionException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+        } catch (NotNullException | DataEmptyException e1) {
+        	JOptionPane.showMessageDialog(null, labels.getString("mensaje.camposVaciosONulos") + labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (DataBaseConnectionException e2) {
+			JOptionPane.showMessageDialog(null,labels.getString(e2.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 		}
         
         
@@ -297,9 +292,8 @@ public class Inicio extends JFrame {
 				parentPanel.remove(panel); // Eliminar este panel del contenedor padre
 				parentPanel.revalidate(); // Actualizar el contenedor para reflejar el cambio
 				parentPanel.repaint();    // Volver a pintar el contenedor
-			} catch (DataBaseConnectionException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+        	} catch (DataBaseConnectionException e1) {
+				JOptionPane.showMessageDialog(null,labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 			}
         });
 
@@ -385,7 +379,7 @@ public class Inicio extends JFrame {
 		UsuarioDTO usuario;
 		ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
 		try {
-			usuario = api.obtenerUsuario("ldifabio");
+			usuario = api.obtenerUsuario("jmartinez");
 			api.setUsuarioActual(usuario.getUsername());
 			Inicio inicio = new Inicio(api);
 			inicio.setVisible(true);

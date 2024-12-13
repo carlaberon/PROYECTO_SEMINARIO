@@ -31,9 +31,8 @@ public class VentanaResumen extends JFrame {
     	this.usuarioActual = api.getUsuarioActual();
     	try {
 			this.rolActual = api.getRol(usuarioActual.getUsername(), api.getProyectoActual().getId());
-		} catch (DataBaseConnectionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+    	} catch (DataBaseConnectionException e2) {
+        	JOptionPane.showMessageDialog(null,labels.getString(e2.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 		}
     	this.unproyecto = api.getProyectoActual();
         

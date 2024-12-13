@@ -60,12 +60,12 @@ public class ListaMiembros extends JFrame {
     private ProyectoDTO unproyecto; //obtener proyecto por medio de la api
     private RolDTO rolActual;
 	private List<UsuarioDTO> usuariosProyecto;
+	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
+//		 descomentar para que tome el idioma ingles (english)
+//	ResourceBundle labels = ResourceBundle.getBundle("labels");
 
     public ListaMiembros(IApi api) {
-    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
-//		 descomentar para que tome el idioma ingles (english)
 
-		//ResourceBundle labels = ResourceBundle.getBundle("labels");
     	
     	
     	this.api = api; 
@@ -241,9 +241,8 @@ public class ListaMiembros extends JFrame {
         	
             try {
 				if(api.getRol(usuarioActual.getUsername(), unproyecto.getId()).getNombre().equals("Administrador")) {
-						InvitarMiembro invitarMiembro = new InvitarMiembro(api);
-						invitarMiembro.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-				        invitarMiembro.setVisible(true);
+						new InvitarMiembro(api).setVisible(true);
+						dispose();
 				} else {
 				    JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.WARNING_MESSAGE);
 				}
@@ -278,19 +277,14 @@ public class ListaMiembros extends JFrame {
 								try {
 									api.setTareaActual(idTarea);
 									modificarTarea();
-								} catch (NotNullException e1) {
-									// TODO Auto-generated catch block
-									e1.printStackTrace(); //Tratar mejor la excepcion
-								} catch (DataEmptyException e1) {
-									// TODO Auto-generated catch block
-									e1.printStackTrace();
-								} catch (InvalidDateException e1) {
-									// TODO Auto-generated catch block
-									e1.printStackTrace();
-								} catch (DataBaseConnectionException e1) {
-						        	JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
-								} catch (DataBaseFoundException e1) {
-									JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+								} catch (NotNullException | DataEmptyException e1) {
+				                	JOptionPane.showMessageDialog(null, labels.getString("mensaje.camposVaciosONulos") + labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+				                } catch (InvalidDateException e2) {
+				                	JOptionPane.showMessageDialog(null,labels.getString("mensaje.fechasValidas") + labels.getString(e2.getMessage()), "Error", JOptionPane.WARNING_MESSAGE);
+								} catch (DataBaseConnectionException e3) {
+						        	JOptionPane.showMessageDialog(null, labels.getString(e3.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+								} catch (DataBaseFoundException e4) {
+									JOptionPane.showMessageDialog(null, labels.getString(e4.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 								}
 								dispose();
     	    	}else {
