@@ -58,7 +58,7 @@ public class PersistenceApi implements IApi {
 	}
 	
 	@Override
-	public List<TareaDTO> obtenerTareas() throws NotNullException, InvalidDateException, DataEmptyException, DataBaseFoundException, DataBaseConnectionException {
+	public List<TareaDTO> obtenerTareas() throws NotNullException, InvalidDateException, DataEmptyException, DataBaseConnectionException {
 	    List<Tarea> tareas = tareaDao.findByProject(proyectoActual.getId());
 	    return tareas.stream()
 	            .map(this::convertirEnTareaDTO) 
