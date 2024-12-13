@@ -384,7 +384,7 @@ public class Inicio extends JFrame {
 		UsuarioDTO usuario;
 		ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
 		try {
-			usuario = api.obtenerUsuario("gabi");
+			usuario = api.obtenerUsuario("sbrito");
 			api.setUsuarioActual(usuario.getUsername());
 			Inicio inicio = new Inicio(api);
 			inicio.setVisible(true);
