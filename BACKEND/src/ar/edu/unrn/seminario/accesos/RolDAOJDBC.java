@@ -10,12 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ar.edu.unrn.seminario.exception.DataBaseConnectionException;
+import ar.edu.unrn.seminario.exception.DataBaseFoundException;
 import ar.edu.unrn.seminario.modelo.Rol;
 //import ar.edu.unrn.seminario.modelo.Usuario;
 
 public class RolDAOJDBC implements RolDao {
 	@Override
-	public Rol find(String username, int id_proyecto) throws DataBaseConnectionException {
+	public Rol find(String username, int id_proyecto) throws DataBaseConnectionException,DataBaseFoundException {
 		Rol rol = null;
 		try {
 			Connection conn = ConnectionManager.getConnection();
@@ -29,15 +30,12 @@ public class RolDAOJDBC implements RolDao {
 			ResultSet rs = statement.executeQuery();
 			if (rs.next()) {
 				rol = new Rol(rs.getInt("r.codigo"), rs.getString("r.nombre"), rs.getBoolean("r.activo"));
-			}
-
+			} else {
+			   throw new DataBaseFoundException("exceptionRolDAO.find");
+		 }
+			
 		} catch (SQLException e) {
-			System.out.println("Error al procesar consulta");
-			// TODO: disparar Exception propia
-			// throw new AppException(e, e.getSQLState(), e.getMessage());
-		} catch (Exception e) {
-			// TODO: disparar Exception propia
-			// throw new AppException(e, e.getCause().getMessage(), e.getMessage());
+			throw new DataBaseConnectionException("exceptionDAO.conecction");
 		} finally {
 			try {
 				ConnectionManager.disconnect();
@@ -67,9 +65,7 @@ public class RolDAOJDBC implements RolDao {
 				listado.add(rol);
 			}
 		} catch (SQLException e) {
-			System.out.println("Error de mySql\n" + e.toString());
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
+			throw new DataBaseConnectionException("exceptionDAO.conecction");
 		} finally {
 			try {
 				ConnectionManager.disconnect();

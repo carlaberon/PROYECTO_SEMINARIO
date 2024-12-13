@@ -285,7 +285,7 @@ public class PersistenceApi implements IApi {
 	    return convertirEnUsuarioDTO(usuarioActual);
 	}
 	
-	public RolDTO getRol(String username, int idProyecto) throws DataBaseConnectionException {
+	public RolDTO getRol(String username, int idProyecto) throws DataBaseConnectionException, DataBaseFoundException {
 		Rol rol = rolDao.find(username, idProyecto);
 		if (rol != null) {
 			return convertirEnRolDTO(rol);

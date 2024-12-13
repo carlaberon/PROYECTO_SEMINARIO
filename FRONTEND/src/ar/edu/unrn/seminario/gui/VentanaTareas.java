@@ -55,7 +55,7 @@ public class VentanaTareas extends JFrame {
     private ProyectoDTO unproyecto; 
     private RolDTO rolActual;
     public VentanaTareas(IApi api) {
-    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
+    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
 //		 descomentar para que tome el idioma ingles (english)
 
 		//ResourceBundle labels = ResourceBundle.getBundle("labels");
@@ -66,10 +66,11 @@ public class VentanaTareas extends JFrame {
     	this.unproyecto = api.getProyectoActual();
     	try {
 			this.rolActual = api.getRol(usuarioActual.getUsername(), unproyecto.getId());
-		} catch (DataBaseConnectionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    	} catch (DataBaseConnectionException e1) {
+			JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+		} catch (DataBaseFoundException e1) {
+	        JOptionPane.showMessageDialog(null,labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+} 
     	
     	setTitle(labels.getString("menu.tareas"));
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
