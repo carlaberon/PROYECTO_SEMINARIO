@@ -35,7 +35,7 @@ import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.ExistNotification;
 import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.exception.UserIsAlreadyMember;
-import ar.edu.unrn.seminario.exception.UserNotFound;
+
 
 import java.awt.Font;
 

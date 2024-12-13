@@ -122,10 +122,7 @@ public class TareaDAOJDBC implements TareaDao{
 					
 					tareas.add(unaTarea);
 				}
-//				if (tareas.isEmpty()) {
-//					throw new DataBaseFoundException("exceptionTareaDAO.findByProject");
-//				}
-			
+
 				
 			} catch (SQLException e1) {
 		        throw new DataBaseConnectionException("exceptionDAO.conecction");
