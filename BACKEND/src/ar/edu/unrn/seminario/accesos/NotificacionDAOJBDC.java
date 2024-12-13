@@ -68,7 +68,7 @@ public class NotificacionDAOJBDC implements NotificacionDao{
 			
 			
 		} catch (SQLException e1) {
-			JOptionPane.showMessageDialog(null, e1.getMessage() + "No se pudo consultar las tareas", "Error", JOptionPane.ERROR_MESSAGE);
+			 throw new DataBaseConnectionException("exceptionDAO.conecction");
 		}
 		 finally {
 			try {
