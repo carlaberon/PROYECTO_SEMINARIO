@@ -297,9 +297,8 @@ public class Inicio extends JFrame {
 				parentPanel.remove(panel); // Eliminar este panel del contenedor padre
 				parentPanel.revalidate(); // Actualizar el contenedor para reflejar el cambio
 				parentPanel.repaint();    // Volver a pintar el contenedor
-			} catch (DataBaseConnectionException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+        	} catch (DataBaseConnectionException e1) {
+				JOptionPane.showMessageDialog(null,labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 			}
         });
 

@@ -51,7 +51,7 @@ public interface IApi {
 
 	List<TareaDTO> obtenerTareasPorProyecto(int id_project) throws InvalidDateException, NotNullException, DataEmptyException, DataBaseFoundException, DataBaseConnectionException;
 	
-	void crearProyecto(String nombre, String string, String estado, String descripcion, String prioridad) throws NotNullException, DataEmptyException, DataBaseInsertionException, DataBaseConnectionException, DataBaseFoundException;
+	void crearProyecto(String nombre, String username, String estado, String descripcion, String prioridad) throws NotNullException, DataEmptyException, DataBaseInsertionException, DataBaseConnectionException, DataBaseFoundException;
 	
 	public void invitarMiembro(String username, int idProyecto, int codigoRol) throws DataBaseConnectionException;
 	
@@ -62,13 +62,13 @@ public interface IApi {
 	public void eliminarMiembro(String username, int idProyecto) throws DataBaseConnectionException;
 	
 	//Metodos para las notificaciones
-	public void crearNotificacion(int idProyecto, String username, int codigoRol, String nombreProyecto, LocalDate fecha) throws NotNullException, DataEmptyException, DataBaseConnectionException, UserNotFound;
+	public void crearNotificacion(int idProyecto, String username, int codigoRol, String nombreProyecto, LocalDate fecha) throws NotNullException, DataEmptyException, DataBaseConnectionException, DataBaseFoundException;
 	
 	public List<NotificacionDTO> obtenerNotificaciones(String username) throws NotNullException, DataEmptyException, DataBaseConnectionException;
 	
 	public void eliminarNotificacion(int idProyecto, String username) throws DataBaseConnectionException;
 	
-	public int existeNotificacion(int idProyecto, String username) throws ExistNotification, DataBaseConnectionException;
+	public void existeNotificacion(int idProyecto, String username) throws ExistNotification, DataBaseConnectionException;
 	
 	//Metodos para proposito general
 	public void setTareaActual(int idTarea) throws DataEmptyException, NotNullException, InvalidDateException, DataBaseFoundException, DataBaseConnectionException;

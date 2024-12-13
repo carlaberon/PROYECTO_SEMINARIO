@@ -25,10 +25,10 @@ public class ListaProyectos extends JFrame {
 	private JTable tabla;
 	private JButton eliminarProyecto;
 	private UsuarioDTO usuarioActual; 
+	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es"));
 	
     public ListaProyectos(IApi api) {
     	
-    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
 //   	 descomentar para que tome el idioma ingles (english)
 
    	//ResourceBundle labels = ResourceBundle.getBundle("labels");
@@ -100,15 +100,10 @@ public class ListaProyectos extends JFrame {
         				p.getUsuarioPropietario().getUsername()});
         	}
         }
-		} catch (NotNullException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace(); //Tratar mejor la excepcion
-		} catch (DataEmptyException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (DataBaseConnectionException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+		} catch (NotNullException | DataEmptyException e1) {
+        	JOptionPane.showMessageDialog(null, labels.getString("mensaje.camposVaciosONulos") + labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (DataBaseConnectionException e2) {
+        	JOptionPane.showMessageDialog(null,labels.getString(e2.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 		}
      
         // Ocultar la columna ID
@@ -205,12 +200,9 @@ public class ListaProyectos extends JFrame {
     			// Obtiene la lista de usuarios a mostrar
     			List<ProyectoDTO> proyectos = null;
 				try {
-					try {
+					
 						proyectos = api.obtenerProyectos(api.getUsuarioActual().getUsername());
-					} catch (DataBaseConnectionException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					
     			  proyectos.sort((p1, p2) -> {
     		            int prioridadComparacion = Integer.compare(api.obtenerPrioridad(p1.getPrioridad()), 
     		                                                       api.obtenerPrioridad(p2.getPrioridad()));
@@ -233,12 +225,10 @@ public class ListaProyectos extends JFrame {
     				}
     			}
 
-				} catch (NotNullException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace(); //Tratar mejor la excepcion
-				} catch (DataEmptyException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				} catch (NotNullException | DataEmptyException e1) {
+		        	JOptionPane.showMessageDialog(null, labels.getString("mensaje.camposVaciosONulos") + labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+		        } catch (DataBaseConnectionException e2) {
+		        	JOptionPane.showMessageDialog(null,labels.getString(e2.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 				}
     }
  // Método para crear botones con estilo

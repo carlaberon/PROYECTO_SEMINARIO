@@ -83,7 +83,7 @@ public class TareaDAOJDBC implements TareaDao{
 	       
 		   int verificacion = statement.executeUpdate();
 		        
-		   if (verificacion <= 0) {
+		   if (verificacion == 0) {
 	            throw new DataBaseUpdateException("exceptionTareaDAO.update");
 		   }
 		        

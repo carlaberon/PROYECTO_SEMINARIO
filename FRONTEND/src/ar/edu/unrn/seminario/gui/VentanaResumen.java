@@ -37,6 +37,8 @@ public class VentanaResumen extends JFrame {
 		} catch (DataBaseFoundException e1) {
 	        JOptionPane.showMessageDialog(null,labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 } 
+
+
     	this.unproyecto = api.getProyectoActual();
         
         setTitle(labels.getString("menu.resumen"));
