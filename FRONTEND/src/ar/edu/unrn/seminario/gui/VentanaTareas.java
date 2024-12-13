@@ -55,7 +55,7 @@ public class VentanaTareas extends JFrame {
     private ProyectoDTO unproyecto; 
     private RolDTO rolActual;
     public VentanaTareas(IApi api) {
-    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
+    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
 //		 descomentar para que tome el idioma ingles (english)
 
 		//ResourceBundle labels = ResourceBundle.getBundle("labels");
