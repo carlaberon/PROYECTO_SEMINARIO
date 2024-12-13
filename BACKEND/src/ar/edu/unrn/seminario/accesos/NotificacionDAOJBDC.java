@@ -12,13 +12,14 @@ import javax.swing.JOptionPane;
 import ar.edu.unrn.seminario.exception.DataBaseConnectionException;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.NotNullException;
+import ar.edu.unrn.seminario.exception.UserNotFound;
 import ar.edu.unrn.seminario.modelo.Notificacion;
 
 
 public class NotificacionDAOJBDC implements NotificacionDao{
 
 	@Override
-	public void create(Notificacion notificacion) throws DataBaseConnectionException {
+	public void create(Notificacion notificacion) throws DataBaseConnectionException, UserNotFound {
 			PreparedStatement statement;
 			Connection conn;
 			try {
@@ -33,13 +34,16 @@ public class NotificacionDAOJBDC implements NotificacionDao{
 				statement.setString(4, notificacion.getDescripcion());
 				statement.setDate(5, java.sql.Date.valueOf(notificacion.getFecha()));
 				
-				int cant = statement.executeUpdate();
+				statement.executeUpdate();
 			
-				if ( cant <= 0) {
-				}
+	
 			}
 			catch (SQLException e1) {
-				JOptionPane.showMessageDialog(null, e1.getMessage() + "No se pudo invitar al usuario", "Error", JOptionPane.ERROR_MESSAGE);
+				if (e1.getErrorCode() == 1452) {
+			        throw new UserNotFound("exceptionUsuarioDAO.find");
+			    } else {
+			        throw new DataBaseConnectionException("exceptionDAO.conecction");
+			    }
 			}
 			finally {
 				try {
@@ -48,8 +52,6 @@ public class NotificacionDAOJBDC implements NotificacionDao{
 					throw new DataBaseConnectionException("exceptionDAO.disconnect");
 				}
 			}
-
-		
 	}
 
 	@Override

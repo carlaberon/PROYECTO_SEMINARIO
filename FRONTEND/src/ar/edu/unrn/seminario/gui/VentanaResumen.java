@@ -152,8 +152,8 @@ public class VentanaResumen extends JFrame {
             	
                 if(rolActual.getNombre().equals("Administrador")) {
     					InvitarMiembro invitarMiembro = new InvitarMiembro(api);
-    					invitarMiembro.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     	                invitarMiembro.setVisible(true);
+    	                dispose();
                 } else {
     	            JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.WARNING_MESSAGE);
                 }

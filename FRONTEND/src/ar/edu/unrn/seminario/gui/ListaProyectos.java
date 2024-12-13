@@ -26,7 +26,7 @@ public class ListaProyectos extends JFrame {
 	private JButton eliminarProyecto;
 	private UsuarioDTO usuarioActual; 
 	
-    public ListaProyectos(IApi api) throws DataBaseConnectionException  {
+    public ListaProyectos(IApi api) {
     	
     	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
 //   	 descomentar para que tome el idioma ingles (english)
@@ -106,6 +106,9 @@ public class ListaProyectos extends JFrame {
 		} catch (DataEmptyException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (DataBaseConnectionException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
      
         // Ocultar la columna ID

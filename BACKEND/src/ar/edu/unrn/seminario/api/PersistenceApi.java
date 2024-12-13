@@ -31,6 +31,7 @@ import ar.edu.unrn.seminario.exception.DataBaseUpdateException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.exception.UserIsAlreadyMember;
+import ar.edu.unrn.seminario.exception.UserNotFound;
 import ar.edu.unrn.seminario.modelo.Notificacion;
 import ar.edu.unrn.seminario.modelo.Proyecto;
 import ar.edu.unrn.seminario.modelo.Rol;
@@ -129,7 +130,7 @@ public class PersistenceApi implements IApi {
 		}
 		
 	@Override
-	public List<TareaDTO> obtenerTareasPorProyecto(int id) throws DataEmptyException, NotNullException, InvalidDateException, DataBaseFoundException, DataBaseConnectionException {
+	public List<TareaDTO> obtenerTareasPorProyecto(int id) throws DataEmptyException, NotNullException, InvalidDateException, DataBaseConnectionException, DataBaseFoundException {
 	    return tareaDao.findByProject(id).stream().map(this::convertirEnTareaDTO).collect(Collectors.toList()); 
 	}
 	
@@ -277,8 +278,6 @@ public class PersistenceApi implements IApi {
 		if(notificacion != null)
 			notificacionDto = new NotificacionDTO(notificacion.getIdProyecto(),notificacion.getUsername(),
 					notificacion.getCodigoRol(),notificacion.getDescripcion(),notificacion.getFecha());
-		
-		System.out.println(notificacionDto);
 		return notificacionDto;
 	}
 	
@@ -316,7 +315,7 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public void crearNotificacion(int idProyecto, String username, int codigoRol, String nombreProyecto, LocalDate fecha) throws NotNullException, DataEmptyException, DataBaseConnectionException {
+	public void crearNotificacion(int idProyecto, String username, int codigoRol, String nombreProyecto, LocalDate fecha) throws NotNullException, DataEmptyException, DataBaseConnectionException, UserNotFound {
 		String descripcion = "Te invitaron al proyecto: " + nombreProyecto;
 		Notificacion notificacion = new Notificacion(idProyecto, username, codigoRol, descripcion, fecha);
 		notificacionDao.create(notificacion);

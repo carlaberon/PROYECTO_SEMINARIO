@@ -99,7 +99,7 @@ public class TareaDAOJDBC implements TareaDao{
 	}
 	
 	@Override
-	public List<Tarea> findByProject(int id_project) throws DataEmptyException, NotNullException, InvalidDateException, DataBaseConnectionException, DataBaseFoundException{
+	public List<Tarea> findByProject(int id_project) throws DataEmptyException, NotNullException, InvalidDateException, DataBaseConnectionException{
 		List<Tarea>tareas = new ArrayList<Tarea>();
 		Usuario unUsuario = null;
 		Proyecto unProyecto = null;
@@ -122,10 +122,6 @@ public class TareaDAOJDBC implements TareaDao{
 					
 					tareas.add(unaTarea);
 				}
-//				if (tareas.isEmpty()) {
-//					throw new DataBaseFoundException("exceptionTareaDAO.findByProject");
-//				}
-			
 				
 			} catch (SQLException e1) {
 		        throw new DataBaseConnectionException("exceptionDAO.conecction");
