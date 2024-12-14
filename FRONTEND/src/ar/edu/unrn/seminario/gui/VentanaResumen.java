@@ -23,7 +23,7 @@ public class VentanaResumen extends JFrame {
     private RolDTO rolActual;
     public VentanaResumen(IApi api) {
 
-    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
+    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
 //		 descomentar para que tome el idioma ingles (english)
 
 		//ResourceBundle labels = ResourceBundle.getBundle("labels");
@@ -37,6 +37,8 @@ public class VentanaResumen extends JFrame {
 		} catch (DataBaseFoundException e1) {
 	        JOptionPane.showMessageDialog(null,labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 } 
+
+
     	this.unproyecto = api.getProyectoActual();
         
         setTitle(labels.getString("menu.resumen"));

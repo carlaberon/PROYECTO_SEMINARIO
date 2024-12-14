@@ -58,7 +58,7 @@ public class PersistenceApi implements IApi {
 	}
 	
 	@Override
-	public List<TareaDTO> obtenerTareas() throws NotNullException, InvalidDateException, DataEmptyException, DataBaseFoundException, DataBaseConnectionException {
+	public List<TareaDTO> obtenerTareas() throws NotNullException, InvalidDateException, DataEmptyException, DataBaseConnectionException {
 	    List<Tarea> tareas = tareaDao.findByProject(proyectoActual.getId());
 	    return tareas.stream()
 	            .map(this::convertirEnTareaDTO) 
@@ -82,10 +82,10 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public void crearProyecto(String nombre, String string, String estado, String descripcion, String prioridad)
+	public void crearProyecto(String nombre, String username, String estado, String descripcion, String prioridad)
 			throws NotNullException, DataEmptyException, DataBaseInsertionException, DataBaseConnectionException, DataBaseFoundException {
 		
-		Usuario propietario = usuarioDao.find(string);
+		Usuario propietario = usuarioDao.find(username);
 	    Proyecto nuevoProyecto = new Proyecto(0, nombre, propietario, estado, descripcion, prioridad);
 	    proyectoDao.create(nuevoProyecto);
 	}
@@ -315,7 +315,7 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public void crearNotificacion(int idProyecto, String username, int codigoRol, String nombreProyecto, LocalDate fecha) throws NotNullException, DataEmptyException, DataBaseConnectionException, UserNotFound {
+	public void crearNotificacion(int idProyecto, String username, int codigoRol, String nombreProyecto, LocalDate fecha) throws NotNullException, DataEmptyException, DataBaseConnectionException, DataBaseFoundException {
 		String descripcion = "Te invitaron al proyecto: " + nombreProyecto;
 		Notificacion notificacion = new Notificacion(idProyecto, username, codigoRol, descripcion, fecha);
 		notificacionDao.create(notificacion);
@@ -340,11 +340,9 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public int existeNotificacion(int idProyecto, String username) throws ExistNotification, DataBaseConnectionException {
-		int existe = notificacionDao.existNotification(idProyecto, username);
-		if(existe == 1)
-			throw new ExistNotification("mensaje.usuarioYaInvitado");
-		return 0;
+	public void existeNotificacion(int idProyecto, String username) throws ExistNotification, DataBaseConnectionException {
+		notificacionDao.existNotification(idProyecto, username);
+		
 	}
 
 	@Override

@@ -30,6 +30,7 @@ import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataBaseConnectionException;
+import ar.edu.unrn.seminario.exception.DataBaseFoundException;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.ExistNotification;
 import ar.edu.unrn.seminario.exception.NotNullException;
@@ -60,7 +61,7 @@ public class InvitarMiembro extends JFrame {
 	private IApi api;
 
 	public InvitarMiembro(IApi api)  {
-		ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
+		ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
 		
 		this.proyectoActual = api.getProyectoActual();
 		this.usuarioActual = api.getUsuarioActual();
@@ -170,16 +171,15 @@ public class InvitarMiembro extends JFrame {
 				String rol_seleccionado = api.obtenerRolPorIndex(asignarRolComboBox.getSelectedIndex());
 				int codigo_rol = obtenerCodigoRol(rol_seleccionado);
 					try {
-						if(api.existeMiembro(nombreUsuario,proyectoActual.getId()) == 0 && api.existeNotificacion(proyectoActual.getId(), nombreUsuario) == 0) {
+						api.existeNotificacion(proyectoActual.getId(), nombreUsuario);
+						if(api.existeMiembro(nombreUsuario,proyectoActual.getId()) == 0) {
 								int id_proyecto = api.getProyectoActual().getId();
 								String nombreProject = api.getProyectoActual().getNombre();
 								
-								
 								api.crearNotificacion(id_proyecto, nombreUsuario, codigo_rol, nombreProject, LocalDate.now());
 					
-						
 								JOptionPane.showMessageDialog(null, labels.getString("mensaje.invitacionExitosa"), labels.getString("mensaje.info"), JOptionPane.INFORMATION_MESSAGE);
-								dispose();
+								
 						}
 					} catch(ExistNotification e1) {
 						JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), labels.getString("mensaje.info"), JOptionPane.ERROR_MESSAGE);
@@ -191,7 +191,7 @@ public class InvitarMiembro extends JFrame {
 						JOptionPane.showMessageDialog(null,labels.getString("mensaje.elCampo") + labels.getString(e4.getMessage()) + labels.getString("mensaje.empty"), labels.getString("mensaje.campoObligatorio"),JOptionPane.WARNING_MESSAGE);
 					} catch (DataBaseConnectionException e5) {
 						JOptionPane.showMessageDialog(null,labels.getString(e5.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
-					} catch (UserNotFound e6) {
+					} catch (DataBaseFoundException e6) {
 						JOptionPane.showMessageDialog(null,labels.getString(e6.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 					}
 				
