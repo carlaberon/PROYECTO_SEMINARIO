@@ -18,7 +18,7 @@ import ar.edu.unrn.seminario.exception.DataBaseUpdateException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.exception.UserIsAlreadyMember;
-import ar.edu.unrn.seminario.exception.UserNotFound;
+
 
 
 public interface IApi {
