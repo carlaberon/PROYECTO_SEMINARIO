@@ -2,7 +2,7 @@ package ar.edu.unrn.seminario.exception;
 
 import java.sql.SQLException;
 
-public class DataBaseFoundException extends SQLException{
+public class DataBaseFoundException extends Exception{
 	
 	public DataBaseFoundException() {
 		

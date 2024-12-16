@@ -12,7 +12,6 @@ public class UsuarioDTO {
 
 	public UsuarioDTO(String username, String password, String nombre, String email, boolean activo) {
 
-		
 		this.username = username;
 		this.password = password;
 		this.nombre = nombre;
@@ -26,7 +25,6 @@ public class UsuarioDTO {
 	}
 
 	public void setUsername(String username) {
-
 		this.username = username;
 	}
 
@@ -44,11 +42,6 @@ public class UsuarioDTO {
 	}
 
 	public void setNombre(String nombre) {
-//    	if (esDatoNulo(nombre))
-//			throw new NotNullException("nombre");
-//    	
-//    	if (esDatoVacio(nombre))
-//			throw new NotNullException("nombre");
 		this.nombre = nombre;
 	}
 
@@ -57,7 +50,6 @@ public class UsuarioDTO {
 	}
 
 	public void setEmail(String email) {
-
 		this.email = email;
 	}
 
@@ -73,6 +65,5 @@ public class UsuarioDTO {
 		// TODO Auto-generated method stub
 		
 	}
-
 
 }

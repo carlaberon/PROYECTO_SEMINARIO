@@ -79,7 +79,7 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 	}
 
 	@Override
-	public void update(Proyecto proyecto) throws DataBaseConnectionException  {
+	public void update(Proyecto proyecto) throws DataBaseConnectionException, DataBaseUpdateException {
 		try {
 			   Connection conn = ConnectionManager.getConnection();
 			   PreparedStatement statement = conn.prepareStatement("UPDATE proyectos SET nombre=?, prioridad=?, descripcion=? WHERE id = ?");
@@ -96,7 +96,7 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 			   
 			        
 			   if (verificacion == 0) 
-			            throw new DataBaseUpdateException("el proyecto" + proyecto.getNombre());
+			            throw new DataBaseUpdateException("exceptionProyectoDAO.update");
 			    
 			} catch (SQLException e2) {
 				throw new DataBaseConnectionException("exceptionDAO.conecction");
@@ -138,7 +138,7 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 	        stmtProyecto = conn.prepareStatement(deleteProyecto);
 	        stmtProyecto.setInt(1, idProyecto);
 	        stmtProyecto.executeUpdate();
-
+	        
 	        
 
 	    } catch (SQLException e2) {
@@ -152,40 +152,9 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 				}
 		}
 	}
-	
+			
 	@Override
-	public void deleteMember(String username, int idProyecto) throws DataBaseConnectionException  {
-		try {
-			Connection conn = ConnectionManager.getConnection();
-			PreparedStatement statement = conn.prepareStatement("DELETE FROM proyectos_usuarios_roles WHERE id_proyecto = ? and "
-					+ "nombre_usuario = ?\r\n");
-			
-			// Establecer los valores de los nuevos datos del proyecto
-			statement.setInt(1, idProyecto);
-			statement.setString(2, username);
-			
-			
-			int verificacion = statement.executeUpdate();
-			
-			
-			if (verificacion == 0) 
-				throw new DataBaseUpdateException("el usuario" + username);
-			
-		} catch (SQLException e2) {
-			throw new DataBaseConnectionException("exceptionDAO.conecction");
-		}
-		 finally {
-				try {
-					ConnectionManager.disconnect();
-				} catch (SQLException e) {
-					throw new DataBaseConnectionException("exceptionDAO.disconnect");
-				}
-		}
-		
-	}
-		
-	@Override
-	public Proyecto find(int idProyecto) throws NotNullException, DataEmptyException, DataBaseConnectionException {
+	public Proyecto find(int idProyecto) throws NotNullException, DataEmptyException, DataBaseConnectionException , DataBaseFoundException {
 		Proyecto encontrarProyecto = null;
 		try {
 			Connection conn = ConnectionManager.getConnection();
@@ -200,7 +169,7 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 			// Si no se obtiene ninguna fila
 	        if (!rs.next()) {
 	            // Lanzamos una excepción personalizada cuando no se encuentra el proyecto
-	            throw new DataBaseFoundException("Proyecto no encontrado para el ID: " + idProyecto);
+	            throw new DataBaseFoundException("exceptionProyectoDAO.find");
 	        }
 	        
 	        // Si se encuentra una fila se crea el objeto Proyecto por completo
@@ -265,7 +234,7 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 	}
 
 	@Override
-	public void inviteMember(String username, int idProyecto, int codigoRol) throws DataBaseConnectionException  {
+	public void inviteMember(String username, int idProyecto, int codigoRol) throws DataBaseConnectionException, DataBaseUpdateException {
 		try {
 			   Connection conn = ConnectionManager.getConnection();
 			   PreparedStatement statement = conn.prepareStatement("INSERT INTO `proyectos_usuarios_roles` (`codigo_rol`,`nombre_usuario`,`id_proyecto`) " + "VALUES(?, ?, ?)" );
@@ -280,7 +249,7 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 			   
 			        
 			   if (verificacion == 0) 
-			            throw new DataBaseUpdateException("No se pudo realizar la invitación a: " + username);
+			            throw new DataBaseUpdateException("exceptionProyectoDAO.inviteMember");
 			    
 			} catch (SQLException e2) {
 				throw new DataBaseConnectionException("exceptionDAO.conecction");
@@ -295,7 +264,7 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 	}
 
 	@Override
-	public List<Usuario> findAllMembers(int proyectoId) throws DataBaseConnectionException {
+	public List<Usuario> findAllMembers(int proyectoId) throws DataBaseConnectionException, DataBaseFoundException {
 		List<Usuario> miembros = new ArrayList<Usuario>();
 		try {
 			Connection conn = ConnectionManager.getConnection();

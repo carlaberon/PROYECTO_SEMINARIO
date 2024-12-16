@@ -30,18 +30,15 @@ import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataBaseConnectionException;
+import ar.edu.unrn.seminario.exception.DataBaseFoundException;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.ExistNotification;
 import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.exception.UserIsAlreadyMember;
-import ar.edu.unrn.seminario.exception.UserNotFound;
-
 import java.awt.Font;
 
 import java.awt.GridLayout;
 import java.awt.Insets;
-
-import java.awt.HeadlessException;
 
 import java.time.LocalDate;
 import java.awt.BorderLayout;
@@ -69,8 +66,7 @@ public class InvitarMiembro extends JFrame {
 			this.roles = api.obtenerRoles();
 			this.usuarios = api.obtenerUsuarios(api.getUsuarioActual().getUsername());
 		} catch (DataBaseConnectionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, labels.getString(e.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 		}
 		
 		setTitle(labels.getString("ventana.invitarMiembro"));
@@ -148,7 +144,7 @@ public class InvitarMiembro extends JFrame {
 
         // Panel central
         JPanel centerPanel1 = new JPanel();
-        centerPanel1.setLayout(null); // Usar diseño absoluto para respetar los bounds definidos
+        centerPanel1.setLayout(null);
         centerPanel1.setBackground(new Color(45, 44, 50));
         centerPanel1.setBorder(new EmptyBorder(20, 20, 20, 20));
         contentPane.add(centerPanel1, BorderLayout.CENTER);
@@ -171,16 +167,15 @@ public class InvitarMiembro extends JFrame {
 				String rol_seleccionado = api.obtenerRolPorIndex(asignarRolComboBox.getSelectedIndex());
 				int codigo_rol = obtenerCodigoRol(rol_seleccionado);
 					try {
-						if(api.existeMiembro(nombreUsuario,proyectoActual.getId()) == 0 && api.existeNotificacion(proyectoActual.getId(), nombreUsuario) == 0) {
+						api.existeNotificacion(proyectoActual.getId(), nombreUsuario);
+						if(api.existeMiembro(nombreUsuario,proyectoActual.getId()) == 0) {
 								int id_proyecto = api.getProyectoActual().getId();
 								String nombreProject = api.getProyectoActual().getNombre();
 								
-								
 								api.crearNotificacion(id_proyecto, nombreUsuario, codigo_rol, nombreProject, LocalDate.now());
 					
-						
 								JOptionPane.showMessageDialog(null, labels.getString("mensaje.invitacionExitosa"), labels.getString("mensaje.info"), JOptionPane.INFORMATION_MESSAGE);
-								dispose();
+								
 						}
 					} catch(ExistNotification e1) {
 						JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), labels.getString("mensaje.info"), JOptionPane.ERROR_MESSAGE);
@@ -192,7 +187,7 @@ public class InvitarMiembro extends JFrame {
 						JOptionPane.showMessageDialog(null,labels.getString("mensaje.elCampo") + labels.getString(e4.getMessage()) + labels.getString("mensaje.empty"), labels.getString("mensaje.campoObligatorio"),JOptionPane.WARNING_MESSAGE);
 					} catch (DataBaseConnectionException e5) {
 						JOptionPane.showMessageDialog(null,labels.getString(e5.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
-					} catch (UserNotFound e6) {
+					} catch (DataBaseFoundException e6) {
 						JOptionPane.showMessageDialog(null,labels.getString(e6.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 					}
 				
@@ -238,7 +233,7 @@ public class InvitarMiembro extends JFrame {
 		
 
 		JPanel panel = new JPanel(new BorderLayout());
-		panel.setBounds(70, 200, 268, 100);  // Ajuste de tamaño y ubicación
+		panel.setBounds(70, 200, 268, 100); 
 		panel.setBackground(fondoColor);
 		
 		campoBusqueda = new JTextField();
@@ -251,7 +246,7 @@ public class InvitarMiembro extends JFrame {
 		tablaUsuarios.setModel(modelo);
 		tablaUsuarios.setFont(fuente);
 		tablaUsuarios.getTableHeader().setVisible(false);
-		tablaUsuarios.getTableHeader().setPreferredSize(new Dimension(0, 0)); //Oculto titulo de la columna
+		tablaUsuarios.getTableHeader().setPreferredSize(new Dimension(0, 0)); 
 		tablaUsuarios.setBorder(null);
 
 		

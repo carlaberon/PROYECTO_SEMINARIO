@@ -18,7 +18,6 @@ import ar.edu.unrn.seminario.exception.DataBaseUpdateException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.exception.UserIsAlreadyMember;
-import ar.edu.unrn.seminario.exception.UserNotFound;
 
 
 public interface IApi {
@@ -30,13 +29,13 @@ public interface IApi {
 	//Metodos para Roles
 	List<RolDTO> obtenerRoles() throws DataBaseConnectionException;
 
-	public RolDTO getRol(String username, int idProyecto) throws DataBaseConnectionException;
+	public RolDTO getRol(String username, int idProyecto) throws DataBaseConnectionException, DataBaseFoundException;
 	
 	//Metodos para las Tareas
-	public void registrarTarea(String name, int id_proyecto, String priority, String user, String estado, String descripcion, LocalDate inicio, LocalDate fin) throws DataEmptyException, NotNullException, InvalidDateException, DataBaseConnectionException, DataBaseInsertionException;
+	public void registrarTarea(String name, int id_proyecto, String priority, String user, String estado, String descripcion, LocalDate inicio, LocalDate fin) throws DataEmptyException, NotNullException, InvalidDateException, DataBaseConnectionException, DataBaseInsertionException, DataBaseFoundException;
 
 	
-	List<TareaDTO> obtenerTareas() throws NotNullException, InvalidDateException, DataEmptyException, DataBaseFoundException, DataBaseConnectionException;
+	List<TareaDTO> obtenerTareas() throws NotNullException, InvalidDateException, DataEmptyException, DataBaseConnectionException;
 	
 	public void eliminarTarea(int idTarea) throws DataBaseEliminationException, DataBaseConnectionException;
 	
@@ -47,28 +46,26 @@ public interface IApi {
 		    
 	public void eliminarProyecto(int id) throws DataBaseConnectionException;
 	
-	void modificarProyecto(int idProyecto, String nuevoNombre, String nuevaPrioridad, String nuevaDescripcion) throws NotNullException, DataEmptyException, DataBaseConnectionException;
+	void modificarProyecto(int idProyecto, String nuevoNombre, String nuevaPrioridad, String nuevaDescripcion) throws NotNullException, DataEmptyException, DataBaseConnectionException, DataBaseUpdateException;
 
-	List<TareaDTO> obtenerTareasPorProyecto(int id_project) throws InvalidDateException, NotNullException, DataEmptyException, DataBaseFoundException, DataBaseConnectionException;
+	List<TareaDTO> obtenerTareasPorProyecto(int id_project) throws InvalidDateException, NotNullException, DataEmptyException, DataBaseConnectionException;
 	
-	void crearProyecto(String nombre, String string, String estado, String descripcion, String prioridad) throws NotNullException, DataEmptyException, DataBaseInsertionException, DataBaseConnectionException, DataBaseFoundException;
+	void crearProyecto(String nombre, String username, String estado, String descripcion, String prioridad) throws NotNullException, DataEmptyException, DataBaseInsertionException, DataBaseConnectionException, DataBaseFoundException;
 	
-	public void invitarMiembro(String username, int idProyecto, int codigoRol) throws DataBaseConnectionException;
+	public void invitarMiembro(String username, int idProyecto, int codigoRol) throws DataBaseConnectionException, DataBaseUpdateException;
 	
-	public List<UsuarioDTO> obtenerMiembrosDeUnProyecto(int proyectoId) throws DataBaseConnectionException;
+	public List<UsuarioDTO> obtenerMiembrosDeUnProyecto(int proyectoId) throws DataBaseConnectionException, DataBaseFoundException;
 	
-	public int existeMiembro(String username, int idProyecto) throws UserIsAlreadyMember, DataBaseConnectionException;
-	
-	public void eliminarMiembro(String username, int idProyecto) throws DataBaseConnectionException;
-	
+	public int existeMiembro(String username, int idProyecto) throws UserIsAlreadyMember, DataBaseConnectionException, DataBaseFoundException;
+		
 	//Metodos para las notificaciones
-	public void crearNotificacion(int idProyecto, String username, int codigoRol, String nombreProyecto, LocalDate fecha) throws NotNullException, DataEmptyException, DataBaseConnectionException, UserNotFound;
+	public void crearNotificacion(int idProyecto, String username, int codigoRol, String nombreProyecto, LocalDate fecha) throws NotNullException, DataEmptyException, DataBaseConnectionException, DataBaseFoundException;
 	
 	public List<NotificacionDTO> obtenerNotificaciones(String username) throws NotNullException, DataEmptyException, DataBaseConnectionException;
 	
 	public void eliminarNotificacion(int idProyecto, String username) throws DataBaseConnectionException;
 	
-	public int existeNotificacion(int idProyecto, String username) throws ExistNotification, DataBaseConnectionException;
+	public void existeNotificacion(int idProyecto, String username) throws ExistNotification, DataBaseConnectionException;
 	
 	//Metodos para proposito general
 	public void setTareaActual(int idTarea) throws DataEmptyException, NotNullException, InvalidDateException, DataBaseFoundException, DataBaseConnectionException;
@@ -91,6 +88,6 @@ public interface IApi {
 	
 	public ProyectoDTO getProyectoActual();//Recuperar proyecto actual	PRUEBAS
 	
-	public void setProyectoActual(int id) throws NotNullException, DataEmptyException, DataBaseConnectionException;	//Setear proyecto actual PRUEBAS
+	public void setProyectoActual(int id) throws NotNullException, DataEmptyException, DataBaseConnectionException, DataBaseFoundException;	//Setear proyecto actual PRUEBAS
 	
 }

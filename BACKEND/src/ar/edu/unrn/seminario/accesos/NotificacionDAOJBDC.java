@@ -10,16 +10,17 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import ar.edu.unrn.seminario.exception.DataBaseConnectionException;
+import ar.edu.unrn.seminario.exception.DataBaseFoundException;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
+import ar.edu.unrn.seminario.exception.ExistNotification;
 import ar.edu.unrn.seminario.exception.NotNullException;
-import ar.edu.unrn.seminario.exception.UserNotFound;
 import ar.edu.unrn.seminario.modelo.Notificacion;
 
 
 public class NotificacionDAOJBDC implements NotificacionDao{
 
 	@Override
-	public void create(Notificacion notificacion) throws DataBaseConnectionException, UserNotFound {
+	public void create(Notificacion notificacion) throws DataBaseConnectionException, DataBaseFoundException {
 			PreparedStatement statement;
 			Connection conn;
 			try {
@@ -35,12 +36,12 @@ public class NotificacionDAOJBDC implements NotificacionDao{
 				statement.setDate(5, java.sql.Date.valueOf(notificacion.getFecha()));
 				
 				statement.executeUpdate();
-			
 	
+			
 			}
 			catch (SQLException e1) {
 				if (e1.getErrorCode() == 1452) {
-			        throw new UserNotFound("exceptionUsuarioDAO.find");
+			        throw new DataBaseFoundException("exceptionUsuarioDAO.find");
 			    } else {
 			        throw new DataBaseConnectionException("exceptionDAO.conecction");
 			    }
@@ -68,7 +69,7 @@ public class NotificacionDAOJBDC implements NotificacionDao{
 			
 			
 		} catch (SQLException e1) {
-			 throw new DataBaseConnectionException("exceptionDAO.conecction");
+			throw new DataBaseConnectionException("exceptionDAO.conecction");
 		}
 		 finally {
 			try {
@@ -102,7 +103,7 @@ public class NotificacionDAOJBDC implements NotificacionDao{
 		
 			
 		} catch (SQLException e1) {
-			JOptionPane.showMessageDialog(null, e1.getMessage() + "Error en la consulta", "Error", JOptionPane.ERROR_MESSAGE);
+			throw new DataBaseConnectionException("exceptionDAO.conecction");
 		}
 		 finally {
 			try {
@@ -115,7 +116,7 @@ public class NotificacionDAOJBDC implements NotificacionDao{
 	}
 
 	@Override
-	public int existNotification(int idProyecto, String username) throws DataBaseConnectionException {
+	public int existNotification(int idProyecto, String username) throws DataBaseConnectionException, ExistNotification {
 		int existe = 0;
 		try {
 			Connection conn = ConnectionManager.getConnection();
@@ -129,11 +130,11 @@ public class NotificacionDAOJBDC implements NotificacionDao{
 			ResultSet rs = statement.executeQuery();
 			
 			if (rs.next()) {
-	            existe = 1; // Si hay un registro, existe se convierte en 1
+				throw new ExistNotification("mensaje.usuarioYaInvitado");
 	        }
 			
 		} catch (SQLException e1) {
-			JOptionPane.showMessageDialog(null, e1.getMessage() + "Error en la consulta", "Error", JOptionPane.ERROR_MESSAGE);
+			throw new DataBaseConnectionException("exceptionDAO.conecction");
 		}
 		 finally {
 			try {

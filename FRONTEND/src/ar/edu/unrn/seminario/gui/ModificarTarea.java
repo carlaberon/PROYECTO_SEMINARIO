@@ -32,6 +32,7 @@ import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.TareaDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataBaseConnectionException;
+import ar.edu.unrn.seminario.exception.DataBaseFoundException;
 import ar.edu.unrn.seminario.exception.DataBaseUpdateException;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
@@ -57,16 +58,16 @@ public class ModificarTarea extends JFrame {
 	    
 	    public ModificarTarea(IApi api) {
 
-	    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
-//			 descomentar para que tome el idioma ingles (english)
+	    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
 
-			//ResourceBundle labels = ResourceBundle.getBundle("labels");
 	        this.api = api; 
 	        try {
 				this.usuarios = api.obtenerMiembrosDeUnProyecto(api.getProyectoActual().getId());
 			} catch (DataBaseConnectionException e1) {
 				JOptionPane.showMessageDialog(null,labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
-			}
+			} catch (DataBaseFoundException e1) {
+            	JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+            }
 	        this.tarea = api.getTareaActual();
 	        this.usuarioActual = api.getUsuarioActual();
 	        
@@ -132,7 +133,7 @@ public class ModificarTarea extends JFrame {
 	            // Acción para botón "Volver"
 	            if (item.equals("Volver") || item.equals("Return")) {
 	                menuButton.addActionListener(e -> {
-	                    new VentanaResumen(api).setVisible(true);
+	                	new VentanaTareas(api).setVisible(true);
 	                    dispose();
 	                });
 	            }
@@ -142,7 +143,7 @@ public class ModificarTarea extends JFrame {
 
 	        // Panel central
 	        JPanel centerPanel1 = new JPanel();
-	        centerPanel1.setLayout(null); // Usar diseño absoluto para respetar los bounds definidos
+	        centerPanel1.setLayout(null); 
 	        centerPanel1.setBackground(new Color(45, 44, 50));
 	        centerPanel1.setBorder(new EmptyBorder(20, 20, 20, 20));
 	        contentPane.add(centerPanel1, BorderLayout.CENTER);
@@ -266,8 +267,7 @@ public class ModificarTarea extends JFrame {
 				        } catch (DataBaseConnectionException e1) {
 				        	JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 						} catch (DataBaseUpdateException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
+							JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 						}	        
 	            }				
 	        );
