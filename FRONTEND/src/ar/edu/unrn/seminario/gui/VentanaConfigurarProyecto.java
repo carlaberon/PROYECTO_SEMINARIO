@@ -38,7 +38,7 @@ import ar.edu.unrn.seminario.exception.NotNullException;
 public class VentanaConfigurarProyecto extends JFrame {
 
     private static final long serialVersionUID = 1L;
-    List<String> prioridades = Arrays.asList("Alta", "Media", "Baja");
+    List<String> prioridades ;
     private JPanel contentPane;
     private JTextField textField_Nombre;
     private JComboBox<String> prioridadComboBox;
@@ -157,11 +157,9 @@ public class VentanaConfigurarProyecto extends JFrame {
         prioridadComboBox.setBounds(216, 251, 451, 26);
         centerPanel1.add(prioridadComboBox);
 
-        for (String prioridad : prioridades) {
+        for (String prioridad : Arrays.asList(labels.getString("prioridad.alta"), labels.getString("prioridad.media"), labels.getString("prioridad.baja"))) {
             prioridadComboBox.addItem(prioridad);
         }
-        
-        
         descripcion = new JLabel(labels.getString("campo.descripcion"));
         descripcion.setForeground(Color.WHITE);
         descripcion.setFont(new Font("Segoe UI", Font.PLAIN, 14));

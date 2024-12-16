@@ -161,12 +161,9 @@ public class Inicio extends JFrame {
         JButton btnVerProyectos = new JButton(labels.getString("menu.verProyectos"));
         
         btnVerProyectos.addActionListener(e -> {
-        	try {
+
 				abrirListaProyectos();
-			} catch (DataBaseConnectionException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			
         	dispose();
         });
 
@@ -230,7 +227,7 @@ public class Inicio extends JFrame {
         crearProyecto.setVisible(true);
     }
     
-    private void abrirListaProyectos() throws DataBaseConnectionException {
+    private void abrirListaProyectos() {
         ListaProyectos listaProyectos = new ListaProyectos(api);
         listaProyectos.setVisible(true); 
     }

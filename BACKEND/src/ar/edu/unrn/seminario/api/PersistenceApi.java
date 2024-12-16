@@ -4,8 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-
 import ar.edu.unrn.seminario.accesos.RolDAOJDBC;
 import ar.edu.unrn.seminario.accesos.RolDao;
 import ar.edu.unrn.seminario.accesos.TareaDAOJDBC;
@@ -249,7 +247,6 @@ public class PersistenceApi implements IApi {
 			    
 			    return null; // Retorna null si no se encuentra el usuario
 			}
-
 
 
 	private UsuarioDTO convertirEnUsuarioDTO(Usuario usuario)  {

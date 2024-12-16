@@ -57,7 +57,7 @@ public class ModificarTarea extends JFrame {
 	    
 	    public ModificarTarea(IApi api) {
 
-	    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
+	    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
 //			 descomentar para que tome el idioma ingles (english)
 
 			//ResourceBundle labels = ResourceBundle.getBundle("labels");
@@ -181,7 +181,6 @@ public class ModificarTarea extends JFrame {
 	        prioridadComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 10));
 	        prioridadComboBox.setBounds(190, 133, 349, 25);
 	        centerPanel1.add(prioridadComboBox);
-	        prioridadComboBox.addItem("");
 	        for (String prioridad : Arrays.asList(labels.getString("prioridad.alta"), labels.getString("prioridad.media"), labels.getString("prioridad.baja"))) {
 	            prioridadComboBox.addItem(prioridad);
 	        }
@@ -233,7 +232,7 @@ public class ModificarTarea extends JFrame {
 	  
 	                    int selectedUserIndex = asignarUsuarioComboBox.getSelectedIndex();
 	                    String nuevoNombreTarea = nombreTareaTextField.getText();
-	                    String prioridadTarea = api.obtenerPrioridadPorIndex(prioridadComboBox.getSelectedIndex());
+	                    String prioridadTarea = api.obtenerPrioridadPorIndex(prioridadComboBox.getSelectedIndex()+ 1);
 	                    UsuarioDTO usuario = usuarios.get(selectedUserIndex);
 	                    String descripcionTarea = textAreaDescription.getText();
 	                    Date fechaInicioDate = dateChooserInicio.getDate();

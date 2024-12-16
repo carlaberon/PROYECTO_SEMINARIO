@@ -136,23 +136,23 @@ public class CrearProyecto extends JFrame {
 		nombreProyecto.setForeground(new Color(255, 255, 255));
 		nombreProyecto.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 		nombreProyecto.setBounds(192, 163, 123, 44);
-		centerPanel1.add(nombreProyecto); // Agregado al centerPanel1
+		centerPanel1.add(nombreProyecto); 
 
 		nombreProyectoTextField = new JTextField();
 		nombreProyectoTextField.setBounds(325, 175, 390, 25);
-		centerPanel1.add(nombreProyectoTextField); // Agregado al centerPanel1
+		centerPanel1.add(nombreProyectoTextField); 
 		nombreProyectoTextField.setColumns(10);
 		
 		descripcionTextField = new JTextField();
 		descripcionTextField.setColumns(10);
 		descripcionTextField.setBounds(325, 225, 390, 25);
-		centerPanel1.add(descripcionTextField); // Agregado al centerPanel1
+		centerPanel1.add(descripcionTextField); 
 		
 		JComboBox<String> prioridadComboBox = new JComboBox<>();
 		prioridadComboBox.setForeground(new Color(29, 17, 40));
 		prioridadComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 10));
 		prioridadComboBox.setBounds(325, 274, 390, 25);
-		centerPanel1.add(prioridadComboBox); // Agregado al centerPanel1
+		centerPanel1.add(prioridadComboBox); 
 		prioridadComboBox.addItem("");
         for (String prioridad : prioridades) {
             prioridadComboBox.addItem(prioridad);
@@ -165,9 +165,8 @@ public class CrearProyecto extends JFrame {
 				String nombreNuevoProyecto = nombreProyectoTextField.getText();
 				String descripcionNueva = descripcionTextField.getText();
                 String prioridadSeleccionadaNueva = api.obtenerPrioridadPorIndex(prioridadComboBox.getSelectedIndex());
-
 				try {
-					// Crear un nuevo proyecto
+
 	                api.crearProyecto(nombreNuevoProyecto, api.getUsuarioActual().getUsername(), "EN CURSO", descripcionNueva, prioridadSeleccionadaNueva);
 	                JOptionPane.showMessageDialog(null, labels.getString("mensaje.proyectoCreado"), "Info", JOptionPane.INFORMATION_MESSAGE);
 	                new Inicio(api).setVisible(true);
@@ -201,16 +200,16 @@ public class CrearProyecto extends JFrame {
 		lblDescripcion.setForeground(new Color(255, 255, 255));
 		lblDescripcion.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 		lblDescripcion.setBounds(192, 217, 113, 39);
-		centerPanel1.add(lblDescripcion); // Agregado al centerPanel1
+		centerPanel1.add(lblDescripcion); 
 		
 		JLabel lblPrioridad = new JLabel(labels.getString("campo.prioridad"));
 		lblPrioridad.setForeground(new Color(255, 255, 255));
 		lblPrioridad.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 		lblPrioridad.setBounds(198, 264, 97, 39);
-		centerPanel1.add(lblPrioridad); // Agregado al centerPanel1
-		setLocationRelativeTo(null); //Centrar frame en la pantalla
+		centerPanel1.add(lblPrioridad); 
+		setLocationRelativeTo(null); 
 		
-		addWindowListener(new WindowAdapter() { //Cuando el usuario cierra el frame abre devuelta Inicio
+		addWindowListener(new WindowAdapter() { 
         	public void windowClosing(WindowEvent e) {
         		new Inicio(api).setVisible(true);
         	}
