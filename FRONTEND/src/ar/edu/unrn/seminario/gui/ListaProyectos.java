@@ -24,7 +24,7 @@ public class ListaProyectos extends JFrame {
 	private JTable tabla;
 	private JButton eliminarProyecto;
 	private UsuarioDTO usuarioActual; 
-	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es"));
+	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en"));
 	
     public ListaProyectos(IApi api) {
     	
