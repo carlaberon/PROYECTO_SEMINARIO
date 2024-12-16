@@ -10,7 +10,6 @@ import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataBaseConnectionException;
 import ar.edu.unrn.seminario.exception.DataBaseFoundException;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
-import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -27,13 +26,9 @@ public class ListaProyectos extends JFrame {
 	private JButton eliminarProyecto;
 	private UsuarioDTO usuarioActual; 
 	private JPanel contentPane;
-	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
+	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
 
  public ListaProyectos(IApi api)  {
-    	
-//   	 descomentar para que tome el idioma ingles (english)
-
-   	//ResourceBundle labels = ResourceBundle.getBundle("labels");
     	this.api = api;
     	this.usuarioActual = api.getUsuarioActual();
         setTitle(labels.getString("menu.proyecto"));
@@ -45,20 +40,16 @@ public class ListaProyectos extends JFrame {
         contentPane.setLayout(new BorderLayout());
         setContentPane(contentPane);
 
-	Color fondoColor =  new Color(45, 44, 50);
-
-        Color tituloColor = new Color(138, 102, 204);
-
-        Font fuente = new Font("Segoe UI", Font.PLAIN, 14);
+        Color fondoColor =  new Color(45, 44, 50);
 
         getContentPane().setBackground(fondoColor);
 
-   // Menú superior
+        // Menú superior
         JMenuBar menuBar = new JMenuBar();
         menuBar.setBackground(new Color(138, 102, 204));
         menuBar.setPreferredSize(new Dimension(100, 50));
 
- JMenu menuProyecto = new JMenu(labels.getString("menu.proyectos"));
+        JMenu menuProyecto = new JMenu(labels.getString("menu.proyectos"));
         menuProyecto.setForeground(Color.WHITE);
         menuProyecto.setFont(new Font("Segoe UI", Font.BOLD, 18));
         menuBar.add(menuProyecto);
@@ -132,7 +123,7 @@ public class ListaProyectos extends JFrame {
         tabla = new JTable() {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false; // Hace que las celdas no sean editables
+                return false; 
             }
         };
         
@@ -155,7 +146,7 @@ public class ListaProyectos extends JFrame {
             }
             return p1.getNombre().compareTo(p2.getNombre());
         });
-
+        
         if(!proyectos.isEmpty()) {
         	for (ProyectoDTO p : proyectos) {
         		modelo.addRow(new Object[] {
@@ -188,25 +179,25 @@ public class ListaProyectos extends JFrame {
             }
         });
 
-// Establecer fuente y color de encabezados
+        // Establecer fuente y color de encabezados
 
- tabla.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
+        tabla.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
 
-tabla.getTableHeader().setOpaque(false);
-        tabla.getTableHeader().setBackground(new Color(83, 82, 90)); // Color de fondo del encabezado
-        tabla.getTableHeader().setForeground(Color.WHITE); // Color del texto del encabezado
-        tabla.getTableHeader().setPreferredSize(new Dimension(100, 40)); // Altura del encabezado
+        tabla.getTableHeader().setOpaque(false);
+        tabla.getTableHeader().setBackground(new Color(83, 82, 90)); 
+        tabla.getTableHeader().setForeground(Color.WHITE); 
+        tabla.getTableHeader().setPreferredSize(new Dimension(100, 40));
         
         // Personalización de la tabla
         tabla.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        tabla.setRowHeight(40); // Altura de las filas
-        tabla.setBackground(new Color(45, 44, 50)); // Fondo de la tabla
-        tabla.setForeground(Color.WHITE); // Color de texto de las celdas
-        tabla.setSelectionBackground(new Color(138, 102, 204)); // Fondo de la selección
-        tabla.setSelectionForeground(Color.WHITE); // Texto de la selección
+        tabla.setRowHeight(40);
+        tabla.setBackground(new Color(45, 44, 50)); 
+        tabla.setForeground(Color.WHITE); 
+        tabla.setSelectionBackground(new Color(138, 102, 204));
+        tabla.setSelectionForeground(Color.WHITE); 
         
         // Mostrar las líneas de cuadrícula
-        tabla.setGridColor(new Color(83, 82, 90)); // Color de la cuadrícula
+        tabla.setGridColor(new Color(83, 82, 90)); 
         tabla.setShowGrid(true);
         
         tabla.addMouseListener(new MouseAdapter() {
@@ -219,7 +210,7 @@ tabla.getTableHeader().setOpaque(false);
 
 		tabla.setModel(modelo);
 		scrollPane.setViewportView(tabla);
-		scrollPane.getViewport().setBackground(new Color(45, 44, 50)); // Fondo del scrollPane
+		scrollPane.getViewport().setBackground(new Color(45, 44, 50)); 
 		
 		centerPanel1.add(descPanel);
 
@@ -324,7 +315,7 @@ tabla.getTableHeader().setOpaque(false);
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBackground(new Color(53, 52, 60));
-        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Margen interno
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); 
 
         JLabel label = new JLabel(title);
         label.setForeground(Color.WHITE);

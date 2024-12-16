@@ -35,14 +35,10 @@ import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.ExistNotification;
 import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.exception.UserIsAlreadyMember;
-import ar.edu.unrn.seminario.exception.UserNotFound;
-
 import java.awt.Font;
 
 import java.awt.GridLayout;
 import java.awt.Insets;
-
-import java.awt.HeadlessException;
 
 import java.time.LocalDate;
 import java.awt.BorderLayout;
@@ -61,7 +57,7 @@ public class InvitarMiembro extends JFrame {
 	private IApi api;
 
 	public InvitarMiembro(IApi api)  {
-		ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
+		ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
 		
 		this.proyectoActual = api.getProyectoActual();
 		this.usuarioActual = api.getUsuarioActual();
@@ -148,7 +144,7 @@ public class InvitarMiembro extends JFrame {
 
         // Panel central
         JPanel centerPanel1 = new JPanel();
-        centerPanel1.setLayout(null); // Usar diseño absoluto para respetar los bounds definidos
+        centerPanel1.setLayout(null);
         centerPanel1.setBackground(new Color(45, 44, 50));
         centerPanel1.setBorder(new EmptyBorder(20, 20, 20, 20));
         contentPane.add(centerPanel1, BorderLayout.CENTER);
@@ -237,7 +233,7 @@ public class InvitarMiembro extends JFrame {
 		
 
 		JPanel panel = new JPanel(new BorderLayout());
-		panel.setBounds(70, 200, 268, 100);  // Ajuste de tamaño y ubicación
+		panel.setBounds(70, 200, 268, 100); 
 		panel.setBackground(fondoColor);
 		
 		campoBusqueda = new JTextField();
@@ -250,7 +246,7 @@ public class InvitarMiembro extends JFrame {
 		tablaUsuarios.setModel(modelo);
 		tablaUsuarios.setFont(fuente);
 		tablaUsuarios.getTableHeader().setVisible(false);
-		tablaUsuarios.getTableHeader().setPreferredSize(new Dimension(0, 0)); //Oculto titulo de la columna
+		tablaUsuarios.getTableHeader().setPreferredSize(new Dimension(0, 0)); 
 		tablaUsuarios.setBorder(null);
 
 		

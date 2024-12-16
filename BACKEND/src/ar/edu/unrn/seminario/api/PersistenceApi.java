@@ -31,7 +31,6 @@ import ar.edu.unrn.seminario.exception.DataBaseUpdateException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.exception.UserIsAlreadyMember;
-import ar.edu.unrn.seminario.exception.UserNotFound;
 import ar.edu.unrn.seminario.modelo.Notificacion;
 import ar.edu.unrn.seminario.modelo.Proyecto;
 import ar.edu.unrn.seminario.modelo.Rol;
@@ -98,7 +97,7 @@ public class PersistenceApi implements IApi {
 	
 	@Override
 	public void registrarTarea(String name,int id_proyecto, String priority, String user, String estado,
-			String descripcion, LocalDate inicio, LocalDate fin) throws DataEmptyException, NotNullException, InvalidDateException, DataBaseConnectionException, DataBaseInsertionException {
+			String descripcion, LocalDate inicio, LocalDate fin) throws DataEmptyException, NotNullException, InvalidDateException, DataBaseConnectionException, DataBaseInsertionException, DataBaseFoundException {
 
 		
 		Tarea tarea = new Tarea(0, name, proyectoDao.find(id_proyecto), priority, user, estado, descripcion, inicio, fin);
@@ -123,14 +122,14 @@ public class PersistenceApi implements IApi {
 	
 	@Override
 	public void modificarProyecto(int idProyecto, String nuevoNombre, String nuevaPrioridad,
-			String nuevaDescripcion) throws NotNullException, DataEmptyException, DataBaseConnectionException {
+			String nuevaDescripcion) throws NotNullException, DataEmptyException, DataBaseConnectionException, DataBaseUpdateException {
 	    Proyecto proyectoExistente = new Proyecto(idProyecto, nuevoNombre, null, null, nuevaDescripcion, nuevaPrioridad);
 		
 		proyectoDao.update(proyectoExistente);
 		}
 		
 	@Override
-	public List<TareaDTO> obtenerTareasPorProyecto(int id) throws DataEmptyException, NotNullException, InvalidDateException, DataBaseConnectionException, DataBaseFoundException {
+	public List<TareaDTO> obtenerTareasPorProyecto(int id) throws DataEmptyException, NotNullException, InvalidDateException, DataBaseConnectionException {
 	    return tareaDao.findByProject(id).stream().map(this::convertirEnTareaDTO).collect(Collectors.toList()); 
 	}
 	
@@ -139,7 +138,7 @@ public class PersistenceApi implements IApi {
 		return convertirEnProyectoDTO(proyectoActual);
 	}
 	@Override
-	public void setProyectoActual(int id) throws NotNullException, DataEmptyException, DataBaseConnectionException {
+	public void setProyectoActual(int id) throws NotNullException, DataEmptyException, DataBaseConnectionException, DataBaseFoundException {
 			String usuarioActual = getUsuarioActual().getUsername();
 			if (! usuarioActual.isEmpty()) {
 				this.proyectoActual = proyectoDao.find(id);
@@ -294,7 +293,7 @@ public class PersistenceApi implements IApi {
 	}
    
 	@Override
-	public void invitarMiembro(String username, int idProyecto, int codigoRol) throws DataBaseConnectionException {
+	public void invitarMiembro(String username, int idProyecto, int codigoRol) throws DataBaseConnectionException, DataBaseUpdateException {
 		proyectoDao.inviteMember(username, idProyecto, codigoRol);
 	}
 
@@ -323,15 +322,9 @@ public class PersistenceApi implements IApi {
 
 	@Override
 	public List<NotificacionDTO> obtenerNotificaciones(String username) throws NotNullException, DataEmptyException, DataBaseConnectionException {
-		List<NotificacionDTO> notificacionesDTO = new ArrayList<>();
-		List<Notificacion> notificacion = null;
-		notificacion = notificacionDao.findAll(username);
-		
-		for (Notificacion notificacion2 : notificacion) {
-			notificacionesDTO.add(convertirEnNotificacionDTO(notificacion2));
-		}
-		
-		return notificacionesDTO;
+		return notificacionDao.findAll(username).stream()
+                .map(this::convertirEnNotificacionDTO)
+                .collect(Collectors.toList());
 	}
 
 	@Override
@@ -345,8 +338,4 @@ public class PersistenceApi implements IApi {
 		
 	}
 
-	@Override
-	public void eliminarMiembro(String username, int idProyecto) throws DataBaseConnectionException {
-		proyectoDao.deleteMember(username, idProyecto);
-	}	
 }
