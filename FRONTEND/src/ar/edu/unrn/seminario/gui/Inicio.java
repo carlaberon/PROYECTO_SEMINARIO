@@ -10,7 +10,7 @@ import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataBaseConnectionException;
 
 import ar.edu.unrn.seminario.exception.DataBaseFoundException;
-
+import ar.edu.unrn.seminario.exception.DataBaseUpdateException;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.NotNullException;
 import java.awt.*;
@@ -22,7 +22,7 @@ public class Inicio extends JFrame {
     private IApi api;
     private JPanel proyectosListPanel;
     private UsuarioDTO usuarioActual;
-    ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
+    ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
     
     public Inicio(IApi api) {
 
@@ -64,7 +64,7 @@ public class Inicio extends JFrame {
         setJMenuBar(menuBar);
 
         JPanel mainPanel = new JPanel(new BorderLayout());
-        //
+        
         mainPanel.setBackground(new Color(45, 44, 50)); //color del centro
 
         JPanel menuPanel = new JPanel();
@@ -119,7 +119,7 @@ public class Inicio extends JFrame {
             }
             return p1.getNombre().compareTo(p2.getNombre());
         });
-        //STREAM MIS MODIFICACIONES
+
         proyectos.stream().map(proyecto -> {
             JButton proyectoButton = new JButton(proyecto.getNombre());
             proyectoButton.setForeground(Color.WHITE);
@@ -135,6 +135,8 @@ public class Inicio extends JFrame {
                 	JOptionPane.showMessageDialog(null, labels.getString("mensaje.camposVaciosONulos") + labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
                 } catch (DataBaseConnectionException e2) {
                 	JOptionPane.showMessageDialog(null,labels.getString(e2.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+				} catch (DataBaseFoundException e1) {
+					JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 				}
             });
             return proyectoButton;
@@ -161,7 +163,7 @@ public class Inicio extends JFrame {
         JButton btnVerProyectos = new JButton(labels.getString("menu.verProyectos"));
         
         btnVerProyectos.addActionListener(e -> {
-        	abrirListaProyectos();
+			abrirListaProyectos();
         	dispose();
         });
 
@@ -187,7 +189,7 @@ public class Inicio extends JFrame {
 			List<NotificacionDTO> notificaciones = api.obtenerNotificaciones(usuarioActual.getUsername());
 			for (NotificacionDTO notificacionDTO : notificaciones) {
 				JPanel panelPrueba1 = createPanel("Invitacion a proyecto", notificacionDTO.getDescripcion(),panelNotificaciones, 
-						notificacionDTO.getUsername(),notificacionDTO.getIdProyecto(),notificacionDTO.getCodigoRol());
+				notificacionDTO.getUsername(),notificacionDTO.getIdProyecto(),notificacionDTO.getCodigoRol());
 				panelPrueba1.setMaximumSize(new Dimension(Integer.MAX_VALUE, 60)); // Permitir que ocupe todo el ancho disponible
 				panelPrueba1.setAlignmentX(Component.LEFT_ALIGNMENT); // Alinear al inicio del eje X
 				panelNotificaciones.add(panelPrueba1);
@@ -225,7 +227,7 @@ public class Inicio extends JFrame {
         crearProyecto.setVisible(true);
     }
     
-    private void abrirListaProyectos() {
+    private void abrirListaProyectos(){
         ListaProyectos listaProyectos = new ListaProyectos(api);
         listaProyectos.setVisible(true); 
     }
@@ -282,6 +284,9 @@ public class Inicio extends JFrame {
             	JOptionPane.showMessageDialog(null, labels.getString("mensaje.camposVaciosONulos") + labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
             } catch (DataBaseConnectionException e2) {
 				JOptionPane.showMessageDialog(null,labels.getString(e2.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+			} catch (DataBaseUpdateException e2) {
+				JOptionPane.showMessageDialog(null,labels.getString(e2.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+
 			}
         });
         
@@ -331,7 +336,6 @@ public class Inicio extends JFrame {
 			  return p1.getNombre().compareTo(p2.getNombre());
 		  });
 		  
-		  //STREAM MIS MODIFICACIONES
 		  proyectos.stream().map(proyecto -> {
 			  JButton proyectoButton = new JButton(proyecto.getNombre());
 			  proyectoButton.setForeground(Color.WHITE);
@@ -345,8 +349,11 @@ public class Inicio extends JFrame {
 					  dispose();
 				  } catch (NotNullException | DataEmptyException e1) {
 	                	JOptionPane.showMessageDialog(null, labels.getString("mensaje.camposVaciosONulos") + labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
-	              } catch (DataBaseConnectionException e2) {
-	            	  JOptionPane.showMessageDialog(null,labels.getString(e2.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+				} catch (DataBaseFoundException e1) {
+					JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+				} catch (DataBaseConnectionException e2) {
+					JOptionPane.showMessageDialog(null,labels.getString(e2.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+
 				}
 			  });
 			  return proyectoButton;
@@ -377,9 +384,9 @@ public class Inicio extends JFrame {
 		
 		IApi api = new PersistenceApi();
 		UsuarioDTO usuario;
-		ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
+		ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
 		try {
-			usuario = api.obtenerUsuario("jmartinez");
+			usuario = api.obtenerUsuario("ldifabio");
 			api.setUsuarioActual(usuario.getUsername());
 			Inicio inicio = new Inicio(api);
 			inicio.setVisible(true);

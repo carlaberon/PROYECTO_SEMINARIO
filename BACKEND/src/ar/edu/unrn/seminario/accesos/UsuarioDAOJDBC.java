@@ -60,11 +60,7 @@ public class UsuarioDAOJDBC implements UsuarioDao {
 				usuarios.add(usuario);
 			}
 		} catch (SQLException e) {
-			System.out.println("Error de mySql\n" + e.toString());
-			// TODO: disparar Exception propia
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-			// TODO: disparar Exception propia
+			throw new DataBaseConnectionException("exceptionDAO.conecction");
 		} finally {
 			try {
 				ConnectionManager.disconnect();

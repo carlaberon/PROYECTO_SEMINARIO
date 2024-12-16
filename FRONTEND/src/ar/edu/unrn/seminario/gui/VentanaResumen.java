@@ -7,6 +7,7 @@ import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.RolDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataBaseConnectionException;
+import ar.edu.unrn.seminario.exception.DataBaseFoundException;
 
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -23,17 +24,19 @@ public class VentanaResumen extends JFrame {
     public VentanaResumen(IApi api) {
 
     	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
-//		 descomentar para que tome el idioma ingles (english)
 
-		//ResourceBundle labels = ResourceBundle.getBundle("labels");
     	
     	this.api = api;
     	this.usuarioActual = api.getUsuarioActual();
     	try {
 			this.rolActual = api.getRol(usuarioActual.getUsername(), api.getProyectoActual().getId());
-    	} catch (DataBaseConnectionException e2) {
-        	JOptionPane.showMessageDialog(null,labels.getString(e2.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
-		}
+    	} catch (DataBaseConnectionException e1) {
+			JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+		} catch (DataBaseFoundException e1) {
+	        JOptionPane.showMessageDialog(null,labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+		} 
+
+
     	this.unproyecto = api.getProyectoActual();
         
         setTitle(labels.getString("menu.resumen"));
@@ -82,7 +85,7 @@ public class VentanaResumen extends JFrame {
 
      // Panel lateral (Menú)-----------------------------------------------------------------------------
         JPanel menuPanel = new JPanel();
-        menuPanel.setLayout(new GridLayout(7, 1, 10, 10)); // Espacio entre botones
+        menuPanel.setLayout(new GridLayout(7, 1, 10, 10));
         menuPanel.setPreferredSize(new Dimension(200, 0));
         menuPanel.setBackground(new Color(65, 62, 77));
         
@@ -96,8 +99,8 @@ public class VentanaResumen extends JFrame {
             menuButton.setFont(new Font("Segoe UI", Font.PLAIN, 14));
             menuButton.setBorderPainted(false);
             menuButton.setFocusPainted(false);
-            menuButton.setHorizontalAlignment(SwingConstants.LEFT); // Alineación izquierda
-            menuButton.setMargin(new Insets(10, 10, 10, 10)); // Margen interno
+            menuButton.setHorizontalAlignment(SwingConstants.LEFT);
+            menuButton.setMargin(new Insets(10, 10, 10, 10)); 
             menuPanel.add(menuButton);
 
             // Agregar ActionListener solo al botón de "Configuración"
@@ -130,7 +133,7 @@ public class VentanaResumen extends JFrame {
         JPanel centerPanel1 = new JPanel();
         centerPanel1.setLayout(new GridLayout(2, 2, 20,20));
         centerPanel1.setBackground(new Color(45, 44, 50));
-        centerPanel1.setBorder(new EmptyBorder(20, 20, 20, 20)); // Margen alrededor del contenido
+        centerPanel1.setBorder(new EmptyBorder(20, 20, 20, 20)); 
 
         JPanel descPanel = createPanel(labels.getString("menu.descripcionProyecto"),unproyecto.getDescripcion());
         centerPanel1.add(descPanel);
@@ -216,7 +219,7 @@ public class VentanaResumen extends JFrame {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(3,6,6,6));
         panel.setBackground(new Color(53, 52, 60));
-        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Margen interno
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); 
 
         JLabel label = new JLabel(title);
         label.setForeground(Color.WHITE);

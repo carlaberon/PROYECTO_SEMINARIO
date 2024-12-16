@@ -16,7 +16,7 @@ public interface TareaDao {
 
 	void create(Tarea tarea) throws DataBaseInsertionException, DataBaseConnectionException;
 	
-	public List<Tarea> findByProject(int id_project) throws DataEmptyException, NotNullException, InvalidDateException, DataBaseConnectionException, DataBaseFoundException;
+	public List<Tarea> findByProject(int id_project) throws DataEmptyException, NotNullException, InvalidDateException, DataBaseConnectionException;
 
 	void update(Tarea tarea) throws DataBaseConnectionException, DataBaseUpdateException;
 	

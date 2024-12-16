@@ -35,14 +35,10 @@ import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.ExistNotification;
 import ar.edu.unrn.seminario.exception.NotNullException;
 import ar.edu.unrn.seminario.exception.UserIsAlreadyMember;
-
-
 import java.awt.Font;
 
 import java.awt.GridLayout;
 import java.awt.Insets;
-
-import java.awt.HeadlessException;
 
 import java.time.LocalDate;
 import java.awt.BorderLayout;
@@ -69,8 +65,8 @@ public class InvitarMiembro extends JFrame {
 		try {
 			this.roles = api.obtenerRoles();
 			this.usuarios = api.obtenerUsuarios(api.getUsuarioActual().getUsername());
-		} catch (DataBaseConnectionException e2) {
-        	JOptionPane.showMessageDialog(null,labels.getString(e2.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+		} catch (DataBaseConnectionException e) {
+			JOptionPane.showMessageDialog(null, labels.getString(e.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 		}
 		
 		setTitle(labels.getString("ventana.invitarMiembro"));
@@ -148,7 +144,7 @@ public class InvitarMiembro extends JFrame {
 
         // Panel central
         JPanel centerPanel1 = new JPanel();
-        centerPanel1.setLayout(null); // Usar diseño absoluto para respetar los bounds definidos
+        centerPanel1.setLayout(null);
         centerPanel1.setBackground(new Color(45, 44, 50));
         centerPanel1.setBorder(new EmptyBorder(20, 20, 20, 20));
         contentPane.add(centerPanel1, BorderLayout.CENTER);
@@ -237,7 +233,7 @@ public class InvitarMiembro extends JFrame {
 		
 
 		JPanel panel = new JPanel(new BorderLayout());
-		panel.setBounds(70, 200, 268, 100);  // Ajuste de tamaño y ubicación
+		panel.setBounds(70, 200, 268, 100); 
 		panel.setBackground(fondoColor);
 		
 		campoBusqueda = new JTextField();
@@ -250,7 +246,7 @@ public class InvitarMiembro extends JFrame {
 		tablaUsuarios.setModel(modelo);
 		tablaUsuarios.setFont(fuente);
 		tablaUsuarios.getTableHeader().setVisible(false);
-		tablaUsuarios.getTableHeader().setPreferredSize(new Dimension(0, 0)); //Oculto titulo de la columna
+		tablaUsuarios.getTableHeader().setPreferredSize(new Dimension(0, 0)); 
 		tablaUsuarios.setBorder(null);
 
 		
