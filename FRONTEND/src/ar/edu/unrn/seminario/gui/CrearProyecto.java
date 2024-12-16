@@ -36,10 +36,8 @@ import java.awt.Dimension;
 
 public class CrearProyecto extends JFrame {
 	
-	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
-//	 descomentar para que tome el idioma ingles (english)
+	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
 
-	//ResourceBundle labels = ResourceBundle.getBundle("labels");
 	
     List<String> prioridades = Arrays.asList(labels.getString("prioridad.alta"),labels.getString("prioridad.media"), labels.getString("prioridad.baja"));
 	private JPanel contentPane;
@@ -125,7 +123,7 @@ public class CrearProyecto extends JFrame {
 
         // Panel central
         JPanel centerPanel1 = new JPanel();
-        centerPanel1.setLayout(null); // Usar diseño absoluto para respetar los bounds definidos
+        centerPanel1.setLayout(null); 
         centerPanel1.setBackground(new Color(45, 44, 50));
         centerPanel1.setBorder(new EmptyBorder(20, 20, 20, 20));
         contentPane.add(centerPanel1, BorderLayout.CENTER);
@@ -136,23 +134,23 @@ public class CrearProyecto extends JFrame {
 		nombreProyecto.setForeground(new Color(255, 255, 255));
 		nombreProyecto.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 		nombreProyecto.setBounds(192, 163, 123, 44);
-		centerPanel1.add(nombreProyecto); 
+		centerPanel1.add(nombreProyecto);
 
 		nombreProyectoTextField = new JTextField();
 		nombreProyectoTextField.setBounds(325, 175, 390, 25);
-		centerPanel1.add(nombreProyectoTextField); 
+		centerPanel1.add(nombreProyectoTextField);
 		nombreProyectoTextField.setColumns(10);
 		
 		descripcionTextField = new JTextField();
 		descripcionTextField.setColumns(10);
 		descripcionTextField.setBounds(325, 225, 390, 25);
-		centerPanel1.add(descripcionTextField); 
+		centerPanel1.add(descripcionTextField);
 		
 		JComboBox<String> prioridadComboBox = new JComboBox<>();
 		prioridadComboBox.setForeground(new Color(29, 17, 40));
 		prioridadComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 10));
 		prioridadComboBox.setBounds(325, 274, 390, 25);
-		centerPanel1.add(prioridadComboBox); 
+		centerPanel1.add(prioridadComboBox);
 		prioridadComboBox.addItem("");
         for (String prioridad : prioridades) {
             prioridadComboBox.addItem(prioridad);
@@ -165,8 +163,9 @@ public class CrearProyecto extends JFrame {
 				String nombreNuevoProyecto = nombreProyectoTextField.getText();
 				String descripcionNueva = descripcionTextField.getText();
                 String prioridadSeleccionadaNueva = api.obtenerPrioridadPorIndex(prioridadComboBox.getSelectedIndex());
-				try {
 
+				try {
+					// Crear un nuevo proyecto
 	                api.crearProyecto(nombreNuevoProyecto, api.getUsuarioActual().getUsername(), "EN CURSO", descripcionNueva, prioridadSeleccionadaNueva);
 	                JOptionPane.showMessageDialog(null, labels.getString("mensaje.proyectoCreado"), "Info", JOptionPane.INFORMATION_MESSAGE);
 	                new Inicio(api).setVisible(true);
@@ -209,7 +208,7 @@ public class CrearProyecto extends JFrame {
 		centerPanel1.add(lblPrioridad); 
 		setLocationRelativeTo(null); 
 		
-		addWindowListener(new WindowAdapter() { 
+		addWindowListener(new WindowAdapter() { //Cuando el usuario cierra el frame abre devuelta Inicio
         	public void windowClosing(WindowEvent e) {
         		new Inicio(api).setVisible(true);
         	}

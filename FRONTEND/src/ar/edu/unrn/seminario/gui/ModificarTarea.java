@@ -58,9 +58,7 @@ public class ModificarTarea extends JFrame {
 	    public ModificarTarea(IApi api) {
 
 	    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
-//			 descomentar para que tome el idioma ingles (english)
 
-			//ResourceBundle labels = ResourceBundle.getBundle("labels");
 	        this.api = api; 
 	        try {
 				this.usuarios = api.obtenerMiembrosDeUnProyecto(api.getProyectoActual().getId());
@@ -142,7 +140,7 @@ public class ModificarTarea extends JFrame {
 
 	        // Panel central
 	        JPanel centerPanel1 = new JPanel();
-	        centerPanel1.setLayout(null); // Usar diseño absoluto para respetar los bounds definidos
+	        centerPanel1.setLayout(null); 
 	        centerPanel1.setBackground(new Color(45, 44, 50));
 	        centerPanel1.setBorder(new EmptyBorder(20, 20, 20, 20));
 	        contentPane.add(centerPanel1, BorderLayout.CENTER);
@@ -181,6 +179,7 @@ public class ModificarTarea extends JFrame {
 	        prioridadComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 10));
 	        prioridadComboBox.setBounds(190, 133, 349, 25);
 	        centerPanel1.add(prioridadComboBox);
+	        prioridadComboBox.addItem("");
 	        for (String prioridad : Arrays.asList(labels.getString("prioridad.alta"), labels.getString("prioridad.media"), labels.getString("prioridad.baja"))) {
 	            prioridadComboBox.addItem(prioridad);
 	        }
@@ -232,7 +231,7 @@ public class ModificarTarea extends JFrame {
 	  
 	                    int selectedUserIndex = asignarUsuarioComboBox.getSelectedIndex();
 	                    String nuevoNombreTarea = nombreTareaTextField.getText();
-	                    String prioridadTarea = api.obtenerPrioridadPorIndex(prioridadComboBox.getSelectedIndex()+ 1);
+	                    String prioridadTarea = api.obtenerPrioridadPorIndex(prioridadComboBox.getSelectedIndex());
 	                    UsuarioDTO usuario = usuarios.get(selectedUserIndex);
 	                    String descripcionTarea = textAreaDescription.getText();
 	                    Date fechaInicioDate = dateChooserInicio.getDate();

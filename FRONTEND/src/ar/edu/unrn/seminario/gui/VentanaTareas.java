@@ -56,9 +56,7 @@ public class VentanaTareas extends JFrame {
     private RolDTO rolActual;
     public VentanaTareas(IApi api) {
     	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
-//		 descomentar para que tome el idioma ingles (english)
 
-		//ResourceBundle labels = ResourceBundle.getBundle("labels");
     	
     	
     	this.api = api; 
@@ -156,27 +154,27 @@ public class VentanaTareas extends JFrame {
         table = new JTable() {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false; // Hace que las celdas no sean editables
+                return false; 
             }
         };
 
         // Personalización del encabezado de la tabla
         table.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
         table.getTableHeader().setOpaque(false);
-        table.getTableHeader().setBackground(new Color(83, 82, 90)); // Color de fondo del encabezado
-        table.getTableHeader().setForeground(Color.WHITE); // Color del texto del encabezado
-        table.getTableHeader().setPreferredSize(new Dimension(100, 40)); // Altura del encabezado
+        table.getTableHeader().setBackground(new Color(83, 82, 90)); 
+        table.getTableHeader().setForeground(Color.WHITE); 
+        table.getTableHeader().setPreferredSize(new Dimension(100, 40)); 
 
         // Personalización de la tabla
         table.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        table.setRowHeight(40); // Altura de las filas
-        table.setBackground(new Color(45, 44, 50)); // Fondo de la tabla
-        table.setForeground(Color.WHITE); // Color de texto de las celdas
-        table.setSelectionBackground(new Color(138, 102, 204)); // Fondo de la selección
-        table.setSelectionForeground(Color.WHITE); // Texto de la selección
+        table.setRowHeight(40); 
+        table.setBackground(new Color(45, 44, 50));
+        table.setForeground(Color.WHITE); 
+        table.setSelectionBackground(new Color(138, 102, 204)); 
+        table.setSelectionForeground(Color.WHITE); 
 
         // Mostrar las líneas de cuadrícula
-        table.setGridColor(new Color(83, 82, 90)); // Color de la cuadrícula
+        table.setGridColor(new Color(83, 82, 90)); 
         table.setShowGrid(true);
 
         // Modelo de la tabla
@@ -197,13 +195,13 @@ public class VentanaTareas extends JFrame {
         });
 		
 		
-		modelo.setRowCount(0); // Limpiar el modelo antes de agregar nuevas filas
+		modelo.setRowCount(0);
 		
 		for (TareaDTO t : tareas) {
 		    modelo.addRow(new Object[] {
 		    	t.getId(),
 		        t.getName(),
-		        labels.getString("estado.proyecto"), // Modifica el estado a una cadena legible
+		        labels.getString("estado.proyecto"), 
 		        t.getDescription(),
 		        t.getUser(),
 		        labels.getString(api.traducirPrioridad(t.getPriority())), 
@@ -215,8 +213,6 @@ public class VentanaTareas extends JFrame {
 
 		} catch (NotNullException | DataEmptyException e1) {
         	JOptionPane.showMessageDialog(null, labels.getString("mensaje.camposVaciosONulos") + labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
-        } catch (DataBaseFoundException e1) {
-			JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 		} catch (DataBaseConnectionException e1) {
 			JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 		} catch (InvalidDateException e1) {
@@ -227,7 +223,7 @@ public class VentanaTareas extends JFrame {
 		
 		table.setModel(modelo);
 		scrollPane.setViewportView(table);
-		scrollPane.getViewport().setBackground(new Color(45, 44, 50)); // Fondo del scrollPane
+		scrollPane.getViewport().setBackground(new Color(45, 44, 50)); 
       	
 		// Ocultar la columna ID
         table.getColumnModel().getColumn(0).setMinWidth(0);
@@ -238,7 +234,6 @@ public class VentanaTareas extends JFrame {
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				// Habilitar botones
 				habilitarBotones(true);
 
 			}
@@ -263,7 +258,7 @@ public class VentanaTareas extends JFrame {
 			}
 		);
         buttonPanel.add(btnTarea);
-        descPanel.add(buttonPanel, BorderLayout.NORTH); // Coloca el botón en el norte (arriba)
+        descPanel.add(buttonPanel, BorderLayout.NORTH);
         centerPanel1.add(descPanel);
         
        //Configuración de los botones "Modificar" y "Eliminar" tarea
@@ -344,7 +339,7 @@ public class VentanaTareas extends JFrame {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBackground(new Color(53, 52, 60));
-        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Margen interno
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         JLabel label = new JLabel(title);
         label.setForeground(Color.WHITE);

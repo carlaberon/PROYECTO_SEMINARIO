@@ -31,14 +31,15 @@ import ar.edu.unrn.seminario.dto.ProyectoDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 
 import ar.edu.unrn.seminario.exception.DataBaseConnectionException;
-
+import ar.edu.unrn.seminario.exception.DataBaseFoundException;
+import ar.edu.unrn.seminario.exception.DataBaseUpdateException;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.NotNullException;
 
 public class VentanaConfigurarProyecto extends JFrame {
 
     private static final long serialVersionUID = 1L;
-    List<String> prioridades ;
+
     private JPanel contentPane;
     private JTextField textField_Nombre;
     private JComboBox<String> prioridadComboBox;
@@ -51,8 +52,8 @@ public class VentanaConfigurarProyecto extends JFrame {
 
 
     public VentanaConfigurarProyecto(IApi api) {
+    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es"));
     	
-        ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en"));
 
         this.proyectoActual = api.getProyectoActual();
         this.usuarioActual = api.getUsuarioActual();
@@ -128,7 +129,7 @@ public class VentanaConfigurarProyecto extends JFrame {
 
         // Panel central
         JPanel centerPanel1 = new JPanel();
-        centerPanel1.setLayout(null); // Usar diseño absoluto para respetar los bounds definidos
+        centerPanel1.setLayout(null); 
         centerPanel1.setBackground(new Color(45, 44, 50));
         centerPanel1.setBorder(new EmptyBorder(20, 20, 20, 20));
         contentPane.add(centerPanel1, BorderLayout.CENTER);
@@ -156,10 +157,14 @@ public class VentanaConfigurarProyecto extends JFrame {
         prioridadComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 10));
         prioridadComboBox.setBounds(216, 251, 451, 26);
         centerPanel1.add(prioridadComboBox);
-
-        for (String prioridad : Arrays.asList(labels.getString("prioridad.alta"), labels.getString("prioridad.media"), labels.getString("prioridad.baja"))) {
+        List<String> prioridades = Arrays.asList(labels.getString("prioridad.alta"), labels.getString("prioridad.media"),
+                labels.getString("prioridad.baja"));
+        
+        for (String prioridad : prioridades) {
             prioridadComboBox.addItem(prioridad);
         }
+        
+        
         descripcion = new JLabel(labels.getString("campo.descripcion"));
         descripcion.setForeground(Color.WHITE);
         descripcion.setFont(new Font("Segoe UI", Font.PLAIN, 14));
@@ -186,9 +191,7 @@ public class VentanaConfigurarProyecto extends JFrame {
                 if (prioridadSeleccionada.equals(proyectoActual.getPrioridad()) && textField_Nombre.getText().equals(proyectoActual.getNombre()) && textField_Descripcion.getText().equals(proyectoActual.getDescripcion())) {
                     JOptionPane.showMessageDialog(null, labels.getString("mensaje.noModificoCampos"), labels.getString("titulo.modificarProyecto"), JOptionPane.QUESTION_MESSAGE);
                 } else {
-                    int opcionSeleccionada = JOptionPane.showConfirmDialog(null,
-                            "Estas seguro que queres modificar el proyecto?", "Confirmar cambio de estado.",
-                            JOptionPane.YES_NO_OPTION);
+                    int opcionSeleccionada = JOptionPane.showConfirmDialog(null, labels.getString("mensaje.preguntaModificacion"), labels.getString("titulo.mensajeModificar"), JOptionPane.YES_NO_OPTION);
 
                     if (opcionSeleccionada == JOptionPane.YES_OPTION) {
                         api.modificarProyecto(api.getProyectoActual().getId(), textField_Nombre.getText(), prioridadSeleccionada, textField_Descripcion.getText());
@@ -203,8 +206,12 @@ public class VentanaConfigurarProyecto extends JFrame {
                 JOptionPane.showMessageDialog(null, labels.getString("mensaje.elCampo") + labels.getString(e1.getMessage()) + labels.getString("mensaje.null"), "Error", JOptionPane.ERROR_MESSAGE);
             } catch (DataEmptyException e2) {
                 JOptionPane.showMessageDialog(null, labels.getString("mensaje.elCampo") + labels.getString(e2.getMessage()) + labels.getString("mensaje.empty"), "Error", JOptionPane.ERROR_MESSAGE);
-            } catch (DataBaseConnectionException e3) {
-				JOptionPane.showMessageDialog(null,labels.getString(e3.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);;
+			} catch (DataBaseUpdateException e4) {
+				JOptionPane.showMessageDialog(null,labels.getString(e4.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+			} catch (DataBaseFoundException e1) {
+				JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+			} catch (DataBaseConnectionException e3) {
+				JOptionPane.showMessageDialog(null,labels.getString(e3.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 			}
         });
         centerPanel1.add(aceptar);
@@ -212,10 +219,15 @@ public class VentanaConfigurarProyecto extends JFrame {
         // Botón Cancelar
         cancelar = createButton(labels.getString("boton.cancelar"), new Color(138, 102, 204));
         cancelar.setBounds(330, 420, 100, 30);
-        centerPanel1.add(cancelar);
-
+        cancelar.addActionListener(e -> {
+        	new VentanaResumen(api).setVisible(true);
+            dispose();
+        });
         
         centerPanel1.add(cancelar);
+        
+        
+
 
         setLocationRelativeTo(null);
 

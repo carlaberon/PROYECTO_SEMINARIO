@@ -35,6 +35,7 @@ import com.toedter.calendar.JDateChooser;
 import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataBaseConnectionException;
+import ar.edu.unrn.seminario.exception.DataBaseFoundException;
 import ar.edu.unrn.seminario.exception.DataBaseInsertionException;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
@@ -44,7 +45,7 @@ public class CrearTarea extends JFrame {
 
     private JPanel contentPane;
     private JTextField nombreTareaTextField;
-    private JComboBox<String> asignarUsuarioComboBox; // ComboBox para seleccionar usuario
+    private JComboBox<String> asignarUsuarioComboBox;
     private List<UsuarioDTO> usuarios = new ArrayList<>();
     private UsuarioDTO usuarioActual;
 
@@ -52,7 +53,7 @@ public class CrearTarea extends JFrame {
 
     
     public CrearTarea(IApi api) {
-    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
+    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
         this.api = api; 
         try {
 			this.usuarios = api.obtenerMiembrosDeUnProyecto(api.getProyectoActual().getId());
@@ -134,7 +135,7 @@ public class CrearTarea extends JFrame {
 
         // Panel central
         JPanel centerPanel1 = new JPanel();
-        centerPanel1.setLayout(null); // Usar diseño absoluto para respetar los bounds definidos
+        centerPanel1.setLayout(null);
         centerPanel1.setBackground(new Color(45, 44, 50));
         centerPanel1.setBorder(new EmptyBorder(20, 20, 20, 20));
         contentPane.add(centerPanel1, BorderLayout.CENTER);
@@ -164,7 +165,7 @@ public class CrearTarea extends JFrame {
         JLabel prioridadTareaLabel = new JLabel(labels.getString("campo.prioridad"));
         prioridadTareaLabel.setForeground(new Color(255, 255, 255));
         prioridadTareaLabel.setBounds(50, 150, 150, 20);
-        prioridadTareaLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14)); // Estilo aplicado
+        prioridadTareaLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14)); 
         centerPanel1.add(prioridadTareaLabel);
 
         JComboBox<String> prioridadComboBox = new JComboBox<>();
@@ -179,7 +180,7 @@ public class CrearTarea extends JFrame {
         JLabel lblFechaInicio = new JLabel(labels.getString("campo.fechaInicio"));
         lblFechaInicio.setForeground(new Color(255, 255, 255));
         lblFechaInicio.setBounds(50, 200, 150, 20);
-        lblFechaInicio.setFont(new Font("Segoe UI", Font.PLAIN, 14)); // Estilo aplicado
+        lblFechaInicio.setFont(new Font("Segoe UI", Font.PLAIN, 14)); 
         centerPanel1.add(lblFechaInicio);
 
         JDateChooser dateChooserInicio = new JDateChooser();
@@ -190,7 +191,7 @@ public class CrearTarea extends JFrame {
         JLabel lblFechaFin = new JLabel(labels.getString("campo.fechaFin"));
         lblFechaFin.setForeground(new Color(255, 255, 255));
         lblFechaFin.setBounds(50, 250, 150, 20);
-        lblFechaFin.setFont(new Font("Segoe UI", Font.PLAIN, 14)); // Estilo aplicado
+        lblFechaFin.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         centerPanel1.add(lblFechaFin);
 
         JDateChooser dateChooserFin = new JDateChooser();
@@ -201,7 +202,7 @@ public class CrearTarea extends JFrame {
         JLabel lblDescripcion = new JLabel(labels.getString("campo.descripcion"));
         lblDescripcion.setForeground(new Color(255, 255, 255));
         lblDescripcion.setBounds(50, 300, 150, 20);
-        lblDescripcion.setFont(new Font("Segoe UI", Font.PLAIN, 14)); // Estilo aplicado
+        lblDescripcion.setFont(new Font("Segoe UI", Font.PLAIN, 14)); 
         centerPanel1.add(lblDescripcion);
 
         JTextArea textAreaDescription = new JTextArea();
@@ -252,10 +253,13 @@ public class CrearTarea extends JFrame {
 						JOptionPane.showMessageDialog(null,labels.getString("mensaje.campoVacioTarea") +" " + labels.getString(e.getMessage()), "Error", JOptionPane.WARNING_MESSAGE);
 					} catch (InvalidDateException e) {
 						JOptionPane.showMessageDialog(null,labels.getString("mensaje.fechasValidas") + labels.getString(e.getMessage()), "Error", JOptionPane.WARNING_MESSAGE);
-			        } catch (DataBaseConnectionException e) {
-			        	JOptionPane.showMessageDialog(null, labels.getString(e.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 					} catch (DataBaseInsertionException e1) {
 						JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+					} catch (DataBaseFoundException e1) {
+						JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+					} catch (DataBaseConnectionException e) {
+						JOptionPane.showMessageDialog(null, labels.getString(e.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+
 					}
             }
         );
