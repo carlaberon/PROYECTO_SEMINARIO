@@ -54,11 +54,11 @@ public class ModificarTarea extends JFrame {
 	    private TareaDTO tarea;
 	    private IApi api;
 	    private UsuarioDTO usuarioActual;
+	    ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
 	    
 	    
 	    public ModificarTarea(IApi api) {
 
-	    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
 
 	        this.api = api; 
 	        try {
@@ -182,7 +182,6 @@ public class ModificarTarea extends JFrame {
 	        prioridadComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 10));
 	        prioridadComboBox.setBounds(190, 133, 349, 25);
 	        centerPanel1.add(prioridadComboBox);
-	        prioridadComboBox.addItem("");
 	        for (String prioridad : Arrays.asList(labels.getString("prioridad.alta"), labels.getString("prioridad.media"), labels.getString("prioridad.baja"))) {
 	            prioridadComboBox.addItem(prioridad);
 	        }
@@ -234,7 +233,7 @@ public class ModificarTarea extends JFrame {
 	  
 	                    int selectedUserIndex = asignarUsuarioComboBox.getSelectedIndex();
 	                    String nuevoNombreTarea = nombreTareaTextField.getText();
-	                    String prioridadTarea = api.obtenerPrioridadPorIndex(prioridadComboBox.getSelectedIndex());
+	                    String prioridadTarea = api.obtenerPrioridadPorIndex(prioridadComboBox.getSelectedIndex()+1);
 	                    UsuarioDTO usuario = usuarios.get(selectedUserIndex);
 	                    String descripcionTarea = textAreaDescription.getText();
 	                    Date fechaInicioDate = dateChooserInicio.getDate();
@@ -290,7 +289,7 @@ public class ModificarTarea extends JFrame {
 	        nombreTareaTextField.setText(tarea.getName());
 	        textAreaDescription.setText(tarea.getDescription());
 	        asignarUsuarioComboBox.setSelectedItem(tarea.getUser());
-	        prioridadComboBox.setSelectedItem(tarea.getPriority());
+	        prioridadComboBox.setSelectedItem(labels.getString(api.traducirPrioridad(tarea.getPriority())));
 
 	        dateChooserInicio.setDate(convertirADate(tarea.getInicio()));
 	        dateChooserFin.setDate(convertirADate(tarea.getFin()));

@@ -49,10 +49,10 @@ public class VentanaConfigurarProyecto extends JFrame {
     private JButton cancelar;
     private ProyectoDTO proyectoActual;
     private UsuarioDTO usuarioActual;
+    ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en"));
 
 
     public VentanaConfigurarProyecto(IApi api) {
-    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es"));
     	
 
         this.proyectoActual = api.getProyectoActual();
@@ -239,9 +239,9 @@ public class VentanaConfigurarProyecto extends JFrame {
     }
 
     private void mostrarDatosActuales(IApi api) {
-        String nombreProyecto = api.getProyectoActual().getNombre();
-        String prioridadProyecto = api.getProyectoActual().getPrioridad();
-        String descripcionProyecto = api.getProyectoActual().getDescripcion();
+        String nombreProyecto = proyectoActual.getNombre();
+        String prioridadProyecto = labels.getString(api.traducirPrioridad(proyectoActual.getPrioridad()));
+        String descripcionProyecto = proyectoActual.getDescripcion();
         textField_Nombre.setText(nombreProyecto);
         prioridadComboBox.setSelectedItem(prioridadProyecto);
         textField_Descripcion.setText(descripcionProyecto);
