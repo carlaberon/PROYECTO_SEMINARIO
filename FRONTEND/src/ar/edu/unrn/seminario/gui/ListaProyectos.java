@@ -27,10 +27,10 @@ public class ListaProyectos extends JFrame {
 	private JButton eliminarProyecto;
 	private UsuarioDTO usuarioActual; 
 	private JPanel contentPane;
+	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
 
  public ListaProyectos(IApi api)  {
     	
-    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
 //   	 descomentar para que tome el idioma ingles (english)
 
    	//ResourceBundle labels = ResourceBundle.getBundle("labels");
@@ -167,15 +167,10 @@ public class ListaProyectos extends JFrame {
         				p.getUsuarioPropietario().getUsername()});
         	}
         }
-		} catch (NotNullException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace(); //Tratar mejor la excepcion
-		} catch (DataEmptyException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (NotNullException | DataEmptyException e) {
+        	JOptionPane.showMessageDialog(null, labels.getString("mensaje.camposVaciosONulos") + labels.getString(e.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 		} catch (DataBaseConnectionException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null,labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 		}
      
         // Ocultar la columna ID
@@ -305,12 +300,8 @@ tabla.getTableHeader().setOpaque(false);
     				}
     			}
 
-				} catch (NotNullException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace(); //Tratar mejor la excepcion
-				} catch (DataEmptyException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				} catch (NotNullException | DataEmptyException e) {
+		        	JOptionPane.showMessageDialog(null, labels.getString("mensaje.camposVaciosONulos") + labels.getString(e.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 				}
     }
  // Método para crear botones con estilo

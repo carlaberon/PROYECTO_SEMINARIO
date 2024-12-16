@@ -244,10 +244,9 @@ public class ListaMiembros extends JFrame {
 				    JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.WARNING_MESSAGE);
 				}
 			} catch (DataBaseConnectionException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-        catch (DataBaseFoundException e1) {
+				JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+
+			} catch (DataBaseFoundException e1) {
 			JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 		}
         }
