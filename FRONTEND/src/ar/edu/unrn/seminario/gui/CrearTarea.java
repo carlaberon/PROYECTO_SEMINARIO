@@ -61,7 +61,9 @@ public class CrearTarea extends JFrame {
 			this.usuarios = api.obtenerMiembrosDeUnProyecto(api.getProyectoActual().getId());
 		} catch (DataBaseConnectionException e1) {
 			JOptionPane.showMessageDialog(null,labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
-		}
+		} catch (DataBaseFoundException e1) {
+        	JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+        }
 
         this.usuarioActual = api.getUsuarioActual();
 
@@ -127,7 +129,7 @@ public class CrearTarea extends JFrame {
             // Acción para botón "Volver"
             if (item.equals("Volver") || item.equals("Return")) {
                 menuButton.addActionListener(e -> {
-                    new VentanaResumen(api).setVisible(true);
+                    new VentanaTareas(api).setVisible(true);
                     dispose();
                 });
             }

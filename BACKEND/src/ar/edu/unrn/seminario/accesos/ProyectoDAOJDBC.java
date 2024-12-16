@@ -138,7 +138,7 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 	        stmtProyecto = conn.prepareStatement(deleteProyecto);
 	        stmtProyecto.setInt(1, idProyecto);
 	        stmtProyecto.executeUpdate();
-
+	        
 	        
 
 	    } catch (SQLException e2) {
@@ -264,7 +264,7 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 	}
 
 	@Override
-	public List<Usuario> findAllMembers(int proyectoId) throws DataBaseConnectionException {
+	public List<Usuario> findAllMembers(int proyectoId) throws DataBaseConnectionException, DataBaseFoundException {
 		List<Usuario> miembros = new ArrayList<Usuario>();
 		try {
 			Connection conn = ConnectionManager.getConnection();

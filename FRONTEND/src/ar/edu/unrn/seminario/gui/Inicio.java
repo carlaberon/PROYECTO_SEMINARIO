@@ -133,11 +133,11 @@ public class Inicio extends JFrame {
                     dispose();
                 } catch (NotNullException | DataEmptyException e1) {
                 	JOptionPane.showMessageDialog(null, labels.getString("mensaje.camposVaciosONulos") + labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+                } catch (DataBaseFoundException e1) {
+                	JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
                 } catch (DataBaseConnectionException e2) {
                 	JOptionPane.showMessageDialog(null,labels.getString(e2.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
-				} catch (DataBaseFoundException e1) {
-					JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
-				}
+                }
             });
             return proyectoButton;
         }).forEach(proyectosListPanel::add);
@@ -386,7 +386,7 @@ public class Inicio extends JFrame {
 		UsuarioDTO usuario;
 		ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
 		try {
-			usuario = api.obtenerUsuario("ldifabio");
+			usuario = api.obtenerUsuario("gabi");
 			api.setUsuarioActual(usuario.getUsername());
 			Inicio inicio = new Inicio(api);
 			inicio.setVisible(true);

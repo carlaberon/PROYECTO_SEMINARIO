@@ -32,6 +32,7 @@ import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.TareaDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataBaseConnectionException;
+import ar.edu.unrn.seminario.exception.DataBaseFoundException;
 import ar.edu.unrn.seminario.exception.DataBaseUpdateException;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
@@ -64,7 +65,9 @@ public class ModificarTarea extends JFrame {
 				this.usuarios = api.obtenerMiembrosDeUnProyecto(api.getProyectoActual().getId());
 			} catch (DataBaseConnectionException e1) {
 				JOptionPane.showMessageDialog(null,labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
-			}
+			} catch (DataBaseFoundException e1) {
+            	JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+            }
 	        this.tarea = api.getTareaActual();
 	        this.usuarioActual = api.getUsuarioActual();
 	        
@@ -130,7 +133,7 @@ public class ModificarTarea extends JFrame {
 	            // Acción para botón "Volver"
 	            if (item.equals("Volver") || item.equals("Return")) {
 	                menuButton.addActionListener(e -> {
-	                    new VentanaResumen(api).setVisible(true);
+	                	new VentanaTareas(api).setVisible(true);
 	                    dispose();
 	                });
 	            }

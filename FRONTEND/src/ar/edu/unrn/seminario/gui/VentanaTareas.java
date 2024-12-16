@@ -280,6 +280,7 @@ public class VentanaTareas extends JFrame {
 								try {
 									api.setTareaActual(idTarea);
 									modificarTarea();
+									dispose();
 								} catch (NotNullException | DataEmptyException e1) {
 				                	JOptionPane.showMessageDialog(null, labels.getString("mensaje.camposVaciosONulos") + labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 				                } catch (InvalidDateException e1) {
@@ -289,7 +290,6 @@ public class VentanaTareas extends JFrame {
 								} catch (DataBaseConnectionException e1) {
 						        	JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 								}
-								dispose();
     	    	}else {
     	    		JOptionPane.showMessageDialog(null, labels.getString("mensaje.accesoDegenado"), labels.getString("mensaje.errorPermisos"), JOptionPane.WARNING_MESSAGE);
     	    	}

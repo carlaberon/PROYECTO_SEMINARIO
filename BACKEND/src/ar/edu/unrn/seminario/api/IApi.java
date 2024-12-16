@@ -54,9 +54,9 @@ public interface IApi {
 	
 	public void invitarMiembro(String username, int idProyecto, int codigoRol) throws DataBaseConnectionException, DataBaseUpdateException;
 	
-	public List<UsuarioDTO> obtenerMiembrosDeUnProyecto(int proyectoId) throws DataBaseConnectionException;
+	public List<UsuarioDTO> obtenerMiembrosDeUnProyecto(int proyectoId) throws DataBaseConnectionException, DataBaseFoundException;
 	
-	public int existeMiembro(String username, int idProyecto) throws UserIsAlreadyMember, DataBaseConnectionException;
+	public int existeMiembro(String username, int idProyecto) throws UserIsAlreadyMember, DataBaseConnectionException, DataBaseFoundException;
 		
 	//Metodos para las notificaciones
 	public void crearNotificacion(int idProyecto, String username, int codigoRol, String nombreProyecto, LocalDate fecha) throws NotNullException, DataEmptyException, DataBaseConnectionException, DataBaseFoundException;
