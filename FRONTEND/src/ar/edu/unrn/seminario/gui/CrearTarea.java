@@ -55,7 +55,7 @@ public class CrearTarea extends JFrame {
 
     
     public CrearTarea(IApi api) {
-    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
+    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
         this.api = api; 
         try {
 			this.usuarios = api.obtenerMiembrosDeUnProyecto(api.getProyectoActual().getId());

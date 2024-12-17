@@ -22,7 +22,7 @@ public class Inicio extends JFrame {
     private IApi api;
     private JPanel proyectosListPanel;
     private UsuarioDTO usuarioActual;
-    ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
+    ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
     
     public Inicio(IApi api) {
 
