@@ -36,7 +36,7 @@ import java.awt.Dimension;
 
 public class CrearProyecto extends JFrame {
 	
-	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
+	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
 
 	
     List<String> prioridades = Arrays.asList(labels.getString("prioridad.alta"),labels.getString("prioridad.media"), labels.getString("prioridad.baja"));
