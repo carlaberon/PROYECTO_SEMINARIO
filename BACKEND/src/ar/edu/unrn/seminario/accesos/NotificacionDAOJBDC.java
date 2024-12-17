@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 
 import ar.edu.unrn.seminario.exception.DataBaseConnectionException;
 import ar.edu.unrn.seminario.exception.DataBaseFoundException;
+import ar.edu.unrn.seminario.exception.DataBaseUpdateException;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.ExistNotification;
 import ar.edu.unrn.seminario.exception.NotNullException;
@@ -56,7 +57,7 @@ public class NotificacionDAOJBDC implements NotificacionDao{
 	}
 
 	@Override
-	public void remove(int idProyecto, String username) throws DataBaseConnectionException {
+	public void remove(int idProyecto, String username) throws DataBaseConnectionException, DataBaseUpdateException {
 		try {
 			Connection conn = ConnectionManager.getConnection();
 			PreparedStatement statement = conn.prepareStatement("DELETE FROM notificaciones\r\n"
@@ -66,7 +67,8 @@ public class NotificacionDAOJBDC implements NotificacionDao{
 			statement.setInt(2, idProyecto);
 			
 			int verificacion = statement.executeUpdate();
-			
+			if(verificacion == 0)
+				throw new DataBaseUpdateException("exceptionProyectoDAO.inviteMember");
 			
 		} catch (SQLException e1) {
 			throw new DataBaseConnectionException("exceptionDAO.conecction");

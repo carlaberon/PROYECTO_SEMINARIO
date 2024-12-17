@@ -22,7 +22,7 @@ public class Inicio extends JFrame {
     private IApi api;
     private JPanel proyectosListPanel;
     private UsuarioDTO usuarioActual;
-    ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
+    ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
     
     public Inicio(IApi api) {
 
@@ -299,6 +299,8 @@ public class Inicio extends JFrame {
 				parentPanel.repaint();    // Volver a pintar el contenedor
         	} catch (DataBaseConnectionException e1) {
 				JOptionPane.showMessageDialog(null,labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+			} catch (DataBaseUpdateException e1) {
+				JOptionPane.showMessageDialog(null,labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 			}
         });
 
@@ -386,7 +388,7 @@ public class Inicio extends JFrame {
 		UsuarioDTO usuario;
 		ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
 		try {
-			usuario = api.obtenerUsuario("mcamba");
+			usuario = api.obtenerUsuario("ldifabio");
 			api.setUsuarioActual(usuario.getUsername());
 			Inicio inicio = new Inicio(api);
 			inicio.setVisible(true);

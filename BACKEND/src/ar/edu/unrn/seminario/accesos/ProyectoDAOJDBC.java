@@ -117,10 +117,17 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 	    PreparedStatement stmtTareas = null;
 	    PreparedStatement stmtRelaciones = null;
 	    PreparedStatement stmtProyecto = null;
+	    PreparedStatement stmtNotificaciones = null;
 
 	    try {
 	    	conn = ConnectionManager.getConnection();
 	        
+	    	//Eliminar notificaciones relacionadas con el proyecto
+	    	String deleteNotificaciones = "DELETE FROM notificaciones WHERE id_proyecto = ?";
+	    	stmtNotificaciones = conn.prepareStatement(deleteNotificaciones);
+	    	stmtNotificaciones.setInt(1, idProyecto);
+	    	stmtNotificaciones.executeUpdate();
+	    	
 	        //Eliminar tareas asociadas
 	        String deleteTareas = "DELETE FROM tareas WHERE id_proyecto = ?";
 	        stmtTareas = conn.prepareStatement(deleteTareas);
@@ -132,13 +139,13 @@ public class ProyectoDAOJDBC implements ProyectoDao{
 	        stmtRelaciones = conn.prepareStatement(deleteRelaciones);
 	        stmtRelaciones.setInt(1, idProyecto);
 	        stmtRelaciones.executeUpdate();
+	        
 
 	        //Eliminar el proyecto
 	        String deleteProyecto = "DELETE FROM proyectos WHERE id = ?";
 	        stmtProyecto = conn.prepareStatement(deleteProyecto);
 	        stmtProyecto.setInt(1, idProyecto);
 	        stmtProyecto.executeUpdate();
-	        
 	        
 
 	    } catch (SQLException e2) {
