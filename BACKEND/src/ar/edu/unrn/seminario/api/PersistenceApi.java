@@ -294,14 +294,14 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public List<UsuarioDTO> obtenerMiembrosDeUnProyecto(int proyectoId) throws DataBaseConnectionException {
+	public List<UsuarioDTO> obtenerMiembrosDeUnProyecto(int proyectoId) throws DataBaseConnectionException, DataBaseFoundException {
 	    return proyectoDao.findAllMembers(proyectoId).stream()
 	                      .map(this::convertirEnUsuarioDTO) // Convierte cada Usuario a UsuarioDTO
 	                      .collect(Collectors.toList());   // Recoge el resultado como una lista
 	}
 
 	@Override
-	public int existeMiembro(String username, int idProyecto) throws UserIsAlreadyMember, DataBaseConnectionException {
+	public int existeMiembro(String username, int idProyecto) throws UserIsAlreadyMember, DataBaseConnectionException, DataBaseFoundException {
 	    List<UsuarioDTO> miembrosDTO = obtenerMiembrosDeUnProyecto(idProyecto);
 	    if (miembrosDTO.stream().anyMatch(miembro -> username.equals(miembro.getUsername()))) {
 	        throw new UserIsAlreadyMember("mensaje.esMiembro");

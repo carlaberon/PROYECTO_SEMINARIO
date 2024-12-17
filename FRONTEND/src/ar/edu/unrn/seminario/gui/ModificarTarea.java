@@ -32,6 +32,7 @@ import ar.edu.unrn.seminario.api.IApi;
 import ar.edu.unrn.seminario.dto.TareaDTO;
 import ar.edu.unrn.seminario.dto.UsuarioDTO;
 import ar.edu.unrn.seminario.exception.DataBaseConnectionException;
+import ar.edu.unrn.seminario.exception.DataBaseFoundException;
 import ar.edu.unrn.seminario.exception.DataBaseUpdateException;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
@@ -53,18 +54,20 @@ public class ModificarTarea extends JFrame {
 	    private TareaDTO tarea;
 	    private IApi api;
 	    private UsuarioDTO usuarioActual;
+	    ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
 	    
 	    
 	    public ModificarTarea(IApi api) {
 
-	    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
 
 	        this.api = api; 
 	        try {
 				this.usuarios = api.obtenerMiembrosDeUnProyecto(api.getProyectoActual().getId());
 			} catch (DataBaseConnectionException e1) {
 				JOptionPane.showMessageDialog(null,labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
-			}
+			} catch (DataBaseFoundException e1) {
+            	JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+            }
 	        this.tarea = api.getTareaActual();
 	        this.usuarioActual = api.getUsuarioActual();
 	        
@@ -130,7 +133,7 @@ public class ModificarTarea extends JFrame {
 	            // Acción para botón "Volver"
 	            if (item.equals("Volver") || item.equals("Return")) {
 	                menuButton.addActionListener(e -> {
-	                    new VentanaResumen(api).setVisible(true);
+	                	new VentanaTareas(api).setVisible(true);
 	                    dispose();
 	                });
 	            }
@@ -179,7 +182,6 @@ public class ModificarTarea extends JFrame {
 	        prioridadComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 10));
 	        prioridadComboBox.setBounds(190, 133, 349, 25);
 	        centerPanel1.add(prioridadComboBox);
-	        prioridadComboBox.addItem("");
 	        for (String prioridad : Arrays.asList(labels.getString("prioridad.alta"), labels.getString("prioridad.media"), labels.getString("prioridad.baja"))) {
 	            prioridadComboBox.addItem(prioridad);
 	        }
@@ -231,7 +233,7 @@ public class ModificarTarea extends JFrame {
 	  
 	                    int selectedUserIndex = asignarUsuarioComboBox.getSelectedIndex();
 	                    String nuevoNombreTarea = nombreTareaTextField.getText();
-	                    String prioridadTarea = api.obtenerPrioridadPorIndex(prioridadComboBox.getSelectedIndex());
+	                    String prioridadTarea = api.obtenerPrioridadPorIndex(prioridadComboBox.getSelectedIndex()+1);
 	                    UsuarioDTO usuario = usuarios.get(selectedUserIndex);
 	                    String descripcionTarea = textAreaDescription.getText();
 	                    Date fechaInicioDate = dateChooserInicio.getDate();
@@ -287,7 +289,7 @@ public class ModificarTarea extends JFrame {
 	        nombreTareaTextField.setText(tarea.getName());
 	        textAreaDescription.setText(tarea.getDescription());
 	        asignarUsuarioComboBox.setSelectedItem(tarea.getUser());
-	        prioridadComboBox.setSelectedItem(tarea.getPriority());
+	        prioridadComboBox.setSelectedItem(labels.getString(api.traducirPrioridad(tarea.getPriority())));
 
 	        dateChooserInicio.setDate(convertirADate(tarea.getInicio()));
 	        dateChooserFin.setDate(convertirADate(tarea.getFin()));

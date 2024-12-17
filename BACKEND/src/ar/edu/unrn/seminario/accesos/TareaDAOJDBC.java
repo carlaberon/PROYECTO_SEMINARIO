@@ -122,7 +122,6 @@ public class TareaDAOJDBC implements TareaDao{
 					
 					tareas.add(unaTarea);
 				}
-
 				
 			} catch (SQLException e1) {
 		        throw new DataBaseConnectionException("exceptionDAO.conecction");

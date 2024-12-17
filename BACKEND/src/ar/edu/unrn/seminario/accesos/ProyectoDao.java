@@ -25,5 +25,5 @@ public interface ProyectoDao {
 
 	List<Proyecto> findAll(String usuario) throws NotNullException, DataEmptyException, DataBaseConnectionException;
 	
-	List<Usuario> findAllMembers(int proyectoId) throws DataBaseConnectionException;
+	List<Usuario> findAllMembers(int proyectoId) throws DataBaseConnectionException, DataBaseFoundException;
 }

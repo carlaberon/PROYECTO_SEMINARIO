@@ -2,7 +2,7 @@ package ar.edu.unrn.seminario.exception;
 
 import java.sql.SQLException;
 
-public class DataBaseUpdateException extends SQLException{
+public class DataBaseUpdateException extends Exception{
 
 	public DataBaseUpdateException() {
 	}
