@@ -63,7 +63,7 @@ public interface IApi {
 	
 	public List<NotificacionDTO> obtenerNotificaciones(String username) throws NotNullException, DataEmptyException, DataBaseConnectionException;
 	
-	public void eliminarNotificacion(int idProyecto, String username) throws DataBaseConnectionException;
+	public void eliminarNotificacion(int idProyecto, String username) throws DataBaseConnectionException, DataBaseUpdateException;
 	
 	public void existeNotificacion(int idProyecto, String username) throws ExistNotification, DataBaseConnectionException;
 	
