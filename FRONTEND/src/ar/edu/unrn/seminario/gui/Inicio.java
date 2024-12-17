@@ -299,6 +299,8 @@ public class Inicio extends JFrame {
 				parentPanel.repaint();    // Volver a pintar el contenedor
         	} catch (DataBaseConnectionException e1) {
 				JOptionPane.showMessageDialog(null,labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+			} catch (DataBaseUpdateException e1) {
+				JOptionPane.showMessageDialog(null,labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 			}
         });
 
