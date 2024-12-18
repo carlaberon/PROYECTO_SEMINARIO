@@ -16,7 +16,7 @@ import ar.edu.unrn.seminario.modelo.Rol;
 
 public class RolDAOJDBC implements RolDao {
 	@Override
-	public Rol find(String username, int id_proyecto) throws DataBaseConnectionException {
+	public Rol find(String username, int id_proyecto) throws DataBaseConnectionException,DataBaseFoundException {
 		Rol rol = null;
 		try {
 			Connection conn = ConnectionManager.getConnection();

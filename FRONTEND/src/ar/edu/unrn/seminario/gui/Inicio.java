@@ -22,7 +22,7 @@ public class Inicio extends JFrame {
     private IApi api;
     private JPanel proyectosListPanel;
     private UsuarioDTO usuarioActual;
-    ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
+    ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
     
     public Inicio(IApi api) {
 
@@ -136,8 +136,8 @@ public class Inicio extends JFrame {
                 } catch (DataBaseFoundException e1) {
                 	JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 						proyectosListPanel.remove(proyectoButton);
-						proyectosListPanel.revalidate(); // Actualizar el contenedor para reflejar el cambio
-						proyectosListPanel.repaint();    // Volver a pintar el contenedor
+						proyectosListPanel.revalidate(); 
+						proyectosListPanel.repaint();   
                 } catch (DataBaseConnectionException e2) {
                 	JOptionPane.showMessageDialog(null,labels.getString(e2.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -155,8 +155,7 @@ public class Inicio extends JFrame {
  
 
         proyectosButtonsPanel.setLayout(new GridLayout(3,6,6,6));
-       
-  
+
         JButton btnNuevoProyecto = createButton(labels.getString("menu.agregarProyecto"), new Color(138, 102, 204));
         btnNuevoProyecto.addActionListener(e -> {
             abrirCrearProyecto();
@@ -244,9 +243,7 @@ public class Inicio extends JFrame {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
         panel.setBackground(new Color(53, 52, 60));
-        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Margen interno
-
-        // Panel para el contenido de texto
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); 
         JPanel textPanel = new JPanel();
         textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
         textPanel.setBackground(new Color(53, 52, 60));
@@ -399,7 +396,7 @@ public class Inicio extends JFrame {
 		UsuarioDTO usuario;
 		ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
 		try {
-			usuario = api.obtenerUsuario("mcamba");
+			usuario = api.obtenerUsuario("ldifabio");
 			api.setUsuarioActual(usuario.getUsername());
 			Inicio inicio = new Inicio(api);
 			inicio.setVisible(true);

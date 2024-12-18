@@ -310,21 +310,15 @@ public class InvitarMiembro extends JFrame {
 	}
 	
 	private static void cargarUsuariosEnTabla(List<UsuarioDTO> usuarios, DefaultTableModel modeloTabla, int cantidad) {
-	    modeloTabla.setRowCount(0); // Limpiar la tabla
-	    // Cargar solo los primeros 'cantidad' usuarios
-	    List<UsuarioDTO> usuariosParaMostrar = usuarios.stream()
-	            .limit(cantidad)
-	            .collect(Collectors.toList());
+	    modeloTabla.setRowCount(0); 
+	    List<UsuarioDTO> usuariosParaMostrar = usuarios.stream().limit(cantidad).collect(Collectors.toList());
 	    for (UsuarioDTO usuario : usuariosParaMostrar) {
 	        modeloTabla.addRow(new Object[]{usuario.getUsername()});
 	    }
 	}
 
 	private static void filtrarUsuarios(String texto, List<UsuarioDTO> usuarios, DefaultTableModel modeloTabla, int cantidad) {
-	    List<UsuarioDTO> usuariosFiltrados = usuarios.stream()
-	            .filter(usuario -> usuario.getUsername().toLowerCase().contains(texto.toLowerCase()))
-	            .collect(Collectors.toList());
-	    // Cargar solo los primeros 'cantidad' usuarios filtrados
+	    List<UsuarioDTO> usuariosFiltrados = usuarios.stream().filter(usuario -> usuario.getUsername().toLowerCase().contains(texto.toLowerCase())).collect(Collectors.toList());
 	    cargarUsuariosEnTabla(usuariosFiltrados, modeloTabla, cantidad);
 	}
 	

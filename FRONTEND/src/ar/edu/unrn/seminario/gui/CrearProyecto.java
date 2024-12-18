@@ -165,7 +165,6 @@ public class CrearProyecto extends JFrame {
                 String prioridadSeleccionadaNueva = api.obtenerPrioridadPorIndex(prioridadComboBox.getSelectedIndex());
 
 				try {
-					// Crear un nuevo proyecto
 	                api.crearProyecto(nombreNuevoProyecto, api.getUsuarioActual().getUsername(), "EN CURSO", descripcionNueva, prioridadSeleccionadaNueva);
 	                JOptionPane.showMessageDialog(null, labels.getString("mensaje.proyectoCreado"), "Info", JOptionPane.INFORMATION_MESSAGE);
 	                new Inicio(api).setVisible(true);
@@ -208,7 +207,7 @@ public class CrearProyecto extends JFrame {
 		centerPanel1.add(lblPrioridad); 
 		setLocationRelativeTo(null); 
 		
-		addWindowListener(new WindowAdapter() { //Cuando el usuario cierra el frame abre devuelta Inicio
+		addWindowListener(new WindowAdapter() { 
         	public void windowClosing(WindowEvent e) {
         		new Inicio(api).setVisible(true);
         	}
