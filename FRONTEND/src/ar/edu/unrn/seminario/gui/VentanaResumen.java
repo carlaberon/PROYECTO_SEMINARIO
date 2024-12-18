@@ -23,7 +23,7 @@ public class VentanaResumen extends JFrame {
     private RolDTO rolActual;
     public VentanaResumen(IApi api) {
 
-    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
+    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
 
     	
     	this.api = api;

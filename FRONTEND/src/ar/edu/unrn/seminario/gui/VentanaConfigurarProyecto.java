@@ -49,7 +49,7 @@ public class VentanaConfigurarProyecto extends JFrame {
     private JButton cancelar;
     private ProyectoDTO proyectoActual;
     private UsuarioDTO usuarioActual;
-    ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en"));
+    ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es"));
 
 
     public VentanaConfigurarProyecto(IApi api) {
