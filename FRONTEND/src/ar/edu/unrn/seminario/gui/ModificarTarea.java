@@ -54,7 +54,7 @@ public class ModificarTarea extends JFrame {
 	    private TareaDTO tarea;
 	    private IApi api;
 	    private UsuarioDTO usuarioActual;
-	    ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
+	    ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
 	    
 	    
 	    public ModificarTarea(IApi api) {

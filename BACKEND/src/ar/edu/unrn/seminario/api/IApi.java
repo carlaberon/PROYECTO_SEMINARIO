@@ -24,7 +24,7 @@ public interface IApi {
 	//Metodos para los usuarios
 	UsuarioDTO obtenerUsuario(String username) throws DataBaseFoundException, DataBaseConnectionException;
 	
-	List<UsuarioDTO> obtenerUsuarios(String username) throws DataBaseConnectionException; // recuperar todos los usuarios
+	List<UsuarioDTO> obtenerUsuarios(String username) throws DataBaseConnectionException;
 		
 	//Metodos para Roles
 	List<RolDTO> obtenerRoles() throws DataBaseConnectionException;
@@ -72,9 +72,9 @@ public interface IApi {
 	
 	public TareaDTO getTareaActual();
 	
-	public UsuarioDTO getUsuarioActual(); //Recuperar usuario actual PRUEBAS
+	public UsuarioDTO getUsuarioActual();
 	
-	public void setUsuarioActual(String nombreUsuario) throws DataBaseFoundException, DataBaseConnectionException;	//Setear usuario actual PRUEBAS
+	public void setUsuarioActual(String nombreUsuario) throws DataBaseFoundException, DataBaseConnectionException;
 	
 	public int obtenerPrioridad(String prioridad);
 	
@@ -86,8 +86,8 @@ public interface IApi {
 	
 	public String traducirRol(String rol);
 	
-	public ProyectoDTO getProyectoActual();//Recuperar proyecto actual	PRUEBAS
+	public ProyectoDTO getProyectoActual();
 	
-	public void setProyectoActual(int id) throws NotNullException, DataEmptyException, DataBaseConnectionException, DataBaseFoundException;	//Setear proyecto actual PRUEBAS
+	public void setProyectoActual(int id) throws NotNullException, DataEmptyException, DataBaseConnectionException, DataBaseFoundException;
 	
 }

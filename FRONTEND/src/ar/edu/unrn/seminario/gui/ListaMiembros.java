@@ -54,7 +54,7 @@ public class ListaMiembros extends JFrame {
     private ProyectoDTO unproyecto; 
     private RolDTO rolActual;
 	private List<UsuarioDTO> usuariosProyecto;
-	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
+	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
 
 
     public ListaMiembros(IApi api) {

@@ -26,7 +26,7 @@ public class ListaProyectos extends JFrame {
 	private JButton eliminarProyecto;
 	private UsuarioDTO usuarioActual; 
 	private JPanel contentPane;
-	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
+	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
 
  public ListaProyectos(IApi api)  {
     	this.api = api;
@@ -144,7 +144,7 @@ public class ListaProyectos extends JFrame {
             if (prioridadComparacion != 0) {
                 return prioridadComparacion;
             }
-            return p1.getNombre().compareTo(p2.getNombre());
+            return p1.getNombre().compareToIgnoreCase(p2.getNombre());
         });
         
         if(!proyectos.isEmpty()) {

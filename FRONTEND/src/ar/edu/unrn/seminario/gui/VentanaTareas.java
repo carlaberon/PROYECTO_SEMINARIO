@@ -55,7 +55,7 @@ public class VentanaTareas extends JFrame {
     private ProyectoDTO unproyecto; 
     private RolDTO rolActual;
     public VentanaTareas(IApi api) {
-    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
+    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
 
     	
     	
@@ -191,7 +191,7 @@ public class VentanaTareas extends JFrame {
             if (prioridadComparacion != 0) {
                 return prioridadComparacion;
             }
-            return t1.getName().compareTo(t2.getName());
+            return t1.getName().compareToIgnoreCase(t2.getName());
         });
 		
 		
