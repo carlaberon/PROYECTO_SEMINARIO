@@ -109,16 +109,14 @@ public class Inicio extends JFrame {
         List<ProyectoDTO> proyectos;
 		try {
 			proyectos = api.obtenerProyectos(usuarioActual.getUsername());
-        proyectos.sort((p1, p2) -> Integer.compare(api.obtenerPrioridad(p1.getPrioridad()), 
-                api.obtenerPrioridad(p2.getPrioridad())));
-        proyectos.sort((p1, p2) -> {
-            int prioridadComparacion = Integer.compare(api.obtenerPrioridad(p1.getPrioridad()), 
-                                                       api.obtenerPrioridad(p2.getPrioridad()));
-            if (prioridadComparacion != 0) {
-                return prioridadComparacion;
-            }
-            return p1.getNombre().compareToIgnoreCase(p2.getNombre());
-        });
+			proyectos.sort((p1, p2) -> {
+			    int prioridadComparacion = Integer.compare(api.obtenerPrioridad(p1.getPrioridad()), 
+			                                               api.obtenerPrioridad(p2.getPrioridad()));
+			    if (prioridadComparacion != 0) {
+			        return prioridadComparacion;
+			    }
+			    return p1.getNombre().compareToIgnoreCase(p2.getNombre());
+			});
 
         proyectos.stream().map(proyecto -> {
             JButton proyectoButton = new JButton(proyecto.getNombre());
@@ -332,16 +330,15 @@ public class Inicio extends JFrame {
 	  List<ProyectoDTO> proyectos;
 	  try {
 		  proyectos = api.obtenerProyectos(usuarioActual.getUsername());
-		  proyectos.sort((p1, p2) -> Integer.compare(api.obtenerPrioridad(p1.getPrioridad()), 
-          api.obtenerPrioridad(p2.getPrioridad())));
 		  proyectos.sort((p1, p2) -> {
-			  int prioridadComparacion = Integer.compare(api.obtenerPrioridad(p1.getPrioridad()), 
-                                                 api.obtenerPrioridad(p2.getPrioridad()));
-			  if (prioridadComparacion != 0) {
-				  return prioridadComparacion;
-			  }
-			  return p1.getNombre().compareToIgnoreCase(p2.getNombre());
-		  });
+			    int prioridadComparacion = Integer.compare(api.obtenerPrioridad(p1.getPrioridad()), 
+			                                               api.obtenerPrioridad(p2.getPrioridad()));
+			    if (prioridadComparacion != 0) {
+			        return prioridadComparacion;
+			    }
+			    return p1.getNombre().compareToIgnoreCase(p2.getNombre());
+			});
+
 		  
 		  proyectos.stream().map(proyecto -> {
 			  JButton proyectoButton = new JButton(proyecto.getNombre());
