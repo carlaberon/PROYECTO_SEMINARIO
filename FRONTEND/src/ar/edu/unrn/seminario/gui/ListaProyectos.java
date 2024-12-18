@@ -220,6 +220,7 @@ public class ListaProyectos extends JFrame {
         
         eliminarProyecto.addActionListener(e -> {
 	        	habilitarBotones(false);
+	        	int filaSeleccionada = tabla.getSelectedRow(); 
 	        	int projecId = (int) tabla.getModel().getValueAt(tabla.getSelectedRow(), 0);
 	        	try {
 					if (api.getRol(usuarioActual.getUsername(), projecId).getNombre().equals("Administrador")) {
@@ -228,8 +229,7 @@ public class ListaProyectos extends JFrame {
 						           JOptionPane.YES_NO_OPTION);
 						if (opcionSeleccionada == JOptionPane.YES_OPTION) {
 							api.eliminarProyecto(projecId);
-							actualizarTabla();
-									
+							((DefaultTableModel) tabla.getModel()).removeRow(filaSeleccionada);		
 							habilitarBotones(false);
 						}
 					}else {
@@ -239,6 +239,7 @@ public class ListaProyectos extends JFrame {
 					JOptionPane.showMessageDialog(null,labels.getString(e2.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 				} catch (DataBaseFoundException e2) {
 					JOptionPane.showMessageDialog(null,labels.getString(e2.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+					((DefaultTableModel) tabla.getModel()).removeRow(filaSeleccionada);
 				}
         });
         
@@ -262,39 +263,6 @@ public class ListaProyectos extends JFrame {
         
     }
     
-    public void actualizarTabla() throws DataBaseConnectionException {
-    	// Obtiene el model del table
-    			DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-    			// Obtiene la lista de usuarios a mostrar
-    			List<ProyectoDTO> proyectos;
-				try {
-					proyectos = api.obtenerProyectos(api.getUsuarioActual().getUsername());
-    			  proyectos.sort((p1, p2) -> {
-    		            int prioridadComparacion = Integer.compare(api.obtenerPrioridad(p1.getPrioridad()), 
-    		                                                       api.obtenerPrioridad(p2.getPrioridad()));
-    		            if (prioridadComparacion != 0) {
-    		                return prioridadComparacion;
-    		            }
-    		            return p1.getNombre().compareTo(p2.getNombre());
-    		        });
-    			// Resetea el model
-    			modelo.setRowCount(0);
-    			if(!proyectos.isEmpty()) {
-    				for (ProyectoDTO p : proyectos) {
-    					modelo.addRow(new Object[] {
-    							p.getId(),
-    							p.getNombre(), 
-    							p.getDescripcion(), 
-    							p.isEstado(),
-    							p.getPrioridad(), 
-    							p.getUsuarioPropietario().getUsername()});
-    				}
-    			}
-
-				} catch (NotNullException | DataEmptyException e) {
-		        	JOptionPane.showMessageDialog(null, labels.getString("mensaje.camposVaciosONulos") + labels.getString(e.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
-				}
-    }
  // Método para crear botones con estilo
     private JButton createButton(String text, Color backgroundColor) {
         JButton button = new JButton(text);
