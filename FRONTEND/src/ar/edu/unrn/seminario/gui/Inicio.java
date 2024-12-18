@@ -400,7 +400,7 @@ public class Inicio extends JFrame {
 		ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
 		try {
 
-			usuario = api.obtenerUsuario("jcampos");
+			usuario = api.obtenerUsuario("ldifabio");
 
 			api.setUsuarioActual(usuario.getUsername());
 			Inicio inicio = new Inicio(api);
