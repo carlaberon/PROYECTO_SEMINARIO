@@ -135,6 +135,9 @@ public class Inicio extends JFrame {
                 	JOptionPane.showMessageDialog(null, labels.getString("mensaje.camposVaciosONulos") + labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
                 } catch (DataBaseFoundException e1) {
                 	JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+						proyectosListPanel.remove(proyectoButton);
+						proyectosListPanel.revalidate(); // Actualizar el contenedor para reflejar el cambio
+						proyectosListPanel.repaint();    // Volver a pintar el contenedor
                 } catch (DataBaseConnectionException e2) {
                 	JOptionPane.showMessageDialog(null,labels.getString(e2.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -286,7 +289,9 @@ public class Inicio extends JFrame {
 				JOptionPane.showMessageDialog(null,labels.getString(e2.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 			} catch (DataBaseUpdateException e2) {
 				JOptionPane.showMessageDialog(null,labels.getString(e2.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
-
+				parentPanel.remove(panel); // Eliminar este panel del contenedor padre
+	            parentPanel.revalidate(); // Actualizar el contenedor para reflejar el cambio
+	            parentPanel.repaint();    // Volver a pintar el contenedor
 			}
         });
         
@@ -299,6 +304,11 @@ public class Inicio extends JFrame {
 				parentPanel.repaint();    // Volver a pintar el contenedor
         	} catch (DataBaseConnectionException e1) {
 				JOptionPane.showMessageDialog(null,labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+			} catch (DataBaseUpdateException e1) {
+				JOptionPane.showMessageDialog(null,labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+				parentPanel.remove(panel); // Eliminar este panel del contenedor padre
+	            parentPanel.revalidate(); // Actualizar el contenedor para reflejar el cambio
+	            parentPanel.repaint();    // Volver a pintar el contenedor
 			}
         });
 
@@ -347,10 +357,13 @@ public class Inicio extends JFrame {
 					  api.setProyectoActual(proyecto.getId());
 					  abrirVentanaResumen();
 					  dispose();
-				  } catch (NotNullException | DataEmptyException e1) {
-	                	JOptionPane.showMessageDialog(null, labels.getString("mensaje.camposVaciosONulos") + labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+				} catch (NotNullException | DataEmptyException e1) {
+	                JOptionPane.showMessageDialog(null, labels.getString("mensaje.camposVaciosONulos") + labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 				} catch (DataBaseFoundException e1) {
 					JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+					proyectosListPanel.remove(proyectoButton);
+					proyectosListPanel.revalidate(); // Actualizar el contenedor para reflejar el cambio
+					proyectosListPanel.repaint();    // Volver a pintar el contenedor
 				} catch (DataBaseConnectionException e2) {
 					JOptionPane.showMessageDialog(null,labels.getString(e2.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 

@@ -324,7 +324,7 @@ public class PersistenceApi implements IApi {
 	}
 
 	@Override
-	public void eliminarNotificacion(int idProyecto, String username) throws DataBaseConnectionException {
+	public void eliminarNotificacion(int idProyecto, String username) throws DataBaseConnectionException, DataBaseUpdateException {
 		notificacionDao.remove(idProyecto, username);
 	}
 

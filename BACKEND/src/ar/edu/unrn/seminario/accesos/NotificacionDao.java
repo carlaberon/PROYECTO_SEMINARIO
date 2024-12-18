@@ -4,6 +4,7 @@ import java.util.List;
 
 import ar.edu.unrn.seminario.exception.DataBaseConnectionException;
 import ar.edu.unrn.seminario.exception.DataBaseFoundException;
+import ar.edu.unrn.seminario.exception.DataBaseUpdateException;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.ExistNotification;
 import ar.edu.unrn.seminario.exception.NotNullException;
@@ -14,7 +15,7 @@ public interface NotificacionDao {
 	
 	void create(Notificacion notificacion) throws DataBaseConnectionException, DataBaseFoundException;
 	
-	void remove(int idProyecto, String username) throws DataBaseConnectionException;
+	void remove(int idProyecto, String username) throws DataBaseConnectionException, DataBaseUpdateException;
 	
 	List<Notificacion> findAll(String username) throws NotNullException, DataEmptyException, DataBaseConnectionException;
 	
