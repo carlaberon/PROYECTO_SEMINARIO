@@ -57,7 +57,7 @@ public class InvitarMiembro extends JFrame {
 	private IApi api;
 
 	public InvitarMiembro(IApi api)  {
-		ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
+		ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
 		
 		this.proyectoActual = api.getProyectoActual();
 		this.usuarioActual = api.getUsuarioActual();
