@@ -144,7 +144,7 @@ public class ListaProyectos extends JFrame {
             if (prioridadComparacion != 0) {
                 return prioridadComparacion;
             }
-            return p1.getNombre().compareTo(p2.getNombre());
+            return p1.getNombre().compareToIgnoreCase(p2.getNombre());
         });
         
         if(!proyectos.isEmpty()) {

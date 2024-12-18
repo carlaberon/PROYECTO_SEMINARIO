@@ -117,7 +117,7 @@ public class Inicio extends JFrame {
             if (prioridadComparacion != 0) {
                 return prioridadComparacion;
             }
-            return p1.getNombre().compareTo(p2.getNombre());
+            return p1.getNombre().compareToIgnoreCase(p2.getNombre());
         });
 
         proyectos.stream().map(proyecto -> {
@@ -340,7 +340,7 @@ public class Inicio extends JFrame {
 			  if (prioridadComparacion != 0) {
 				  return prioridadComparacion;
 			  }
-			  return p1.getNombre().compareTo(p2.getNombre());
+			  return p1.getNombre().compareToIgnoreCase(p2.getNombre());
 		  });
 		  
 		  proyectos.stream().map(proyecto -> {
