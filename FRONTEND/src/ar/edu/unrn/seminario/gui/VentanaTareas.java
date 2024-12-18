@@ -55,7 +55,7 @@ public class VentanaTareas extends JFrame {
     private ProyectoDTO unproyecto; 
     private RolDTO rolActual;
     public VentanaTareas(IApi api) {
-    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
+    	ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
 
     	
     	
@@ -287,6 +287,7 @@ public class VentanaTareas extends JFrame {
 									JOptionPane.showMessageDialog(null,labels.getString("mensaje.fechasValidas") + labels.getString(e1.getMessage()), "Error", JOptionPane.WARNING_MESSAGE);
 								} catch (DataBaseFoundException e1) {
 						        	JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+						        	((DefaultTableModel) table.getModel()).removeRow(filaSeleccionada);
 								} catch (DataBaseConnectionException e1) {
 						        	JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 								}
@@ -312,6 +313,7 @@ public class VentanaTareas extends JFrame {
 							JOptionPane.showMessageDialog(null, labels.getString("mensaje.eliminacionExitosa"), labels.getString("titulo.optionPaneEliminacion"), JOptionPane.INFORMATION_MESSAGE);		
 						}  catch (DataBaseEliminationException e1) {
 							JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+							((DefaultTableModel) table.getModel()).removeRow(filaSeleccionada);
 						} catch (DataBaseConnectionException e1) {
 							JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 						}

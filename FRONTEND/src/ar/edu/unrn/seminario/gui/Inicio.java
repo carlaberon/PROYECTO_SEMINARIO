@@ -22,7 +22,7 @@ public class Inicio extends JFrame {
     private IApi api;
     private JPanel proyectosListPanel;
     private UsuarioDTO usuarioActual;
-    ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("en")); 
+    ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
     
     public Inicio(IApi api) {
 
@@ -135,6 +135,9 @@ public class Inicio extends JFrame {
                 	JOptionPane.showMessageDialog(null, labels.getString("mensaje.camposVaciosONulos") + labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
                 } catch (DataBaseFoundException e1) {
                 	JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+						proyectosListPanel.remove(proyectoButton);
+						proyectosListPanel.revalidate(); // Actualizar el contenedor para reflejar el cambio
+						proyectosListPanel.repaint();    // Volver a pintar el contenedor
                 } catch (DataBaseConnectionException e2) {
                 	JOptionPane.showMessageDialog(null,labels.getString(e2.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -286,7 +289,9 @@ public class Inicio extends JFrame {
 				JOptionPane.showMessageDialog(null,labels.getString(e2.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 			} catch (DataBaseUpdateException e2) {
 				JOptionPane.showMessageDialog(null,labels.getString(e2.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
-
+				parentPanel.remove(panel); // Eliminar este panel del contenedor padre
+	            parentPanel.revalidate(); // Actualizar el contenedor para reflejar el cambio
+	            parentPanel.repaint();    // Volver a pintar el contenedor
 			}
         });
         
@@ -301,6 +306,9 @@ public class Inicio extends JFrame {
 				JOptionPane.showMessageDialog(null,labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 			} catch (DataBaseUpdateException e1) {
 				JOptionPane.showMessageDialog(null,labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+				parentPanel.remove(panel); // Eliminar este panel del contenedor padre
+	            parentPanel.revalidate(); // Actualizar el contenedor para reflejar el cambio
+	            parentPanel.repaint();    // Volver a pintar el contenedor
 			}
         });
 
@@ -349,10 +357,13 @@ public class Inicio extends JFrame {
 					  api.setProyectoActual(proyecto.getId());
 					  abrirVentanaResumen();
 					  dispose();
-				  } catch (NotNullException | DataEmptyException e1) {
-	                	JOptionPane.showMessageDialog(null, labels.getString("mensaje.camposVaciosONulos") + labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+				} catch (NotNullException | DataEmptyException e1) {
+	                JOptionPane.showMessageDialog(null, labels.getString("mensaje.camposVaciosONulos") + labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 				} catch (DataBaseFoundException e1) {
 					JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
+					proyectosListPanel.remove(proyectoButton);
+					proyectosListPanel.revalidate(); // Actualizar el contenedor para reflejar el cambio
+					proyectosListPanel.repaint();    // Volver a pintar el contenedor
 				} catch (DataBaseConnectionException e2) {
 					JOptionPane.showMessageDialog(null,labels.getString(e2.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 
@@ -388,7 +399,7 @@ public class Inicio extends JFrame {
 		UsuarioDTO usuario;
 		ResourceBundle labels = ResourceBundle.getBundle("labels", new Locale("es")); 
 		try {
-			usuario = api.obtenerUsuario("ldifabio");
+			usuario = api.obtenerUsuario("mcamba");
 			api.setUsuarioActual(usuario.getUsername());
 			Inicio inicio = new Inicio(api);
 			inicio.setVisible(true);
