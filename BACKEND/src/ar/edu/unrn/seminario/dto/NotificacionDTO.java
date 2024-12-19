@@ -1,27 +1,22 @@
 package ar.edu.unrn.seminario.dto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
 public class NotificacionDTO {
-	private String nombre;
+	private int idProyecto;
+	private String username;
+	private int codigoRol;
 	private String descripcion;
-	private LocalDateTime fecha;
-	private boolean visto;
+	private LocalDate fecha;
 	
-	public NotificacionDTO(String nombre, String descripcion, LocalDateTime fecha, boolean visto) {
-		this.nombre = nombre;
+	public NotificacionDTO(int idProyecto, String username, int codigoRol,String descripcion, LocalDate fecha) {
+		this.idProyecto = idProyecto;
+		this.username = username;
+		this.codigoRol = codigoRol;
 		this.descripcion = descripcion;
 		this.fecha = fecha;
-		this.visto = visto;
-	}
-
-	public String getNombre() {
-		return nombre;
-	}
-
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
 	}
 
 	public String getDescripcion() {
@@ -32,26 +27,46 @@ public class NotificacionDTO {
 		this.descripcion = descripcion;
 	}
 
-	public LocalDateTime getFecha() {
+	public LocalDate getFecha() {
 		return fecha;
 	}
 
-	public void setFecha(LocalDateTime fecha) {
+	public void setFecha(LocalDate fecha) {
 		this.fecha = fecha;
-	}
-
-	public boolean isVisto() {
-		return visto;
-	}
-
-	public void setVisto(boolean visto) {
-		this.visto = visto;
 	}
 
 	@Override
 	public String toString() {
-		return "NotificacionDTO [nombre=" + nombre + ", descripcion=" + descripcion + ", fecha=" + fecha + ", visto="
-				+ visto + "]";
+		return "NotificacionDTO [idProyecto=" + idProyecto + ", username=" + username + ", codigoRol=" + codigoRol
+				+ ", descripcion=" + descripcion + ", fecha=" + fecha + "]";
 	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public int getIdProyecto() {
+		return idProyecto;
+	}
+
+	public void setIdProyecto(int idProyecto) {
+		this.idProyecto = idProyecto;
+	}
+
+	public int getCodigoRol() {
+		return codigoRol;
+	}
+
+	public void setCodigoRol(int codigoRol) {
+		this.codigoRol = codigoRol;
+	}
+
+
+
+	
 	
 }

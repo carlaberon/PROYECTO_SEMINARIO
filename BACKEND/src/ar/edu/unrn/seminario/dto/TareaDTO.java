@@ -1,9 +1,6 @@
 package ar.edu.unrn.seminario.dto;
 
 import java.time.LocalDate;
-import ar.edu.unrn.seminario.exception.DataEmptyException;
-import ar.edu.unrn.seminario.exception.InvalidDateException;
-import ar.edu.unrn.seminario.exception.NotNullException;
 
 public class TareaDTO {
 

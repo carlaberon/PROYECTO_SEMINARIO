@@ -7,26 +7,24 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.sound.sampled.EnumControl;
-import javax.swing.JOptionPane;
-
 import java.sql.SQLException;
+
+import ar.edu.unrn.seminario.exception.DataBaseConnectionException;
+import ar.edu.unrn.seminario.exception.DataBaseEliminationException;
+import ar.edu.unrn.seminario.exception.DataBaseFoundException;
+import ar.edu.unrn.seminario.exception.DataBaseInsertionException;
+import ar.edu.unrn.seminario.exception.DataBaseUpdateException;
 import ar.edu.unrn.seminario.exception.DataEmptyException;
 import ar.edu.unrn.seminario.exception.InvalidDateException;
 import ar.edu.unrn.seminario.exception.NotNullException;
-import ar.edu.unrn.seminario.exception.TaskNotCreatedException;
-import ar.edu.unrn.seminario.exception.TaskNotFoundException;
-import ar.edu.unrn.seminario.exception.TaskNotUpdatedException;
-import ar.edu.unrn.seminario.exception.TaskQueryException;
 import ar.edu.unrn.seminario.modelo.Proyecto;
-import ar.edu.unrn.seminario.modelo.Rol;
 import ar.edu.unrn.seminario.modelo.Tarea;
 import ar.edu.unrn.seminario.modelo.Usuario;
 
 public class TareaDAOJDBC implements TareaDao{
 
 	@Override
-	public void create(Tarea tarea) throws TaskNotCreatedException{
+	public void create(Tarea tarea) throws DataBaseInsertionException, DataBaseConnectionException {
 		PreparedStatement statement;
 		Connection conn;
 		try {
@@ -45,28 +43,26 @@ public class TareaDAOJDBC implements TareaDao{
 			statement.setDate(8, java.sql.Date.valueOf(tarea.getFin()));
 			
 			int cant = statement.executeUpdate();
-		
+			
 			if ( cant <= 0) {
-			
-				throw new TaskNotCreatedException("Error: No se pudo crear la tarea en la base de datos.");
+	            throw new DataBaseInsertionException("exceptionTareaDAO.create");
 			}
 		}
-		catch (SQLException e) {
-
-			throw new TaskNotCreatedException("Error al actualizar la base de datos: " + e.getMessage());
-			}
-		catch (Exception e) {
-			
-			throw new TaskNotCreatedException("Error al insertar la tarea: " + e.getMessage());
-		} finally {
-			ConnectionManager.disconnect();
+		catch (SQLException e1) {
+	        throw new DataBaseConnectionException("exceptionDAO.conecction");
 		}
-
-		
+		finally {
+			try {
+				ConnectionManager.disconnect();
+			} catch (SQLException e) {
+				throw new DataBaseConnectionException("exceptionDAO.disconnect");
+			}
+			
+		}
 	}
 
 	@Override
-	public void update(Tarea tarea) throws TaskNotUpdatedException {
+	public void update(Tarea tarea) throws DataBaseConnectionException, DataBaseUpdateException {
 		try {
 		   Connection conn = ConnectionManager.getConnection();
 		   PreparedStatement statement = conn.prepareStatement("UPDATE tareas SET nombre = ?, prioridad = ?, usuario = ?, estado = ?, descripcion = ?, fecha_inicio = ?, fecha_fin = ? WHERE id = ? ");
@@ -85,54 +81,55 @@ public class TareaDAOJDBC implements TareaDao{
 	       
 		   int verificacion = statement.executeUpdate();
 		        
-		   if (verificacion <= 0) {
-			   throw new TaskNotUpdatedException("No se encontro la tarea para actualizar.");
+		   if (verificacion == 0) {
+	            throw new DataBaseUpdateException("exceptionTareaDAO.update");
 		   }
 		        
 		   } catch (SQLException e) { 
-		       throw new TaskNotUpdatedException("No se pudo actualizar la tarea. " + e.toString());
+		        throw new DataBaseConnectionException("exceptionDAO.conecction");
 		   } finally {
-		       ConnectionManager.disconnect();
+		       try {
+				ConnectionManager.disconnect();
+			} catch (SQLException e) {
+				throw new DataBaseConnectionException("exceptionDAO.disconnect");
+			}
 		   }
 	}
 	
 	@Override
-	public List<Tarea> findByProject(int id_project) throws DataEmptyException, NotNullException, InvalidDateException, TaskQueryException {
+	public List<Tarea> findByProject(int id_project) throws DataEmptyException, NotNullException, InvalidDateException, DataBaseConnectionException{
 		List<Tarea>tareas = new ArrayList<Tarea>();
-		Rol unRol = null;
 		Usuario unUsuario = null;
 		Proyecto unProyecto = null;
 		Tarea unaTarea = null;
 			
 			try {
 				Connection conn = ConnectionManager.getConnection();
-				PreparedStatement statement = conn.prepareStatement("SELECT t.id, t.nombre, t.prioridad, t.usuario, t.estado, t.descripcion, t.fecha_inicio, t.fecha_fin, p.id, p.nombre, p.usuario_propietario, p.estado, p.descripcion, p.prioridad, u.usuario, u.contrasena, u.nombre, u.email, u.activo, u.rol, r.codigo, r.nombre, r.activo\r\n"
+				PreparedStatement statement = conn.prepareStatement("SELECT t.id, t.nombre, t.prioridad, t.usuario, t.estado, t.descripcion, t.fecha_inicio, t.fecha_fin, p.id, p.nombre, p.usuario_propietario, p.estado, p.descripcion, p.prioridad, u.usuario, u.contrasena, u.nombre, u.email, u.activo\r\n"
 						+ "FROM tareas t join proyectos p on t.id_proyecto = p.id\r\n"
-						+ "join proyectos_miembros pm on pm.id_proyecto = p.id\r\n"
-						+ "join usuarios u on pm.usuario_miembro = u.usuario\r\n"
-						+ "join usuario_rol ur on ur.nombre_usuario = u.usuario\r\n"
-						+ "join roles r on r.codigo = ur.codigo_rol\r\n"
-						+ "WHERE t.id_proyecto = ? AND t.estado NOT LIKE '#%' AND u.usuario = p.usuario_propietario");
+						+ "JOIN proyectos_usuarios_roles pur on pur.id_proyecto = p.id\r\n"
+						+ "join usuarios u on pur.nombre_usuario = u.usuario\r\n"
+						+ "WHERE t.id_proyecto = ? and u.usuario = p.usuario_propietario");
 				statement.setInt(1, id_project);
 				ResultSet rs = statement.executeQuery();
 				while(rs.next()) {
-					unRol = new Rol(rs.getInt("r.codigo"), rs.getString("r.nombre"), rs.getBoolean("r.activo"));
-					unUsuario = new Usuario(rs.getString("u.usuario"), rs.getString("u.contrasena"), rs.getString("u.nombre"), rs.getString("u.email"), unRol, rs.getBoolean("u.activo"));
+					unUsuario = new Usuario(rs.getString("u.usuario"), rs.getString("u.contrasena"), rs.getString("u.nombre"), rs.getString("u.email"), rs.getBoolean("u.activo"));
 					unProyecto = new Proyecto(rs.getInt("p.id"), rs.getString("p.nombre"), unUsuario, rs.getString("estado"), rs.getString("p.descripcion"), rs.getString("p.prioridad"));
 					unaTarea = new Tarea(rs.getInt("t.id"), rs.getString("t.nombre"), unProyecto,rs.getString("t.prioridad"), rs.getString("t.usuario"), rs.getString("t.estado"),
 							rs.getString("t.descripcion"), rs.getDate("t.fecha_inicio").toLocalDate(), rs.getDate("t.fecha_fin").toLocalDate());
 					
 					tareas.add(unaTarea);
 				}
-			
 				
-			} catch (SQLException e) {
-				System.out.println("Error de mySql\n" + e.toString());
-				throw new TaskQueryException("Error al realizar la consulta de tareas en la base de datos: " + e.getMessage(), e);
-			} catch (IllegalArgumentException e) {
-				throw new TaskQueryException("Error de argumento invalido en la creacion de tareas: " + e.getMessage(), e);
-			} finally {
-				ConnectionManager.disconnect();
+			} catch (SQLException e1) {
+		        throw new DataBaseConnectionException("exceptionDAO.conecction");
+			}
+			 finally {
+				try {
+					ConnectionManager.disconnect();
+				} catch (SQLException e) {
+					throw new DataBaseConnectionException("exceptionDAO.disconnect");
+				}
 			}
 			return tareas;
 		}
@@ -140,56 +137,60 @@ public class TareaDAOJDBC implements TareaDao{
 	
 
 	@Override
-	public void remove(int id) throws TaskNotFoundException {
+	public void remove(int idTarea) throws DataBaseConnectionException, DataBaseEliminationException {
 		try {
 			Connection conn = ConnectionManager.getConnection();
-			PreparedStatement sent = conn.prepareStatement("UPDATE tareas SET estado = CONCAT('#', estado) WHERE id = ?");
-			sent.setInt(1, id);
+			PreparedStatement sent = conn.prepareStatement("DELETE FROM tareas WHERE id = ?");
+			sent.setInt(1, idTarea);
 
 			int verificacion = sent.executeUpdate();		
 			if(verificacion <= 0) {
-				throw new TaskNotFoundException("No se encontro la tarea a eliminar");
+				throw new DataBaseEliminationException("exceptionTareaDAO.remove");
 			}
 		} catch (SQLException e) {
-
-			throw new TaskNotFoundException("No se pudo eliminar la tarea" + e.getMessage(), e);
+	        throw new DataBaseConnectionException("exceptionDAO.conecction");
 		} finally {
-		ConnectionManager.disconnect();
+			try {
+				ConnectionManager.disconnect();
+			} catch (SQLException e) {
+				throw new DataBaseConnectionException("exceptionDAO.disconnect");
+			}
 		}
 	}
 	
-	public Tarea find(int id) throws NotNullException, DataEmptyException, InvalidDateException {
-		Rol unRol = null;
+
+	public Tarea find(int idTarea) throws NotNullException, DataEmptyException, InvalidDateException, DataBaseConnectionException, DataBaseFoundException {
+
 		Usuario unUsuario = null;
 		Proyecto unProyecto = null;
 		Tarea unaTarea = null;
 		
 		try {
 			Connection conn = ConnectionManager.getConnection();
-			PreparedStatement statement = conn.prepareStatement("SELECT t.id, t.nombre, t.prioridad, t.usuario, t.estado, t.descripcion, t.fecha_inicio, t.fecha_fin, p.id, p.nombre, p.usuario_propietario, p.estado, p.descripcion, p.prioridad, u.usuario, u.contrasena, u.nombre, u.email, u.activo, u.rol, r.codigo, r.nombre, r.activo\r\n"
+			PreparedStatement statement = conn.prepareStatement("SELECT t.id, t.nombre, t.prioridad, t.usuario, t.estado, t.descripcion, t.fecha_inicio, t.fecha_fin, p.id, p.nombre, p.usuario_propietario, p.estado, p.descripcion, p.prioridad, u.usuario, u.contrasena, u.nombre, u.email, u.activo\r\n"
 					+ "FROM tareas t join proyectos p on t.id_proyecto = p.id\r\n"
-					+ "join proyectos_miembros pm on pm.id_proyecto = p.id\r\n"
-					+ "join usuarios u on pm.usuario_miembro = u.usuario\r\n"
-					+ "join usuario_rol ur on ur.nombre_usuario = u.usuario\r\n"
-					+ "join roles r on r.codigo = ur.codigo_rol\r\n"
+					+ "JOIN proyectos_usuarios_roles pur on pur.id_proyecto = p.id\r\n"
+					+ "join usuarios u on pur.nombre_usuario = u.usuario\r\n"
 					+ "WHERE t.id = ? AND t.estado NOT LIKE '#%'");
-			statement.setInt(1, id);
+			statement.setInt(1, idTarea);
 			
 			ResultSet rs = statement.executeQuery();
 			if(rs.next()) {
-				unRol = new Rol(rs.getInt("r.codigo"), rs.getString("r.nombre"), rs.getBoolean("r.activo"));
-				unUsuario = new Usuario(rs.getString("u.usuario"), rs.getString("u.contrasena"), rs.getString("u.nombre"), rs.getString("u.email"), unRol, rs.getBoolean("u.activo"));
+				unUsuario = new Usuario(rs.getString("u.usuario"), rs.getString("u.contrasena"), rs.getString("u.nombre"), rs.getString("u.email"), rs.getBoolean("u.activo"));
 				unProyecto = new Proyecto(rs.getInt("p.id"), rs.getString("p.nombre"), unUsuario, rs.getString("estado"), rs.getString("p.descripcion"), rs.getString("p.prioridad"));
 				unaTarea = new Tarea(rs.getInt("id"), rs.getString("nombre"), unProyecto, rs.getString("prioridad"), rs.getString("usuario"), rs.getString("estado"),rs.getString("descripcion"), rs.getDate("fecha_inicio").toLocalDate(), rs.getDate("fecha_fin").toLocalDate());
 			}else {
-				 JOptionPane.showMessageDialog(null, "No se encontró la tarea con ID: " + id, "Error", JOptionPane.ERROR_MESSAGE);
+				throw new DataBaseFoundException("exceptionTareaDAO.findByProject");
 			}
-		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(null, "Error de SQL al consultar la tarea: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-		} catch (IllegalArgumentException e) {
-			JOptionPane.showMessageDialog(null, "Error en los argumentos de la tarea: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-		} finally {
-			ConnectionManager.disconnect();
+		} catch (SQLException e1) {
+	        throw new DataBaseConnectionException("exceptionDAO.conecction");
+		}
+		finally {
+			try {
+				ConnectionManager.disconnect();
+			} catch (SQLException e) {
+				throw new DataBaseConnectionException("exceptionDAO.disconnect");
+			}
 		}
 		return unaTarea;
 	}
