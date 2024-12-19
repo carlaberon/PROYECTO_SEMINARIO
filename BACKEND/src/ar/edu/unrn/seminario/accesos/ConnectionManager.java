@@ -6,13 +6,15 @@ import java.sql.SQLException;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
+import ar.edu.unrn.seminario.exception.DataBaseConfigurationException;
+
 public class ConnectionManager {
 
 	protected static Connection conn = null;
 	protected static Properties prop = null;
 
 
-	private static Properties getProperties() throws RuntimeException {
+	private static Properties getProperties() throws DataBaseConfigurationException {
 
 		Properties prop = new Properties();
 		try {
@@ -22,8 +24,7 @@ public class ConnectionManager {
 			prop.setProperty("password", infoDataBase.getString("db.password"));
 
 		} catch (Exception e1) {
-			throw new RuntimeException("Ocurrio un error al leer la configuracion desde el archivo");
-			// TODO: disparar Exception propia
+			throw new DataBaseConfigurationException("exceptionConnectionManager.error");
 		}
 		return prop;
 
