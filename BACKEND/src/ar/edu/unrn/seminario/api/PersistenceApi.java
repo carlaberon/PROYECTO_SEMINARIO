@@ -3,8 +3,6 @@ package ar.edu.unrn.seminario.api;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
-
-
 import ar.edu.unrn.seminario.accesos.RolDAOJDBC;
 import ar.edu.unrn.seminario.accesos.RolDao;
 import ar.edu.unrn.seminario.accesos.TareaDAOJDBC;
@@ -58,20 +56,13 @@ public class PersistenceApi implements IApi {
 	@Override
 	public List<TareaDTO> obtenerTareas() throws NotNullException, InvalidDateException, DataEmptyException, DataBaseConnectionException {
 	    List<Tarea> tareas = tareaDao.findByProject(proyectoActual.getId());
-	    return tareas.stream()
-	            .map(this::convertirEnTareaDTO) 
-	            .collect(Collectors.toList());  
+	    return tareas.stream().map(this::convertirEnTareaDTO).collect(Collectors.toList());  
 	}
 	
 	@Override
 	public List<UsuarioDTO> obtenerUsuarios(String username) throws DataBaseConnectionException {
 	    List<Usuario> usuarios = usuarioDao.findAll();
-
-	    // Filtra los usuarios cuyo username no coincida con el proporcionado y conviértelos a UsuarioDTO
-	    return usuarios.stream()
-	                   .filter(u -> !username.equals(u.getUsername())) // Excluir el usuario actual
-	                   .map(this::convertirEnUsuarioDTO)              // Convertir a UsuarioDTO
-	                   .collect(Collectors.toList());                // Recoger como una lista
+	    return usuarios.stream().filter(u -> !username.equals(u.getUsername())).map(this::convertirEnUsuarioDTO).collect(Collectors.toList());                
 	}
 	
 	@Override
@@ -243,12 +234,11 @@ public class PersistenceApi implements IApi {
 			            usuario.getEmail(),
 			            usuario.isActivo()
 			        );
-			        return userDTO; // Retorna el UsuarioDTO
+			        return userDTO; 
 			    }
 			    
-			    return null; // Retorna null si no se encuentra el usuario
+			    return null; 
 			}
-
 
 
 	private UsuarioDTO convertirEnUsuarioDTO(Usuario usuario)  {
@@ -298,9 +288,7 @@ public class PersistenceApi implements IApi {
 
 	@Override
 	public List<UsuarioDTO> obtenerMiembrosDeUnProyecto(int proyectoId) throws DataBaseConnectionException, DataBaseFoundException {
-	    return proyectoDao.findAllMembers(proyectoId).stream()
-	                      .map(this::convertirEnUsuarioDTO) // Convierte cada Usuario a UsuarioDTO
-	                      .collect(Collectors.toList());   // Recoge el resultado como una lista
+	    return proyectoDao.findAllMembers(proyectoId).stream().map(this::convertirEnUsuarioDTO) .collect(Collectors.toList());  
 	}
 
 	@Override
@@ -309,7 +297,7 @@ public class PersistenceApi implements IApi {
 	    if (miembrosDTO.stream().anyMatch(miembro -> username.equals(miembro.getUsername()))) {
 	        throw new UserIsAlreadyMember("mensaje.esMiembro");
 	    }
-	    return 0; // No existe
+	    return 0; 
 	}
 
 	@Override
@@ -321,9 +309,7 @@ public class PersistenceApi implements IApi {
 
 	@Override
 	public List<NotificacionDTO> obtenerNotificaciones(String username) throws NotNullException, DataEmptyException, DataBaseConnectionException {
-		return notificacionDao.findAll(username).stream()
-                .map(this::convertirEnNotificacionDTO)
-                .collect(Collectors.toList());
+		return notificacionDao.findAll(username).stream().map(this::convertirEnNotificacionDTO).collect(Collectors.toList());
 	}
 
 	@Override

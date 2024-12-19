@@ -275,11 +275,11 @@ public class Inicio extends JFrame {
 
         acceptButton.addActionListener(e -> {
         	try {
-        	api.eliminarNotificacion(idProyecto, username);
-        	api.invitarMiembro(username, idProyecto, codigoRol);
-        	parentPanel.remove(panel); // Eliminar este panel del contenedor padre
-            parentPanel.revalidate(); // Actualizar el contenedor para reflejar el cambio
-            parentPanel.repaint();    // Volver a pintar el contenedor
+        	api.eliminarNotificacion(idProyecto, username); //elimina notificacion de bd
+        	api.invitarMiembro(username, idProyecto, codigoRol); //se crea la relacion de usuario con proyecto
+        	parentPanel.remove(panel); 
+            parentPanel.revalidate(); 
+            parentPanel.repaint();    
 				actualizarProyectos();
         	} catch (NotNullException | DataEmptyException e1) {
             	JOptionPane.showMessageDialog(null, labels.getString("mensaje.camposVaciosONulos") + labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
@@ -287,9 +287,9 @@ public class Inicio extends JFrame {
 				JOptionPane.showMessageDialog(null,labels.getString(e2.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 			} catch (DataBaseUpdateException e2) {
 				JOptionPane.showMessageDialog(null,labels.getString(e2.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
-				parentPanel.remove(panel); // Eliminar este panel del contenedor padre
-	            parentPanel.revalidate(); // Actualizar el contenedor para reflejar el cambio
-	            parentPanel.repaint();    // Volver a pintar el contenedor
+				parentPanel.remove(panel); 
+	            parentPanel.revalidate(); 
+	            parentPanel.repaint();    
 			}
         });
         
@@ -297,16 +297,16 @@ public class Inicio extends JFrame {
         rejectButton.addActionListener(e -> {
         	try {
 				api.eliminarNotificacion(idProyecto, username);
-				parentPanel.remove(panel); // Eliminar este panel del contenedor padre
-				parentPanel.revalidate(); // Actualizar el contenedor para reflejar el cambio
-				parentPanel.repaint();    // Volver a pintar el contenedor
+				parentPanel.remove(panel); 
+				parentPanel.revalidate(); 
+				parentPanel.repaint();   
         	} catch (DataBaseConnectionException e1) {
 				JOptionPane.showMessageDialog(null,labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 			} catch (DataBaseUpdateException e1) {
 				JOptionPane.showMessageDialog(null,labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
-				parentPanel.remove(panel); // Eliminar este panel del contenedor padre
-	            parentPanel.revalidate(); // Actualizar el contenedor para reflejar el cambio
-	            parentPanel.repaint();    // Volver a pintar el contenedor
+				parentPanel.remove(panel); 
+	            parentPanel.revalidate(); 
+	            parentPanel.repaint();   
 			}
         });
 
@@ -328,7 +328,7 @@ public class Inicio extends JFrame {
     }
     
   public void actualizarProyectos() throws NotNullException, DataEmptyException {
-	  proyectosListPanel.removeAll(); // Limpiar el panel actual
+	  proyectosListPanel.removeAll(); 
   
 	  List<ProyectoDTO> proyectos;
 	  try {
@@ -358,8 +358,8 @@ public class Inicio extends JFrame {
 				} catch (DataBaseFoundException e1) {
 					JOptionPane.showMessageDialog(null, labels.getString(e1.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 					proyectosListPanel.remove(proyectoButton);
-					proyectosListPanel.revalidate(); // Actualizar el contenedor para reflejar el cambio
-					proyectosListPanel.repaint();    // Volver a pintar el contenedor
+					proyectosListPanel.revalidate(); 
+					proyectosListPanel.repaint();    
 				} catch (DataBaseConnectionException e2) {
 					JOptionPane.showMessageDialog(null,labels.getString(e2.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 
@@ -374,8 +374,8 @@ public class Inicio extends JFrame {
     	  JOptionPane.showMessageDialog(null,labels.getString(e2.getMessage()), "Error", JOptionPane.ERROR_MESSAGE);
 	}
  
-	  proyectosListPanel.revalidate(); // Actualizar el panel
-	  proyectosListPanel.repaint();    // Repintar el panel
+	  proyectosListPanel.revalidate(); 
+	  proyectosListPanel.repaint();   
 }
 
   private JButton createButton(String text, Color backgroundColor) {

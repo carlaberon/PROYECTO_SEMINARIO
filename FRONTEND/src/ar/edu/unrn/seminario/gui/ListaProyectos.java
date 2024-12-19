@@ -136,9 +136,8 @@ public class ListaProyectos extends JFrame {
 		try {
 			proyectos = api.obtenerProyectos(api.getUsuarioActual().getUsername());
 
-        proyectos.sort((p1, p2) -> Integer.compare(api.obtenerPrioridad(p1.getPrioridad()), 
-                api.obtenerPrioridad(p2.getPrioridad())));
-        proyectos.sort((p1, p2) -> {
+    
+			proyectos.sort((p1, p2) -> {
             int prioridadComparacion = Integer.compare(api.obtenerPrioridad(p1.getPrioridad()), 
                                                        api.obtenerPrioridad(p2.getPrioridad()));
             if (prioridadComparacion != 0) {
